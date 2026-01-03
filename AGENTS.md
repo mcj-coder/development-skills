@@ -51,6 +51,7 @@ A single task may require the application of multiple skills. It is the responsi
 Superpowers is the source of truth for the skill library: <https://github.com/obra/superpowers>
 
 - **CRITICAL**: Ensure that you run the bootstrap script with Node when using powershell (or on windows), for example `node %USERPROFILE%\.codex\superpowers\.codex\superpowers-codex bootstrap`.
+- **LOCAL POLICY**: Run all Superpowers scripts via Node (for example, `node %USERPROFILE%\.codex\superpowers\.codex\superpowers-codex <command>`). This does not apply to skill content.
 
 - **CRITICAL**: Do not proceed with any task until the bootstrap has been run, the superpowers skills are available and you've applied the `using-superpowers` skill.
 
