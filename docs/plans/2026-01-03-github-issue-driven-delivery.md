@@ -49,7 +49,7 @@ Proceed only after approval is posted in the issue thread.
 
 ---
 
-## Task 1: RED - Add failing BDD test (baseline)
+## Task 1: RED - Add failing BDD test (baseline) - Complete
 
 **Files:**
 
@@ -108,7 +108,7 @@ git commit -m "test(skills): add failing tests for github-issue-driven-delivery"
 
 ---
 
-## Task 2: GREEN + REFACTOR - Implement skill spec
+## Task 2: GREEN + REFACTOR - Implement skill spec - Complete
 
 **Files:**
 
@@ -227,7 +227,7 @@ git commit -m "feat(skills): add github-issue-driven-delivery skill"
 
 ---
 
-## Task 3: Update README to register the new skill
+## Task 3: Update README to register the new skill - Complete
 
 **Files:**
 
@@ -255,7 +255,7 @@ git commit -m "docs(readme): list github-issue-driven-delivery skill"
 
 ---
 
-## Task 4: Tighten approval gating and evidence link requirements
+## Task 4: Tighten approval gating and evidence link requirements - Complete
 
 **Files:**
 
