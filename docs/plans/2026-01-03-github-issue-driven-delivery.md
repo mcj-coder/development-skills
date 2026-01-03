@@ -290,3 +290,28 @@ git commit -m "docs(skills): tighten approval gating and evidence links"
 - Require commit + file links for evidence.
 - Verify gh auth status before workflow steps.
 - Include acceptance criteria in next-step issues.
+
+---
+
+## Task 5: Require persona reviews as individual comments before summary
+
+**Files:**
+
+- Modify: `skills/github-issue-driven-delivery/SKILL.md`
+
+### Step 1: Require individual persona comments before summary
+
+- Add explicit requirement that each persona posts a separate issue comment.
+- Require the summary to reference those individual comments.
+
+### Step 2: Verify skill content includes the new requirement
+
+Run: `rg "persona|review|summary" skills/github-issue-driven-delivery/SKILL.md`
+Expected: Matches for individual persona comments and summary requirements.
+
+### Step 3: Commit the change
+
+```bash
+git add skills/github-issue-driven-delivery/SKILL.md
+git commit -m "docs(skills): require persona review comments before summary"
+```
