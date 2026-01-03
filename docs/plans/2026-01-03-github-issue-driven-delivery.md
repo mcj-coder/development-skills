@@ -278,3 +278,15 @@ Expected: Matches for approval gates and evidence link requirements.
 git add skills/github-issue-driven-delivery/SKILL.md
 git commit -m "docs(skills): tighten approval gating and evidence links"
 ```
+
+---
+
+## Persona Review Summary - Complete
+
+**Recommendations:**
+
+- Add explicit approval wording guidance (e.g., require "approved" in comments).
+- Emphasize 1:1 mapping between plan tasks and sub-tasks by name.
+- Require commit + file links for evidence.
+- Verify gh auth status before workflow steps.
+- Include acceptance criteria in next-step issues.
