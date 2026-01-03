@@ -2,10 +2,14 @@
 
 ## Development Practices
 
-**CRITICAL**: Follow a clean build principal, when changes are committed there should be 0 warnings or errors. During the development process there should be no unresolved warnings such as during git commits or package management operations. Warnings need to be resolved immediately.
+**CRITICAL**: Follow a clean build principal, when changes are committed there
+should be 0 warnings or errors. During the development process there should be
+no unresolved warnings such as during git commits or package management
+operations. Warnings need to be resolved immediately.
 
 - All work in this repo should follow TDD principal
-- Use skills in combination, if multiple skills are applicable to a combination they should all be combined to achieve the "best of both".
+- Use skills in combination, if multiple skills are applicable to a combination
+  they should all be combined to achieve the "best of both".
 
 ## Prerequisites First
 
@@ -32,7 +36,8 @@ Skills can be classified into the following priorities:
 
 ## Multi-Skill Application
 
-A single task may require the application of multiple skills. It is the responsibility of the agent (or human) to:
+A single task may require the application of multiple skills. It is the
+responsibility of the agent (or human) to:
 
 - Identify the complete set of relevant skills before starting execution.
 - Analyze how these skills interact and identify any conflicts.
@@ -41,8 +46,11 @@ A single task may require the application of multiple skills. It is the responsi
 ## Skill Structure
 
 - `README.md` describes the purpose and prerequisites for developing skills.
-- New skill specs and supporting assets should live in clearly named top-level folders (for example, `skills/skill-name/` with a short `README.md`).
-- Skills should be progressively loaded, keep non-critical detail and examples in focused documents within a `references/` folder with the skill and reference the file from the main `SKILL.md`.
+- New skill specs and supporting assets should live in clearly named top-level
+  folders (for example, `skills/skill-name/` with a short `README.md`).
+- Skills should be progressively loaded, keep non-critical detail and examples
+  in focused documents within a `references/` folder with the skill and
+  reference the file from the main `SKILL.md`.
 - If in doubt refer to the [agentskills.io specification](https://agentskills.io/specification)
 - Keep any shared reference documents in the top level `docs/` folder
 
@@ -50,14 +58,22 @@ A single task may require the application of multiple skills. It is the responsi
 
 Superpowers is the source of truth for the skill library: <https://github.com/obra/superpowers>
 
-- **CRITICAL**: Ensure that you run the bootstrap script with Node when using powershell (or on windows), for example `node %USERPROFILE%\.codex\superpowers\.codex\superpowers-codex bootstrap`.
-- **LOCAL POLICY**: Run all Superpowers scripts via Node (for example, `node %USERPROFILE%\.codex\superpowers\.codex\superpowers-codex <command>`). This does not apply to skill content.
+- **CRITICAL**: Ensure that you run the bootstrap script with Node when using
+  powershell (or on windows), for example
+  `node %USERPROFILE%\.codex\superpowers\.codex\superpowers-codex bootstrap`.
+- **LOCAL POLICY**: Run all Superpowers scripts via Node (for example,
+  `node %USERPROFILE%\.codex\superpowers\.codex\superpowers-codex <command>`).
+  This does not apply to skill content.
 
-- **CRITICAL**: Do not proceed with any task until the bootstrap has been run, the superpowers skills are available and you've applied the `using-superpowers` skill.
+- **CRITICAL**: Do not proceed with any task until the bootstrap has been run,
+  the superpowers skills are available and you've applied the
+  `using-superpowers` skill.
 
 - Follow the Codex install guide in `README.md`.
-- Always run the bootstrap via Node: `node %USERPROFILE%\.codex\superpowers\.codex\superpowers-codex bootstrap`.
-- Superpowers agents live in `~/.codex/superpowers/agents` and are referenced by skills that dispatch subagents.
+- Always run the bootstrap via Node:
+  `node %USERPROFILE%\.codex\superpowers\.codex\superpowers-codex bootstrap`.
+- Superpowers agents live in `~/.codex/superpowers/agents` and are referenced by
+  skills that dispatch subagents.
 
 ### References
 
@@ -77,7 +93,9 @@ Follow a clean, documentation-first style.
 
 ## Testing Guidelines
 
-There is no testing framework in place, so skills testing will need to "simulated". Tests should be defined in a BDD manner with a list of easily understood assertions to prove success.
+There is no testing framework in place, so skills testing will need to
+"simulated". Tests should be defined in a BDD manner with a list of easily
+understood assertions to prove success.
 
 When tests are added, colocate them in the skills folder:
 
