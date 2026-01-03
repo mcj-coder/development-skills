@@ -24,14 +24,21 @@ Use GitHub issues as the source of truth for planning, approvals, execution evid
 1. Announce the skill and why it applies; confirm gh availability.
 2. Confirm the target issue and keep all work tied to it.
 3. Create a plan, commit it as WIP, and post the plan link in an issue comment for approval.
-4. Keep all plan discussions and decisions in issue comments.
-5. After approval, add issue sub-tasks for every plan task.
-6. Execute each task and attach evidence and reviews to its sub-task.
-7. Close sub-tasks only after approval and mark the plan task complete.
-8. Post persona reviews in the issue thread and summarize recommendations in the plan.
-9. Add follow-up fixes as new tasks in the same issue.
-10. Create a new issue for next steps with implementation and test detail.
-11. Open a PR after delivery is accepted.
+4. Stop and wait for an explicit approval comment before continuing.
+5. Keep all plan discussions and decisions in issue comments.
+6. After approval, add issue sub-tasks for every plan task.
+7. Execute each task and attach evidence and reviews to its sub-task.
+8. Stop and wait for explicit approval before closing each sub-task.
+9. Close sub-tasks only after approval and mark the plan task complete.
+10. Post persona reviews in the issue thread and summarize recommendations in the plan.
+11. Add follow-up fixes as new tasks in the same issue.
+12. Create a new issue for next steps with implementation and test detail.
+13. Open a PR after delivery is accepted.
+
+## Evidence Requirements
+
+- Evidence must be posted as clickable links in issue comments (commit URLs, blob URLs, logs, or artifacts).
+- Each sub-task comment must include links to the exact files or commits that satisfy it.
 
 ## Evidence Checklist
 
@@ -79,6 +86,7 @@ gh issue edit 30 --body-file tasks.md
 - Proceeding without a plan approval comment.
 - Tracking work in local notes instead of issue comments.
 - Closing sub-tasks without evidence or review.
+- Posting evidence without clickable links.
 - Skipping next-step issue creation.
 
 ## Red Flags - STOP
@@ -86,6 +94,7 @@ gh issue edit 30 --body-file tasks.md
 - "I will just do it quickly without posting the plan."
 - "We can discuss approval outside the issue."
 - "Sub-tasks are optional; I will skip them."
+- "I will post evidence without links."
 - "I will open a PR before acceptance."
 
 ## Rationalizations (and Reality)
