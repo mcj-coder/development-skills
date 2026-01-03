@@ -1,1 +1,10 @@
+bin/
+obj/
+node_modules/
+*.log
+*.user
+.vs/
+.idea/
 .tmp/
+.worktrees/
+.DS_Store

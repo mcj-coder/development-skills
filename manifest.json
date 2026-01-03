@@ -1,0 +1,10 @@
+{
+  "name": "skill-library",
+  "version": "0.1.0",
+  "description": "A Claude-style skill library for TDD-driven, guardrail-enforced, independently reviewable engineering skills.",
+  "api": {
+    "type": "openapi",
+    "url": "openapi/skill_library_openapi.yaml",
+    "is_user_authenticated": false
+  }
+}

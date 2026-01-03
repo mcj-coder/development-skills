@@ -1,0 +1,12 @@
+﻿{
+  "version": "0.2",
+  "language": "en-GB",
+  "languageSettings": [
+    {
+      "languageId": ["markdown"],
+      "locale": "en-GB, en-US"
+    }
+  ],
+  "words": ["ADR", "ADRs", "agentskills", "frontmatter", "USERPROFILE"],
+  "ignorePaths": ["node_modules/**", "package-lock.json"]
+}
