@@ -30,22 +30,24 @@ Use GitHub issues as the source of truth for planning, approvals, execution evid
 7. Execute each task and attach evidence and reviews to its sub-task.
 8. Stop and wait for explicit approval before closing each sub-task.
 9. Close sub-tasks only after approval and mark the plan task complete.
-10. Post persona reviews in the issue thread and summarize recommendations in the plan.
-11. Add follow-up fixes as new tasks in the same issue.
-12. Create a new issue for next steps with implementation and test detail.
-13. Open a PR after delivery is accepted.
+10. Require each persona to post a separate review comment in the issue thread.
+11. Summarize persona recommendations in the plan and link to the individual review comments.
+12. Add follow-up fixes as new tasks in the same issue.
+13. Create a new issue for next steps with implementation and test detail.
+14. Open a PR after delivery is accepted.
 
 ## Evidence Requirements
 
 - Evidence must be posted as clickable links in issue comments (commit URLs, blob URLs, logs, or artifacts).
 - Each sub-task comment must include links to the exact files or commits that satisfy it.
+- Persona reviews must be separate issue comments with links captured in the summary.
 
 ## Evidence Checklist
 
 - Plan link posted and approved in issue comments.
 - Sub-tasks created for each plan task.
 - Evidence and reviews attached to each sub-task.
-- Persona reviews posted in the issue thread.
+- Persona reviews posted as individual comments in the issue thread.
 - Next steps captured in a new issue.
 - PR opened after acceptance.
 
