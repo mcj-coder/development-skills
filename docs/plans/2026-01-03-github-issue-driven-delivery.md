@@ -252,3 +252,29 @@ Expected: One match under the Skills section.
 git add README.md
 git commit -m "docs(readme): list github-issue-driven-delivery skill"
 ```
+
+---
+
+## Task 4: Tighten approval gating and evidence link requirements
+
+**Files:**
+
+- Modify: `skills/github-issue-driven-delivery/SKILL.md`
+
+### Step 1: Update approval gating and evidence link requirements
+
+- Add an explicit approval gate before continuing after plan approval.
+- Add explicit approval gate before closing each sub-task.
+- Require evidence comments to include clickable links.
+
+### Step 2: Verify skill content includes approval gates and evidence link rules
+
+Run: `rg "approval|evidence" skills/github-issue-driven-delivery/SKILL.md`
+Expected: Matches for approval gates and evidence link requirements.
+
+### Step 3: Commit the changes
+
+```bash
+git add skills/github-issue-driven-delivery/SKILL.md
+git commit -m "docs(skills): tighten approval gating and evidence links"
+```
