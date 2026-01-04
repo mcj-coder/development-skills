@@ -293,7 +293,7 @@ git commit -m "docs(skills): tighten approval gating and evidence links"
 
 ---
 
-## Task 5: Require persona reviews as individual comments before summary
+## Task 5: Require persona reviews as individual comments before summary - Complete
 
 **Files:**
 
@@ -318,7 +318,7 @@ git commit -m "docs(skills): require persona review comments before summary"
 
 ---
 
-## Task 6: Require persona reviews to use receiving-code-review skill
+## Task 6: Require persona reviews to use receiving-code-review skill - Complete
 
 **Files:**
 
@@ -338,4 +338,32 @@ Expected: Matches in persona review requirements.
 ```bash
 git add skills/github-issue-driven-delivery/SKILL.md
 git commit -m "docs(skills): require receiving-code-review for persona reviews"
+```
+
+---
+
+## Task 7: Apply persona review recommendations
+
+**Files:**
+
+- Modify: `skills/github-issue-driven-delivery/SKILL.md`
+
+### Step 1: Incorporate persona recommendations
+
+- Require explicit approval wording (e.g., "approved") in comments.
+- Emphasize 1:1 mapping between plan tasks and sub-tasks by name.
+- Require evidence to include both commit and file links.
+- Require verifying gh auth status before workflow steps.
+- Require acceptance criteria in next-step issues.
+
+### Step 2: Verify skill content includes the recommendations
+
+Run: `rg "approved|1:1|auth|acceptance criteria|commit|file" skills/github-issue-driven-delivery/SKILL.md`
+Expected: Matches for each recommendation.
+
+### Step 3: Commit the change
+
+```bash
+git add skills/github-issue-driven-delivery/SKILL.md
+git commit -m "docs(skills): apply persona review recommendations"
 ```
