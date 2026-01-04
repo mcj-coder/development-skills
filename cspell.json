@@ -7,6 +7,14 @@
       "locale": "en-GB, en-US"
     }
   ],
-  "words": ["ADR", "ADRs", "agentskills", "frontmatter", "USERPROFILE"],
+  "words": [
+    "ADR",
+    "ADRs",
+    "agentskills",
+    "frontmatter",
+    "Taskboard",
+    "USERPROFILE",
+    "workitem"
+  ],
   "ignorePaths": ["node_modules/**", "package-lock.json"]
 }
