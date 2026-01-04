@@ -433,6 +433,32 @@ git commit -m "chore(plan): add issue 30 verification and BDD evidence"
 
 ---
 
+## Task 10: Incorporate PR discussion evidence and address PR comments
+
+**Files:**
+
+- Modify: `docs/plans/2026-01-03-github-issue-driven-delivery.md`
+- Modify: `skills/github-issue-driven-delivery/SKILL.md`
+
+### Step 1: Capture PR discussion evidence
+
+- Add links to the PR discussion comments in the plan evidence section.
+- Include brief excerpts of the latest PR feedback.
+
+### Step 2: Update skill to require PR discussion tracking
+
+- Require PR comment threads to be treated like issue comment threads when a PR exists.
+- Require addressing PR comments as part of the task workflow.
+
+### Step 3: Commit and link evidence
+
+```bash
+git add docs/plans/2026-01-03-github-issue-driven-delivery.md skills/github-issue-driven-delivery/SKILL.md
+git commit -m "docs(skills): add PR discussion tracking requirements"
+```
+
+---
+
 ## Task 11: Refine evidence with skill output and review links
 
 **Files:**
