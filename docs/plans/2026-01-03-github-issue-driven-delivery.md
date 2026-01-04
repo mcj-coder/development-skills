@@ -291,6 +291,14 @@ git commit -m "docs(skills): tighten approval gating and evidence links"
 - Verify gh auth status before workflow steps.
 - Include acceptance criteria in next-step issues.
 
+**Persona review comment links:**
+
+- Tech Lead: <https://github.com/mcj-coder/development-skills/issues/30#issuecomment-3707470698>
+- Project Manager: <https://github.com/mcj-coder/development-skills/issues/30#issuecomment-3707470900>
+- QA Engineer: <https://github.com/mcj-coder/development-skills/issues/30#issuecomment-3707471002>
+- DevOps Engineer: <https://github.com/mcj-coder/development-skills/issues/30#issuecomment-3707471116>
+- Product Owner: <https://github.com/mcj-coder/development-skills/issues/30#issuecomment-3707471229>
+
 ---
 
 ## Task 5: Require persona reviews as individual comments before summary - Complete
@@ -370,7 +378,7 @@ git commit -m "docs(skills): apply persona review recommendations"
 
 ---
 
-## Task 8: Post individual persona reviews and link them in the summary
+## Task 8: Post individual persona reviews and link them in the summary - Complete
 
 **Files:**
 
