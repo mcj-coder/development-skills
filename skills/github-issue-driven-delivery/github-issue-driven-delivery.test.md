@@ -33,6 +33,8 @@ Without the skill, a typical response rationalizes skipping issue workflow steps
 
 - gh is listed as a prerequisite in the skill.
 - A Taskboard issue exists before any changes (read-only and reviews excluded).
+- Evidence is posted that required skills were applied for concrete changes
+  before opening a PR.
 - The workflow requires committing a WIP plan and posting a plan-link comment before execution.
 - Plan approval is collected via an issue comment before sub-tasks are created.
 - Each plan task maps to an issue sub-task (task list or sub-issue).
