@@ -98,6 +98,18 @@ gh issue create --repo mcj-coder/tmp-skill-test-2026-01-04 --title "Implement .N
 Use the minimal issue body and avoid additional guidance so the agent must rely
 on README.md and AGENTS.md for skill selection.
 
+### Step 3a: Add minimal bootstrap README (test harness)
+
+Create a minimal README with `Work Items` section pointing to the temp repo
+issues. This is required so the agent can resolve the taskboard without extra
+prompting.
+
+### Step 3b: Add bootstrap workflow (test harness)
+
+Add a minimal GitHub Actions workflow that can invoke the primary agent CLI on
+issue comments. This allows the agent to create/update AGENTS.md and the full
+workflow as part of the test.
+
 ### Step 4: Trigger agent
 
 ```bash

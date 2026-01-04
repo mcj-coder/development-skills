@@ -13,6 +13,7 @@ description: >
 Treat the work item system as the source of truth and keep progress visible at
 all times. If you cannot prove context or tooling, stop and fix that first.
 
+**REQUIRED SUB-SKILL:** superpowers:brainstorming
 **REQUIRED SUB-SKILL:** superpowers:test-driven-development
 **REQUIRED SUB-SKILL:** superpowers:verification-before-completion
 
@@ -24,6 +25,24 @@ use `github-issue-driven-delivery`.
 Start when a comment mentions the agent and includes a task verb (for example,
 "manage", "handle", "take", "own"). If the intent is unclear, ask for
 confirmation before acting.
+
+Accept agent identifiers by CLI name:
+
+- `@claude` and `@codex`
+- `@agent` aliases to the primary agent
+
+Supported phrases include "manage this ticket", "handle this ticket", or
+"own this issue" and should start refinement, planning, and orchestration.
+
+## Brainstorming Gate
+
+Before making changes, use brainstorming to confirm:
+
+- Ticketing system and taskboard source
+- CI/CD system for automation
+- Agent CLIs to configure and which is primary
+
+Do not proceed until these are explicit.
 
 ## Work Item Discovery
 
@@ -78,6 +97,21 @@ should be cloned, for example:
   at `%USERPROFILE%\\.codex\\skills\\development-skills`)
 
 Do not assume these repos are already installed.
+
+## Workflow Integration (Minimal)
+
+Create or update the CI workflow to trigger agent CLIs from ticket events.
+Avoid duplicating delivery workflows already covered by
+`github-issue-driven-delivery`. Keep this focused on:
+
+- Event trigger (for example, issue comment)
+- CLI invocation for the primary agent
+- Evidence comment back to the issue
+
+Prefer non-interactive CLI usage in CI. Examples:
+
+- `claude -p "<prompt>"`
+- `codex exec "<command or prompt>"`
 
 ## Core Execution Loop
 
