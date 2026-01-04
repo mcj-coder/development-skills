@@ -9,6 +9,10 @@ These rules tighten the workflow for autonomous execution.
   to a Taskboard issue. Read-only work and reviews are allowed without a ticket.
 - **Traceability required.** Every change must be traceable to a Taskboard
   issue; create one if it does not exist.
+- **Applied-skill evidence required.** If a skill drives concrete configuration,
+  documentation, or code changes, BDD verification must include evidence that
+  the skill was actually applied in this repo. For process-only or hypothetical
+  skills, analysis-based BDD is acceptable and must be stated as such.
 - **Feature branch only.** If you are on `main`, stop and create a feature
   branch before any edits or commits. Do not commit on `main`.
 - **Skills-first enforcement.** Bootstrap, load skills, and follow process

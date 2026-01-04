@@ -38,10 +38,13 @@ Use GitHub issues as the source of truth for planning, approvals, execution evid
 13. Add follow-up fixes as new tasks in the same issue.
 14. Create a new issue for next steps with implementation, test detail, and acceptance criteria.
 15. Open a PR after delivery is accepted.
-16. If a PR exists, link the PR and issue, monitor PR comment threads, and address PR feedback before completion.
-17. If changes occur after review feedback, re-run BDD validation and update evidence before claiming completion.
-18. If BDD assertions change, require explicit approval before updating them.
-19. When all sub-tasks are complete and all verification tasks are complete and
+16. Before opening a PR, post evidence that required skills were applied in the
+    repo when changes are concrete (config, docs, code). For process-only
+    changes, note that verification is analytical.
+17. If a PR exists, link the PR and issue, monitor PR comment threads, and address PR feedback before completion.
+18. If changes occur after review feedback, re-run BDD validation and update evidence before claiming completion.
+19. If BDD assertions change, require explicit approval before updating them.
+20. When all sub-tasks are complete and all verification tasks are complete and
     the PR is approved ensure that the source Issue is closed with the PR and
     the source branch is deleted
 
@@ -52,6 +55,8 @@ Use GitHub issues as the source of truth for planning, approvals, execution evid
 - Persona reviews must be separate issue comments using superpowers:receiving-code-review, with links captured in the summary.
 - Verify `gh auth status` before creating issues, comments, or PRs.
 - Link the PR and issue and include PR comment links when a PR exists.
+- Post evidence that required skills were applied for concrete changes before
+  opening a PR. For process-only changes, record analytical verification.
 - If post-review changes occur, re-run BDD validation and update the plan evidence.
 - In the plan, separate **Original Scope Evidence** from **Additional Work**.
 - After each additional task, re-run BDD validation and persona reviews and link the

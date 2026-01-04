@@ -75,6 +75,10 @@ When all steps in the current plan are complete:
 If any acceptance criteria are unclear or evidence is incomplete, hand off to a
 human instead of closing.
 
+Before opening a PR, confirm evidence shows required skills were applied for
+concrete changes (config, docs, code). For process-only changes, record that
+verification is analytical.
+
 ## Example
 
 **Scenario:** Comment says "@agent manage this ticket" on a GitHub issue.
