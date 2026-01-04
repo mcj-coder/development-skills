@@ -5,6 +5,10 @@
 Agents must follow the standards in `README.md` before taking any action.
 These rules tighten the workflow for autonomous execution.
 
+- **No changes without a Taskboard issue.** All non-read-only work must be tied
+  to a Taskboard issue. Read-only work and reviews are allowed without a ticket.
+- **Traceability required.** Every change must be traceable to a Taskboard
+  issue; create one if it does not exist.
 - **Feature branch only.** If you are on `main`, stop and create a feature
   branch before any edits or commits. Do not commit on `main`.
 - **Skills-first enforcement.** Bootstrap, load skills, and follow process

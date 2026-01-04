@@ -22,23 +22,26 @@ Use GitHub issues as the source of truth for planning, approvals, execution evid
 ## Core Workflow
 
 1. Announce the skill and why it applies; confirm gh availability.
-2. Confirm the target issue and keep all work tied to it.
-3. Create a plan, commit it as WIP, and post the plan link in an issue comment for approval.
-4. Stop and wait for an explicit approval comment containing the word "approved" before continuing.
-5. Keep all plan discussions and decisions in issue comments.
-6. After approval, add issue sub-tasks for every plan task and keep a 1:1 mapping by name.
-7. Execute each task and attach evidence and reviews to its sub-task.
-8. Stop and wait for explicit approval before closing each sub-task.
-9. Close sub-tasks only after approval and mark the plan task complete.
-10. Require each persona to post a separate review comment in the issue thread using superpowers:receiving-code-review.
-11. Summarize persona recommendations in the plan and link to the individual review comments.
-12. Add follow-up fixes as new tasks in the same issue.
-13. Create a new issue for next steps with implementation, test detail, and acceptance criteria.
-14. Open a PR after delivery is accepted.
-15. If a PR exists, link the PR and issue, monitor PR comment threads, and address PR feedback before completion.
-16. If changes occur after review feedback, re-run BDD validation and update evidence before claiming completion.
-17. If BDD assertions change, require explicit approval before updating them.
-18. When all sub-tasks are complete and all verification tasks are complete and
+2. Confirm a Taskboard issue exists for the work. If none exists, create the
+   issue before making any changes. Read-only work and reviews are allowed
+   without a ticket.
+3. Confirm the target issue and keep all work tied to it.
+4. Create a plan, commit it as WIP, and post the plan link in an issue comment for approval.
+5. Stop and wait for an explicit approval comment containing the word "approved" before continuing.
+6. Keep all plan discussions and decisions in issue comments.
+7. After approval, add issue sub-tasks for every plan task and keep a 1:1 mapping by name.
+8. Execute each task and attach evidence and reviews to its sub-task.
+9. Stop and wait for explicit approval before closing each sub-task.
+10. Close sub-tasks only after approval and mark the plan task complete.
+11. Require each persona to post a separate review comment in the issue thread using superpowers:receiving-code-review.
+12. Summarize persona recommendations in the plan and link to the individual review comments.
+13. Add follow-up fixes as new tasks in the same issue.
+14. Create a new issue for next steps with implementation, test detail, and acceptance criteria.
+15. Open a PR after delivery is accepted.
+16. If a PR exists, link the PR and issue, monitor PR comment threads, and address PR feedback before completion.
+17. If changes occur after review feedback, re-run BDD validation and update evidence before claiming completion.
+18. If BDD assertions change, require explicit approval before updating them.
+19. When all sub-tasks are complete and all verification tasks are complete and
     the PR is approved ensure that the source Issue is closed with the PR and
     the source branch is deleted
 
