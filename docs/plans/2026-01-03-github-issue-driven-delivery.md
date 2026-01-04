@@ -419,38 +419,16 @@ rg "approved|1:1|auth status|acceptance criteria|commits and files" skills/githu
 
 ### Step 2: Capture outputs as evidence
 
-- Append command outputs to the end of this plan document.
+- Append the BDD validation evidence to the end of this plan document:
+  - Representative simulated skill output excerpt.
+  - Checklist of BDD assertions mapped to the output excerpt.
+  - Review evidence with links and latest review text per persona.
 
 ### Step 3: Commit and link evidence
 
 ```bash
 git add docs/plans/2026-01-03-github-issue-driven-delivery.md
-git commit -m "chore(plan): add issue 30 verification log"
-```
-
----
-
-## Task 10: Re-run BDD validation and post evidence
-
-**Files:**
-
-- Modify: `docs/plans/2026-01-03-github-issue-driven-delivery.md`
-
-### Step 1: Re-validate BDD assertions
-
-- Open `skills/github-issue-driven-delivery/github-issue-driven-delivery.test.md`.
-- For each assertion, confirm the matching requirement exists in `skills/github-issue-driven-delivery/SKILL.md`.
-- Record the mapping with direct quotes and section references.
-
-### Step 2: Capture results as evidence
-
-- Append the mapping to the end of this plan document.
-
-### Step 3: Commit and link evidence
-
-```bash
-git add docs/plans/2026-01-03-github-issue-driven-delivery.md
-git commit -m "chore(plan): add issue 30 BDD validation log"
+git commit -m "chore(plan): add issue 30 verification and BDD evidence"
 ```
 
 ---
@@ -485,56 +463,106 @@ git commit -m "chore(plan): refine evidence for BDD and reviews"
 
 ## Verification Evidence (2026-01-04)
 
-**Task 9 command outputs:**
+### Representative Simulated Skill Output
 
-Command: `Test-Path skills/github-issue-driven-delivery/SKILL.md`
-
-```text
-True
-```
-
-Command: `rg "receiving-code-review" skills/github-issue-driven-delivery/SKILL.md`
+Excerpt from `skills/github-issue-driven-delivery/SKILL.md`:
 
 ```text
-10. Require each persona to post a separate review comment in the issue thread using superpowers:receiving-code-review.
-- Persona reviews must be separate issue comments using superpowers:receiving-code-review, with links captured in the summary.
-- Persona reviews posted as individual comments in the issue thread using superpowers:receiving-code-review.
-```
+## Core Workflow
 
-Command: `rg "approved|1:1|auth status|acceptance criteria|commits and files" skills/github-issue-driven-delivery/SKILL.md`
-
-```text
+1. Announce the skill and why it applies; confirm gh availability.
+2. Confirm the target issue and keep all work tied to it.
+3. Create a plan, commit it as WIP, and post the plan link in an issue comment for approval.
 4. Stop and wait for an explicit approval comment containing the word "approved" before continuing.
+5. Keep all plan discussions and decisions in issue comments.
 6. After approval, add issue sub-tasks for every plan task and keep a 1:1 mapping by name.
+7. Execute each task and attach evidence and reviews to its sub-task.
+8. Stop and wait for explicit approval before closing each sub-task.
+9. Close sub-tasks only after approval and mark the plan task complete.
+10. Require each persona to post a separate review comment in the issue thread using superpowers:receiving-code-review.
+11. Summarize persona recommendations in the plan and link to the individual review comments.
+12. Add follow-up fixes as new tasks in the same issue.
 13. Create a new issue for next steps with implementation, test detail, and acceptance criteria.
+14. Open a PR after delivery is accepted.
+
+## Evidence Requirements
+
+- Evidence must be posted as clickable links in issue comments (commit URLs, blob URLs, logs, or artifacts).
 - Each sub-task comment must include links to the exact commits and files that satisfy it.
+- Persona reviews must be separate issue comments using superpowers:receiving-code-review, with links captured in the summary.
 - Verify `gh auth status` before creating issues, comments, or PRs.
-- Plan link posted and approved in issue comments.
-- Sub-tasks created for each plan task with 1:1 name mapping.
 ```
 
----
+### BDD Assertions Checklist (Mapped to Output)
 
-## BDD Validation Evidence (2026-01-04)
+- `gh is listed as a prerequisite in the skill.`
+  - Proof: `## Prerequisites` in SKILL.md lists `gh CLI installed and authenticated.`
+- `The workflow requires committing a WIP plan and posting a plan-link comment before execution.`
+  - Proof: Core Workflow step 3 in output excerpt.
+- `Plan approval is collected via an issue comment before sub-tasks are created.`
+  - Proof: Core Workflow step 4 in output excerpt.
+- `Each plan task maps to an issue sub-task (task list or sub-issue).`
+  - Proof: Core Workflow step 6 in output excerpt.
+- `Evidence and reviews are attached to each sub-task.`
+  - Proof: Core Workflow step 7 and Evidence Requirements list in output excerpt.
+- `Sub-tasks close only after approval and plan task is marked complete.`
+  - Proof: Core Workflow steps 8-9 in output excerpt.
+- `Persona reviews are posted in the issue comment chain and summarized in the plan.`
+  - Proof: Core Workflow steps 10-11 in output excerpt.
+- `Follow-up changes are new tasks in the same issue.`
+  - Proof: Core Workflow step 12 in output excerpt.
+- `Next steps create a new issue with implementation + test detail.`
+  - Proof: Core Workflow step 13 in output excerpt.
+- `A PR is created after acceptance.`
+  - Proof: Core Workflow step 14 in output excerpt.
 
-**Assertion mapping to `skills/github-issue-driven-delivery/SKILL.md`:**
+### Review Evidence
 
-- `gh is listed as a prerequisite in the skill.` -> `## Prerequisites` includes `gh CLI installed and authenticated.`
-- `The workflow requires committing a WIP plan and posting a plan-link comment before execution.` ->
-  `Core Workflow` step 3: `Create a plan, commit it as WIP, and post the plan link in an issue comment for approval.`
-- `Plan approval is collected via an issue comment before sub-tasks are created.` ->
-  `Core Workflow` step 4: `Stop and wait for an explicit approval comment containing the word "approved" before continuing.`
-- `Each plan task maps to an issue sub-task (task list or sub-issue).` ->
-  `Core Workflow` step 6: `add issue sub-tasks for every plan task and keep a 1:1 mapping by name.`
-- `Evidence and reviews are attached to each sub-task.` ->
-  `Core Workflow` step 7 and `Evidence Requirements` (commit and file links per sub-task).
-- `Sub-tasks close only after approval and plan task is marked complete.` ->
-  `Core Workflow` steps 8-9.
-- `Persona reviews are posted in the issue comment chain and summarized in the plan.` ->
-  `Core Workflow` steps 10-11.
-- `Follow-up changes are new tasks in the same issue.` ->
-  `Core Workflow` step 12.
-- `Next steps create a new issue with implementation + test detail.` ->
-  `Core Workflow` step 13 (implementation, test detail, acceptance criteria).
-- `A PR is created after acceptance.` ->
-  `Core Workflow` step 14.
+Persona review links (latest):
+
+- Tech Lead: <https://github.com/mcj-coder/development-skills/issues/30#issuecomment-3707470698>
+- Project Manager: <https://github.com/mcj-coder/development-skills/issues/30#issuecomment-3707470900>
+- QA Engineer: <https://github.com/mcj-coder/development-skills/issues/30#issuecomment-3707471002>
+- DevOps Engineer: <https://github.com/mcj-coder/development-skills/issues/30#issuecomment-3707471116>
+- Product Owner: <https://github.com/mcj-coder/development-skills/issues/30#issuecomment-3707471229>
+
+Summary comment:
+
+- Summary: <https://github.com/mcj-coder/development-skills/issues/30#issuecomment-3707455697>
+
+Latest review excerpts:
+
+Tech Lead:
+
+```text
+Findings: None.
+Residual risks: Manual enforcement only; consider future automation via CI or templates.
+```
+
+Project Manager:
+
+```text
+Findings: None.
+Residual risks: Task maintenance may drift without automation.
+```
+
+QA Engineer:
+
+```text
+Findings: None.
+Residual risks: Verification is manual and document-based.
+```
+
+DevOps Engineer:
+
+```text
+Findings: None.
+Residual risks: `gh auth status` is required and still manual.
+```
+
+Product Owner:
+
+```text
+Findings: None.
+Residual risks: Acceptance criteria quality may vary between tickets.
+```
