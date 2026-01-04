@@ -38,7 +38,9 @@ Use GitHub issues as the source of truth for planning, approvals, execution evid
 15. If a PR exists, link the PR and issue, monitor PR comment threads, and address PR feedback before completion.
 16. If changes occur after review feedback, re-run BDD validation and update evidence before claiming completion.
 17. If BDD assertions change, require explicit approval before updating them.
-18. When all sub-tasks are complete and all verification tasks are complete and the PR is approved ensure that the source Issue is closed with the PR and the source branch is deleted
+18. When all sub-tasks are complete and all verification tasks are complete and
+    the PR is approved ensure that the source Issue is closed with the PR and
+    the source branch is deleted
 
 ## Evidence Requirements
 
