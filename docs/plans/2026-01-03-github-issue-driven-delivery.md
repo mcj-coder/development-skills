@@ -398,3 +398,34 @@ git commit -m "docs(skills): apply persona review recommendations"
 git add docs/plans/2026-01-03-github-issue-driven-delivery.md
 git commit -m "chore(plan): link persona review comments"
 ```
+
+---
+
+## Task 9: Re-run verification checks after refactors and post evidence
+
+**Files:**
+
+- Modify: `docs/plans/2026-01-03-github-issue-driven-delivery.md`
+- Create: `docs/evidence/issue-30-verification.md`
+
+### Step 1: Re-run verification checks
+
+Run:
+
+```bash
+Test-Path skills/github-issue-driven-delivery/SKILL.md
+rg "receiving-code-review" skills/github-issue-driven-delivery/SKILL.md
+rg "approved|1:1|auth status|acceptance criteria|commits and files" skills/github-issue-driven-delivery/SKILL.md
+```
+
+### Step 2: Capture outputs as evidence
+
+- Save command outputs to `docs/evidence/issue-30-verification.md`.
+- Commit the evidence file so it can be linked from issue comments.
+
+### Step 3: Commit and link evidence
+
+```bash
+git add docs/evidence/issue-30-verification.md
+git commit -m "chore(evidence): add issue 30 verification log"
+```
