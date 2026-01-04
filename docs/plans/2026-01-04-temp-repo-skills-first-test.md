@@ -29,6 +29,7 @@ confirmation.
 - [ ] Evidence comment links commit/PR and test output.
 - [ ] Issue is closed after merge with evidence.
 - [ ] Temp repo deleted after manual confirmation.
+- [ ] Local symlinks to skills are removed after the test.
 ```
 
 ### Step 2: Verify RED (must fail before edits)
@@ -88,7 +89,27 @@ gh issue comment <issue-number> --repo mcj-coder/tmp-skill-test-2026-01-04 --bod
 
 Capture issue URL and comment URL in issue #43.
 
-## Task 3: Verify agent run via GitHub Actions
+## Task 3: Prepare skill sources for local and remote agents
+
+### Step 1: Local dev symlink (temporary)
+
+Create a local symlink for development:
+
+```bash
+ln -s <path-to-development-skills>/skills ~/.codex/skills/development-skills
+```
+
+Remove this symlink after the test.
+
+### Step 2: Remote agent clone (branch under test)
+
+In the workflow run, clone the skills repo at the branch under test for this
+ticket and configure the agent to scan that path. This is for testing only.
+
+After the ticket is complete, documentation must reference the default branch
+instead of the feature branch.
+
+## Task 4: Verify agent run via GitHub Actions
 
 **Files:**
 
@@ -119,7 +140,7 @@ Run:
 gh repo delete mcj-coder/tmp-skill-test-2026-01-04 --confirm
 ```
 
-## Task 4: Report back to issue #43
+## Task 5: Report back to issue #43
 
 **Files:**
 

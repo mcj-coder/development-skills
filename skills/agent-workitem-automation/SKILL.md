@@ -52,6 +52,20 @@ Before reading or updating tickets, ensure the CLI is installed and authenticate
 - If authentication is missing, run the CLI auth flow.
 - If setup requires interactive input you cannot complete, stop and ask for help.
 
+## Skill Source Setup (Local and Remote)
+
+For development, a local symlink to the skills repo is acceptable:
+
+```text
+ln -s <path-to-development-skills>/skills ~/.codex/skills/development-skills
+```
+
+Remove the symlink after the task is complete.
+
+For remote agents (CI), clone the skills repo for the duration of the run and
+configure the agent to scan that path. When the task is complete, documentation
+must reference the default branch instead of the feature branch.
+
 ## Core Execution Loop
 
 1. Load ticket details, comments, and related PRs from the CLI.
