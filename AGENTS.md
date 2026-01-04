@@ -13,6 +13,9 @@ These rules tighten the workflow for autonomous execution.
   capture and verify a failing BDD checklist before editing.
 - **Fallback stays compliant.** If handing off to a human, the same skills-first
   workflow still applies.
+- **PR close policy.** Follow the README merge policy (rebase, then choose
+  squash or fast-forward only) and use a Conventional Commit squash message
+  with ticket footer when appropriate.
 
 ## Prerequisites First
 

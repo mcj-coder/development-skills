@@ -74,6 +74,12 @@ When tests are added, colocate them in the skills folder:
   back into the feature branch.
 - When a ticket has all sub-tasks completed and verified it should be merged
   back into the default branch via PR.
+- Before closing a PR, rebase on the latest default branch.
+- If commit count is excessive for the PR scope, use **squash and merge**.
+  Otherwise, rebase and use **fast-forward only** merge.
+- Squash commit messages must be Conventional Commits with a concise description
+  of the PR changes. Add a footer reference to the relevant ticket when
+  appropriate (for example, `Refs: #123`).
 
 ## Security & Configuration Tips
 
