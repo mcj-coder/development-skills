@@ -35,6 +35,7 @@ Use GitHub issues as the source of truth for planning, approvals, execution evid
 12. Add follow-up fixes as new tasks in the same issue.
 13. Create a new issue for next steps with implementation, test detail, and acceptance criteria.
 14. Open a PR after delivery is accepted.
+15. If a PR exists, link the PR and issue, monitor PR comment threads, and address PR feedback before completion.
 
 ## Evidence Requirements
 
@@ -42,6 +43,7 @@ Use GitHub issues as the source of truth for planning, approvals, execution evid
 - Each sub-task comment must include links to the exact commits and files that satisfy it.
 - Persona reviews must be separate issue comments using superpowers:receiving-code-review, with links captured in the summary.
 - Verify `gh auth status` before creating issues, comments, or PRs.
+- Link the PR and issue and include PR comment links when a PR exists.
 
 ## Evidence Checklist
 
@@ -51,6 +53,7 @@ Use GitHub issues as the source of truth for planning, approvals, execution evid
 - Persona reviews posted as individual comments in the issue thread using superpowers:receiving-code-review.
 - Next steps captured in a new issue.
 - PR opened after acceptance.
+- PR and issue cross-linked with PR feedback addressed (when a PR exists).
 
 ## Quick Reference
 
@@ -61,6 +64,7 @@ Use GitHub issues as the source of truth for planning, approvals, execution evid
 | Evidence      | Comment with links and logs | `gh issue comment <id> --body "Evidence: ..."` |
 | Next steps    | Create issue                | `gh issue create --title "..." --body "..."`   |
 | PR            | Open PR                     | `gh pr create --title "..." --body "..."`      |
+| PR feedback   | Track PR comments           | `gh pr view <id> --comments`                   |
 
 ## Implementation Notes
 

@@ -611,3 +611,26 @@ Product Owner:
 Findings: None.
 Residual risks: Acceptance criteria quality may vary between tickets.
 ```
+
+### Task Approval Links
+
+- Task 1-4 approval: <https://github.com/mcj-coder/development-skills/issues/30#issuecomment-3707453865>
+- Task 5 approval: <https://github.com/mcj-coder/development-skills/issues/30#issuecomment-3707460057>
+- Task 6 approval: <https://github.com/mcj-coder/development-skills/issues/30#issuecomment-3707461959>
+- Task 7 approval: <https://github.com/mcj-coder/development-skills/issues/30#issuecomment-3707465515>
+- Task 8 approval: <https://github.com/mcj-coder/development-skills/issues/30#issuecomment-3707472365>
+- Task 9 approval: <https://github.com/mcj-coder/development-skills/issues/30#issuecomment-3707494271>
+- Task 10/11 plan approval: <https://github.com/mcj-coder/development-skills/issues/30#issuecomment-3707507431>
+
+### PR Discussion Evidence
+
+- PR: <https://github.com/mcj-coder/development-skills/pull/31>
+- Issue: <https://github.com/mcj-coder/development-skills/issues/30>
+- PR feedback comment: <https://github.com/mcj-coder/development-skills/pull/31#issuecomment-3707499283>
+- Expert Agent Skill Author review: <https://github.com/mcj-coder/development-skills/pull/31#issuecomment-3707508299>
+
+Latest PR feedback excerpt:
+
+```text
+Can I get an Expert Agent Skill Author personas review of the final skill? Also, in the plan task titles are updated to include the `- Completed` suffix with no further evidence. We should capture when and who approved the task with a link to the approval comment.
+```
