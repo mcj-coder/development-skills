@@ -478,6 +478,31 @@ git commit -m "docs(skills): require PR discussion tracking"
 
 ---
 
+## Task 12: Require re-verification after post-review changes
+
+**Files:**
+
+- Modify: `skills/github-issue-driven-delivery/SKILL.md`
+- Modify: `docs/plans/2026-01-03-github-issue-driven-delivery.md`
+
+### Step 1: Update skill to require re-verification
+
+- If changes occur after review feedback, re-run BDD validation and update evidence before completion claims.
+- Require explicit approval if BDD assertions change.
+
+### Step 2: Add evidence guidance to the plan
+
+- Add guidance to append updated BDD evidence when post-review changes occur.
+
+### Step 3: Commit the update
+
+```bash
+git add docs/plans/2026-01-03-github-issue-driven-delivery.md skills/github-issue-driven-delivery/SKILL.md
+git commit -m "docs(skills): require re-verification after changes"
+```
+
+---
+
 ## Task 11: Refine evidence with skill output and review links
 
 **Files:**
