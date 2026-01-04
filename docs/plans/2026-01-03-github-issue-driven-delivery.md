@@ -594,13 +594,18 @@ git commit -m "chore(plan): refresh BDD and persona review evidence"
 
 ## Latest Verification Evidence (2026-01-04)
 
-Triggered by latest change: <https://github.com/mcj-coder/development-skills/commit/d52cb76>
+Triggered by latest change: <https://github.com/mcj-coder/development-skills/commit/85a1752>
+
+Evidence comment: <https://github.com/mcj-coder/development-skills/issues/30#issuecomment-3707531256>
 
 Representative simulated skill output excerpt:
 
 ```text
-## Core Workflow
+[Skill Output]
+Prerequisites:
+- gh CLI installed and authenticated.
 
+Core Workflow:
 1. Announce the skill and why it applies; confirm gh availability.
 2. Confirm the target issue and keep all work tied to it.
 3. Create a plan, commit it as WIP, and post the plan link in an issue comment for approval.
@@ -619,20 +624,22 @@ Representative simulated skill output excerpt:
 16. If changes occur after review feedback, re-run BDD validation and update evidence before claiming completion.
 17. If BDD assertions change, require explicit approval before updating them.
 
-## Evidence Requirements
-
+Evidence Requirements:
 - Evidence must be posted as clickable links in issue comments (commit URLs, blob URLs, logs, or artifacts).
 - Each sub-task comment must include links to the exact commits and files that satisfy it.
 - Persona reviews must be separate issue comments using superpowers:receiving-code-review, with links captured in the summary.
 - Verify `gh auth status` before creating issues, comments, or PRs.
 - Link the PR and issue and include PR comment links when a PR exists.
 - If post-review changes occur, re-run BDD validation and update the plan evidence.
+- In the plan, separate Original Scope Evidence from Additional Work.
+- After each additional task, re-run BDD validation and persona reviews and link the verification comment to the change commit and task.
+- Keep only the latest verification evidence in the plan; prior evidence remains in issue/PR comment threads.
 ```
 
 BDD assertions mapped to excerpt:
 
 - `gh is listed as a prerequisite in the skill.`
-  - Proof: `## Prerequisites` in SKILL.md lists `gh CLI installed and authenticated.`
+  - Proof: "Prerequisites" line in excerpt.
 - `The workflow requires committing a WIP plan and posting a plan-link comment before execution.`
   - Proof: Core Workflow step 3.
 - `Plan approval is collected via an issue comment before sub-tasks are created.`
@@ -651,3 +658,22 @@ BDD assertions mapped to excerpt:
   - Proof: Core Workflow step 13.
 - `A PR is created after acceptance.`
   - Proof: Core Workflow step 14.
+
+Persona review evidence (latest):
+
+- Tech Lead: <https://github.com/mcj-coder/development-skills/issues/30#issuecomment-3707530494>
+  - Findings: None. Residual risk: manual enforcement only; no automated approval/evidence checks.
+- Project Manager: <https://github.com/mcj-coder/development-skills/issues/30#issuecomment-3707530573>
+  - Findings: None. Residual risk: task status may drift without automation.
+- QA Engineer: <https://github.com/mcj-coder/development-skills/issues/30#issuecomment-3707530653>
+  - Findings: None. Residual risk: verification remains manual and document-based.
+- DevOps Engineer: <https://github.com/mcj-coder/development-skills/issues/30#issuecomment-3707530767>
+  - Findings: None. Residual risk: `gh auth status` is a manual preflight that can
+    block work.
+- Product Owner: <https://github.com/mcj-coder/development-skills/issues/30#issuecomment-3707530878>
+  - Findings: None. Residual risk: acceptance criteria quality varies without examples.
+
+Review summary (latest):
+
+- No findings; residual risks remain around manual enforcement, manual verification,
+  and quality variance for acceptance criteria.
