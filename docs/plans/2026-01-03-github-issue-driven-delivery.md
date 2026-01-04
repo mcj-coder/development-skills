@@ -493,6 +493,8 @@ git commit -m "docs(skills): require PR discussion tracking"
 ### Step 2: Add evidence guidance to the plan
 
 - Add guidance to append updated BDD evidence when post-review changes occur.
+  - Include the date of the re-verification.
+  - Link to the review comment that triggered the change.
 
 ### Step 3: Commit the update
 
@@ -500,6 +502,67 @@ git commit -m "docs(skills): require PR discussion tracking"
 git add docs/plans/2026-01-03-github-issue-driven-delivery.md skills/github-issue-driven-delivery/SKILL.md
 git commit -m "docs(skills): require re-verification after changes"
 ```
+
+---
+
+## Post-Review Re-Verification Evidence (2026-01-04)
+
+Triggered by PR feedback: <https://github.com/mcj-coder/development-skills/pull/31#issuecomment-3707499283>
+
+Representative simulated skill output excerpt:
+
+```text
+## Core Workflow
+
+1. Announce the skill and why it applies; confirm gh availability.
+2. Confirm the target issue and keep all work tied to it.
+3. Create a plan, commit it as WIP, and post the plan link in an issue comment for approval.
+4. Stop and wait for an explicit approval comment containing the word "approved" before continuing.
+5. Keep all plan discussions and decisions in issue comments.
+6. After approval, add issue sub-tasks for every plan task and keep a 1:1 mapping by name.
+7. Execute each task and attach evidence and reviews to its sub-task.
+8. Stop and wait for explicit approval before closing each sub-task.
+9. Close sub-tasks only after approval and mark the plan task complete.
+10. Require each persona to post a separate review comment in the issue thread using superpowers:receiving-code-review.
+11. Summarize persona recommendations in the plan and link to the individual review comments.
+12. Add follow-up fixes as new tasks in the same issue.
+13. Create a new issue for next steps with implementation, test detail, and acceptance criteria.
+14. Open a PR after delivery is accepted.
+15. If a PR exists, link the PR and issue, monitor PR comment threads, and address PR feedback before completion.
+16. If changes occur after review feedback, re-run BDD validation and update evidence before claiming completion; if BDD assertions change, require explicit approval to update them.
+
+## Evidence Requirements
+
+- Evidence must be posted as clickable links in issue comments (commit URLs, blob URLs, logs, or artifacts).
+- Each sub-task comment must include links to the exact commits and files that satisfy it.
+- Persona reviews must be separate issue comments using superpowers:receiving-code-review, with links captured in the summary.
+- Verify `gh auth status` before creating issues, comments, or PRs.
+- Link the PR and issue and include PR comment links when a PR exists.
+- If post-review changes occur, re-run BDD validation and update the plan evidence.
+```
+
+BDD assertions mapped to excerpt:
+
+- `gh is listed as a prerequisite in the skill.`
+  - Proof: `## Prerequisites` in SKILL.md lists `gh CLI installed and authenticated.`
+- `The workflow requires committing a WIP plan and posting a plan-link comment before execution.`
+  - Proof: Core Workflow step 3.
+- `Plan approval is collected via an issue comment before sub-tasks are created.`
+  - Proof: Core Workflow step 4.
+- `Each plan task maps to an issue sub-task (task list or sub-issue).`
+  - Proof: Core Workflow step 6.
+- `Evidence and reviews are attached to each sub-task.`
+  - Proof: Core Workflow step 7 and Evidence Requirements list.
+- `Sub-tasks close only after approval and plan task is marked complete.`
+  - Proof: Core Workflow steps 8-9.
+- `Persona reviews are posted in the issue comment chain and summarized in the plan.`
+  - Proof: Core Workflow steps 10-11.
+- `Follow-up changes are new tasks in the same issue.`
+  - Proof: Core Workflow step 12.
+- `Next steps create a new issue with implementation + test detail.`
+  - Proof: Core Workflow step 13.
+- `A PR is created after acceptance.`
+  - Proof: Core Workflow step 14.
 
 ---
 

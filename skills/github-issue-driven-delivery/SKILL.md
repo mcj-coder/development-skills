@@ -36,6 +36,8 @@ Use GitHub issues as the source of truth for planning, approvals, execution evid
 13. Create a new issue for next steps with implementation, test detail, and acceptance criteria.
 14. Open a PR after delivery is accepted.
 15. If a PR exists, link the PR and issue, monitor PR comment threads, and address PR feedback before completion.
+16. If changes occur after review feedback, re-run BDD validation and update evidence before claiming completion.
+17. If BDD assertions change, require explicit approval before updating them.
 
 ## Evidence Requirements
 
@@ -44,6 +46,7 @@ Use GitHub issues as the source of truth for planning, approvals, execution evid
 - Persona reviews must be separate issue comments using superpowers:receiving-code-review, with links captured in the summary.
 - Verify `gh auth status` before creating issues, comments, or PRs.
 - Link the PR and issue and include PR comment links when a PR exists.
+- If post-review changes occur, re-run BDD validation and update the plan evidence.
 
 ## Evidence Checklist
 
@@ -54,6 +57,7 @@ Use GitHub issues as the source of truth for planning, approvals, execution evid
 - Next steps captured in a new issue.
 - PR opened after acceptance.
 - PR and issue cross-linked with PR feedback addressed (when a PR exists).
+- Post-review changes re-verified with updated BDD evidence.
 
 ## Quick Reference
 
