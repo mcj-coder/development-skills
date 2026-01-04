@@ -1,27 +1,18 @@
-# Repository Guidelines
+# Agent Guidelines
 
-## Development Practices
+## Agent Execution Rules
 
-**CRITICAL**: Follow a clean build principal, when changes are committed there
-should be 0 warnings or errors. During the development process there should be
-no unresolved warnings such as during git commits or package management
-operations. Warnings need to be resolved immediately.
+Agents must follow the standards in `README.md` before taking any action.
+These rules tighten the workflow for autonomous execution.
 
-- All work in this repo should follow TDD principal
-- Use skills in combination, if multiple skills are applicable to a combination
-  they should all be combined to achieve the "best of both".
-
-### TDD Behavior (Including Documentation)
-
-TDD is mandatory for all changes, including documentation. This repo does not
-allow "verify after" changes.
-
-- **No production change without a failing test first.**
-- For docs, the "test" is a BDD checklist of expected statements. The checklist
-  must fail against current docs before edits begin.
-- Record the failure reason (missing section, missing rule, incorrect wording)
-  before editing.
-- Only after the failing checklist is established may implementation begin.
+- **Feature branch only.** If you are on `main`, stop and create a feature
+  branch before any edits or commits. Do not commit on `main`.
+- **Skills-first enforcement.** Bootstrap, load skills, and follow process
+  skills before any implementation.
+- **TDD enforcement.** Apply the README TDD standard. For documentation work,
+  capture and verify a failing BDD checklist before editing.
+- **Fallback stays compliant.** If handing off to a human, the same skills-first
+  workflow still applies.
 
 ## Prerequisites First
 
@@ -116,42 +107,6 @@ Superpowers is the source of truth for the skill library: <https://github.com/ob
   <https://raw.githubusercontent.com/obra/superpowers/refs/heads/main/.codex/INSTALL.md>
 - Codex docs:
   <https://github.com/obra/superpowers/blob/main/docs/README.codex.md>
-
-## Coding Style & Naming Conventions
-
-Follow a clean, documentation-first style.
-
-- Ensure `.editorconfig` formatting is enforced
-- Linting and Static Analysis Tools must be run and passing cleanly before committing
-- Naming: use kebab-case for directories and files (for example, `skill-creator/`).
-- Keep files small and scoped; prefer one concept per file.
-
-## Testing Guidelines
-
-There is no testing framework in place, so skills testing will need to
-"simulated". Tests should be defined in a BDD manner with a list of easily
-understood assertions to prove success.
-
-When tests are added, colocate them in the skills folder:
-
-- Use clear file naming (for example, `skill-name.test.md` or `skill-name.test.js`).
-
-## Commit & Pull Request Guidelines
-
-The Git history currently has a single commit, so no convention is established.
-
-- Use Conventional Commits: `<type>(optional-scope): <summary>`.
-- Common types: `feat`, `fix`, `docs`, `chore`, `refactor`, `test`.
-- Example: `docs(readme): add prerequisites section`.
-- Use GitHub Flow for branching.
-- Keep commit messages concise.
-- PRs should describe the skill, its purpose, and any dependencies or setup steps.
-- Include screenshots or output examples when adding new tools or scripts.
-
-## Security & Configuration Tips
-
-- Do not commit secrets or API keys.
-- Keep prerequisites explicit (for example, "superpowers installed") in `README.md`.
 
 ## Agent-Specific Instructions
 
