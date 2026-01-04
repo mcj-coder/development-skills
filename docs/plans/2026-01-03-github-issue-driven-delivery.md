@@ -534,6 +534,36 @@ git commit -m "docs(skills): enforce evidence cadence and plan structure"
 
 ---
 
+## Task 14: Re-run BDD + persona review verification after latest skill changes
+
+**Files:**
+
+- Modify: `docs/plans/2026-01-03-github-issue-driven-delivery.md`
+
+### Step 1: Re-run BDD validation (simulated skill output)
+
+- Produce a fresh simulated skill output excerpt from the latest `skills/github-issue-driven-delivery/SKILL.md`.
+- Map each BDD assertion to the excerpt (or to the exact SKILL.md section) as evidence.
+
+### Step 2: Re-run persona reviews on latest skill
+
+- Post new persona review comments using superpowers:receiving-code-review.
+- Link each new persona review comment in the plan evidence section.
+
+### Step 3: Update the latest verification evidence section
+
+- Replace the "Latest Verification Evidence" section with the new excerpt, checklist, and review links.
+- Link the issue comment that posted the evidence and the commit that introduced the latest skill changes.
+
+### Step 4: Commit the evidence update
+
+```bash
+git add docs/plans/2026-01-03-github-issue-driven-delivery.md
+git commit -m "chore(plan): refresh BDD and persona review evidence"
+```
+
+---
+
 ## Original Scope Evidence (Tasks 1-4)
 
 - Approval link (Tasks 1-4): <https://github.com/mcj-coder/development-skills/issues/30#issuecomment-3707453865>
