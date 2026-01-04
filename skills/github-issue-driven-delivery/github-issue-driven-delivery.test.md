@@ -32,6 +32,7 @@ Without the skill, a typical response rationalizes skipping issue workflow steps
 ## Assertions (Expected to Fail Until Skill Exists)
 
 - gh is listed as a prerequisite in the skill.
+- A Taskboard issue exists before any changes (read-only and reviews excluded).
 - The workflow requires committing a WIP plan and posting a plan-link comment before execution.
 - Plan approval is collected via an issue comment before sub-tasks are created.
 - Each plan task maps to an issue sub-task (task list or sub-issue).
