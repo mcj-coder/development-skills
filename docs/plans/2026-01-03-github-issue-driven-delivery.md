@@ -401,7 +401,7 @@ git commit -m "chore(plan): link persona review comments"
 
 ---
 
-## Task 9: Re-run verification checks after refactors and post evidence
+## Task 9: Re-run verification checks after refactors and post evidence - Complete
 
 **Files:**
 
