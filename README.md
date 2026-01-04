@@ -4,6 +4,10 @@ This repository hosts skill specs and guidance that interoperate with the
 Superpowers skills system. It is intentionally lightweight and avoids
 duplicating the upstream skill library.
 
+## Work Items
+
+Taskboard: <https://github.com/mcj-coder/development-skills/issues>
+
 ## Purpose
 
 - Backlog and specification of new skills to be implemented.
