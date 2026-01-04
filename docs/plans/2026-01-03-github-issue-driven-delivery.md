@@ -429,3 +429,29 @@ rg "approved|1:1|auth status|acceptance criteria|commits and files" skills/githu
 git add docs/evidence/issue-30-verification.md
 git commit -m "chore(evidence): add issue 30 verification log"
 ```
+
+---
+
+## Task 10: Re-run BDD validation and post evidence
+
+**Files:**
+
+- Create: `docs/evidence/issue-30-bdd-validation.md`
+- Modify: `docs/plans/2026-01-03-github-issue-driven-delivery.md`
+
+### Step 1: Re-validate BDD assertions
+
+- Open `skills/github-issue-driven-delivery/github-issue-driven-delivery.test.md`.
+- For each assertion, confirm the matching requirement exists in `skills/github-issue-driven-delivery/SKILL.md`.
+- Record the mapping with direct quotes and section references.
+
+### Step 2: Capture results as evidence
+
+- Save the mapping to `docs/evidence/issue-30-bdd-validation.md`.
+
+### Step 3: Commit and link evidence
+
+```bash
+git add docs/evidence/issue-30-bdd-validation.md
+git commit -m "chore(evidence): add issue 30 BDD validation log"
+```
