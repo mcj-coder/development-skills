@@ -433,28 +433,47 @@ git commit -m "chore(plan): add issue 30 verification and BDD evidence"
 
 ---
 
-## Task 10: Incorporate PR discussion evidence and address PR comments
+## Task 10: Add approval comment links for completed tasks in plan
 
 **Files:**
 
 - Modify: `docs/plans/2026-01-03-github-issue-driven-delivery.md`
+
+### Step 1: Add approval links for completed tasks
+
+- For each completed task, add the approving issue comment link in the plan.
+
+### Step 2: Commit the update
+
+```bash
+git add docs/plans/2026-01-03-github-issue-driven-delivery.md
+git commit -m "chore(plan): link task approval comments"
+```
+
+---
+
+## Task 11: Track PR discussions and link PR/issue
+
+**Files:**
+
 - Modify: `skills/github-issue-driven-delivery/SKILL.md`
+- Modify: `docs/plans/2026-01-03-github-issue-driven-delivery.md`
 
-### Step 1: Capture PR discussion evidence
+### Step 1: Update skill to require PR discussion tracking
 
-- Add links to the PR discussion comments in the plan evidence section.
-- Include brief excerpts of the latest PR feedback.
-
-### Step 2: Update skill to require PR discussion tracking
-
-- Require PR comment threads to be treated like issue comment threads when a PR exists.
+- When a PR exists, treat PR comment threads like issue comment threads.
 - Require addressing PR comments as part of the task workflow.
+- Require cross-linking the PR and issue.
 
-### Step 3: Commit and link evidence
+### Step 2: Add PR discussion evidence to the plan
+
+- Link the PR and its relevant comment threads in the plan evidence section.
+
+### Step 3: Commit the update
 
 ```bash
 git add docs/plans/2026-01-03-github-issue-driven-delivery.md skills/github-issue-driven-delivery/SKILL.md
-git commit -m "docs(skills): add PR discussion tracking requirements"
+git commit -m "docs(skills): require PR discussion tracking"
 ```
 
 ---
