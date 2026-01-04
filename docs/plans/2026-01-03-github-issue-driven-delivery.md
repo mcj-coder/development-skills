@@ -433,7 +433,7 @@ git commit -m "chore(plan): add issue 30 verification and BDD evidence"
 
 ---
 
-## Task 10: Add approval comment links for completed tasks in plan
+## Task 10: Add approval comment links for completed tasks in plan - Complete
 
 **Files:**
 
@@ -452,7 +452,7 @@ git commit -m "chore(plan): link task approval comments"
 
 ---
 
-## Task 11: Track PR discussions and link PR/issue
+## Task 11: Track PR discussions and link PR/issue - Complete
 
 **Files:**
 
