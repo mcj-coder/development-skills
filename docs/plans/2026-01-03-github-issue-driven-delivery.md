@@ -455,6 +455,34 @@ git commit -m "chore(plan): add issue 30 BDD validation log"
 
 ---
 
+## Task 11: Refine evidence with skill output and review links
+
+**Files:**
+
+- Modify: `docs/plans/2026-01-03-github-issue-driven-delivery.md`
+
+### Step 1: Capture representative skill output
+
+- Add a representative excerpt of the skill sections (Core Workflow, Evidence Requirements, Evidence Checklist).
+
+### Step 2: Add a BDD assertion checklist mapped to output
+
+- For each BDD assertion, reference where in the excerpt the assertion is proven.
+
+### Step 3: Add review evidence to the plan
+
+- Include links to each persona comment and paste the latest review text for each persona.
+- Include the review summary with link to the summary comment.
+
+### Step 4: Commit the update
+
+```bash
+git add docs/plans/2026-01-03-github-issue-driven-delivery.md
+git commit -m "chore(plan): refine evidence for BDD and reviews"
+```
+
+---
+
 ## Verification Evidence (2026-01-04)
 
 **Task 9 command outputs:**
