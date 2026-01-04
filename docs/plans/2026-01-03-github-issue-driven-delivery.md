@@ -315,3 +315,27 @@ Expected: Matches for individual persona comments and summary requirements.
 git add skills/github-issue-driven-delivery/SKILL.md
 git commit -m "docs(skills): require persona review comments before summary"
 ```
+
+---
+
+## Task 6: Require persona reviews to use receiving-code-review skill
+
+**Files:**
+
+- Modify: `skills/github-issue-driven-delivery/SKILL.md`
+
+### Step 1: Reference receiving-code-review skill for persona reviews
+
+- Require persona review comments to follow the receiving-code-review skill format.
+
+### Step 2: Verify skill content includes the new requirement
+
+Run: `rg "receiving-code-review" skills/github-issue-driven-delivery/SKILL.md`
+Expected: Matches in persona review requirements.
+
+### Step 3: Commit the change
+
+```bash
+git add skills/github-issue-driven-delivery/SKILL.md
+git commit -m "docs(skills): require receiving-code-review for persona reviews"
+```
