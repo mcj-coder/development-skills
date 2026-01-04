@@ -478,7 +478,7 @@ git commit -m "docs(skills): require PR discussion tracking"
 
 ---
 
-## Task 12: Require re-verification after post-review changes
+## Task 12: Require re-verification after post-review changes - Complete
 
 **Files:**
 
@@ -505,7 +505,7 @@ git commit -m "docs(skills): require re-verification after changes"
 
 ---
 
-## Task 13: Restructure plan evidence and verification cadence
+## Task 13: Restructure plan evidence and verification cadence - Complete
 
 **Files:**
 
@@ -534,7 +534,7 @@ git commit -m "docs(skills): enforce evidence cadence and plan structure"
 
 ---
 
-## Task 14: Re-run BDD + persona review verification after latest skill changes
+## Task 14: Re-run BDD + persona review verification after latest skill changes - Complete
 
 **Files:**
 
