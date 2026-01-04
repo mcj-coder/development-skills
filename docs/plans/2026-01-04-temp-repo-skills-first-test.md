@@ -31,6 +31,21 @@ confirmation.
 - [ ] Issue is closed after merge with evidence.
 - [ ] Temp repo deleted after manual confirmation.
 - [ ] Local symlinks to skills are removed after the test.
+- [ ] Minimal prompt is used and triggers skill selection via README/AGENTS only.
+- [ ] Feature branch contains .NET 10 CLI app that accepts name and prints personalised message.
+- [ ] Unit tests added and pass.
+- [ ] README.md and AGENTS.md updated appropriately (no duplication).
+- [ ] docs/ plan created, implemented, and verified.
+- [ ] PR linked with reviews from Lead Developer, QA Engineer, DevOps Engineer.
+- [ ] GitHub Actions logs show the agent announced all required skills in use.
+- [ ] Required skills announced include:
+  - agent-workitem-automation
+  - github-issue-driven-delivery
+  - superpowers:brainstorming
+  - superpowers:test-driven-development
+  - superpowers:verification-before-completion
+  - superpowers:requesting-code-review
+  - superpowers:receiving-code-review
 ```
 
 ### Step 2: Verify RED (must fail before edits)
@@ -77,8 +92,11 @@ gh repo create mcj-coder/tmp-skill-test-2026-01-04 --public --confirm
 ### Step 3: Create issue in temp repo
 
 ```bash
-gh issue create --repo mcj-coder/tmp-skill-test-2026-01-04 --title "Apply skills-first workflow" --body "Please apply skills-first workflow to AGENTS.md." --label skill
+gh issue create --repo mcj-coder/tmp-skill-test-2026-01-04 --title "Implement .NET 10 hello-world CLI" --body "Implement a .Net 10 CLI that accepts a name arg and outputs a personalised message." --label skill
 ```
+
+Use the minimal issue body and avoid additional guidance so the agent must rely
+on README.md and AGENTS.md for skill selection.
 
 ### Step 4: Trigger agent
 
@@ -124,6 +142,7 @@ comment. Capture the workflow URL as evidence.
 ### Step 2: Verify AGENTS.md updated
 
 Check in temp repo that AGENTS.md includes skills-first workflow and prerequisites without duplicating README guidance.
+Ensure AGENTS.md includes prerequisite repo locations and Node bootstrap guidance.
 
 ### Step 3: Verify evidence and PR
 
