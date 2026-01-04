@@ -18,3 +18,7 @@ duplicating the upstream skill library.
 - Sub-Tasks should be implemented in a branch from the main tickets feature branch
 - When a Sub-Task is verified and complete the related branch should be merged back into the feature branch.
 - When a ticket has all sub-tasks completed and has been verified it should be merged back into the default branch via PR.
+
+## Skills
+
+- `github-issue-driven-delivery` (requires `gh`)
