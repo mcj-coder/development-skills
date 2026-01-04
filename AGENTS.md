@@ -1,15 +1,21 @@
-# Repository Guidelines
+# Agent Guidelines
 
-## Development Practices
+## Agent Execution Rules
 
-**CRITICAL**: Follow a clean build principal, when changes are committed there
-should be 0 warnings or errors. During the development process there should be
-no unresolved warnings such as during git commits or package management
-operations. Warnings need to be resolved immediately.
+Agents must follow the standards in `README.md` before taking any action.
+These rules tighten the workflow for autonomous execution.
 
-- All work in this repo should follow TDD principal
-- Use skills in combination, if multiple skills are applicable to a combination
-  they should all be combined to achieve the "best of both".
+- **Feature branch only.** If you are on `main`, stop and create a feature
+  branch before any edits or commits. Do not commit on `main`.
+- **Skills-first enforcement.** Bootstrap, load skills, and follow process
+  skills before any implementation.
+- **TDD enforcement.** Apply the README TDD standard. For documentation work,
+  capture and verify a failing BDD checklist before editing.
+- **Fallback stays compliant.** If handing off to a human, the same skills-first
+  workflow still applies.
+- **PR close policy.** Follow the README merge policy (rebase, then choose
+  squash or fast-forward only) and use a Conventional Commit squash message
+  with ticket footer when appropriate.
 
 ## Prerequisites First
 
@@ -17,6 +23,29 @@ Before any task or response in this repo:
 
 1. Run the Superpowers bootstrap to load the skills list.
 2. Load any relevant skill with `superpowers-codex use-skill <skill-name>`.
+
+## Superpowers-First Default Workflow
+
+The default in this repo is **skills-first, not implementation-first**. Do not
+start coding or editing files until the skills workflow is active.
+
+1. Run bootstrap via Node.
+2. Load `superpowers:using-superpowers`, then all relevant skills.
+3. Use process skills (for example, `superpowers:brainstorming`,
+   `superpowers:writing-plans`, `superpowers:test-driven-development`) before
+   implementation.
+4. Implement only after skills and (if required) plans are in place.
+5. Verify with the appropriate checks before claiming completion.
+
+If autonomous execution is blocked or uncertain, hand off to a human but keep
+the skills-first workflow intact. Human-driven fallback still requires the same
+skills and guardrails.
+
+## No Implementation First
+
+Jumping straight into implementation is an exception and must be explicitly
+requested by the user. The default is to load and apply skills before any repo
+actions.
 
 ## Canonical Skill Priority Model
 
@@ -81,42 +110,6 @@ Superpowers is the source of truth for the skill library: <https://github.com/ob
   <https://raw.githubusercontent.com/obra/superpowers/refs/heads/main/.codex/INSTALL.md>
 - Codex docs:
   <https://github.com/obra/superpowers/blob/main/docs/README.codex.md>
-
-## Coding Style & Naming Conventions
-
-Follow a clean, documentation-first style.
-
-- Ensure `.editorconfig` formatting is enforced
-- Linting and Static Analysis Tools must be run and passing cleanly before committing
-- Naming: use kebab-case for directories and files (for example, `skill-creator/`).
-- Keep files small and scoped; prefer one concept per file.
-
-## Testing Guidelines
-
-There is no testing framework in place, so skills testing will need to
-"simulated". Tests should be defined in a BDD manner with a list of easily
-understood assertions to prove success.
-
-When tests are added, colocate them in the skills folder:
-
-- Use clear file naming (for example, `skill-name.test.md` or `skill-name.test.js`).
-
-## Commit & Pull Request Guidelines
-
-The Git history currently has a single commit, so no convention is established.
-
-- Use Conventional Commits: `<type>(optional-scope): <summary>`.
-- Common types: `feat`, `fix`, `docs`, `chore`, `refactor`, `test`.
-- Example: `docs(readme): add prerequisites section`.
-- Use GitHub Flow for branching.
-- Keep commit messages concise.
-- PRs should describe the skill, its purpose, and any dependencies or setup steps.
-- Include screenshots or output examples when adding new tools or scripts.
-
-## Security & Configuration Tips
-
-- Do not commit secrets or API keys.
-- Keep prerequisites explicit (for example, "superpowers installed") in `README.md`.
 
 ## Agent-Specific Instructions
 
