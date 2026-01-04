@@ -63,6 +63,18 @@ Before reading or updating tickets, ensure the CLI is installed and authenticate
    - If it is part of the current plan, post a follow-up comment.
    - If it is a follow-on task, create a new top-level ticket.
 
+## Delivery Completion (Autonomous)
+
+When all steps in the current plan are complete:
+
+1. Verify completion using `superpowers:verification-before-completion`.
+2. Post a final update comment with evidence and completion summary.
+3. Ensure the taskboard issue is updated with completion evidence.
+4. Close the work item if acceptance criteria are met and no blockers remain.
+
+If any acceptance criteria are unclear or evidence is incomplete, hand off to a
+human instead of closing.
+
 ## Example
 
 **Scenario:** Comment says "@agent manage this ticket" on a GitHub issue.
@@ -114,6 +126,7 @@ resolved decision recorded on the ticket.
 - Posting updates without evidence links.
 - Working multiple steps at once instead of one step per cycle.
 - Failing to create a follow-on ticket when scope increases.
+- Closing a ticket without verified evidence.
 
 ## Red Flags - STOP
 
