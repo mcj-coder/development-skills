@@ -505,6 +505,35 @@ git commit -m "docs(skills): require re-verification after changes"
 
 ---
 
+## Task 13: Restructure plan evidence and verification cadence
+
+**Files:**
+
+- Modify: `docs/plans/2026-01-03-github-issue-driven-delivery.md`
+- Modify: `skills/github-issue-driven-delivery/SKILL.md`
+
+### Step 1: Update skill with evidence structure rules
+
+- Require original plan scope to be followed by BDD and persona reviews at that point.
+- Require any additional tasks to be appended after original scope evidence as \"Additional Work\".
+- Require re-running BDD + persona reviews after each additional task, with links to the change commit and task reference.
+- Keep only the latest verification evidence in the plan.
+
+### Step 2: Restructure plan evidence sections
+
+- Add a clear \"Original Scope Evidence\" section.
+- Add an \"Additional Work\" section for later tasks.
+- Keep only the latest verification evidence section at the end.
+
+### Step 3: Commit the update
+
+```bash
+git add docs/plans/2026-01-03-github-issue-driven-delivery.md skills/github-issue-driven-delivery/SKILL.md
+git commit -m "docs(skills): enforce evidence cadence and plan structure"
+```
+
+---
+
 ## Post-Review Re-Verification Evidence (2026-01-04)
 
 Triggered by PR feedback: <https://github.com/mcj-coder/development-skills/pull/31#issuecomment-3707499283>
