@@ -24,28 +24,29 @@ Use GitHub issues as the source of truth for planning, approvals, execution evid
 1. Announce the skill and why it applies; confirm gh availability.
 2. Confirm the target issue and keep all work tied to it.
 3. Create a plan, commit it as WIP, and post the plan link in an issue comment for approval.
-4. Stop and wait for an explicit approval comment before continuing.
+4. Stop and wait for an explicit approval comment containing the word "approved" before continuing.
 5. Keep all plan discussions and decisions in issue comments.
-6. After approval, add issue sub-tasks for every plan task.
+6. After approval, add issue sub-tasks for every plan task and keep a 1:1 mapping by name.
 7. Execute each task and attach evidence and reviews to its sub-task.
 8. Stop and wait for explicit approval before closing each sub-task.
 9. Close sub-tasks only after approval and mark the plan task complete.
 10. Require each persona to post a separate review comment in the issue thread using superpowers:receiving-code-review.
 11. Summarize persona recommendations in the plan and link to the individual review comments.
 12. Add follow-up fixes as new tasks in the same issue.
-13. Create a new issue for next steps with implementation and test detail.
+13. Create a new issue for next steps with implementation, test detail, and acceptance criteria.
 14. Open a PR after delivery is accepted.
 
 ## Evidence Requirements
 
 - Evidence must be posted as clickable links in issue comments (commit URLs, blob URLs, logs, or artifacts).
-- Each sub-task comment must include links to the exact files or commits that satisfy it.
+- Each sub-task comment must include links to the exact commits and files that satisfy it.
 - Persona reviews must be separate issue comments using superpowers:receiving-code-review, with links captured in the summary.
+- Verify `gh auth status` before creating issues, comments, or PRs.
 
 ## Evidence Checklist
 
 - Plan link posted and approved in issue comments.
-- Sub-tasks created for each plan task.
+- Sub-tasks created for each plan task with 1:1 name mapping.
 - Evidence and reviews attached to each sub-task.
 - Persona reviews posted as individual comments in the issue thread using superpowers:receiving-code-review.
 - Next steps captured in a new issue.
