@@ -10,6 +10,20 @@ duplicating the upstream skill library.
 - Documentation and references for skills that integrate with Superpowers.
 - A place to record decisions without copying the upstream skills.
 
+## Superpowers-First Default Workflow
+
+This repo defaults to a **skills-first workflow**. Do not jump straight into
+implementation. All work begins by loading Superpowers skills, following the
+process skills, and only then editing files.
+
+- Bootstrap Superpowers, then load `superpowers:using-superpowers` plus any
+  relevant skills.
+- Follow process skills (brainstorming, planning, TDD) before implementation.
+- Use verification skills before claiming completion.
+- Human-driven fallback still follows the same skills-first flow.
+
+See `AGENTS.md` for the full workflow and enforcement rules.
+
 ## Branching and Commits
 
 - Use the GitHub Flow branching strategy.

@@ -11,12 +11,47 @@ operations. Warnings need to be resolved immediately.
 - Use skills in combination, if multiple skills are applicable to a combination
   they should all be combined to achieve the "best of both".
 
+### TDD Behavior (Including Documentation)
+
+TDD is mandatory for all changes, including documentation. This repo does not
+allow "verify after" changes.
+
+- **No production change without a failing test first.**
+- For docs, the "test" is a BDD checklist of expected statements. The checklist
+  must fail against current docs before edits begin.
+- Record the failure reason (missing section, missing rule, incorrect wording)
+  before editing.
+- Only after the failing checklist is established may implementation begin.
+
 ## Prerequisites First
 
 Before any task or response in this repo:
 
 1. Run the Superpowers bootstrap to load the skills list.
 2. Load any relevant skill with `superpowers-codex use-skill <skill-name>`.
+
+## Superpowers-First Default Workflow
+
+The default in this repo is **skills-first, not implementation-first**. Do not
+start coding or editing files until the skills workflow is active.
+
+1. Run bootstrap via Node.
+2. Load `superpowers:using-superpowers`, then all relevant skills.
+3. Use process skills (for example, `superpowers:brainstorming`,
+   `superpowers:writing-plans`, `superpowers:test-driven-development`) before
+   implementation.
+4. Implement only after skills and (if required) plans are in place.
+5. Verify with the appropriate checks before claiming completion.
+
+If autonomous execution is blocked or uncertain, hand off to a human but keep
+the skills-first workflow intact. Human-driven fallback still requires the same
+skills and guardrails.
+
+## No Implementation First
+
+Jumping straight into implementation is an exception and must be explicitly
+requested by the user. The default is to load and apply skills before any repo
+actions.
 
 ## Canonical Skill Priority Model
 
