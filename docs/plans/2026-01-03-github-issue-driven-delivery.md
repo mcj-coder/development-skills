@@ -534,9 +534,37 @@ git commit -m "docs(skills): enforce evidence cadence and plan structure"
 
 ---
 
-## Post-Review Re-Verification Evidence (2026-01-04)
+## Original Scope Evidence (Tasks 1-4)
 
-Triggered by PR feedback: <https://github.com/mcj-coder/development-skills/pull/31#issuecomment-3707499283>
+- Approval link (Tasks 1-4): <https://github.com/mcj-coder/development-skills/issues/30#issuecomment-3707453865>
+- Initial persona reviews summary: <https://github.com/mcj-coder/development-skills/issues/30#issuecomment-3707455697>
+- Persona review comments:
+  - Tech Lead: <https://github.com/mcj-coder/development-skills/issues/30#issuecomment-3707470698>
+  - Project Manager: <https://github.com/mcj-coder/development-skills/issues/30#issuecomment-3707470900>
+  - QA Engineer: <https://github.com/mcj-coder/development-skills/issues/30#issuecomment-3707471002>
+  - DevOps Engineer: <https://github.com/mcj-coder/development-skills/issues/30#issuecomment-3707471116>
+  - Product Owner: <https://github.com/mcj-coder/development-skills/issues/30#issuecomment-3707471229>
+
+---
+
+## Additional Work (Tasks 5+)
+
+- Task 5 approval: <https://github.com/mcj-coder/development-skills/issues/30#issuecomment-3707460057>
+- Task 6 approval: <https://github.com/mcj-coder/development-skills/issues/30#issuecomment-3707461959>
+- Task 7 approval: <https://github.com/mcj-coder/development-skills/issues/30#issuecomment-3707465515>
+- Task 8 approval: <https://github.com/mcj-coder/development-skills/issues/30#issuecomment-3707472365>
+- Task 9 approval: <https://github.com/mcj-coder/development-skills/issues/30#issuecomment-3707494271>
+- Task 10/11 approval: <https://github.com/mcj-coder/development-skills/issues/30#issuecomment-3707507431>
+- Task 12 plan approval: <https://github.com/mcj-coder/development-skills/issues/30#issuecomment-3707514331>
+- Task 13 plan approval: <https://github.com/mcj-coder/development-skills/issues/30#issuecomment-3707521859>
+- PR feedback comment: <https://github.com/mcj-coder/development-skills/pull/31#issuecomment-3707499283>
+- Expert Agent Skill Author review: <https://github.com/mcj-coder/development-skills/pull/31#issuecomment-3707508299>
+
+---
+
+## Latest Verification Evidence (2026-01-04)
+
+Triggered by latest change: <https://github.com/mcj-coder/development-skills/commit/d52cb76>
 
 Representative simulated skill output excerpt:
 
@@ -558,7 +586,8 @@ Representative simulated skill output excerpt:
 13. Create a new issue for next steps with implementation, test detail, and acceptance criteria.
 14. Open a PR after delivery is accepted.
 15. If a PR exists, link the PR and issue, monitor PR comment threads, and address PR feedback before completion.
-16. If changes occur after review feedback, re-run BDD validation and update evidence before claiming completion; if BDD assertions change, require explicit approval to update them.
+16. If changes occur after review feedback, re-run BDD validation and update evidence before claiming completion.
+17. If BDD assertions change, require explicit approval before updating them.
 
 ## Evidence Requirements
 
@@ -592,162 +621,3 @@ BDD assertions mapped to excerpt:
   - Proof: Core Workflow step 13.
 - `A PR is created after acceptance.`
   - Proof: Core Workflow step 14.
-
----
-
-## Task 11: Refine evidence with skill output and review links
-
-**Files:**
-
-- Modify: `docs/plans/2026-01-03-github-issue-driven-delivery.md`
-
-### Step 1: Capture representative skill output
-
-- Add a representative excerpt of the skill sections (Core Workflow, Evidence Requirements, Evidence Checklist).
-
-### Step 2: Add a BDD assertion checklist mapped to output
-
-- For each BDD assertion, reference where in the excerpt the assertion is proven.
-
-### Step 3: Add review evidence to the plan
-
-- Include links to each persona comment and paste the latest review text for each persona.
-- Include the review summary with link to the summary comment.
-
-### Step 4: Commit the update
-
-```bash
-git add docs/plans/2026-01-03-github-issue-driven-delivery.md
-git commit -m "chore(plan): refine evidence for BDD and reviews"
-```
-
----
-
-## Verification Evidence (2026-01-04)
-
-### Representative Simulated Skill Output
-
-Excerpt from `skills/github-issue-driven-delivery/SKILL.md`:
-
-```text
-## Core Workflow
-
-1. Announce the skill and why it applies; confirm gh availability.
-2. Confirm the target issue and keep all work tied to it.
-3. Create a plan, commit it as WIP, and post the plan link in an issue comment for approval.
-4. Stop and wait for an explicit approval comment containing the word "approved" before continuing.
-5. Keep all plan discussions and decisions in issue comments.
-6. After approval, add issue sub-tasks for every plan task and keep a 1:1 mapping by name.
-7. Execute each task and attach evidence and reviews to its sub-task.
-8. Stop and wait for explicit approval before closing each sub-task.
-9. Close sub-tasks only after approval and mark the plan task complete.
-10. Require each persona to post a separate review comment in the issue thread using superpowers:receiving-code-review.
-11. Summarize persona recommendations in the plan and link to the individual review comments.
-12. Add follow-up fixes as new tasks in the same issue.
-13. Create a new issue for next steps with implementation, test detail, and acceptance criteria.
-14. Open a PR after delivery is accepted.
-
-## Evidence Requirements
-
-- Evidence must be posted as clickable links in issue comments (commit URLs, blob URLs, logs, or artifacts).
-- Each sub-task comment must include links to the exact commits and files that satisfy it.
-- Persona reviews must be separate issue comments using superpowers:receiving-code-review, with links captured in the summary.
-- Verify `gh auth status` before creating issues, comments, or PRs.
-```
-
-### BDD Assertions Checklist (Mapped to Output)
-
-- `gh is listed as a prerequisite in the skill.`
-  - Proof: `## Prerequisites` in SKILL.md lists `gh CLI installed and authenticated.`
-- `The workflow requires committing a WIP plan and posting a plan-link comment before execution.`
-  - Proof: Core Workflow step 3 in output excerpt.
-- `Plan approval is collected via an issue comment before sub-tasks are created.`
-  - Proof: Core Workflow step 4 in output excerpt.
-- `Each plan task maps to an issue sub-task (task list or sub-issue).`
-  - Proof: Core Workflow step 6 in output excerpt.
-- `Evidence and reviews are attached to each sub-task.`
-  - Proof: Core Workflow step 7 and Evidence Requirements list in output excerpt.
-- `Sub-tasks close only after approval and plan task is marked complete.`
-  - Proof: Core Workflow steps 8-9 in output excerpt.
-- `Persona reviews are posted in the issue comment chain and summarized in the plan.`
-  - Proof: Core Workflow steps 10-11 in output excerpt.
-- `Follow-up changes are new tasks in the same issue.`
-  - Proof: Core Workflow step 12 in output excerpt.
-- `Next steps create a new issue with implementation + test detail.`
-  - Proof: Core Workflow step 13 in output excerpt.
-- `A PR is created after acceptance.`
-  - Proof: Core Workflow step 14 in output excerpt.
-
-### Review Evidence
-
-Persona review links (latest):
-
-- Tech Lead: <https://github.com/mcj-coder/development-skills/issues/30#issuecomment-3707470698>
-- Project Manager: <https://github.com/mcj-coder/development-skills/issues/30#issuecomment-3707470900>
-- QA Engineer: <https://github.com/mcj-coder/development-skills/issues/30#issuecomment-3707471002>
-- DevOps Engineer: <https://github.com/mcj-coder/development-skills/issues/30#issuecomment-3707471116>
-- Product Owner: <https://github.com/mcj-coder/development-skills/issues/30#issuecomment-3707471229>
-
-Summary comment:
-
-- Summary: <https://github.com/mcj-coder/development-skills/issues/30#issuecomment-3707455697>
-
-Latest review excerpts:
-
-Tech Lead:
-
-```text
-Findings: None.
-Residual risks: Manual enforcement only; consider future automation via CI or templates.
-```
-
-Project Manager:
-
-```text
-Findings: None.
-Residual risks: Task maintenance may drift without automation.
-```
-
-QA Engineer:
-
-```text
-Findings: None.
-Residual risks: Verification is manual and document-based.
-```
-
-DevOps Engineer:
-
-```text
-Findings: None.
-Residual risks: `gh auth status` is required and still manual.
-```
-
-Product Owner:
-
-```text
-Findings: None.
-Residual risks: Acceptance criteria quality may vary between tickets.
-```
-
-### Task Approval Links
-
-- Task 1-4 approval: <https://github.com/mcj-coder/development-skills/issues/30#issuecomment-3707453865>
-- Task 5 approval: <https://github.com/mcj-coder/development-skills/issues/30#issuecomment-3707460057>
-- Task 6 approval: <https://github.com/mcj-coder/development-skills/issues/30#issuecomment-3707461959>
-- Task 7 approval: <https://github.com/mcj-coder/development-skills/issues/30#issuecomment-3707465515>
-- Task 8 approval: <https://github.com/mcj-coder/development-skills/issues/30#issuecomment-3707472365>
-- Task 9 approval: <https://github.com/mcj-coder/development-skills/issues/30#issuecomment-3707494271>
-- Task 10/11 plan approval: <https://github.com/mcj-coder/development-skills/issues/30#issuecomment-3707507431>
-
-### PR Discussion Evidence
-
-- PR: <https://github.com/mcj-coder/development-skills/pull/31>
-- Issue: <https://github.com/mcj-coder/development-skills/issues/30>
-- PR feedback comment: <https://github.com/mcj-coder/development-skills/pull/31#issuecomment-3707499283>
-- Expert Agent Skill Author review: <https://github.com/mcj-coder/development-skills/pull/31#issuecomment-3707508299>
-
-Latest PR feedback excerpt:
-
-```text
-Can I get an Expert Agent Skill Author personas review of the final skill? Also, in the plan task titles are updated to include the `- Completed` suffix with no further evidence. We should capture when and who approved the task with a link to the approval comment.
-```

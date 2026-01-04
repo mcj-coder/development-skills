@@ -47,6 +47,11 @@ Use GitHub issues as the source of truth for planning, approvals, execution evid
 - Verify `gh auth status` before creating issues, comments, or PRs.
 - Link the PR and issue and include PR comment links when a PR exists.
 - If post-review changes occur, re-run BDD validation and update the plan evidence.
+- In the plan, separate **Original Scope Evidence** from **Additional Work**.
+- After each additional task, re-run BDD validation and persona reviews and link the
+  verification comment to the change commit and task.
+- Keep only the latest verification evidence in the plan; prior evidence remains
+  in issue/PR comment threads.
 
 ## Evidence Checklist
 
@@ -58,6 +63,8 @@ Use GitHub issues as the source of truth for planning, approvals, execution evid
 - PR opened after acceptance.
 - PR and issue cross-linked with PR feedback addressed (when a PR exists).
 - Post-review changes re-verified with updated BDD evidence.
+- Plan evidence structured into original scope, additional work, and latest
+  verification only.
 
 ## Quick Reference
 
