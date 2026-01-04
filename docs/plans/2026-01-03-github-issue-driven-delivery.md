@@ -367,3 +367,26 @@ Expected: Matches for each recommendation.
 git add skills/github-issue-driven-delivery/SKILL.md
 git commit -m "docs(skills): apply persona review recommendations"
 ```
+
+---
+
+## Task 8: Post individual persona reviews and link them in the summary
+
+**Files:**
+
+- Modify: `docs/plans/2026-01-03-github-issue-driven-delivery.md`
+
+### Step 1: Post individual persona reviews
+
+- Post a separate issue comment per persona using superpowers:receiving-code-review.
+
+### Step 2: Update the plan summary with comment links
+
+- Add links to each persona comment in the summary section.
+
+### Step 3: Commit the update
+
+```bash
+git add docs/plans/2026-01-03-github-issue-driven-delivery.md
+git commit -m "chore(plan): link persona review comments"
+```
