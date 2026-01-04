@@ -406,7 +406,6 @@ git commit -m "chore(plan): link persona review comments"
 **Files:**
 
 - Modify: `docs/plans/2026-01-03-github-issue-driven-delivery.md`
-- Create: `docs/evidence/issue-30-verification.md`
 
 ### Step 1: Re-run verification checks
 
@@ -420,14 +419,13 @@ rg "approved|1:1|auth status|acceptance criteria|commits and files" skills/githu
 
 ### Step 2: Capture outputs as evidence
 
-- Save command outputs to `docs/evidence/issue-30-verification.md`.
-- Commit the evidence file so it can be linked from issue comments.
+- Append command outputs to the end of this plan document.
 
 ### Step 3: Commit and link evidence
 
 ```bash
-git add docs/evidence/issue-30-verification.md
-git commit -m "chore(evidence): add issue 30 verification log"
+git add docs/plans/2026-01-03-github-issue-driven-delivery.md
+git commit -m "chore(plan): add issue 30 verification log"
 ```
 
 ---
@@ -436,7 +434,6 @@ git commit -m "chore(evidence): add issue 30 verification log"
 
 **Files:**
 
-- Create: `docs/evidence/issue-30-bdd-validation.md`
 - Modify: `docs/plans/2026-01-03-github-issue-driven-delivery.md`
 
 ### Step 1: Re-validate BDD assertions
@@ -447,11 +444,69 @@ git commit -m "chore(evidence): add issue 30 verification log"
 
 ### Step 2: Capture results as evidence
 
-- Save the mapping to `docs/evidence/issue-30-bdd-validation.md`.
+- Append the mapping to the end of this plan document.
 
 ### Step 3: Commit and link evidence
 
 ```bash
-git add docs/evidence/issue-30-bdd-validation.md
-git commit -m "chore(evidence): add issue 30 BDD validation log"
+git add docs/plans/2026-01-03-github-issue-driven-delivery.md
+git commit -m "chore(plan): add issue 30 BDD validation log"
 ```
+
+---
+
+## Verification Evidence (2026-01-04)
+
+**Task 9 command outputs:**
+
+Command: `Test-Path skills/github-issue-driven-delivery/SKILL.md`
+
+```text
+True
+```
+
+Command: `rg "receiving-code-review" skills/github-issue-driven-delivery/SKILL.md`
+
+```text
+10. Require each persona to post a separate review comment in the issue thread using superpowers:receiving-code-review.
+- Persona reviews must be separate issue comments using superpowers:receiving-code-review, with links captured in the summary.
+- Persona reviews posted as individual comments in the issue thread using superpowers:receiving-code-review.
+```
+
+Command: `rg "approved|1:1|auth status|acceptance criteria|commits and files" skills/github-issue-driven-delivery/SKILL.md`
+
+```text
+4. Stop and wait for an explicit approval comment containing the word "approved" before continuing.
+6. After approval, add issue sub-tasks for every plan task and keep a 1:1 mapping by name.
+13. Create a new issue for next steps with implementation, test detail, and acceptance criteria.
+- Each sub-task comment must include links to the exact commits and files that satisfy it.
+- Verify `gh auth status` before creating issues, comments, or PRs.
+- Plan link posted and approved in issue comments.
+- Sub-tasks created for each plan task with 1:1 name mapping.
+```
+
+---
+
+## BDD Validation Evidence (2026-01-04)
+
+**Assertion mapping to `skills/github-issue-driven-delivery/SKILL.md`:**
+
+- `gh is listed as a prerequisite in the skill.` -> `## Prerequisites` includes `gh CLI installed and authenticated.`
+- `The workflow requires committing a WIP plan and posting a plan-link comment before execution.` ->
+  `Core Workflow` step 3: `Create a plan, commit it as WIP, and post the plan link in an issue comment for approval.`
+- `Plan approval is collected via an issue comment before sub-tasks are created.` ->
+  `Core Workflow` step 4: `Stop and wait for an explicit approval comment containing the word "approved" before continuing.`
+- `Each plan task maps to an issue sub-task (task list or sub-issue).` ->
+  `Core Workflow` step 6: `add issue sub-tasks for every plan task and keep a 1:1 mapping by name.`
+- `Evidence and reviews are attached to each sub-task.` ->
+  `Core Workflow` step 7 and `Evidence Requirements` (commit and file links per sub-task).
+- `Sub-tasks close only after approval and plan task is marked complete.` ->
+  `Core Workflow` steps 8-9.
+- `Persona reviews are posted in the issue comment chain and summarized in the plan.` ->
+  `Core Workflow` steps 10-11.
+- `Follow-up changes are new tasks in the same issue.` ->
+  `Core Workflow` step 12.
+- `Next steps create a new issue with implementation + test detail.` ->
+  `Core Workflow` step 13 (implementation, test detail, acceptance criteria).
+- `A PR is created after acceptance.` ->
+  `Core Workflow` step 14.
