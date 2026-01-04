@@ -26,6 +26,7 @@ confirmation.
 - [ ] Issue in temp repo contains trigger comment @agent manage this ticket.
 - [ ] Agent applies agent-workitem-automation + github-issue-driven-delivery + required superpowers skills.
 - [ ] AGENTS.md is created/updated with skills-first workflow + prerequisites only.
+- [ ] AGENTS.md lists the locations of prerequisite skills repos (Superpowers and development-skills).
 - [ ] Evidence comment links commit/PR and test output.
 - [ ] Issue is closed after merge with evidence.
 - [ ] Temp repo deleted after manual confirmation.

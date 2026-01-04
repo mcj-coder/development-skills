@@ -69,6 +69,15 @@ must reference the default branch instead of the feature branch.
 When creating AGENTS.md in a new repo, include the Node-based Superpowers
 bootstrap command (for example,
 `node %USERPROFILE%\\.codex\\superpowers\\.codex\\superpowers-codex bootstrap`).
+Also include references to prerequisite skills repositories and where they
+should be cloned, for example:
+
+- Superpowers: <https://github.com/obra/superpowers> (expected at
+  `%USERPROFILE%\\.codex\\superpowers`)
+- development-skills: <https://github.com/mcj-coder/development-skills> (expected
+  at `%USERPROFILE%\\.codex\\skills\\development-skills`)
+
+Do not assume these repos are already installed.
 
 ## Core Execution Loop
 
