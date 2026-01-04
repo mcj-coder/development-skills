@@ -66,6 +66,10 @@ For remote agents (CI), clone the skills repo for the duration of the run and
 configure the agent to scan that path. When the task is complete, documentation
 must reference the default branch instead of the feature branch.
 
+When creating AGENTS.md in a new repo, include the Node-based Superpowers
+bootstrap command (for example,
+`node %USERPROFILE%\\.codex\\superpowers\\.codex\\superpowers-codex bootstrap`).
+
 ## Core Execution Loop
 
 1. Load ticket details, comments, and related PRs from the CLI.
