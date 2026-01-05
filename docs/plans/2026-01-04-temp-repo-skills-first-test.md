@@ -27,6 +27,7 @@ confirmation.
 - [ ] Agent applies agent-workitem-automation + github-issue-driven-delivery + required superpowers skills.
 - [ ] AGENTS.md is created/updated with skills-first workflow + prerequisites only.
 - [ ] AGENTS.md lists the locations of prerequisite skills repos (Superpowers and development-skills).
+- [ ] **Plan commit is pushed to remote (not just local)** - GitHub links must work.
 - [ ] Evidence comment links commit/PR and test output.
 - [ ] Issue is closed after merge with evidence.
 - [ ] Temp repo deleted after manual confirmation.
