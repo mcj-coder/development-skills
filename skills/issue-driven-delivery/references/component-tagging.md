@@ -12,19 +12,133 @@ Every work item must be tagged with the component or component type it impacts.
 
 ## Platform-Specific Implementation
 
-**GitHub**: Use labels
+### GitHub (using gh CLI)
 
-- Example: `skill`, `component:api`, `type:documentation`
+**Add multiple tags when creating issue:**
 
-**Azure DevOps**: Use tags or area path
+```bash
+gh issue create --label "component:api,work-type:bug,priority:p1" \
+  --title "Fix authentication error" \
+  --body "Description of the bug..."
+```
 
-- Example tags: `skill`, `api`, `ui`
-- Example area path: `ProjectName\API\Authentication`
+**Add tags to existing issue:**
 
-**Jira**: Use components or labels
+```bash
+# Add single tag
+gh issue edit 123 --add-label "priority:p2"
 
-- Example components: Skills, API, UI
-- Example labels: skill, api-component, documentation
+# Add multiple tags
+gh issue edit 123 --add-label "work-type:enhancement,priority:p2"
+```
+
+**Add blocked tag with comment:**
+
+```bash
+# Add blocked label
+gh issue edit 123 --add-label "blocked"
+
+# Post blocking comment
+gh issue comment 123 --body "Blocked by: Waiting for API design from #125
+Blocker ID: #125
+What's needed: API specification document
+Who can help: @architect"
+```
+
+**List issues by tags:**
+
+```bash
+# Find all P0 critical issues
+gh issue list --label "priority:p0"
+
+# Find all bugs in API component
+gh issue list --label "component:api,work-type:bug"
+
+# Find all blocked work items
+gh issue list --label "blocked"
+```
+
+### Azure DevOps (using az boards CLI)
+
+**Add tags when creating work item:**
+
+```bash
+az boards work-item create \
+  --title "Fix authentication error" \
+  --type Bug \
+  --fields System.Tags="component:api; work-type:bug; priority:p1"
+```
+
+**Add tags to existing work item:**
+
+```bash
+# Add multiple tags (semicolon-separated)
+az boards work-item update --id 123 \
+  --fields System.Tags="component:api; work-type:bug; priority:p1"
+```
+
+**Add blocked tag with comment:**
+
+```bash
+# Add blocked tag
+az boards work-item update --id 123 \
+  --fields System.Tags="component:api; work-type:bug; priority:p1; blocked"
+
+# Add blocking comment
+az boards work-item discussion create --id 123 \
+  --message "Blocked by: Waiting for API design from #125. Blocker ID: #125. What's needed: API specification document. Who can help: @architect"
+```
+
+**Query work items by tags:**
+
+```bash
+# Find all P0 critical work items
+az boards work-item query --wiql "SELECT [System.Id], [System.Title] FROM WorkItems WHERE [System.Tags] CONTAINS 'priority:p0'"
+
+# Find all blocked work items
+az boards work-item query --wiql "SELECT [System.Id], [System.Title] FROM WorkItems WHERE [System.Tags] CONTAINS 'blocked'"
+```
+
+### Jira (using jira CLI)
+
+**Add labels when creating issue:**
+
+```bash
+jira issue create \
+  --type Bug \
+  --summary "Fix authentication error" \
+  --labels "component-api,work-type-bug,priority-p1"
+```
+
+**Add labels to existing issue:**
+
+```bash
+# Add labels (comma-separated, replaces existing)
+jira issue update PROJ-123 --labels "component-api,work-type-bug,priority-p1"
+```
+
+**Add blocked label with comment:**
+
+```bash
+# Add blocked label
+jira issue update PROJ-123 --labels "component-api,work-type-bug,priority-p1,blocked"
+
+# Add blocking comment
+jira issue comment PROJ-123 "Blocked by: Waiting for API design from PROJ-125. Blocker ID: PROJ-125. What's needed: API specification document. Who can help: @architect"
+```
+
+**Find issues by labels:**
+
+```bash
+# Find all P0 critical issues
+jira issue list --jql "labels = priority-p0"
+
+# Find all bugs in API component
+jira issue list --jql "labels = component-api AND labels = work-type-bug"
+
+# Find all blocked issues
+jira issue list --jql "labels = blocked"
+```
 
 ## Enforcement Rules
 
