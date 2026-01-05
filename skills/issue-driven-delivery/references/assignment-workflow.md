@@ -2,7 +2,8 @@
 
 ## Pull-Based Kanban Pattern
 
-Team members self-assign work items when taking ownership, then unassign after completing their phase to signal handoff to the next role.
+Team members self-assign work items when taking ownership, then unassign after completing their phase to signal
+handoff to the next role.
 
 **Pattern**: Unassigned → Self-Assign → Work → Unassign → Next person pulls
 

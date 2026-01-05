@@ -40,6 +40,7 @@ Add assignment workflow as lightweight enhancements at state transition points i
 - Update Prerequisites and Overview to mention assignment pattern
 
 **Why this approach:**
+
 - Minimal disruption to existing skill structure
 - Easy for existing users to adopt incrementally
 - Follows established reference file pattern
@@ -53,7 +54,7 @@ Create comprehensive reference documenting the pull-based pattern with platform-
 
 **Structure:**
 
-```markdown
+````markdown
 # Assignment Workflow
 
 ## Pull-Based Kanban Pattern
@@ -64,6 +65,7 @@ after completing their phase to signal handoff to the next role.
 **Pattern**: Unassigned → Self-Assign → Work → Unassign → Next person pulls
 
 **Benefits:**
+
 - Clear ownership: One person responsible at a time
 - Visual work queues: Unassigned tickets are ready to pull
 - Prevent bottlenecks: No hoarding of assigned tickets
@@ -86,6 +88,7 @@ after completing their phase to signal handoff to the next role.
 **Assigned to**: Tech Lead (or person creating the plan)
 
 **Responsibilities:**
+
 - Create implementation plan
 - Post plan for approval
 - Respond to approval questions and feedback
@@ -93,6 +96,7 @@ after completing their phase to signal handoff to the next role.
 - Add sub-tasks after approval
 
 **Approval Feedback Loop:**
+
 - **Stay assigned** during the entire refinement phase
 - Feedback, questions, or "continue" = still in refinement, keep working
 - Only unassign when you see explicit "approved" or "LGTM" comment
@@ -109,6 +113,7 @@ after completing their phase to signal handoff to the next role.
 **When to pick up**: When you have capacity to implement and need next work item
 
 **Responsibilities:**
+
 - Execute all plan tasks
 - Post evidence for each sub-task
 - Complete all sub-tasks
@@ -124,6 +129,7 @@ after completing their phase to signal handoff to the next role.
 **When to pick up**: When you have capacity to verify and need next work item
 
 **Responsibilities:**
+
 - Verify acceptance criteria
 - Test implemented functionality
 - Review evidence and sub-task completion
@@ -138,21 +144,26 @@ after completing their phase to signal handoff to the next role.
 ### GitHub (using gh CLI)
 
 **Self-assign current user:**
+
 ```bash
 gh issue edit <issue-number> --assignee @me
 ```
+````
 
 **Unassign current user:**
+
 ```bash
 gh issue edit <issue-number> --remove-assignee @me
 ```
 
 **Check current assignment:**
+
 ```bash
 gh issue view <issue-number> --json assignees --jq '.assignees[].login'
 ```
 
 **Find next unassigned ticket in specific state:**
+
 ```bash
 # Find unassigned tickets in implementation state
 gh issue list --label "state:implementation" --assignee "" --limit 5
@@ -162,6 +173,7 @@ gh issue list --label "state:verification" --assignee "" --limit 5
 ```
 
 **Combined state transition with assignment:**
+
 ```bash
 # Transition to implementation and unassign
 gh issue edit 30 --remove-assignee @me --add-label "state:implementation" --remove-label "state:refinement"
@@ -173,16 +185,19 @@ gh issue edit 30 --assignee @me --add-label "state:refinement" --remove-label "s
 ### Azure DevOps (using az devops CLI)
 
 **Self-assign current user:**
+
 ```bash
 az boards work-item update --id <work-item-id> --assigned-to @me
 ```
 
 **Unassign:**
+
 ```bash
 az boards work-item update --id <work-item-id> --assigned-to ""
 ```
 
 **Find unassigned work items:**
+
 ```bash
 az boards work-item query --wiql "SELECT [System.Id], [System.Title] FROM WorkItems WHERE [System.AssignedTo] = '' AND [System.State] = 'Active'"
 ```
@@ -190,16 +205,19 @@ az boards work-item query --wiql "SELECT [System.Id], [System.Title] FROM WorkIt
 ### Jira (using jira CLI)
 
 **Self-assign current user:**
+
 ```bash
 jira issue assign <issue-key> $(jira me)
 ```
 
 **Unassign:**
+
 ```bash
 jira issue assign <issue-key> --default
 ```
 
 **Find unassigned issues:**
+
 ```bash
 jira issue list --jql "assignee is EMPTY AND status = 'In Progress'"
 ```
@@ -224,11 +242,13 @@ jira issue list --jql "assignee is EMPTY AND status = 'In Progress'"
 ### Handling Interruptions
 
 **If you need to step away mid-work:**
+
 - Post comment explaining current status
 - Unassign yourself
 - Ticket returns to queue for someone else to pick up
 
 **If you're blocked:**
+
 - Keep assignment (you're still responsible)
 - Post comment explaining blocker
 - Tag person who can unblock
@@ -237,6 +257,7 @@ jira issue list --jql "assignee is EMPTY AND status = 'In Progress'"
 ### Finding Next Work
 
 **Priority order:**
+
 1. Tickets you previously worked on (in comments/history) needing revisions
 2. Highest priority unassigned tickets in your role's state
 3. Oldest unassigned tickets if priorities equal
@@ -254,6 +275,7 @@ jira issue list --jql "assignee is EMPTY AND status = 'In Progress'"
 ## Anti-Patterns to Avoid
 
 **Don't:**
+
 - Assign tickets to other people (violates pull-based pattern)
 - Keep tickets assigned "just in case" (blocks others)
 - Take multiple assigned tickets simultaneously (creates WIP bottleneck)
@@ -261,11 +283,17 @@ jira issue list --jql "assignee is EMPTY AND status = 'In Progress'"
 - Work on unassigned tickets without assigning (invisible work)
 
 **Do:**
+
 - Let people self-assign when ready
 - Unassign promptly when done
 - Limit work-in-progress per person
 - Make ownership visible through assignment
-```
+
+<!-- markdownlint-disable MD040 -->
+
+````
+
+<!-- markdownlint-enable MD040 -->
 
 ### 2. Core Workflow Updates
 
@@ -277,9 +305,10 @@ Add assignment guidance as sub-steps at transition points in SKILL.md Core Workf
    3a. Self-assign the work item when beginning refinement (Tech Lead recommended).
    3b. Set work item state to `refinement` when beginning plan creation.
    3c. Stay assigned during entire refinement phase (plan creation, approval feedback loop, iterations).
-```
+````
 
 **Between Step 6 and Step 7 (new):**
+
 ```markdown
 6a. During approval feedback: Stay assigned and respond to questions/feedback in work item comments.
 6b. If revisions needed: Update plan, push changes, re-post link in same thread. Stay assigned.
@@ -287,6 +316,7 @@ Add assignment guidance as sub-steps at transition points in SKILL.md Core Workf
 ```
 
 **At Step 7 (lines 66-67):**
+
 ```markdown
 7. After approval, add work item sub-tasks for every plan task and keep a 1:1 mapping by name.
    7a. Unassign yourself to signal refinement complete and handoff to implementation.
@@ -295,6 +325,7 @@ Add assignment guidance as sub-steps at transition points in SKILL.md Core Workf
 ```
 
 **At Step 8 (lines 68-69):**
+
 ```markdown
 8. Execute each task and attach evidence and reviews to its sub-task.
    8a. When all sub-tasks complete, unassign yourself to signal implementation complete.
@@ -303,6 +334,7 @@ Add assignment guidance as sub-steps at transition points in SKILL.md Core Workf
 ```
 
 **At Step 10 (line 73):**
+
 ```markdown
 10b. When verification complete and acceptance criteria met, close work item (state: complete).
 10c. Work item auto-unassigns when closed.
@@ -332,7 +364,7 @@ Add to existing Red Flags section (after line 144):
 
 Replace existing example (lines 113-127) with assignment-aware version:
 
-```markdown
+````markdown
 ## Example
 
 ```bash
@@ -369,7 +401,13 @@ gh issue edit 30 --add-label "state:verification" --remove-label "state:implemen
 # QA self-assigns when ready to verify
 gh issue edit 30 --assignee @me
 ```
-```
+
+<!-- markdownlint-disable MD040 -->
+````
+
+````
+
+<!-- markdownlint-enable MD040 -->
 
 ### 6. Prerequisites Section Update
 
@@ -380,7 +418,7 @@ Add reference to assignment workflow (after line 14):
 
 - Ticketing system CLI installed and authenticated (gh for GitHub, ado for Azure DevOps, jira for Jira).
 - See [Assignment Workflow](references/assignment-workflow.md) for pull-based team coordination pattern.
-```
+````
 
 ### 7. Overview Section Update
 
@@ -394,37 +432,42 @@ Use work items as the source of truth for planning, approvals, execution evidenc
 
 ## BDD Test Scenarios
 
-### RED Scenarios (Baseline - Current Behavior Without Assignment Workflow)
+### RED Scenarios (Baseline - Current Behaviour Without Assignment Workflow)
 
-**Test 1: No assignment guidance during refinement**
+### Test 1: No assignment guidance during refinement
+
 - **Given**: Agent starts refinement on issue without assignment workflow
 - **When**: Agent creates design document
 - **Then**: Agent doesn't self-assign issue
 - **And**: No indication of who is responsible for refinement
 - **Evidence**: Check git history - design commits without assignment changes
 
-**Test 2: Unclear handoff after plan approval**
+### Test 2: Unclear handoff after plan approval
+
 - **Given**: Plan is approved in issue comments
 - **When**: Agent receives "approved" comment
 - **Then**: Agent doesn't unassign themselves
 - **And**: Next developer doesn't know ticket is ready to pull
 - **Evidence**: Issue remains assigned to planner after approval
 
-**Test 3: Assignment confusion during approval feedback**
+### Test 3: Assignment confusion during approval feedback
+
 - **Given**: Agent posts design for approval
 - **When**: Reviewer posts "continue" or feedback (not "approved")
 - **Then**: Agent unassigns themselves prematurely OR is unclear about ownership
 - **Evidence**: Assignment changes during feedback loop
 
-### GREEN Scenarios (Expected Behavior With Assignment Workflow)
+### GREEN Scenarios (Expected Behaviour With Assignment Workflow)
 
-**Test 1: Self-assign during refinement**
+### Test 1: Self-assign during refinement
+
 - **Given**: Agent picks up issue in "New Feature" state (unassigned)
 - **When**: Agent begins refinement
 - **Then**: Agent self-assigns issue and sets `state:refinement` label
 - **Evidence**: `gh issue view <issue> --json assignees,labels`
 
-**Test 2: Stay assigned during approval feedback**
+### Test 2: Stay assigned during approval feedback
+
 - **Given**: Agent has posted design for approval (assigned, state:refinement)
 - **When**: Reviewer posts feedback/"continue" (not "approved")
 - **Then**: Agent stays assigned and responds to feedback
@@ -432,7 +475,8 @@ Use work items as the source of truth for planning, approvals, execution evidenc
 - **And**: Assignment unchanged throughout iteration
 - **Evidence**: Git log shows design updates, issue history shows continuous assignment
 
-**Test 3: Unassign after explicit approval**
+### Test 3: Unassign after explicit approval
+
 - **Given**: Agent posted design, received explicit "approved" comment
 - **When**: Agent proceeds to add sub-tasks
 - **Then**: Agent unassigns themselves
@@ -440,21 +484,24 @@ Use work items as the source of truth for planning, approvals, execution evidenc
 - **And**: Issue is now unassigned and ready for developer to pull
 - **Evidence**: `gh issue view <issue> --json assignees,labels` shows unassigned + state:implementation
 
-**Test 4: Developer pulls and self-assigns**
+### Test 4: Developer pulls and self-assigns
+
 - **Given**: Issue is unassigned with `state:implementation` label
 - **When**: Developer ready to implement
 - **Then**: Developer self-assigns issue
 - **And**: Developer implements tasks
 - **Evidence**: Issue history shows developer self-assignment
 
-**Test 5: Developer unassigns after implementation**
+### Test 5: Developer unassigns after implementation
+
 - **Given**: All sub-tasks complete
 - **When**: Developer finishes implementation
 - **Then**: Developer unassigns themselves
 - **And**: Developer sets `state:verification` label
 - **Evidence**: Issue unassigned + state:verification
 
-**Test 6: QA pulls and verifies**
+### Test 6: QA pulls and verifies
+
 - **Given**: Issue unassigned with `state:verification` label
 - **When**: QA ready to verify
 - **Then**: QA self-assigns issue
@@ -464,20 +511,23 @@ Use work items as the source of truth for planning, approvals, execution evidenc
 
 ### PRESSURE Scenarios (Non-Ideal Conditions)
 
-**Test 1: Multiple tickets in queue**
+### Test 1: Multiple tickets in queue
+
 - **Given**: 5 unassigned issues in `state:implementation`
 - **When**: Developer looks for next work
 - **Then**: Developer can easily identify unassigned tickets to pull
 - **Evidence**: `gh issue list --label "state:implementation" --assignee "" --limit 5`
 
-**Test 2: Blocked during refinement**
+### Test 2: Blocked during refinement
+
 - **Given**: Agent assigned to issue, state:refinement
 - **When**: Agent is blocked waiting for stakeholder input
 - **Then**: Agent stays assigned (still responsible)
 - **And**: Agent posts comment explaining blocker
 - **Evidence**: Issue stays assigned with blocker comment
 
-**Test 3: Need to abandon mid-refinement**
+### Test 3: Need to abandon mid-refinement
+
 - **Given**: Agent assigned to issue, state:refinement, design partially done
 - **When**: Agent needs to step away (higher priority work)
 - **Then**: Agent posts status comment
@@ -487,7 +537,8 @@ Use work items as the source of truth for planning, approvals, execution evidenc
 
 ### Integration Scenarios
 
-**Test 1: Full lifecycle assignment flow**
+### Test 1: Full lifecycle assignment flow
+
 - **Given**: New issue created (unassigned, no state label)
 - **When**: Full workflow executed from refinement → implementation → verification
 - **Then**: Assignment changes match state transitions:
@@ -499,7 +550,8 @@ Use work items as the source of truth for planning, approvals, execution evidenc
   - Auto-unassigned on close
 - **Evidence**: Issue timeline shows assignment changes aligned with state changes
 
-**Test 2: Multiple platforms**
+### Test 2: Multiple platforms
+
 - **Given**: Repositories on GitHub, Azure DevOps, Jira
 - **When**: Agent follows assignment workflow on each platform
 - **Then**: CLI commands work correctly for each platform
