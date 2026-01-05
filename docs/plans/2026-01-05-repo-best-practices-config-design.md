@@ -521,40 +521,40 @@ Verification: 6/6 checks passed ✓
 ### GREEN Scenarios (Expected Behavior With Skill)
 
 **Core Functionality:**
-- [x] Platform detected from git remote URL
-- [x] Pre-flight checks run (CLI installed, authenticated, admin permissions)
-- [x] Current repository state audited
-- [x] Opinionated defaults presented for approval
-- [x] Interactive prompts used if defaults rejected
+- [ ] Platform detected from git remote URL
+- [ ] Pre-flight checks run (CLI installed, authenticated, admin permissions)
+- [ ] Current repository state audited
+- [ ] Opinionated defaults presented for approval
+- [ ] Interactive prompts used if defaults rejected
 
 **Required Settings Configured:**
-- [x] Branch protection (main, no direct push, require PR)
-- [x] Required reviewers (minimum 1)
-- [x] Signed commits required
-- [x] SAST and secret scanning enabled
-- [x] Linear history enforced (rebase required)
-- [x] Auto-merge on approval enabled
-- [x] Branch deletion after merge enabled
-- [x] Work item linkage enforced (commits and PRs)
-- [x] SECURITY.md created
-- [x] Container/IaC scanning enabled (if applicable)
+- [ ] Branch protection (main, no direct push, require PR)
+- [ ] Required reviewers (minimum 1)
+- [ ] Signed commits required
+- [ ] SAST and secret scanning enabled
+- [ ] Linear history enforced (rebase required)
+- [ ] Auto-merge on approval enabled
+- [ ] Branch deletion after merge enabled
+- [ ] Work item linkage enforced (commits and PRs)
+- [ ] SECURITY.md created
+- [ ] Container/IaC scanning enabled (if applicable)
 
 **Task Board Integration:**
-- [x] Task board created/linked (Kanban layout)
-- [x] README.md updated with taskboard link
-- [x] Board columns configured (Backlog, Ready, In Progress, Review, Done)
-- [x] Automation rules configured
+- [ ] Task board created/linked (Kanban layout)
+- [ ] README.md updated with taskboard link
+- [ ] Board columns configured (Backlog, Ready, In Progress, Review, Done)
+- [ ] Automation rules configured
 
 **Process Requirements:**
-- [x] Configuration decisions captured for ADR
-- [x] All settings verified post-configuration
-- [x] Idempotent: Safe to re-run, skips already-configured items
-- [x] CI/CD enforcement replicates all client-side hooks
+- [ ] Configuration decisions captured for ADR
+- [ ] All settings verified post-configuration
+- [ ] Idempotent: Safe to re-run, skips already-configured items
+- [ ] CI/CD enforcement replicates all client-side hooks
 
 **Platform-Specific Tests:**
-- [x] GitHub: All settings applied via `gh` CLI
-- [x] Azure DevOps: All policies applied via `ado` CLI
-- [x] GitLab: All protections applied via `glab` CLI
+- [ ] GitHub: All settings applied via `gh` CLI
+- [ ] Azure DevOps: All policies applied via `ado` CLI
+- [ ] GitLab: All protections applied via `glab` CLI
 
 ### Test Repositories
 
