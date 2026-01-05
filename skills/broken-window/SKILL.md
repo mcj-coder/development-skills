@@ -30,13 +30,13 @@ digraph fix_decision {
     "Estimate Remaining Work" [shape=box];
     "Fix Time < 2x Remaining?" [shape=diamond];
     "Fix Immediately" [shape=box, style=filled, fillcolor=lightgreen];
-    "Document in known-issues.md" [shape=box, style=filled, fillcolor=yellow];
+    "Create Tech-Debt Issue" [shape=box, style=filled, fillcolor=yellow];
 
     "Warning/Error Detected" -> "Estimate Fix Time";
     "Estimate Fix Time" -> "Estimate Remaining Work";
     "Estimate Remaining Work" -> "Fix Time < 2x Remaining?";
     "Fix Time < 2x Remaining?" -> "Fix Immediately" [label="yes"];
-    "Fix Time < 2x Remaining?" -> "Document in known-issues.md" [label="no"];
+    "Fix Time < 2x Remaining?" -> "Create Tech-Debt Issue" [label="no"];
 }
 ```
 
@@ -49,15 +49,15 @@ digraph fix_decision {
 1. Investigate root cause
 2. Estimate fix time vs remaining work
 3. If fix time < 2x → Fix immediately
-4. If fix time ≥ 2x → Document in `docs/known-issues.md` with justification
-5. Verify warning gone
+4. If fix time ≥ 2x → Create tech-debt issue (label: `tech-debt`, include steps to replicate, fix estimate)
+5. Verify warning gone or issue created
 
 ### Before Declaring Complete
 
 1. Review against repository standards (README, CONTRIBUTING, docs/)
 2. Check for: tests, documentation, code patterns, linting
 3. Apply 2x rule to each violation
-4. Fix or document each issue
+4. Fix or create tech-debt issue for each violation
 5. **Then** declare complete
 
 ### Skills-First Repositories
@@ -74,6 +74,6 @@ Before starting implementation:
 - "User didn't ask for tests/docs"
 - "Scope creep" / "Need to balance"
 
-**All mean: Apply 2x rule. Fix or document. No ignoring.**
+**All mean: Apply 2x rule. Fix or create tech-debt issue. No ignoring.**
 
 See `references/rationalizations.md` for complete excuse table and brownfield strategies.
