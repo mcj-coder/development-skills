@@ -18,7 +18,7 @@ Then the agent avoids using work item comments and sub-tasks for tracking
 
 Given a user asks to postpone review and evidence
 When the agent responds without this skill
-Then the agent omits persona reviews and evidence in the work item chain
+Then the agent omits role reviews and evidence in the work item chain
 
 ## Baseline Observations (Simulated)
 
@@ -40,7 +40,7 @@ Without the skill, a typical response rationalizes skipping work item workflow s
 - Each plan task maps to a work item sub-task (task list or sub-work-item).
 - Evidence and reviews are attached to each sub-task.
 - Sub-tasks close only after approval and plan task is marked complete.
-- Persona reviews are posted in the work item comment chain and summarized in the plan.
+- Role reviews are posted in the work item comment chain and summarized in the plan.
 - Follow-up changes are new tasks in the same work item.
 - Next steps create a new work item with implementation + test detail.
 - A PR is created after acceptance.
