@@ -13,6 +13,7 @@ description: >
 Treat the work item system as the source of truth and keep progress visible at
 all times. If you cannot prove context or tooling, stop and fix that first.
 
+**REQUIRED SUB-SKILL:** superpowers:brainstorming
 **REQUIRED SUB-SKILL:** superpowers:test-driven-development
 **REQUIRED SUB-SKILL:** superpowers:verification-before-completion
 
@@ -24,6 +25,24 @@ use `github-issue-driven-delivery`.
 Start when a comment mentions the agent and includes a task verb (for example,
 "manage", "handle", "take", "own"). If the intent is unclear, ask for
 confirmation before acting.
+
+Accept agent identifiers by CLI name:
+
+- `@claude` and `@codex`
+- `@agent` aliases to the primary agent
+
+Supported phrases include "manage this ticket", "handle this ticket", or
+"own this issue" and should start refinement, planning, and orchestration.
+
+## Brainstorming Gate
+
+Before making changes, use brainstorming to confirm:
+
+- Ticketing system and taskboard source
+- CI/CD system for automation
+- Agent CLIs to configure and which is primary
+
+Do not proceed until these are explicit.
 
 ## Work Item Discovery
 
@@ -51,6 +70,51 @@ Before reading or updating tickets, ensure the CLI is installed and authenticate
 - If the CLI is missing, run its setup flow using the official install steps.
 - If authentication is missing, run the CLI auth flow.
 - If setup requires interactive input you cannot complete, stop and ask for help.
+
+## Skill Source Setup (Local and Remote)
+
+For development, a local symlink to the skills repo is acceptable:
+
+```text
+ln -s <path-to-development-skills>/skills ~/.codex/skills/development-skills
+```
+
+Remove the symlink after the task is complete.
+
+For remote agents (CI), clone the skills repo for the duration of the run and
+configure the agent to scan that path. When the task is complete, documentation
+must reference the default branch instead of the feature branch.
+
+When creating AGENTS.md in a new repo, include references to prerequisite
+skills repositories and where they should be cloned. Use the agent's default
+skill location pattern. For example:
+
+- **Superpowers**: <https://github.com/obra/superpowers>
+  - Claude: `~/.claude/superpowers`
+  - Codex: `~/.codex/superpowers` (Windows: `%USERPROFILE%\.codex\superpowers`)
+  - Bootstrap: Follow installation instructions from repository
+
+- **development-skills**: <https://github.com/mcj-coder/development-skills>
+  - Claude: `~/.claude/skills/development-skills`
+  - Codex: `~/.codex/skills/development-skills` (Windows: `%USERPROFILE%\.codex\skills\development-skills`)
+
+Do not assume these repos are already installed. Reference the agent's
+installation guide for platform-specific paths.
+
+## Workflow Integration (Minimal)
+
+Create or update the CI workflow to trigger agent CLIs from ticket events.
+Avoid duplicating delivery workflows already covered by
+`github-issue-driven-delivery`. Keep this focused on:
+
+- Event trigger (for example, issue comment)
+- CLI invocation for the primary agent
+- Evidence comment back to the issue
+
+Prefer non-interactive CLI usage in CI. Examples:
+
+- `claude -p "<prompt>"`
+- `codex exec "<command or prompt>"`
 
 ## Core Execution Loop
 

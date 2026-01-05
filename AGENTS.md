@@ -25,25 +25,50 @@ These rules tighten the workflow for autonomous execution.
   squash or fast-forward only) and use a Conventional Commit squash message
   with ticket footer when appropriate.
 
+## Bootstrap (First-Time Setup)
+
+**If this is your first time in this repository**, install prerequisites before loading skills:
+
+1. **Install Superpowers** (if not already installed):
+   - Follow: <https://github.com/obra/superpowers#installation>
+   - Verify: Check that `~/.claude/superpowers` or `~/.codex/superpowers` exists
+
+2. **Clone development-skills** (this repository):
+   - Clone to agent's default skills location
+   - Claude: `~/.claude/skills/development-skills`
+   - Codex: `~/.codex/skills/development-skills`
+
+3. **Verify skills are discoverable**:
+   - Agent should auto-detect skills from standard locations
+   - Test by attempting to load `development-skills:skills-first-workflow`
+
+**After bootstrap is complete**, follow the Prerequisites First workflow below.
+
 ## Prerequisites First
 
-Before any task or response in this repo:
+Before any task or response in this repo (after bootstrap):
 
-1. Run the Superpowers bootstrap to load the skills list.
-2. Load any relevant skill with `superpowers-codex use-skill <skill-name>`.
+1. Load `development-skills:skills-first-workflow` to enforce workflow.
+2. Ensure Superpowers is installed and bootstrapped.
+3. Load `superpowers:using-superpowers`.
+4. Load any other relevant skills for the task.
 
-## Superpowers-First Default Workflow
+## Skills-First Default Workflow
 
 The default in this repo is **skills-first, not implementation-first**. Do not
 start coding or editing files until the skills workflow is active.
 
-1. Run bootstrap via Node.
-2. Load `superpowers:using-superpowers`, then all relevant skills.
-3. Use process skills (for example, `superpowers:brainstorming`,
-   `superpowers:writing-plans`, `superpowers:test-driven-development`) before
-   implementation.
-4. Implement only after skills and (if required) plans are in place.
-5. Verify with the appropriate checks before claiming completion.
+The `development-skills:skills-first-workflow` skill enforces this workflow:
+
+1. Verifies Superpowers is installed and bootstrapped (AutoFix if not).
+2. Verifies `superpowers:using-superpowers` is loaded (AutoFix if not).
+3. Verifies AGENTS.md exists and is current (AutoFix if not).
+4. Ensures process skills are loaded before implementation:
+   - `superpowers:brainstorming` (for unclear requirements or new features)
+   - `superpowers:writing-plans` (for multi-step tasks)
+   - `superpowers:test-driven-development` (for code changes)
+   - `superpowers:verification-before-completion` (always)
+5. Blocks implementation until all verifications pass.
 
 If autonomous execution is blocked or uncertain, hand off to a human but keep
 the skills-first workflow intact. Human-driven fallback still requires the same
@@ -91,33 +116,26 @@ responsibility of the agent (or human) to:
 - If in doubt refer to the [agentskills.io specification](https://agentskills.io/specification)
 - Keep any shared reference documents in the top level `docs/` folder
 
-## Superpowers Onboarding
+## Prerequisite Repositories
 
-Superpowers is the source of truth for the skill library: <https://github.com/obra/superpowers>
+Skills in this repository depend on external skill libraries. Install these
+before using skills from this repo:
 
-- **CRITICAL**: Ensure that you run the bootstrap script with Node when using
-  powershell (or on windows), for example
-  `node %USERPROFILE%\.codex\superpowers\.codex\superpowers-codex bootstrap`.
-- **LOCAL POLICY**: Run all Superpowers scripts via Node (for example,
-  `node %USERPROFILE%\.codex\superpowers\.codex\superpowers-codex <command>`).
-  This does not apply to skill content.
+- **Superpowers**: <https://github.com/obra/superpowers>
+  - Follow installation and bootstrap instructions for your agent
 
-- **CRITICAL**: Do not proceed with any task until the bootstrap has been run,
-  the superpowers skills are available and you've applied the
-  `using-superpowers` skill.
+- **development-skills**: <https://github.com/mcj-coder/development-skills>
+  - This repository (install per your agent's skill installation mechanism)
 
-- Follow the Codex install guide in `README.md`.
-- Always run the bootstrap via Node:
-  `node %USERPROFILE%\.codex\superpowers\.codex\superpowers-codex bootstrap`.
-- Superpowers agents live in `~/.codex/superpowers/agents` and are referenced by
-  skills that dispatch subagents.
+## Superpowers Bootstrap
 
-### References
+Superpowers is the source of truth for the skill library.
 
-- Superpowers Codex install guide:
-  <https://raw.githubusercontent.com/obra/superpowers/refs/heads/main/.codex/INSTALL.md>
-- Codex docs:
-  <https://github.com/obra/superpowers/blob/main/docs/README.codex.md>
+- **CRITICAL**: Do not proceed with any task until Superpowers has been
+  installed, bootstrapped, and you've applied the `using-superpowers` skill.
+- Follow the installation instructions in the Superpowers repository for your
+  specific agent.
+- Use your agent's default skill locations and loading mechanisms.
 
 ## Agent-Specific Instructions
 

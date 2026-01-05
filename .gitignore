@@ -8,3 +8,6 @@ node_modules/
 .tmp/
 .worktrees/
 .DS_Store
+
+# Local Claude settings
+.claude/settings.local.json
