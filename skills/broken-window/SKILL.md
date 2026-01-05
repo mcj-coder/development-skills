@@ -1,0 +1,79 @@
+---
+name: broken-window
+description: Use when warnings/errors occur during git operations, package management, builds, or when reviewing completed work for standards violations. Fix immediately unless impact doubles delivery time.
+---
+
+# Broken Window
+
+## Overview
+
+**Fix warnings, errors, and standards violations immediately.** Broken windows—small signs of neglect—compound into technical debt. The 2x rule: fix now unless fix time > 2x remaining work.
+
+**Violating the letter of these rules IS violating the spirit of these rules.** The 2x threshold is objective and measurable—there is no "spirit vs letter" escape.
+
+**REQUIRED BACKGROUND:** superpowers:verification-before-completion, superpowers:systematic-debugging
+
+## When to Use
+
+**Always triggered for:**
+- Warnings/errors during git, npm, build, or test operations
+- Before declaring work complete
+- Standards violations detected during code review
+- Skills-first repos: Before starting work (validate prerequisites)
+
+## The 2x Rule
+
+```dot
+digraph fix_decision {
+    "Warning/Error Detected" [shape=box];
+    "Estimate Fix Time" [shape=box];
+    "Estimate Remaining Work" [shape=box];
+    "Fix Time < 2x Remaining?" [shape=diamond];
+    "Fix Immediately" [shape=box, style=filled, fillcolor=lightgreen];
+    "Document in known-issues.md" [shape=box, style=filled, fillcolor=yellow];
+
+    "Warning/Error Detected" -> "Estimate Fix Time";
+    "Estimate Fix Time" -> "Estimate Remaining Work";
+    "Estimate Remaining Work" -> "Fix Time < 2x Remaining?";
+    "Fix Time < 2x Remaining?" -> "Fix Immediately" [label="yes"];
+    "Fix Time < 2x Remaining?" -> "Document in known-issues.md" [label="no"];
+}
+```
+
+**Example:** Remaining work = 15 minutes. Fix takes 10 minutes. Ratio = 0.67x. **Fix immediately.**
+
+## Required Actions
+
+### When Warning/Error Appears
+
+1. Investigate root cause
+2. Estimate fix time vs remaining work
+3. If fix time < 2x → Fix immediately
+4. If fix time ≥ 2x → Document in `docs/known-issues.md` with justification
+5. Verify warning gone
+
+### Before Declaring Complete
+
+1. Review against repository standards (README, CONTRIBUTING, docs/)
+2. Check for: tests, documentation, code patterns, linting
+3. Apply 2x rule to each violation
+4. Fix or document each issue
+5. **Then** declare complete
+
+### Skills-First Repositories
+
+Before starting implementation:
+1. Check for `AGENTS.md` with skills-first-workflow
+2. Verify superpowers installed and required skills loaded
+3. Load missing skills before proceeding
+
+## Red Flags - STOP
+
+- "It's just a warning" / "Normal behavior" / "Can fix later"
+- "No time now" (without 2x calculation)
+- "User didn't ask for tests/docs"
+- "Scope creep" / "Need to balance"
+
+**All mean: Apply 2x rule. Fix or document. No ignoring.**
+
+See `references/rationalizations.md` for complete excuse table and brownfield strategies.
