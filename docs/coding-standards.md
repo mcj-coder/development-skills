@@ -102,6 +102,53 @@ When updating documentation as result of applying skills:
 - All tests pass (BDD checklists verified)
 - Documentation updated and consistent
 
+### Warning and Error Remediation (2x Rule)
+
+**Objective threshold for fixing vs documenting issues:**
+
+When warnings, errors, or standards violations occur:
+
+1. **Investigate root cause** (don't just ignore or suppress)
+2. **Estimate fix time** vs remaining work time
+3. **Apply 2x threshold:**
+   - If fix time < 2x remaining work → Fix immediately
+   - If fix time ≥ 2x remaining work → Document in `docs/known-issues.md` with justification
+4. **Verify resolution** (warning gone or properly documented)
+
+**Example:** Remaining work = 30 minutes. Fix takes 15 minutes. Ratio = 0.5x. **Fix immediately.**
+
+**Common rationalizations to reject:**
+- "It's just a warning, not an error" → Warnings indicate problems
+- "This is normal behavior" → Normal warnings still indicate configuration issues
+- "Can fix it later" → "Later" rarely happens; fix unless >2x impact
+- "No time now" → Must calculate 2x ratio first, not subjective
+- "That's scope creep" → Fixing issues is part of the work
+
+**Documentation requirement:**
+- **Fixed issues:** Update this file with configuration/pattern applied
+- **Deferred issues (>2x threshold):** Create tech-debt issue with:
+  - Issue description and impact
+  - Fix time estimate showing >2x threshold exceeded
+  - Steps to replicate
+  - Priority and timeline for resolution
+  - Label: `tech-debt`
+- **Explicitly approved exclusions:** Document in `docs/known-issues.md` ONLY if:
+  - User/stakeholder explicitly approved not fixing
+  - Justification for permanent exclusion documented
+  - Regular issues should be tickets, not known-issues entries
+
+### Pre-Completion Review Checklist
+
+Before declaring work complete, verify against repository standards:
+
+1. **Code quality:** Tests exist, documentation updated, follows patterns
+2. **Linting:** No warnings or errors
+3. **Standards:** Matches conventions in README, CONTRIBUTING, this file
+4. **Repository:** Feature branch used, issue updated, PR created if required
+5. **Apply 2x rule** to any violations found
+6. **Fix or document** each issue
+7. **Then** declare complete
+
 ### Test-Driven Development
 
 TDD is mandatory for all changes, including documentation.
