@@ -67,7 +67,7 @@
       AGENTS.md only.
 - [ ] Required skills announced include:
   - agent-workitem-automation
-  - github-issue-driven-delivery
+  - issue-driven-delivery
   - superpowers:brainstorming
   - superpowers:test-driven-development
   - superpowers:verification-before-completion
