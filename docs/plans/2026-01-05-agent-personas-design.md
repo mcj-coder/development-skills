@@ -6,11 +6,13 @@
 
 ## Goal
 
-Define standardized agent personas that can be referenced consistently across skills to provide expert perspectives during code reviews, planning, and validation.
+Define standardized agent personas that can be referenced consistently across skills to provide
+expert perspectives during code reviews, planning, and validation.
 
 ## Problem Statement
 
-Skills currently reference personas inconsistently (e.g., "Tech Lead", "Developer", "QA") without formal definitions. This creates:
+Skills currently reference personas inconsistently (e.g., "Tech Lead", "Developer", "QA") without
+formal definitions. This creates:
 
 - Inconsistent naming across skills
 - Unclear what perspective each persona should bring
@@ -159,7 +161,7 @@ Skills currently reference personas inconsistently (e.g., "Tech Lead", "Develope
 
 ### 4. Security Reviewer
 
-**Role:** Security and threat modeling
+**Role:** Security and threat modelling
 
 **Expertise:**
 
@@ -167,7 +169,7 @@ Skills currently reference personas inconsistently (e.g., "Tech Lead", "Develope
 - Secure coding practices
 - Authentication and authorization
 - Data protection and privacy
-- Threat modeling
+- Threat modelling
 
 **Perspective Focus:**
 
@@ -327,7 +329,7 @@ Skills currently reference personas inconsistently (e.g., "Tech Lead", "Develope
 - Business logic contradicts known requirements
 - Feature scope significantly exceeds original requirements
 - Missing validation for critical business rules
-- User-facing behavior that violates business policies
+- User-facing behaviour that violates business policies
 
 ### 8. Documentation Specialist
 
@@ -370,7 +372,7 @@ Skills currently reference personas inconsistently (e.g., "Tech Lead", "Develope
 - Breaking changes without migration guide
 - Error messages that expose internal implementation details
 - Missing documentation for critical user-facing features
-- Outdated documentation that contradicts current behavior
+- Outdated documentation that contradicts current behaviour
 
 ### 9. UX Expert
 
@@ -555,7 +557,7 @@ Skills currently reference personas inconsistently (e.g., "Tech Lead", "Develope
 **Expertise:**
 
 - Security architecture patterns
-- Threat modeling frameworks
+- Threat modelling frameworks
 - Compliance requirements (SOC2, GDPR, etc.)
 - Zero-trust architecture
 - Identity and access management
@@ -644,6 +646,7 @@ Skills should reference personas using this format:
 
 ```markdown
 **Review Personas:**
+
 - Tech Lead: Architecture and design patterns
 - Senior Developer: Code quality and maintainability
 - Security Reviewer: Authentication and input validation
@@ -653,6 +656,7 @@ Skills should reference personas using this format:
 
 ```markdown
 **Scenario: Code review with multiple perspectives**
+
 - **Given**: PR with new authentication feature
 - **When**: Requesting code review
 - **Then**: Reviews requested from:
@@ -665,6 +669,7 @@ Skills should reference personas using this format:
 
 ```markdown
 Please review from these perspectives:
+
 - @persona:security - Authentication flow and input validation
 - @persona:performance - Database query efficiency
 - @persona:senior-dev - Code organization and clarity
@@ -676,11 +681,12 @@ Please review from these perspectives:
 
 **Location:** `docs/roles/` (changed from `docs/personas` per feedback)
 
-**Rationale:** These are team role descriptors that apply to both human teams and agent perspectives. Using "roles" terminology is more broadly applicable.
+**Rationale:** These are team role descriptors that apply to both human teams and agent
+perspectives. Using "roles" terminology is more broadly applicable.
 
 **Structure:**
 
-```
+```text
 docs/roles/
 ├── README.md                    # Overview, index, usage guidance
 ├── tech-lead.md
@@ -705,15 +711,19 @@ docs/roles/
 # Team Roles
 
 ## Overview
+
 Team role definitions for both human teams and agent perspectives.
 
 ## Role Index
+
 [List of all roles with brief descriptions]
 
 ## Using Roles in Skills
+
 [Integration guidance]
 
 ## External Role References
+
 - **Code Reviewer**: See `superpowers:receiving-code-review` (not editable here)
 ```
 
@@ -741,7 +751,8 @@ Each `<role>.md` contains:
 
 ### Note on Code Reviewer Role
 
-The **Code Reviewer** persona exists in Superpowers (`superpowers:receiving-code-review`). We can reference it but cannot edit it. This role focuses on general code review practices.
+The **Code Reviewer** persona exists in Superpowers (`superpowers:receiving-code-review`). We can
+reference it but cannot edit it. This role focuses on general code review practices.
 
 ## Naming Conventions
 
@@ -787,6 +798,7 @@ Example:
 ## When to Use
 
 This skill should be reviewed by:
+
 - **Tech Lead**: Validate architecture decisions
 - **Senior Developer**: Review code quality
 - **Security Reviewer**: Check for vulnerabilities
@@ -802,6 +814,7 @@ Include persona perspectives in test scenarios:
 **Given**: Implementation complete
 **When**: Requesting code review
 **Then**: Each persona provides perspective:
+
 - Tech Lead: ✅ Architecture sound
 - Security Reviewer: ✅ No vulnerabilities found
 - Senior Developer: ✅ Code quality excellent
@@ -817,10 +830,12 @@ Reference personas when requesting reviews:
 Please review from these perspectives:
 
 **@persona:security**
+
 - Authentication flow (lines 45-89)
 - Input validation (lines 120-145)
 
 **@persona:performance**
+
 - Database queries (lines 200-230)
 - Caching strategy (lines 250-270)
 ```

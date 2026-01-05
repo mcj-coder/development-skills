@@ -2,7 +2,8 @@
 
 ## Overview
 
-Team role definitions for both human teams and agent perspectives. These roles provide standardized expert perspectives during code reviews, planning, and validation.
+Team role definitions for both human teams and agent perspectives. These roles provide standardized
+expert perspectives during code reviews, planning, and validation.
 
 ## Role Index
 
@@ -14,7 +15,7 @@ Team role definitions for both human teams and agent perspectives. These roles p
 
 ### Security and Performance
 
-- **[Security Reviewer](security-reviewer.md)** - Security and threat modeling
+- **[Security Reviewer](security-reviewer.md)** - Security and threat modelling
 - **[Performance Engineer](performance-engineer.md)** - Performance optimization and scalability
 - **[Security Architect](security-architect.md)** - Security architecture and compliance
 

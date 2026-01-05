@@ -97,7 +97,9 @@ and Jira examples.
     based on work item content.
     10b. When verification complete and acceptance criteria met, close work item (state: complete).
     10c. Work item auto-unassigns when closed.
-11. Require each role to post a separate review comment in the work item thread using superpowers:receiving-code-review. See [Team Roles](../../docs/roles/README.md) for role definitions.
+11. Require each role to post a separate review comment in the work item thread using
+    superpowers:receiving-code-review. See [Team Roles](../../docs/roles/README.md) for role
+    definitions.
 12. Summarize role recommendations in the plan and link to the individual review comments.
 13. Add follow-up fixes as new tasks in the same work item.
 14. Create a new work item for next steps with implementation, test detail, and acceptance criteria.
