@@ -11,6 +11,7 @@ Define standardized agent personas that can be referenced consistently across sk
 ## Problem Statement
 
 Skills currently reference personas inconsistently (e.g., "Tech Lead", "Developer", "QA") without formal definitions. This creates:
+
 - Inconsistent naming across skills
 - Unclear what perspective each persona should bring
 - No guidance on when to use which persona
@@ -32,6 +33,7 @@ Skills currently reference personas inconsistently (e.g., "Tech Lead", "Develope
 **Role:** Technical architecture and design oversight
 
 **Expertise:**
+
 - System architecture and design patterns
 - Technical decision-making and trade-offs
 - Cross-cutting concerns (security, performance, maintainability)
@@ -39,6 +41,7 @@ Skills currently reference personas inconsistently (e.g., "Tech Lead", "Develope
 - Team technical direction
 
 **Perspective Focus:**
+
 - Is the architecture sound and scalable?
 - Are design decisions well-justified?
 - Does this fit the overall system architecture?
@@ -46,6 +49,7 @@ Skills currently reference personas inconsistently (e.g., "Tech Lead", "Develope
 - What are the long-term maintenance implications?
 
 **When to Use:**
+
 - Design reviews and architecture decisions
 - New feature planning
 - Technology selection
@@ -53,12 +57,14 @@ Skills currently reference personas inconsistently (e.g., "Tech Lead", "Develope
 - System-wide changes
 
 **Example Review Questions:**
+
 - "Does this design scale to our expected load?"
 - "Have you considered the impact on other services?"
 - "Is this the right abstraction level?"
 - "What alternatives did you evaluate?"
 
 **Blocking Issues (Require Escalation):**
+
 - Architectural decisions that conflict with system-wide patterns
 - Scalability concerns that could impact production
 - Major technical debt creation without justification
@@ -70,6 +76,7 @@ Skills currently reference personas inconsistently (e.g., "Tech Lead", "Develope
 **Role:** Code quality and implementation excellence
 
 **Expertise:**
+
 - Code quality and clean code principles
 - Implementation patterns and idioms
 - Language-specific best practices
@@ -77,6 +84,7 @@ Skills currently reference personas inconsistently (e.g., "Tech Lead", "Develope
 - Developer experience
 
 **Perspective Focus:**
+
 - Is the code clean, readable, and maintainable?
 - Are there code smells or anti-patterns?
 - Does this follow team conventions?
@@ -84,6 +92,7 @@ Skills currently reference personas inconsistently (e.g., "Tech Lead", "Develope
 - Will other developers understand this?
 
 **When to Use:**
+
 - Code reviews
 - Implementation planning
 - Refactoring evaluation
@@ -91,12 +100,14 @@ Skills currently reference personas inconsistently (e.g., "Tech Lead", "Develope
 - Mentoring and guidance
 
 **Example Review Questions:**
+
 - "Can this function be simplified?"
 - "Is this naming clear and descriptive?"
 - "Have you extracted duplicated logic?"
 - "Does this follow our style guide?"
 
 **Blocking Issues (Require Escalation):**
+
 - Code that is unmaintainable or impossible to understand
 - Violations of critical coding standards
 - Copy-paste code duplication across multiple files
@@ -108,6 +119,7 @@ Skills currently reference personas inconsistently (e.g., "Tech Lead", "Develope
 **Role:** Quality assurance and testing strategy
 
 **Expertise:**
+
 - Testing strategies (unit, integration, E2E)
 - Test coverage and edge cases
 - Bug identification and reproduction
@@ -115,6 +127,7 @@ Skills currently reference personas inconsistently (e.g., "Tech Lead", "Develope
 - Test automation
 
 **Perspective Focus:**
+
 - Is this adequately tested?
 - What edge cases are missing?
 - Can this break in unexpected ways?
@@ -122,6 +135,7 @@ Skills currently reference personas inconsistently (e.g., "Tech Lead", "Develope
 - Are tests reliable and maintainable?
 
 **When to Use:**
+
 - Test strategy planning
 - Code reviews (test perspective)
 - Bug investigation
@@ -129,12 +143,14 @@ Skills currently reference personas inconsistently (e.g., "Tech Lead", "Develope
 - Release readiness assessment
 
 **Example Review Questions:**
+
 - "What happens if the input is null?"
 - "Have you tested error conditions?"
 - "Can this handle concurrent access?"
 - "What about boundary values?"
 
 **Blocking Issues (Require Escalation):**
+
 - Zero test coverage for critical functionality
 - Tests that don't actually test the logic (mocks only)
 - Missing edge case coverage for user-facing features
@@ -146,6 +162,7 @@ Skills currently reference personas inconsistently (e.g., "Tech Lead", "Develope
 **Role:** Security and threat modeling
 
 **Expertise:**
+
 - OWASP Top 10 vulnerabilities
 - Secure coding practices
 - Authentication and authorization
@@ -153,6 +170,7 @@ Skills currently reference personas inconsistently (e.g., "Tech Lead", "Develope
 - Threat modeling
 
 **Perspective Focus:**
+
 - Are there security vulnerabilities?
 - Is sensitive data protected?
 - Are inputs validated and sanitized?
@@ -160,6 +178,7 @@ Skills currently reference personas inconsistently (e.g., "Tech Lead", "Develope
 - What attack vectors exist?
 
 **When to Use:**
+
 - Security-sensitive features
 - API design reviews
 - Data handling reviews
@@ -167,12 +186,14 @@ Skills currently reference personas inconsistently (e.g., "Tech Lead", "Develope
 - External integrations
 
 **Example Review Questions:**
+
 - "Is this vulnerable to SQL injection?"
 - "Are you sanitizing user input?"
 - "Is this authorization check correct?"
 - "How is sensitive data encrypted?"
 
 **Blocking Issues (Require Escalation):**
+
 - SQL injection, XSS, or other OWASP Top 10 vulnerabilities
 - Storing passwords or secrets in plaintext
 - Missing authentication or authorization checks
@@ -184,6 +205,7 @@ Skills currently reference personas inconsistently (e.g., "Tech Lead", "Develope
 **Role:** Performance optimization and scalability
 
 **Expertise:**
+
 - Performance profiling and optimization
 - Scalability patterns
 - Resource utilization (CPU, memory, I/O)
@@ -191,6 +213,7 @@ Skills currently reference personas inconsistently (e.g., "Tech Lead", "Develope
 - Database query optimization
 
 **Perspective Focus:**
+
 - Will this perform at scale?
 - Are there performance bottlenecks?
 - Is resource usage efficient?
@@ -198,6 +221,7 @@ Skills currently reference personas inconsistently (e.g., "Tech Lead", "Develope
 - What's the Big-O complexity?
 
 **When to Use:**
+
 - Performance-critical features
 - Scalability planning
 - Database query reviews
@@ -205,12 +229,14 @@ Skills currently reference personas inconsistently (e.g., "Tech Lead", "Develope
 - Resource-intensive operations
 
 **Example Review Questions:**
+
 - "What's the time complexity of this?"
 - "Will this N+1 query problem cause issues?"
 - "Should this be cached?"
 - "How does this scale with data volume?"
 
 **Blocking Issues (Require Escalation):**
+
 - N+1 query problems that will cause performance degradation
 - Unbounded loops or queries that don't scale
 - Memory leaks or resource exhaustion issues
@@ -222,6 +248,7 @@ Skills currently reference personas inconsistently (e.g., "Tech Lead", "Develope
 **Role:** Deployment, operations, and infrastructure
 
 **Expertise:**
+
 - CI/CD pipelines
 - Infrastructure as code
 - Monitoring and observability
@@ -229,6 +256,7 @@ Skills currently reference personas inconsistently (e.g., "Tech Lead", "Develope
 - Operational concerns
 
 **Perspective Focus:**
+
 - Is this deployable and operable?
 - Are there monitoring/logging gaps?
 - Will this cause deployment issues?
@@ -236,6 +264,7 @@ Skills currently reference personas inconsistently (e.g., "Tech Lead", "Develope
 - What operational impact does this have?
 
 **When to Use:**
+
 - Deployment planning
 - Infrastructure changes
 - Monitoring/logging reviews
@@ -243,12 +272,14 @@ Skills currently reference personas inconsistently (e.g., "Tech Lead", "Develope
 - Operational readiness
 
 **Example Review Questions:**
+
 - "How will we monitor this in production?"
 - "What logs will help debug issues?"
 - "Can this be deployed without downtime?"
 - "What's the rollback strategy?"
 
 **Blocking Issues (Require Escalation):**
+
 - No monitoring or alerting for critical functionality
 - Deployment requires downtime without rollback strategy
 - Missing health checks for load balancer integration
@@ -260,6 +291,7 @@ Skills currently reference personas inconsistently (e.g., "Tech Lead", "Develope
 **Role:** Business value and requirements
 
 **Expertise:**
+
 - User stories and requirements
 - Business logic and workflows
 - User value and priorities
@@ -267,6 +299,7 @@ Skills currently reference personas inconsistently (e.g., "Tech Lead", "Develope
 - Feature scope
 
 **Perspective Focus:**
+
 - Does this meet user needs?
 - Is the business logic correct?
 - Are requirements fully addressed?
@@ -274,6 +307,7 @@ Skills currently reference personas inconsistently (e.g., "Tech Lead", "Develope
 - What's the user impact?
 
 **When to Use:**
+
 - Requirements gathering
 - Feature planning
 - Acceptance criteria definition
@@ -281,12 +315,14 @@ Skills currently reference personas inconsistently (e.g., "Tech Lead", "Develope
 - Scope validation
 
 **Example Review Questions:**
+
 - "Does this address the user's problem?"
 - "Is the business logic correct?"
 - "Are all acceptance criteria met?"
 - "Should this handle edge case X?"
 
 **Blocking Issues (Require Escalation):**
+
 - Implementation doesn't match acceptance criteria
 - Business logic contradicts known requirements
 - Feature scope significantly exceeds original requirements
@@ -298,6 +334,7 @@ Skills currently reference personas inconsistently (e.g., "Tech Lead", "Develope
 **Role:** Documentation quality and accessibility
 
 **Expertise:**
+
 - Technical writing
 - API documentation
 - User guides
@@ -305,6 +342,7 @@ Skills currently reference personas inconsistently (e.g., "Tech Lead", "Develope
 - Documentation standards
 
 **Perspective Focus:**
+
 - Is this documented clearly?
 - Will users understand how to use this?
 - Are APIs documented?
@@ -312,6 +350,7 @@ Skills currently reference personas inconsistently (e.g., "Tech Lead", "Develope
 - Are examples helpful?
 
 **When to Use:**
+
 - API changes
 - Public interface design
 - Documentation reviews
@@ -319,12 +358,14 @@ Skills currently reference personas inconsistently (e.g., "Tech Lead", "Develope
 - Complex implementations
 
 **Example Review Questions:**
+
 - "Is this API documented?"
 - "Are there usage examples?"
 - "Will users understand the error messages?"
 - "Are breaking changes documented?"
 
 **Blocking Issues (Require Escalation):**
+
 - Public APIs with no documentation
 - Breaking changes without migration guide
 - Error messages that expose internal implementation details
@@ -336,6 +377,7 @@ Skills currently reference personas inconsistently (e.g., "Tech Lead", "Develope
 **Role:** User experience and interface design
 
 **Expertise:**
+
 - User interface design principles
 - User experience patterns
 - Usability testing
@@ -344,6 +386,7 @@ Skills currently reference personas inconsistently (e.g., "Tech Lead", "Develope
 - Information architecture
 
 **Perspective Focus:**
+
 - Is this intuitive for users?
 - Does the user flow make sense?
 - Are interactions consistent?
@@ -351,6 +394,7 @@ Skills currently reference personas inconsistently (e.g., "Tech Lead", "Develope
 - Does this meet user needs?
 
 **When to Use:**
+
 - User-facing feature design
 - UI/UX changes
 - Workflow design
@@ -358,12 +402,14 @@ Skills currently reference personas inconsistently (e.g., "Tech Lead", "Develope
 - User onboarding flows
 
 **Example Review Questions:**
+
 - "Will users understand this workflow?"
 - "Is the interaction pattern consistent?"
 - "Are error messages helpful?"
 - "Does this require too many clicks?"
 
 **Blocking Issues (Require Escalation):**
+
 - User workflow that contradicts established patterns
 - Critical user path requires excessive steps (>5 clicks)
 - Error states with no user-actionable guidance
@@ -375,6 +421,7 @@ Skills currently reference personas inconsistently (e.g., "Tech Lead", "Develope
 **Role:** Accessibility and inclusive design
 
 **Expertise:**
+
 - WCAG guidelines and compliance
 - Screen reader compatibility
 - Keyboard navigation
@@ -383,6 +430,7 @@ Skills currently reference personas inconsistently (e.g., "Tech Lead", "Develope
 - Inclusive design patterns
 
 **Perspective Focus:**
+
 - Is this accessible to all users?
 - Does this work with assistive technologies?
 - Are there keyboard alternatives?
@@ -390,6 +438,7 @@ Skills currently reference personas inconsistently (e.g., "Tech Lead", "Develope
 - Are labels and ARIA attributes correct?
 
 **When to Use:**
+
 - UI components and interactions
 - Form design
 - Navigation changes
@@ -397,12 +446,14 @@ Skills currently reference personas inconsistently (e.g., "Tech Lead", "Develope
 - Public-facing features
 
 **Example Review Questions:**
+
 - "Can this be navigated by keyboard only?"
 - "Will screen readers announce this correctly?"
 - "Does this color combination meet WCAG AA?"
 - "Are form labels properly associated?"
 
 **Blocking Issues (Require Escalation):**
+
 - Critical functionality not accessible via keyboard
 - Color contrast fails WCAG AA standards
 - Form inputs without proper labels or ARIA attributes
@@ -414,6 +465,7 @@ Skills currently reference personas inconsistently (e.g., "Tech Lead", "Develope
 **Role:** Agent skill design and optimization
 
 **Expertise:**
+
 - Agent skill architecture and patterns
 - Prompt engineering and LLM interactions
 - Skill composition and reusability
@@ -422,6 +474,7 @@ Skills currently reference personas inconsistently (e.g., "Tech Lead", "Develope
 - Agent workflow design
 
 **Perspective Focus:**
+
 - Will this skill work reliably for agents?
 - Is the skill clear and unambiguous?
 - Are there edge cases agents might struggle with?
@@ -429,6 +482,7 @@ Skills currently reference personas inconsistently (e.g., "Tech Lead", "Develope
 - Does this follow skill standards?
 
 **When to Use:**
+
 - New skill creation
 - Skill refactoring
 - Skill integration reviews
@@ -436,12 +490,14 @@ Skills currently reference personas inconsistently (e.g., "Tech Lead", "Develope
 - Agent workflow optimization
 
 **Example Review Questions:**
+
 - "Is this skill description clear enough for agents?"
 - "Have you tested this with actual agent execution?"
 - "Does this follow progressive disclosure?"
 - "Are there ambiguous instructions?"
 
 **Blocking Issues (Require Escalation):**
+
 - Ambiguous instructions that could lead to multiple interpretations
 - Missing BDD tests for critical skill behaviors
 - Skill file exceeds progressive disclosure limit (>500 lines)
@@ -453,6 +509,7 @@ Skills currently reference personas inconsistently (e.g., "Tech Lead", "Develope
 **Role:** Enterprise architecture and system design
 
 **Expertise:**
+
 - Enterprise architecture patterns
 - System integration and APIs
 - Microservices and distributed systems
@@ -461,6 +518,7 @@ Skills currently reference personas inconsistently (e.g., "Tech Lead", "Develope
 - Architecture governance
 
 **Perspective Focus:**
+
 - Does this fit enterprise architecture?
 - How does this integrate with existing systems?
 - Is this approach scalable and maintainable?
@@ -468,6 +526,7 @@ Skills currently reference personas inconsistently (e.g., "Tech Lead", "Develope
 - Does this create technical debt?
 
 **When to Use:**
+
 - Major system changes
 - New service design
 - Integration planning
@@ -475,12 +534,14 @@ Skills currently reference personas inconsistently (e.g., "Tech Lead", "Develope
 - Architecture decision records
 
 **Example Review Questions:**
+
 - "How does this fit our service mesh?"
 - "What's the impact on data consistency?"
 - "Does this introduce tight coupling?"
 - "Have you documented this in an ADR?"
 
 **Blocking Issues (Require Escalation):**
+
 - Tight coupling that violates service boundaries
 - Data architecture changes without migration strategy
 - New service that duplicates existing functionality
@@ -492,6 +553,7 @@ Skills currently reference personas inconsistently (e.g., "Tech Lead", "Develope
 **Role:** Security architecture and compliance
 
 **Expertise:**
+
 - Security architecture patterns
 - Threat modeling frameworks
 - Compliance requirements (SOC2, GDPR, etc.)
@@ -500,6 +562,7 @@ Skills currently reference personas inconsistently (e.g., "Tech Lead", "Develope
 - Security controls and governance
 
 **Perspective Focus:**
+
 - Does this meet security architecture requirements?
 - Are security controls properly implemented?
 - Does this comply with regulations?
@@ -507,6 +570,7 @@ Skills currently reference personas inconsistently (e.g., "Tech Lead", "Develope
 - Are security boundaries maintained?
 
 **When to Use:**
+
 - Security-critical features
 - Compliance-related changes
 - Authentication/authorization architecture
@@ -514,12 +578,14 @@ Skills currently reference personas inconsistently (e.g., "Tech Lead", "Develope
 - External system integrations
 
 **Example Review Questions:**
+
 - "Does this maintain zero-trust principles?"
 - "Are we compliant with GDPR requirements?"
 - "What's the threat model for this feature?"
 - "Are security boundaries clearly defined?"
 
 **Blocking Issues (Require Escalation):**
+
 - Security architecture that violates zero-trust principles
 - Non-compliance with regulatory requirements (GDPR, SOC2, etc.)
 - Missing threat model for security-critical features
@@ -531,6 +597,7 @@ Skills currently reference personas inconsistently (e.g., "Tech Lead", "Develope
 **Role:** Cloud infrastructure and platform design
 
 **Expertise:**
+
 - Cloud service selection (AWS/Azure/GCP)
 - Infrastructure as code
 - Cloud cost optimization
@@ -539,6 +606,7 @@ Skills currently reference personas inconsistently (e.g., "Tech Lead", "Develope
 - Serverless and containerization
 
 **Perspective Focus:**
+
 - Is this cloud-native?
 - Are we using the right cloud services?
 - Is this cost-effective?
@@ -546,6 +614,7 @@ Skills currently reference personas inconsistently (e.g., "Tech Lead", "Develope
 - Is infrastructure properly coded?
 
 **When to Use:**
+
 - Cloud service selection
 - Infrastructure changes
 - Deployment architecture
@@ -553,12 +622,14 @@ Skills currently reference personas inconsistently (e.g., "Tech Lead", "Develope
 - Disaster recovery planning
 
 **Example Review Questions:**
+
 - "Should we use serverless for this?"
 - "What's the estimated monthly cost?"
 - "How do we handle failover?"
 - "Is this infrastructure as code?"
 
 **Blocking Issues (Require Escalation):**
+
 - Infrastructure changes not defined as code
 - No high availability or disaster recovery strategy
 - Cost projections exceed budget without justification
@@ -629,6 +700,7 @@ docs/roles/
 ```
 
 **README.md Structure:**
+
 ```markdown
 # Team Roles
 
@@ -647,6 +719,7 @@ Team role definitions for both human teams and agent perspectives.
 
 **Individual Role Files:**
 Each `<role>.md` contains:
+
 - Role and expertise
 - Perspective focus
 - When to use
@@ -654,6 +727,7 @@ Each `<role>.md` contains:
 - **Blocking issues** (requires escalation)
 
 **Pros:**
+
 - Modular and extensible
 - Clear separation per role
 - Easy to reference specific roles
@@ -661,6 +735,7 @@ Each `<role>.md` contains:
 - Aligns with "team roles" terminology
 
 **Cons:**
+
 - More files to maintain
 - Requires index for overview
 
@@ -707,6 +782,7 @@ When creating or updating skills:
 4. **Document in examples**: Show persona usage in examples
 
 Example:
+
 ```markdown
 ## When to Use
 
@@ -754,21 +830,25 @@ Please review from these perspectives:
 ### Skills with Persona References
 
 **issue-driven-delivery:**
+
 - Line 74: "Require each persona to post a separate review comment"
 - Line 99-100: References persona reviews
 - **Action**: Update to reference standardized personas
 
 **receiving-code-review:**
+
 - Likely references multiple perspectives
 - **Action**: Audit and update
 
 **requesting-code-review:**
+
 - May reference code reviewer persona
 - **Action**: Audit and update
 
 ### Other Files
 
 **Search for:**
+
 - "persona"
 - "Tech Lead"
 - "Developer" (context-dependent)
@@ -779,23 +859,27 @@ Please review from these perspectives:
 ## Migration Plan
 
 ### Phase 1: Create Documentation
+
 1. Create `docs/personas.md` with all 8 personas
 2. Add usage guidance
 3. Document naming conventions
 4. Update CONTRIBUTING.md to reference personas
 
 ### Phase 2: Update Skills
+
 1. Audit all skills for persona references
 2. Update `issue-driven-delivery` to use standard names
 3. Update `receiving-code-review` if applicable
 4. Update any other skills found in audit
 
 ### Phase 3: Update Templates
+
 1. Update issue templates if they reference personas
 2. Update PR templates if applicable
 3. Update any code review templates
 
 ### Phase 4: Validation
+
 1. Search repo for old persona references
 2. Verify all references use canonical names
 3. Update any stragglers
