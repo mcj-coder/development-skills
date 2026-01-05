@@ -6,28 +6,28 @@
 
 ## BDD Checklist (RED → GREEN)
 
-### Baseline (RED - must fail initially)
+### Baseline (RED - must fail initially) → GREEN (Implementation Complete)
 
-- [ ] Skill exists at `skills/requirements-gathering/SKILL.md`
-  - Evidence: File does not exist currently
-- [ ] BDD tests exist at `skills/requirements-gathering/requirements-gathering.test.md`
-  - Evidence: File does not exist currently
-- [ ] SKILL.md has YAML frontmatter with name and description
-  - Evidence: N/A - file doesn't exist
-- [ ] "When to Use" section distinguishes from brainstorming and planning
-  - Evidence: N/A - file doesn't exist
-- [ ] Interactive Q&A process documented in workflow
-  - Evidence: N/A - file doesn't exist
-- [ ] Output format specified (GitHub issue body structure)
-  - Evidence: N/A - file doesn't exist
-- [ ] Explicitly states "No design documents created"
-  - Evidence: N/A - file doesn't exist
-- [ ] Integration with issue-driven-delivery documented
-  - Evidence: N/A - file doesn't exist
-- [ ] README.md lists requirements-gathering skill
-  - Evidence: README.md does not mention requirements-gathering
-- [ ] Progressive disclosure: main SKILL.md under 500 lines
-  - Evidence: N/A - file doesn't exist
+- [x] Skill exists at `skills/requirements-gathering/SKILL.md`
+  - Evidence: File created with 407 lines (skills/requirements-gathering/SKILL.md)
+- [x] BDD tests exist at `skills/requirements-gathering/requirements-gathering.test.md`
+  - Evidence: File created with comprehensive RED/GREEN/Pressure/Integration scenarios (skills/requirements-gathering/requirements-gathering.test.md)
+- [x] SKILL.md has YAML frontmatter with name and description
+  - Evidence: Lines 1-4 of SKILL.md contain YAML frontmatter with name and description fields
+- [x] "When to Use" section distinguishes from brainstorming and planning
+  - Evidence: Lines 14-28 "When to Use This Skill" section + Lines 30-42 comparison table showing distinct workflows
+- [x] Interactive Q&A process documented in workflow
+  - Evidence: Lines 56-110 "Core Workflow" section documents question-driven approach
+- [x] Output format specified (GitHub issue body structure)
+  - Evidence: Lines 111-166 structure requirements and Lines 305-334 provide template format
+- [x] Explicitly states "No design documents created"
+  - Evidence: Lines 177-189 "Stop - Do Not Proceed to Planning", Lines 240-254 Common Mistake #1, Lines 293-302 Red Flags
+- [x] Integration with issue-driven-delivery documented
+  - Evidence: Lines 271-300 "Integration with Issue-Driven-Delivery" section with workflow diagram and state transitions
+- [x] README.md lists requirements-gathering skill
+  - Evidence: Line 111 of README.md lists "requirements-gathering - For creating work items with requirements (no design docs)"
+- [x] Progressive disclosure: main SKILL.md under 500 lines
+  - Evidence: 407 lines total with references/examples.md (319 lines) and references/platform-cli-examples.md (165 lines) for detailed content
 
 ### RED Verification (Before Implementation)
 
