@@ -106,6 +106,25 @@ Requirements for all skills:
 
 ## Skills
 
-- `github-issue-driven-delivery` (requires `gh`)
+- `issue-driven-delivery` (requires ticketing CLI: gh/ado/jira)
 - `agent-workitem-automation` (requires work item system CLI)
 - `skills-first-workflow` (requires Superpowers)
+
+## Documentation
+
+This repository follows standard InnerSource/OpenSource documentation practices:
+
+- **[CONTRIBUTING.md](CONTRIBUTING.md)** - How to contribute and create skills
+- **[docs/getting-started.md](docs/getting-started.md)** - Developer onboarding and project setup
+- **[docs/architecture-overview.md](docs/architecture-overview.md)** - Architectural patterns, boundaries, and structure
+- **[docs/coding-standards.md](docs/coding-standards.md)** - Code style, naming conventions, and patterns
+- **[docs/testing-strategy.md](docs/testing-strategy.md)** - Testing approach, tools, and patterns
+- **[docs/exclusions.md](docs/exclusions.md)** - Explicitly excluded patterns and suppressions
+- **[docs/adr/](docs/adr/)** - Architecture Decision Records for major decisions
+
+### For Agents
+
+- **Skills are in [skills/](skills/)** - Agent-facing skill specifications
+- **Check [docs/exclusions.md](docs/exclusions.md)** before suggesting patterns that may have been declined
+- **Document using human terminology** - When applying skills, update human-readable docs (architecture-overview.md, coding-standards.md, etc.) not skill-specific files
+- **See [AGENTS.md](AGENTS.md)** for agent-specific execution rules and documentation standards
