@@ -129,12 +129,16 @@ Prefer non-interactive CLI usage in CI. Examples:
 
 ## Delivery Completion (Autonomous)
 
-When all steps in the current plan are complete:
+When all steps in the current plan are complete and all required PRs are merged:
 
 1. Verify completion using `superpowers:verification-before-completion`.
 2. Post a final update comment with evidence and completion summary.
 3. Ensure the taskboard issue is updated with completion evidence.
-4. Close the work item if acceptance criteria are met and no blockers remain.
+4. Close the work item when all in-scope work is delivered, acceptance criteria
+   are met, and no blockers remain.
+5. If issue requires multiple PRs, keep open until all scope delivered or remaining
+   work moved to new ticket.
+6. Do not leave work items open after all work complete.
 
 If any acceptance criteria are unclear or evidence is incomplete, hand off to a
 human instead of closing.

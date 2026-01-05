@@ -83,8 +83,10 @@ and Jira examples.
 18. If changes occur after review feedback, re-run BDD validation and update evidence before claiming completion.
 19. If BDD assertions change, require explicit approval before updating them.
 20. When all sub-tasks are complete and all verification tasks are complete and
-    the PR is approved ensure that the source work item is closed with the PR and
-    the source branch is deleted
+    all required PRs for the issue scope are merged, post final evidence comment
+    to the source work item, close it, and delete merged branches. If issue
+    requires multiple PRs, keep open until all scope delivered or remaining work
+    moved to new ticket. Do not leave work items open after all work complete.
 
 ## Evidence Requirements
 
