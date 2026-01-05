@@ -7,11 +7,13 @@ description: Use when work is tied to a ticketing system work item and requires 
 
 ## Overview
 
-Use work items as the source of truth for planning, approvals, execution evidence, and reviews.
+Use work items as the source of truth for planning, approvals, execution evidence, and reviews. Team members self-assign
+work items when taking ownership and unassign at state transitions to enable pull-based coordination.
 
 ## Prerequisites
 
 - Ticketing system CLI installed and authenticated (gh for GitHub, ado for Azure DevOps, jira for Jira).
+- See [Assignment Workflow](references/assignment-workflow.md) for pull-based team coordination pattern.
 
 ## When to Use
 
@@ -58,19 +60,29 @@ and Jira examples.
    without a ticket.
    2a. Verify work item has appropriate component tag. If missing, add component tag based on work scope.
 3. Confirm the target work item and keep all work tied to it.
-   3a. Set work item state to `refinement` when beginning plan creation.
+   3a. Self-assign the work item when beginning refinement (Tech Lead recommended).
+   3b. Set work item state to `refinement` when beginning plan creation.
+   3c. Stay assigned during entire refinement phase (plan creation, approval feedback loop, iterations).
 4. Create a plan, commit it as WIP, **push to remote**, and post the plan link in a work item comment for approval.
    4a. After posting plan link, work item remains in `refinement` state.
 5. Stop and wait for an explicit approval comment containing the word "approved" before continuing.
 6. Keep all plan discussions and decisions in work item comments.
+   6a. During approval feedback: Stay assigned and respond to questions/feedback in work item comments.
+   6b. If revisions needed: Update plan, push changes, re-post link in same thread. Stay assigned.
+   6c. Only unassign after receiving explicit "approved" or "LGTM" comment.
 7. After approval, add work item sub-tasks for every plan task and keep a 1:1 mapping by name.
-   7a. After plan approval, set work item state to `implementation`.
+   7a. Unassign yourself to signal refinement complete and handoff to implementation.
+   7b. Set work item state to `implementation`.
+   7c. Self-assign when ready to implement (Developer recommended).
 8. Execute each task and attach evidence and reviews to its sub-task.
-   8a. When all sub-tasks complete, set work item state to `verification`.
+   8a. When all sub-tasks complete, unassign yourself to signal implementation complete.
+   8b. Set work item state to `verification`.
+   8c. Self-assign when ready to verify (QA recommended).
 9. Stop and wait for explicit approval before closing each sub-task.
 10. Close sub-tasks only after approval and mark the plan task complete.
     10a. Before closing work item, verify component tag exists. Error if missing.
     10b. When verification complete and acceptance criteria met, close work item (state: complete).
+    10c. Work item auto-unassigns when closed.
 11. Require each persona to post a separate review comment in the work item thread using superpowers:receiving-code-review.
 12. Summarize persona recommendations in the plan and link to the individual review comments.
 13. Add follow-up fixes as new tasks in the same work item.
@@ -113,8 +125,22 @@ requirements and evidence checklist.
 ## Example
 
 ```bash
+# Self-assign when starting refinement
+gh issue edit 30 --add-assignee @me
+gh issue edit 30 --add-label "state:refinement"
+
 # Post plan for approval
 gh issue comment 30 --body "Plan: https://github.com/org/repo/blob/branch/docs/plans/implementation-plan.md"
+
+# After approval: unassign to signal handoff, transition state
+gh issue edit 30 --remove-assignee @me
+gh issue edit 30 --add-label "state:implementation" --remove-label "state:refinement"
+
+# Developer finds next unassigned implementation ticket
+gh issue list --label "state:implementation" --assignee "" --limit 5
+
+# Developer self-assigns when ready to implement
+gh issue edit 30 --add-assignee @me
 
 # Add sub-tasks (task list items in issue body)
 # tasks.md content:
@@ -124,6 +150,13 @@ gh issue comment 30 --body "Plan: https://github.com/org/repo/blob/branch/docs/p
 # - [ ] Task 3: Update README
 
 gh issue edit 30 --body-file tasks.md
+
+# After implementation complete: unassign, transition to verification
+gh issue edit 30 --remove-assignee @me
+gh issue edit 30 --add-label "state:verification" --remove-label "state:implementation"
+
+# QA self-assigns when ready to verify
+gh issue edit 30 --add-assignee @me
 ```
 
 ## Common Mistakes
@@ -134,6 +167,10 @@ gh issue edit 30 --body-file tasks.md
 - Closing sub-tasks without evidence or review.
 - Posting evidence without clickable links.
 - Skipping next-step work item creation.
+- Leaving work item assigned after state transition (blocks next team member from pulling work).
+- Unassigning during approval feedback loop before receiving explicit approval (creates confusion about ownership).
+- Assigning work items to others instead of letting them self-assign (violates pull-based pattern).
+- Taking multiple assigned tickets simultaneously (creates work-in-progress bottleneck).
 
 ## Red Flags - STOP
 
@@ -142,6 +179,8 @@ gh issue edit 30 --body-file tasks.md
 - "Sub-tasks are optional; I will skip them."
 - "I will post evidence without links."
 - "I will open a PR before acceptance."
+- "I'll assign this ticket to [name] for the next phase."
+- "I'm keeping this assigned in case I need to come back to it."
 
 ## Rationalizations (and Reality)
 
