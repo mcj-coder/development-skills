@@ -127,3 +127,59 @@ Every work item must be tagged with its work type. This enables filtering by typ
 
 - Issue Type: Story, Bug, Task, Technical Debt
 - OR labels: `work-type-feature`, `work-type-bug`, etc.
+
+## Blocked Status Tagging
+
+Work items that are blocked (cannot proceed) must be tagged and require a comment explaining what's blocking them.
+
+### When to Apply Blocked Tag
+
+Apply `blocked` tag when:
+
+- Waiting for external dependency (API, service, library)
+- Blocked by another work item that must complete first
+- Blocked by decision needed from stakeholder
+- Blocked by missing information or access
+
+### Requirements for Blocked Tag
+
+1. **Add blocked tag/label**
+2. **Post comment explaining blocker** with:
+   - What is blocking this work
+   - Blocker ID (if another work item: link to it)
+   - What's needed to unblock
+   - Who can help unblock
+
+3. **Keep work item assigned**
+   - Blocked work must remain assigned (accountability)
+   - Can reassign to someone else if appropriate
+   - Cannot unassign (prevents abandonment)
+
+### Clearing Blocked Status
+
+When blocker is resolved:
+
+1. Post comment confirming blocker resolved
+2. Remove blocked tag/label
+3. Update work item state to resume work
+
+### Platform-Specific Implementation
+
+**GitHub:**
+
+- Label: `blocked`
+- Comment with blocker details
+- Use "blocked by #123" syntax for work item blockers
+
+**Azure DevOps:**
+
+- Tag: `blocked`
+- Comment with blocker details
+- Can use "Related Work" links for blockers
+
+**Jira:**
+
+- Label: `blocked`
+- OR custom status: "Blocked"
+- Comment with blocker details
+- Use "blocks"/"is blocked by" link types
