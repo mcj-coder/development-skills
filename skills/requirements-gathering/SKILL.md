@@ -49,7 +49,9 @@ designs and commits them. Writing-plans assumes requirements exist and creates i
 - `ado` (Azure DevOps CLI) - for Azure DevOps repositories
 - `jira` (Jira CLI) - for Jira-based workflows
 
-**Optional**: Access to repository README.md to detect platform from taskboard URL
+**Optional**:
+- Access to repository README.md to detect platform from taskboard URL
+- Superpowers with `brainstorming` and `writing-plans` skills for full implementation workflow
 
 **Verification**:
 
@@ -410,5 +412,5 @@ You've successfully used requirements-gathering when:
 ## See Also
 
 - `skills/issue-driven-delivery/SKILL.md` - Work item lifecycle management
-- `skills/brainstorming/SKILL.md` - Creating designs for existing tickets
-- `skills/writing-plans/SKILL.md` - Creating implementation plans
+- `superpowers:brainstorming` - Creating designs for existing tickets (requires Superpowers)
+- `superpowers:writing-plans` - Creating implementation plans (requires Superpowers)
