@@ -14,7 +14,8 @@
     "frontmatter",
     "Taskboard",
     "USERPROFILE",
-    "workitem"
+    "workitem",
+    "workitems"
   ],
   "ignorePaths": ["node_modules/**", "package-lock.json"]
 }
