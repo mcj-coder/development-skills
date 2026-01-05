@@ -30,26 +30,41 @@ From `skills/github-issue-driven-delivery/SKILL.md`:
 
 ### Baseline (RED - must fail initially)
 
-- [ ] Skill renamed from `github-issue-driven-delivery` to `issue-driven-delivery`
-- [ ] YAML frontmatter uses agnostic description (no "GitHub" mentioned)
-- [ ] Prerequisites section lists platform CLIs: gh, ado, jira
-- [ ] Platform resolution section added (infer from taskboard URL)
-- [ ] "GitHub issue" replaced with "work item" throughout
-- [ ] "issue comments" replaced with "work item comments" throughout
-- [ ] "gh CLI" replaced with "ticketing CLI" throughout
-- [ ] Quick Reference table shows all three platforms (GitHub, Azure DevOps, Jira)
-- [ ] State tracking section added with lifecycle states
-- [ ] Component tagging section added
-- [ ] Work item state updates documented for each phase:
-  - [ ] New feature state
-  - [ ] Refinement state (during planning/approval)
-  - [ ] Implementation state (during execution)
-  - [ ] Verification state (during testing/review)
-- [ ] Component/type tagging requirements documented
-- [ ] Example shows tagging work items with component labels
-- [ ] Test file renamed to `issue-driven-delivery.test.md`
-- [ ] Tests updated to reference agnostic terminology
-- [ ] All references in other files updated (AGENTS.md, README.md, etc.)
+- [x] Skill renamed from `github-issue-driven-delivery` to `issue-driven-delivery`
+  - Evidence: commit e24d114, directory renamed, YAML frontmatter updated
+- [x] YAML frontmatter uses agnostic description (no "GitHub" mentioned)
+  - Evidence: skills/issue-driven-delivery/SKILL.md:2-3
+- [x] Prerequisites section lists platform CLIs: gh, ado, jira
+  - Evidence: skills/issue-driven-delivery/SKILL.md:14
+- [x] Platform resolution section added (infer from taskboard URL)
+  - Evidence: skills/issue-driven-delivery/SKILL.md:22-32
+- [x] "GitHub issue" replaced with "work item" throughout
+  - Evidence: commit f7ba47f
+- [x] "issue comments" replaced with "work item comments" throughout
+  - Evidence: commit f7ba47f
+- [x] "gh CLI" replaced with "ticketing CLI" throughout
+  - Evidence: commit f7ba47f
+- [x] Quick Reference table shows all three platforms (GitHub, Azure DevOps, Jira)
+  - Evidence: commit 863abb0, skills/issue-driven-delivery/SKILL.md:186-225
+- [x] State tracking section added with lifecycle states
+  - Evidence: commit 924c23b, skills/issue-driven-delivery/SKILL.md:34-72
+- [x] Component tagging section added
+  - Evidence: commit ea3aec9, skills/issue-driven-delivery/SKILL.md:74-115
+- [x] Work item state updates documented for each phase:
+  - [x] New feature state - Evidence: line 40
+  - [x] Refinement state (during planning/approval) - Evidence: lines 41, 69, 81
+  - [x] Implementation state (during execution) - Evidence: lines 42, 70, 87
+  - [x] Verification state (during testing/review) - Evidence: lines 43, 71, 89
+- [x] Component/type tagging requirements documented
+  - Evidence: lines 102-115
+- [x] Example shows tagging work items with component labels
+  - Evidence: Quick Reference tables show "Set state" and "Add component" commands
+- [x] Test file renamed to `issue-driven-delivery.test.md`
+  - Evidence: commit e24d114
+- [x] Tests updated to reference agnostic terminology
+  - Evidence: commit d593387
+- [x] All references in other files updated (AGENTS.md, README.md, etc.)
+  - Evidence: commit 593b23d, updated agent-workitem-automation/SKILL.md and README.md
 
 ### Platform Resolution Design
 
