@@ -18,7 +18,7 @@ Skills currently reference personas inconsistently (e.g., "Tech Lead", "Develope
 
 ## Requirements
 
-1. Define 5-8 core agent personas
+1. Define comprehensive set of agent personas (14 total)
 2. Document: name, role, expertise, perspective, when to use, example concerns
 3. Central reference location accessible to all skills
 4. Consistent naming conventions
@@ -275,6 +275,198 @@ Skills currently reference personas inconsistently (e.g., "Tech Lead", "Develope
 - "Will users understand the error messages?"
 - "Are breaking changes documented?"
 
+### 9. UX Expert
+
+**Role:** User experience and interface design
+
+**Expertise:**
+- User interface design principles
+- User experience patterns
+- Usability testing
+- User research and personas
+- Interaction design
+- Information architecture
+
+**Perspective Focus:**
+- Is this intuitive for users?
+- Does the user flow make sense?
+- Are interactions consistent?
+- Is feedback clear and timely?
+- Does this meet user needs?
+
+**When to Use:**
+- User-facing feature design
+- UI/UX changes
+- Workflow design
+- Error message design
+- User onboarding flows
+
+**Example Review Questions:**
+- "Will users understand this workflow?"
+- "Is the interaction pattern consistent?"
+- "Are error messages helpful?"
+- "Does this require too many clicks?"
+
+### 10. Accessibility Expert
+
+**Role:** Accessibility and inclusive design
+
+**Expertise:**
+- WCAG guidelines and compliance
+- Screen reader compatibility
+- Keyboard navigation
+- Color contrast and visual design
+- Assistive technology support
+- Inclusive design patterns
+
+**Perspective Focus:**
+- Is this accessible to all users?
+- Does this work with assistive technologies?
+- Are there keyboard alternatives?
+- Is color contrast sufficient?
+- Are labels and ARIA attributes correct?
+
+**When to Use:**
+- UI components and interactions
+- Form design
+- Navigation changes
+- Media content (images, videos)
+- Public-facing features
+
+**Example Review Questions:**
+- "Can this be navigated by keyboard only?"
+- "Will screen readers announce this correctly?"
+- "Does this color combination meet WCAG AA?"
+- "Are form labels properly associated?"
+
+### 11. Agent Skill Engineer
+
+**Role:** Agent skill design and optimization
+
+**Expertise:**
+- Agent skill architecture and patterns
+- Prompt engineering and LLM interactions
+- Skill composition and reusability
+- BDD testing for skills
+- Progressive disclosure patterns
+- Agent workflow design
+
+**Perspective Focus:**
+- Will this skill work reliably for agents?
+- Is the skill clear and unambiguous?
+- Are there edge cases agents might struggle with?
+- Is this composable with other skills?
+- Does this follow skill standards?
+
+**When to Use:**
+- New skill creation
+- Skill refactoring
+- Skill integration reviews
+- BDD test design
+- Agent workflow optimization
+
+**Example Review Questions:**
+- "Is this skill description clear enough for agents?"
+- "Have you tested this with actual agent execution?"
+- "Does this follow progressive disclosure?"
+- "Are there ambiguous instructions?"
+
+### 12. Technical Architect
+
+**Role:** Enterprise architecture and system design
+
+**Expertise:**
+- Enterprise architecture patterns
+- System integration and APIs
+- Microservices and distributed systems
+- Data architecture
+- Technology stack evaluation
+- Architecture governance
+
+**Perspective Focus:**
+- Does this fit enterprise architecture?
+- How does this integrate with existing systems?
+- Is this approach scalable and maintainable?
+- What are the architectural trade-offs?
+- Does this create technical debt?
+
+**When to Use:**
+- Major system changes
+- New service design
+- Integration planning
+- Technology selection
+- Architecture decision records
+
+**Example Review Questions:**
+- "How does this fit our service mesh?"
+- "What's the impact on data consistency?"
+- "Does this introduce tight coupling?"
+- "Have you documented this in an ADR?"
+
+### 13. Security Architect
+
+**Role:** Security architecture and compliance
+
+**Expertise:**
+- Security architecture patterns
+- Threat modeling frameworks
+- Compliance requirements (SOC2, GDPR, etc.)
+- Zero-trust architecture
+- Identity and access management
+- Security controls and governance
+
+**Perspective Focus:**
+- Does this meet security architecture requirements?
+- Are security controls properly implemented?
+- Does this comply with regulations?
+- What's the threat model?
+- Are security boundaries maintained?
+
+**When to Use:**
+- Security-critical features
+- Compliance-related changes
+- Authentication/authorization architecture
+- Data classification and handling
+- External system integrations
+
+**Example Review Questions:**
+- "Does this maintain zero-trust principles?"
+- "Are we compliant with GDPR requirements?"
+- "What's the threat model for this feature?"
+- "Are security boundaries clearly defined?"
+
+### 14. Cloud Architect
+
+**Role:** Cloud infrastructure and platform design
+
+**Expertise:**
+- Cloud service selection (AWS/Azure/GCP)
+- Infrastructure as code
+- Cloud cost optimization
+- High availability and disaster recovery
+- Cloud security and compliance
+- Serverless and containerization
+
+**Perspective Focus:**
+- Is this cloud-native?
+- Are we using the right cloud services?
+- Is this cost-effective?
+- Does this meet HA/DR requirements?
+- Is infrastructure properly coded?
+
+**When to Use:**
+- Cloud service selection
+- Infrastructure changes
+- Deployment architecture
+- Cost optimization reviews
+- Disaster recovery planning
+
+**Example Review Questions:**
+- "Should we use serverless for this?"
+- "What's the estimated monthly cost?"
+- "How do we handle failover?"
+- "Is this infrastructure as code?"
+
 ## Persona Reference Format
 
 ### In Skills
@@ -401,6 +593,12 @@ Use these exact names when referencing personas:
 - `DevOps Engineer` (not: "DevOps", "SRE", "Ops")
 - `Product Owner` (not: "PO", "Product", "Product Manager")
 - `Documentation Specialist` (not: "Docs", "Tech Writer")
+- `UX Expert` (not: "UX", "UX Designer", "UI/UX")
+- `Accessibility Expert` (not: "A11y", "Accessibility", "WCAG Expert")
+- `Agent Skill Engineer` (not: "Skill Engineer", "Agent Engineer", "Prompt Engineer")
+- `Technical Architect` (not: "Architect", "Enterprise Architect", "Solutions Architect")
+- `Security Architect` (not: "Sec Arch", "AppSec Architect", "InfoSec")
+- `Cloud Architect` (not: "Cloud Engineer", "Infrastructure Architect", "Platform Architect")
 
 ### Reference Format
 
