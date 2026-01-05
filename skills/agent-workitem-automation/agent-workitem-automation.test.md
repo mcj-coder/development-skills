@@ -63,6 +63,16 @@
 - [ ] Next-step handling:
   - If next step is in the current plan, post a follow-up comment.
   - If follow-on work is needed, create a new top-level ticket.
+- [ ] Minimal prompt is sufficient to trigger skill selection via README.md and
+      AGENTS.md only.
+- [ ] Required skills announced include:
+  - agent-workitem-automation
+  - github-issue-driven-delivery
+  - superpowers:brainstorming
+  - superpowers:test-driven-development
+  - superpowers:verification-before-completion
+  - superpowers:requesting-code-review
+  - superpowers:receiving-code-review
 
 ## GREEN Validation Notes (Manual Walkthrough)
 

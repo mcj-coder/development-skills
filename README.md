@@ -90,6 +90,22 @@ When tests are added, colocate them in the skills folder:
 - Do not commit secrets or API keys.
 - Keep prerequisites explicit (for example, "superpowers installed") in `README.md`.
 
+## Skill Format Standard
+
+**MANDATORY**: All skills in this repository MUST follow the
+[agentskills.io specification](https://agentskills.io/specification).
+
+Requirements for all skills:
+
+- Skills must be in their own directory under `skills/`
+- Each skill must have a `SKILL.md` file following the agentskills.io format
+- Each skill must have a colocated test file (e.g., `skill-name.test.md`)
+- Skills must include BDD-style tests with RED/GREEN scenarios
+- Skills must be interoperable with the Superpowers skill system
+- Reference the agentskills.io specification for any formatting questions
+
 ## Skills
 
 - `github-issue-driven-delivery` (requires `gh`)
+- `agent-workitem-automation` (requires work item system CLI)
+- `skills-first-workflow` (requires Superpowers)

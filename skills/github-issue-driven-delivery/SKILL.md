@@ -26,7 +26,7 @@ Use GitHub issues as the source of truth for planning, approvals, execution evid
    issue before making any changes. Read-only work and reviews are allowed
    without a ticket.
 3. Confirm the target issue and keep all work tied to it.
-4. Create a plan, commit it as WIP, and post the plan link in an issue comment for approval.
+4. Create a plan, commit it as WIP, **push to remote**, and post the plan link in an issue comment for approval.
 5. Stop and wait for an explicit approval comment containing the word "approved" before continuing.
 6. Keep all plan discussions and decisions in issue comments.
 7. After approval, add issue sub-tasks for every plan task and keep a 1:1 mapping by name.
@@ -50,6 +50,7 @@ Use GitHub issues as the source of truth for planning, approvals, execution evid
 
 ## Evidence Requirements
 
+- **All commits must be pushed to remote before posting links** - local commits are not accessible via GitHub URLs.
 - Evidence must be posted as clickable links in issue comments (commit URLs, blob URLs, logs, or artifacts).
 - Each sub-task comment must include links to the exact commits and files that satisfy it.
 - Persona reviews must be separate issue comments using superpowers:receiving-code-review, with links captured in the summary.
@@ -112,6 +113,7 @@ gh issue edit 30 --body-file tasks.md
 
 ## Common Mistakes
 
+- Committing locally without pushing to remote (breaks all GitHub links).
 - Proceeding without a plan approval comment.
 - Tracking work in local notes instead of issue comments.
 - Closing sub-tasks without evidence or review.
