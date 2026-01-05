@@ -116,6 +116,9 @@ appropriate component tags:
 
 ## Core Workflow
 
+**Note:** For platform-specific CLI commands (set state, add component), see the Quick
+Reference section below with examples for GitHub, Azure DevOps, and Jira.
+
 1. Announce the skill and why it applies; confirm ticketing CLI availability.
 2. Confirm a Taskboard work item exists for the work. If none exists, create the
    work item before making any changes. Read-only work and reviews are allowed
@@ -234,7 +237,7 @@ appropriate component tags:
 
 ```bash
 # Post plan for approval
-gh issue comment 30 --body "Plan: https://github.com/.../docs/plans/2026-01-03-github-issue-driven-delivery.md"
+gh issue comment 30 --body "Plan: https://github.com/org/repo/blob/branch/docs/plans/implementation-plan.md"
 
 # Add sub-tasks (task list items in issue body)
 # tasks.md content:
