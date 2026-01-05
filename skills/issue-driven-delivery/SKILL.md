@@ -3,59 +3,73 @@ name: issue-driven-delivery
 description: Use when work is tied to a ticketing system work item and requires comment approval, sub-task tracking, or CLI-based delivery workflows.
 ---
 
-# GitHub Issue Driven Delivery
+# Issue-Driven Delivery
 
 ## Overview
 
-Use GitHub issues as the source of truth for planning, approvals, execution evidence, and reviews.
+Use work items as the source of truth for planning, approvals, execution evidence, and reviews.
 
 ## Prerequisites
 
-- gh CLI installed and authenticated.
+- Ticketing system CLI installed and authenticated (gh for GitHub, ado for Azure DevOps, jira for Jira).
 
 ## When to Use
 
-- Work is explicitly tied to a GitHub issue.
-- The user requests issue-driven planning, approvals, or delivery tracking.
-- The user requires gh usage for workflow management.
+- Work is explicitly tied to a work item in the ticketing system.
+- The user requests work-item-driven planning, approvals, or delivery tracking.
+- The user requires ticketing CLI usage for workflow management.
+
+## Platform Resolution
+
+Infer platform from the taskboard URL (from README.md Work Items section):
+
+| Platform     | Domain patterns                     | CLI    |
+| ------------ | ----------------------------------- | ------ |
+| GitHub       | `github.com`                        | `gh`   |
+| Azure DevOps | `dev.azure.com`, `visualstudio.com` | `ado`  |
+| Jira         | `atlassian.net`, `jira.`            | `jira` |
+
+If the URL is not recognised, stop and ask the user to confirm the platform.
 
 ## Core Workflow
 
-1. Announce the skill and why it applies; confirm gh availability.
-2. Confirm a Taskboard issue exists for the work. If none exists, create the
-   issue before making any changes. Read-only work and reviews are allowed
+1. Announce the skill and why it applies; confirm ticketing CLI availability.
+2. Confirm a Taskboard work item exists for the work. If none exists, create the
+   work item before making any changes. Read-only work and reviews are allowed
    without a ticket.
-3. Confirm the target issue and keep all work tied to it.
-4. Create a plan, commit it as WIP, **push to remote**, and post the plan link in an issue comment for approval.
+3. Confirm the target work item and keep all work tied to it.
+4. Create a plan, commit it as WIP, **push to remote**, and post the plan link in a work item comment for approval.
 5. Stop and wait for an explicit approval comment containing the word "approved" before continuing.
-6. Keep all plan discussions and decisions in issue comments.
-7. After approval, add issue sub-tasks for every plan task and keep a 1:1 mapping by name.
+6. Keep all plan discussions and decisions in work item comments.
+7. After approval, add work item sub-tasks for every plan task and keep a 1:1 mapping by name.
 8. Execute each task and attach evidence and reviews to its sub-task.
 9. Stop and wait for explicit approval before closing each sub-task.
 10. Close sub-tasks only after approval and mark the plan task complete.
-11. Require each persona to post a separate review comment in the issue thread using superpowers:receiving-code-review.
+11. Require each persona to post a separate review comment in the work item thread using superpowers:receiving-code-review.
 12. Summarize persona recommendations in the plan and link to the individual review comments.
-13. Add follow-up fixes as new tasks in the same issue.
-14. Create a new issue for next steps with implementation, test detail, and acceptance criteria.
+13. Add follow-up fixes as new tasks in the same work item.
+14. Create a new work item for next steps with implementation, test detail, and acceptance criteria.
 15. Open a PR after delivery is accepted.
 16. Before opening a PR, post evidence that required skills were applied in the
     repo when changes are concrete (config, docs, code). For process-only
     changes, note that verification is analytical.
-17. If a PR exists, link the PR and issue, monitor PR comment threads, and address PR feedback before completion.
+17. If a PR exists, link the PR and work item, monitor PR comment threads, and address PR feedback before completion.
 18. If changes occur after review feedback, re-run BDD validation and update evidence before claiming completion.
 19. If BDD assertions change, require explicit approval before updating them.
 20. When all sub-tasks are complete and all verification tasks are complete and
-    the PR is approved ensure that the source Issue is closed with the PR and
+    the PR is approved ensure that the source work item is closed with the PR and
     the source branch is deleted
 
 ## Evidence Requirements
 
-- **All commits must be pushed to remote before posting links** - local commits are not accessible via GitHub URLs.
-- Evidence must be posted as clickable links in issue comments (commit URLs, blob URLs, logs, or artifacts).
+- **All commits must be pushed to remote before posting links** - local commits
+  are not accessible via ticketing system URLs.
+- Evidence must be posted as clickable links in work item comments (commit URLs, blob URLs, logs, or artifacts).
 - Each sub-task comment must include links to the exact commits and files that satisfy it.
-- Persona reviews must be separate issue comments using superpowers:receiving-code-review, with links captured in the summary.
-- Verify `gh auth status` before creating issues, comments, or PRs.
-- Link the PR and issue and include PR comment links when a PR exists.
+- Persona reviews must be separate work item comments using
+  superpowers:receiving-code-review, with links captured in the summary.
+- Verify ticketing CLI authentication status before creating work items, comments, or PRs.
+- Link the PR and work item and include PR comment links when a PR exists.
 - Post evidence that required skills were applied for concrete changes before
   opening a PR. For process-only changes, record analytical verification.
 - If post-review changes occur, re-run BDD validation and update the plan evidence.
@@ -63,17 +77,17 @@ Use GitHub issues as the source of truth for planning, approvals, execution evid
 - After each additional task, re-run BDD validation and persona reviews and link the
   verification comment to the change commit and task.
 - Keep only the latest verification evidence in the plan; prior evidence remains
-  in issue/PR comment threads.
+  in work item/PR comment threads.
 
 ## Evidence Checklist
 
-- Plan link posted and approved in issue comments.
+- Plan link posted and approved in work item comments.
 - Sub-tasks created for each plan task with 1:1 name mapping.
 - Evidence and reviews attached to each sub-task.
-- Persona reviews posted as individual comments in the issue thread using superpowers:receiving-code-review.
-- Next steps captured in a new issue.
+- Persona reviews posted as individual comments in the work item thread using superpowers:receiving-code-review.
+- Next steps captured in a new work item.
 - PR opened after acceptance.
-- PR and issue cross-linked with PR feedback addressed (when a PR exists).
+- PR and work item cross-linked with PR feedback addressed (when a PR exists).
 - Post-review changes re-verified with updated BDD evidence.
 - Plan evidence structured into original scope, additional work, and latest
   verification only.
@@ -91,8 +105,8 @@ Use GitHub issues as the source of truth for planning, approvals, execution evid
 
 ## Implementation Notes
 
-- Keep the issue thread as the single source of truth.
-- Use task list items in the issue body as sub-tasks when sub-issues are unavailable.
+- Keep the work item thread as the single source of truth.
+- Use task list items in the work item body as sub-tasks when sub-work-items are unavailable.
 - Match each sub-task title to its plan task for traceability.
 
 ## Example
@@ -113,12 +127,12 @@ gh issue edit 30 --body-file tasks.md
 
 ## Common Mistakes
 
-- Committing locally without pushing to remote (breaks all GitHub links).
+- Committing locally without pushing to remote (breaks all ticketing system links).
 - Proceeding without a plan approval comment.
-- Tracking work in local notes instead of issue comments.
+- Tracking work in local notes instead of work item comments.
 - Closing sub-tasks without evidence or review.
 - Posting evidence without clickable links.
-- Skipping next-step issue creation.
+- Skipping next-step work item creation.
 
 ## Red Flags - STOP
 
@@ -130,9 +144,9 @@ gh issue edit 30 --body-file tasks.md
 
 ## Rationalizations (and Reality)
 
-| Excuse                             | Reality                                          |
-| ---------------------------------- | ------------------------------------------------ |
-| "The plan does not need approval." | Approval must be in issue comments.              |
-| "Sub-tasks are too much overhead." | Required for every plan task.                    |
-| "I will summarize later."          | Discussion and evidence stay in the issue chain. |
-| "Next steps can be a note."        | Next steps require a new issue with details.     |
+| Excuse                             | Reality                                              |
+| ---------------------------------- | ---------------------------------------------------- |
+| "The plan does not need approval." | Approval must be in work item comments.              |
+| "Sub-tasks are too much overhead." | Required for every plan task.                        |
+| "I will summarize later."          | Discussion and evidence stay in the work item chain. |
+| "Next steps can be a note."        | Next steps require a new work item with details.     |
