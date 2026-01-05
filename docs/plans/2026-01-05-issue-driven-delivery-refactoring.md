@@ -604,18 +604,80 @@ EOF
 )"
 ```
 
+## Additional Work: Progressive Disclosure Compliance
+
+**Context**: After implementation, progressive disclosure violation was discovered
+during standards review. All detailed reference material was inline in SKILL.md,
+violating agentskills.io specification.
+
+**Issue**: #49 broken window #13 - Progressive Disclosure Standard Violation
+
+### Task: Extract detailed content to references/ directory
+
+**Goal**: Comply with agentskills.io progressive disclosure standard by extracting
+detailed content into separate reference files.
+
+**Files changed**:
+
+- Created: `skills/issue-driven-delivery/references/`
+- Created: `skills/issue-driven-delivery/references/platform-resolution.md`
+- Created: `skills/issue-driven-delivery/references/state-tracking.md`
+- Created: `skills/issue-driven-delivery/references/component-tagging.md`
+- Created: `skills/issue-driven-delivery/references/cli-commands.md`
+- Created: `skills/issue-driven-delivery/references/evidence-requirements.md`
+- Modified: `skills/issue-driven-delivery/SKILL.md`
+
+**Evidence**:
+
+- [x] Created references/ directory structure
+  - Evidence: commit 909e1bd, directory created with 5 reference files
+- [x] Extracted platform resolution (lines 22-32 → references/platform-resolution.md)
+  - Evidence: commit 909e1bd,
+    skills/issue-driven-delivery/references/platform-resolution.md
+- [x] Extracted state tracking (lines 34-72 → references/state-tracking.md)
+  - Evidence: commit 909e1bd, skills/issue-driven-delivery/references/state-tracking.md
+- [x] Extracted component tagging (lines 74-115 → references/component-tagging.md)
+  - Evidence: commit 909e1bd,
+    skills/issue-driven-delivery/references/component-tagging.md
+- [x] Extracted CLI commands (lines 189-228 → references/cli-commands.md)
+  - Evidence: commit 909e1bd, skills/issue-driven-delivery/references/cli-commands.md
+- [x] Extracted evidence requirements (lines 156-187 →
+      references/evidence-requirements.md)
+  - Evidence: commit 909e1bd,
+    skills/issue-driven-delivery/references/evidence-requirements.md
+- [x] Updated main SKILL.md with references to extracted content
+  - Evidence: commit 909e1bd, skills/issue-driven-delivery/SKILL.md now 152 lines
+    (reduced from 276, 45% reduction)
+- [x] All linting checks passing (prettier, markdownlint, cspell)
+  - Evidence: npm run lint successful, commit 909e1bd includes lint-staged output
+
+**Progressive Disclosure Compliance**:
+
+- [x] Three-tier loading model implemented (metadata → instructions → resources)
+  - Metadata: YAML frontmatter (name, description)
+  - Instructions: Main SKILL.md with core workflow (152 lines)
+  - Resources: references/ directory with 5 detailed files (loaded on-demand)
+- [x] Main SKILL.md under 500 lines (now 152 lines vs original 276 lines)
+- [x] Detailed reference material in focused, modular files
+- [x] Single-level depth maintained (references/ is one level from SKILL.md)
+
+**Commit**: 909e1bd - refactor(skill): implement progressive disclosure with
+references/
+
 ## Verification Checklist
 
 Before claiming complete, verify:
 
-- [ ] All BDD checklist items marked complete with evidence
-- [ ] Skill renamed successfully (directory, files, YAML frontmatter)
-- [ ] No "GitHub" or "gh" in generic sections (only in platform-specific examples)
-- [ ] Platform resolution logic added
-- [ ] State tracking fully documented
-- [ ] Component tagging fully documented
-- [ ] Quick Reference shows all three platforms
-- [ ] Tests updated and passing
-- [ ] All references in other files updated
-- [ ] PR created and linked to issue #47
-- [ ] Evidence posted on issue #47
+- [x] All BDD checklist items marked complete with evidence
+- [x] Skill renamed successfully (directory, files, YAML frontmatter)
+- [x] No "GitHub" or "gh" in generic sections (only in platform-specific examples)
+- [x] Platform resolution logic added
+- [x] State tracking fully documented
+- [x] Component tagging fully documented
+- [x] Quick Reference shows all three platforms
+- [x] Tests updated and passing
+- [x] All references in other files updated
+- [x] PR created and linked to issue #47
+- [x] Evidence posted on issue #47
+- [x] Progressive disclosure compliance achieved (references/ directory with
+      modular content)
