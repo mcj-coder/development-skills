@@ -1,6 +1,6 @@
 ---
-name: github-issue-driven-delivery
-description: Use when work is tied to a GitHub issue and requires issue-comment approval, sub-task tracking, or gh-based delivery workflows.
+name: issue-driven-delivery
+description: Use when work is tied to a ticketing system work item and requires comment approval, sub-task tracking, or CLI-based delivery workflows.
 ---
 
 # GitHub Issue Driven Delivery
