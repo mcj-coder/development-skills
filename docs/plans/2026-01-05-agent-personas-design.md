@@ -58,6 +58,13 @@ Skills currently reference personas inconsistently (e.g., "Tech Lead", "Develope
 - "Is this the right abstraction level?"
 - "What alternatives did you evaluate?"
 
+**Blocking Issues (Require Escalation):**
+- Architectural decisions that conflict with system-wide patterns
+- Scalability concerns that could impact production
+- Major technical debt creation without justification
+- Cross-service dependencies that break isolation
+- Technology choices that lock in irreversible decisions
+
 ### 2. Senior Developer
 
 **Role:** Code quality and implementation excellence
@@ -88,6 +95,13 @@ Skills currently reference personas inconsistently (e.g., "Tech Lead", "Develope
 - "Is this naming clear and descriptive?"
 - "Have you extracted duplicated logic?"
 - "Does this follow our style guide?"
+
+**Blocking Issues (Require Escalation):**
+- Code that is unmaintainable or impossible to understand
+- Violations of critical coding standards
+- Copy-paste code duplication across multiple files
+- Missing error handling for critical paths
+- Code complexity that makes testing impossible
 
 ### 3. QA Engineer
 
@@ -120,6 +134,13 @@ Skills currently reference personas inconsistently (e.g., "Tech Lead", "Develope
 - "Can this handle concurrent access?"
 - "What about boundary values?"
 
+**Blocking Issues (Require Escalation):**
+- Zero test coverage for critical functionality
+- Tests that don't actually test the logic (mocks only)
+- Missing edge case coverage for user-facing features
+- Flaky tests that pass/fail inconsistently
+- No integration tests for critical workflows
+
 ### 4. Security Reviewer
 
 **Role:** Security and threat modeling
@@ -150,6 +171,13 @@ Skills currently reference personas inconsistently (e.g., "Tech Lead", "Develope
 - "Are you sanitizing user input?"
 - "Is this authorization check correct?"
 - "How is sensitive data encrypted?"
+
+**Blocking Issues (Require Escalation):**
+- SQL injection, XSS, or other OWASP Top 10 vulnerabilities
+- Storing passwords or secrets in plaintext
+- Missing authentication or authorization checks
+- Exposing sensitive data in logs or error messages
+- Hard-coded credentials or API keys in code
 
 ### 5. Performance Engineer
 
@@ -182,6 +210,13 @@ Skills currently reference personas inconsistently (e.g., "Tech Lead", "Develope
 - "Should this be cached?"
 - "How does this scale with data volume?"
 
+**Blocking Issues (Require Escalation):**
+- N+1 query problems that will cause performance degradation
+- Unbounded loops or queries that don't scale
+- Memory leaks or resource exhaustion issues
+- Missing pagination for large data sets
+- Synchronous operations blocking critical paths
+
 ### 6. DevOps Engineer
 
 **Role:** Deployment, operations, and infrastructure
@@ -212,6 +247,13 @@ Skills currently reference personas inconsistently (e.g., "Tech Lead", "Develope
 - "What logs will help debug issues?"
 - "Can this be deployed without downtime?"
 - "What's the rollback strategy?"
+
+**Blocking Issues (Require Escalation):**
+- No monitoring or alerting for critical functionality
+- Deployment requires downtime without rollback strategy
+- Missing health checks for load balancer integration
+- Secrets or configuration hard-coded instead of externalized
+- No logging for troubleshooting production issues
 
 ### 7. Product Owner
 
@@ -244,6 +286,13 @@ Skills currently reference personas inconsistently (e.g., "Tech Lead", "Develope
 - "Are all acceptance criteria met?"
 - "Should this handle edge case X?"
 
+**Blocking Issues (Require Escalation):**
+- Implementation doesn't match acceptance criteria
+- Business logic contradicts known requirements
+- Feature scope significantly exceeds original requirements
+- Missing validation for critical business rules
+- User-facing behavior that violates business policies
+
 ### 8. Documentation Specialist
 
 **Role:** Documentation quality and accessibility
@@ -274,6 +323,13 @@ Skills currently reference personas inconsistently (e.g., "Tech Lead", "Develope
 - "Are there usage examples?"
 - "Will users understand the error messages?"
 - "Are breaking changes documented?"
+
+**Blocking Issues (Require Escalation):**
+- Public APIs with no documentation
+- Breaking changes without migration guide
+- Error messages that expose internal implementation details
+- Missing documentation for critical user-facing features
+- Outdated documentation that contradicts current behavior
 
 ### 9. UX Expert
 
@@ -307,6 +363,13 @@ Skills currently reference personas inconsistently (e.g., "Tech Lead", "Develope
 - "Are error messages helpful?"
 - "Does this require too many clicks?"
 
+**Blocking Issues (Require Escalation):**
+- User workflow that contradicts established patterns
+- Critical user path requires excessive steps (>5 clicks)
+- Error states with no user-actionable guidance
+- UI changes that break consistency across the application
+- Forms or interfaces that don't provide clear feedback
+
 ### 10. Accessibility Expert
 
 **Role:** Accessibility and inclusive design
@@ -338,6 +401,13 @@ Skills currently reference personas inconsistently (e.g., "Tech Lead", "Develope
 - "Will screen readers announce this correctly?"
 - "Does this color combination meet WCAG AA?"
 - "Are form labels properly associated?"
+
+**Blocking Issues (Require Escalation):**
+- Critical functionality not accessible via keyboard
+- Color contrast fails WCAG AA standards
+- Form inputs without proper labels or ARIA attributes
+- Interactive elements not accessible to screen readers
+- Required user actions that exclude assistive technology users
 
 ### 11. Agent Skill Engineer
 
@@ -371,6 +441,13 @@ Skills currently reference personas inconsistently (e.g., "Tech Lead", "Develope
 - "Does this follow progressive disclosure?"
 - "Are there ambiguous instructions?"
 
+**Blocking Issues (Require Escalation):**
+- Ambiguous instructions that could lead to multiple interpretations
+- Missing BDD tests for critical skill behaviors
+- Skill file exceeds progressive disclosure limit (>500 lines)
+- Circular dependencies between skills
+- Instructions that contradict other skills in the workflow
+
 ### 12. Technical Architect
 
 **Role:** Enterprise architecture and system design
@@ -402,6 +479,13 @@ Skills currently reference personas inconsistently (e.g., "Tech Lead", "Develope
 - "What's the impact on data consistency?"
 - "Does this introduce tight coupling?"
 - "Have you documented this in an ADR?"
+
+**Blocking Issues (Require Escalation):**
+- Tight coupling that violates service boundaries
+- Data architecture changes without migration strategy
+- New service that duplicates existing functionality
+- Integration patterns that create circular dependencies
+- Major architectural decisions without ADR documentation
 
 ### 13. Security Architect
 
@@ -435,6 +519,13 @@ Skills currently reference personas inconsistently (e.g., "Tech Lead", "Develope
 - "What's the threat model for this feature?"
 - "Are security boundaries clearly defined?"
 
+**Blocking Issues (Require Escalation):**
+- Security architecture that violates zero-trust principles
+- Non-compliance with regulatory requirements (GDPR, SOC2, etc.)
+- Missing threat model for security-critical features
+- Security boundaries that expose internal systems
+- Identity and access management that allows privilege escalation
+
 ### 14. Cloud Architect
 
 **Role:** Cloud infrastructure and platform design
@@ -466,6 +557,13 @@ Skills currently reference personas inconsistently (e.g., "Tech Lead", "Develope
 - "What's the estimated monthly cost?"
 - "How do we handle failover?"
 - "Is this infrastructure as code?"
+
+**Blocking Issues (Require Escalation):**
+- Infrastructure changes not defined as code
+- No high availability or disaster recovery strategy
+- Cost projections exceed budget without justification
+- Cloud service selection that locks into vendor-specific features
+- Missing security controls for cloud resources
 
 ## Persona Reference Format
 
@@ -503,81 +601,72 @@ Please review from these perspectives:
 
 ## Implementation Structure
 
-### Option 1: Single Document (Recommended)
+### Selected Approach: Team Roles Directory
 
-**Location:** `docs/personas.md`
+**Location:** `docs/roles/` (changed from `docs/personas` per feedback)
 
-**Pros:**
-- Single source of truth
-- Easy to find and reference
-- Simple to maintain
-- Fast to search
-
-**Cons:**
-- Could become large over time
-- All personas in one file
+**Rationale:** These are team role descriptors that apply to both human teams and agent perspectives. Using "roles" terminology is more broadly applicable.
 
 **Structure:**
-```markdown
-# Agent Personas
 
-## Overview
-[Purpose and usage guidance]
-
-## Core Personas
-
-### Tech Lead
-[Full definition]
-
-### Senior Developer
-[Full definition]
-
-[etc.]
-
-## Using Personas in Skills
-[Integration guidance]
+```
+docs/roles/
+├── README.md                    # Overview, index, usage guidance
+├── tech-lead.md
+├── senior-developer.md
+├── qa-engineer.md
+├── security-reviewer.md
+├── performance-engineer.md
+├── devops-engineer.md
+├── product-owner.md
+├── documentation-specialist.md
+├── ux-expert.md
+├── accessibility-expert.md
+├── agent-skill-engineer.md
+├── technical-architect.md
+├── security-architect.md
+└── cloud-architect.md
 ```
 
-### Option 2: Directory with Individual Files
+**README.md Structure:**
+```markdown
+# Team Roles
 
-**Location:** `docs/personas/`
+## Overview
+Team role definitions for both human teams and agent perspectives.
 
-**Files:**
-- `README.md` - Overview and index
-- `tech-lead.md`
-- `senior-developer.md`
-- `qa-engineer.md`
-- etc.
+## Role Index
+[List of all roles with brief descriptions]
+
+## Using Roles in Skills
+[Integration guidance]
+
+## External Role References
+- **Code Reviewer**: See `superpowers:receiving-code-review` (not editable here)
+```
+
+**Individual Role Files:**
+Each `<role>.md` contains:
+- Role and expertise
+- Perspective focus
+- When to use
+- Example review questions
+- **Blocking issues** (requires escalation)
 
 **Pros:**
 - Modular and extensible
-- Easy to add new personas
-- Can include detailed examples per persona
+- Clear separation per role
+- Easy to reference specific roles
+- Can include detailed examples
+- Aligns with "team roles" terminology
 
 **Cons:**
 - More files to maintain
-- Harder to get overview
-- More navigation required
+- Requires index for overview
 
-### Option 3: Skill-Style Structure
+### Note on Code Reviewer Role
 
-**Location:** `skills/personas/`
-
-**Treat as a "skill" for consistency**
-
-**Pros:**
-- Consistent with existing patterns
-- Could be "used" like other skills
-- Familiar structure
-
-**Cons:**
-- Personas aren't really skills
-- Might create confusion
-- Overcomplicates simple reference
-
-### Recommended: Option 1
-
-Single document at `docs/personas.md` is simplest and most accessible. Can split later if needed.
+The **Code Reviewer** persona exists in Superpowers (`superpowers:receiving-code-review`). We can reference it but cannot edit it. This role focuses on general code review practices.
 
 ## Naming Conventions
 
