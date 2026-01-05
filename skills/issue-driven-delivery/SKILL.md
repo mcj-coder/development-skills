@@ -71,12 +71,56 @@ Update work item state throughout the delivery lifecycle to maintain visibility:
 - Set `state:verification` when implementation complete and testing begins
 - Set `state:complete` / close work item only after all acceptance criteria met
 
+## Component Tagging
+
+Every work item must be tagged with the component or component type it impacts.
+
+### Tagging Strategy
+
+**Skills repository**: Use `skill` label/tag
+
+**Application repository**: Use component labels like `api`, `ui`, `database`, `auth`
+
+**Multi-project repository**: Use project labels like `project-a`, `project-b`
+
+### Platform-Specific Implementation
+
+**GitHub**: Use labels
+
+- Example: `skill`, `component:api`, `type:documentation`
+
+**Azure DevOps**: Use tags or area path
+
+- Example tags: `skill`, `api`, `ui`
+- Example area path: `ProjectName\API\Authentication`
+
+**Jira**: Use components or labels
+
+- Example components: Skills, API, UI
+- Example labels: skill, api-component, documentation
+
+### Enforcement
+
+- Verify component tag exists before closing work item
+- Stop with error if work item has no component tag
+- Suggest appropriate component based on file changes
+
+### Automatic Tagging
+
+When creating a new work item, analyze the repository structure and suggest
+appropriate component tags:
+
+- If `skills/` directory exists → suggest `skill` tag
+- If `src/api/` exists → suggest `api` tag
+- If `docs/` changes → suggest `documentation` tag
+
 ## Core Workflow
 
 1. Announce the skill and why it applies; confirm ticketing CLI availability.
 2. Confirm a Taskboard work item exists for the work. If none exists, create the
    work item before making any changes. Read-only work and reviews are allowed
    without a ticket.
+   2a. Verify work item has appropriate component tag. If missing, add component tag based on work scope.
 3. Confirm the target work item and keep all work tied to it.
    3a. Set work item state to `refinement` when beginning plan creation.
 4. Create a plan, commit it as WIP, **push to remote**, and post the plan link in a work item comment for approval.
@@ -89,7 +133,8 @@ Update work item state throughout the delivery lifecycle to maintain visibility:
    8a. When all sub-tasks complete, set work item state to `verification`.
 9. Stop and wait for explicit approval before closing each sub-task.
 10. Close sub-tasks only after approval and mark the plan task complete.
-    10a. When verification complete and acceptance criteria met, close work item (state: complete).
+    10a. Before closing work item, verify component tag exists. Error if missing.
+    10b. When verification complete and acceptance criteria met, close work item (state: complete).
 11. Require each persona to post a separate review comment in the work item thread using superpowers:receiving-code-review.
 12. Summarize persona recommendations in the plan and link to the individual review comments.
 13. Add follow-up fixes as new tasks in the same work item.
@@ -128,6 +173,7 @@ Update work item state throughout the delivery lifecycle to maintain visibility:
 
 - Plan link posted and approved in work item comments.
 - Sub-tasks created for each plan task with 1:1 name mapping.
+- Work item tagged with appropriate component (e.g., `skill` for skills repositories).
 - Evidence and reviews attached to each sub-task.
 - Persona reviews posted as individual comments in the work item thread using superpowers:receiving-code-review.
 - Next steps captured in a new work item.
