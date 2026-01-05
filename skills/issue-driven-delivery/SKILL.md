@@ -38,15 +38,26 @@ Update work item state throughout the delivery lifecycle to maintain visibility.
 See [State Tracking](references/state-tracking.md) for detailed lifecycle states,
 transitions, and platform-specific implementations.
 
-## Component Tagging
+## Work Item Tagging
 
-Every work item must be tagged with the component or component type it impacts.
+Every work item must be tagged with component, work type, and priority before closing.
 
-**Enforcement**: Verify component tag exists before closing work item. Stop with
-error if missing.
+**Mandatory tags:**
 
-See [Component Tagging](references/component-tagging.md) for tagging strategy,
-platform-specific implementation, and automatic suggestions.
+- **Component**: Which component/area this affects (e.g., `component:api`, `skill`)
+- **Work Type**: Type of work (e.g., `work-type:new-feature`, `work-type:bug`)
+- **Priority**: Priority level (e.g., `priority:p0` through `priority:p4`)
+
+**When applicable:**
+
+- **Blocked**: If work cannot proceed, add `blocked` tag with comment explaining blocker
+
+**Enforcement**: Verify all mandatory tags exist before closing work item. Stop
+with error if any missing. Suggest appropriate tags based on work item content.
+
+See [Component Tagging](references/component-tagging.md) for complete tagging
+taxonomy (priority levels, work types, blocked workflow), platform-specific CLI
+commands, enforcement rules, and auto-assignment strategy.
 
 ## Core Workflow
 
@@ -58,7 +69,8 @@ and Jira examples.
 2. Confirm a Taskboard work item exists for the work. If none exists, create the
    work item before making any changes. Read-only work and reviews are allowed
    without a ticket.
-   2a. Verify work item has appropriate component tag. If missing, add component tag based on work scope.
+   2a. Verify work item has appropriate tags (component, work type, priority).
+   If missing, add tags based on work scope and issue content.
 3. Confirm the target work item and keep all work tied to it.
    3a. Self-assign the work item when beginning refinement (Tech Lead recommended).
    3b. Set work item state to `refinement` when beginning plan creation.
@@ -80,7 +92,9 @@ and Jira examples.
    8c. Self-assign when ready to verify (QA recommended).
 9. Stop and wait for explicit approval before closing each sub-task.
 10. Close sub-tasks only after approval and mark the plan task complete.
-    10a. Before closing work item, verify component tag exists. Error if missing.
+    10a. Before closing work item, verify all mandatory tags exist (component,
+    work type, priority). Error if any missing. Suggest appropriate tags
+    based on work item content.
     10b. When verification complete and acceptance criteria met, close work item (state: complete).
     10c. Work item auto-unassigns when closed.
 11. Require each persona to post a separate review comment in the work item thread using superpowers:receiving-code-review.
