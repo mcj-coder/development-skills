@@ -97,14 +97,108 @@ Blocked work must remain assigned for accountability.
 To proceed: Either (1) remove blocked tag if no longer blocked, or (2) reassign to another person.
 ```
 
-## Automatic Tagging
+## Automatic Tag Assignment
 
-When creating a new work item, analyze the repository structure and suggest
-appropriate component tags:
+When creating a new work item, analyse content and suggest (or auto-apply) appropriate tags.
 
-- If `skills/` directory exists → suggest `skill` tag
-- If `src/api/` exists → suggest `api` tag
-- If `docs/` changes → suggest `documentation` tag
+### Component Tag Suggestions
+
+Analyse repository structure and file changes:
+
+- If `skills/` directory exists → suggest `skill`
+- If `src/api/` exists → suggest `api` or `component:api`
+- If `docs/` changes → suggest `documentation`
+- If `ui/` or `frontend/` → suggest `ui` or `component:ui`
+- If `database/` or `db/` → suggest `database`
+
+### Work Type Suggestions
+
+Analyse issue title and body for keywords:
+
+**new-feature:**
+
+- Keywords: "add", "create", "implement", "new", "feature"
+- Pattern: "Add [feature]", "Implement [capability]"
+
+**enhancement:**
+
+- Keywords: "improve", "enhance", "optimise", "extend", "update"
+- Pattern: "Improve [existing feature]", "Enhance [capability]"
+
+**bug:**
+
+- Keywords: "fix", "bug", "error", "crash", "broken", "issue"
+- Pattern: "Fix [problem]", "Bug: [description]"
+
+**tech-debt:**
+
+- Keywords: "refactor", "technical debt", "legacy", "clean up", "upgrade"
+- Pattern: "Refactor [component]", "Clean up [area]"
+
+**documentation:**
+
+- Keywords: "document", "docs", "readme", "guide", "documentation"
+- File changes: Only `.md` files
+
+**infrastructure:**
+
+- Keywords: "ci", "cd", "build", "deploy", "pipeline", "automation"
+- File changes: `.github/`, `ci/`, `.gitlab-ci.yml`
+
+**chore:**
+
+- Keywords: "chore", "maintenance", "dependency", "update deps"
+- Pattern: "Chore: [task]", "Update [dependency]"
+
+### Priority Suggestions
+
+Analyse issue severity indicators:
+
+**P0 (Critical):**
+
+- Keywords: "critical", "urgent", "emergency", "production down", "data loss", "security"
+
+**P1 (High):**
+
+- Keywords: "high priority", "blocking", "important", "major"
+
+**P2 (Medium):**
+
+- Keywords: "enhancement", "improvement" (with no urgency indicators)
+- Default priority if no indicators
+
+**P3 (Low):**
+
+- Keywords: "minor", "low priority", "nice to have"
+
+**P4 (Nice-to-have):**
+
+- Keywords: "future", "someday", "idea", "consider"
+
+### Auto-Assignment Behaviour
+
+**On issue creation:**
+
+1. Detect platform (GitHub, Azure DevOps, Jira)
+2. Analyse issue title, body, and file changes
+3. Suggest tags with confidence level:
+   - High confidence (>80%): Auto-apply tag
+   - Medium confidence (50-80%): Suggest in comment
+   - Low confidence (<50%): List options for manual selection
+
+**Example auto-assignment comment:**
+
+```text
+🏷️ **Suggested tags:**
+
+**Auto-applied (high confidence):**
+
+- `skill` (repository has `skills/` directory)
+- `work-type:enhancement` (title: "Extend component tagging...")
+- `priority:p2` (no urgency indicators, standard enhancement)
+
+**Please verify** these tags are appropriate, or update if needed.
+```
 
 ## Priority Tagging
 
