@@ -40,3 +40,39 @@ appropriate component tags:
 - If `skills/` directory exists → suggest `skill` tag
 - If `src/api/` exists → suggest `api` tag
 - If `docs/` changes → suggest `documentation` tag
+
+## Priority Tagging
+
+Every work item should have a priority tag indicating urgency and importance.
+
+### Priority Levels
+
+| Level | Name         | Description                                     | Examples                                  |
+| ----- | ------------ | ----------------------------------------------- | ----------------------------------------- |
+| P0    | Critical     | System down, data loss, security breach         | Production outage, security vulnerability |
+| P1    | High         | Major functionality broken, blocking other work | Core feature broken, build failing        |
+| P2    | Medium       | Important but not urgent, has workarounds       | Enhancement, non-critical bug             |
+| P3    | Low          | Nice to have, minimal impact                    | Minor UI improvement, typo fix            |
+| P4    | Nice-to-have | Future consideration, low priority              | Feature idea, optimisation                |
+
+### When to Apply
+
+- **P0-P1**: Requires immediate attention, should be worked on now
+- **P2**: Normal priority, part of regular backlog
+- **P3-P4**: Low priority, work on when time permits
+
+### Platform-Specific Implementation
+
+**GitHub:**
+
+- Labels: `priority:p0`, `priority:p1`, `priority:p2`, `priority:p3`, `priority:p4`
+
+**Azure DevOps:**
+
+- Tags: `P0`, `P1`, `P2`, `P3`, `P4`
+- OR use Priority field: Critical, High, Medium, Low
+
+**Jira:**
+
+- Priority field: Highest, High, Medium, Low, Lowest
+- OR labels: `priority-p0`, `priority-p1`, etc.
