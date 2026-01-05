@@ -7,15 +7,18 @@ description: Use when warnings/errors occur during git operations, package manag
 
 ## Overview
 
-**Fix warnings, errors, and standards violations immediately.** Broken windows—small signs of neglect—compound into technical debt. The 2x rule: fix now unless fix time > 2x remaining work.
+**Fix warnings, errors, and standards violations immediately.** Broken windows—small signs of
+neglect—compound into technical debt. The 2x rule: fix now unless fix time > 2x remaining work.
 
-**Violating the letter of these rules IS violating the spirit of these rules.** The 2x threshold is objective and measurable—there is no "spirit vs letter" escape.
+**Violating the letter of these rules IS violating the spirit of these rules.** The 2x threshold is
+objective and measurable—there is no "spirit vs letter" escape.
 
 **REQUIRED BACKGROUND:** superpowers:verification-before-completion, superpowers:systematic-debugging
 
 ## When to Use
 
 **Always triggered for:**
+
 - Warnings/errors during git, npm, build, or test operations
 - Before declaring work complete
 - Standards violations detected during code review
@@ -63,16 +66,19 @@ digraph fix_decision {
 ### Skills-First Repositories
 
 Before starting implementation:
+
 1. Check for `AGENTS.md` with skills-first-workflow
 2. Verify superpowers installed and required skills loaded
 3. Load missing skills before proceeding
 
 ## Red Flags - STOP
 
-- "It's just a warning" / "Normal behavior" / "Can fix later"
+- "It's just a warning" / "Normal behaviour" / "Can fix later"
 - "No time now" (without 2x calculation)
 - "User didn't ask for tests/docs"
 - "Scope creep" / "Need to balance"
+- "I'll set up linting/verification tools later"
+- Working in repo with package.json but no node_modules
 
 **All mean: Apply 2x rule. Fix or create tech-debt issue. No ignoring.**
 

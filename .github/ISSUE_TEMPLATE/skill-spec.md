@@ -1,64 +1,78 @@
 ---
 name: Skill Specification
 about: Define a new skill following writing-skills methodology with RED-GREEN-REFACTOR
-title: 'Skill: [skill-name]'
-labels: ['skill', 'new-feature']
-assignees: ''
+title: "Skill: [skill-name]"
+labels: ["skill", "new-feature"]
+assignees: ""
 ---
 
-# Skill: {skill-name}
+## Skill: {skill-name}
 
 ## Summary
+
 {One sentence: what agents should do when this skill triggers}
 
 ## Skill Priority
-- Priority: P{0-4} ({Safety & Integrity | Quality & Correctness | Consistency & Governance | Delivery & Flow | Optimisation & Convenience})
+
+- Priority: P{0-4} ({Safety & Integrity | Quality & Correctness | Consistency & Governance |
+  Delivery & Flow | Optimisation & Convenience})
 - Rationale: {Why this priority level}
 - Conflicts with: {Other skills or "None expected"}
 
 ## Frontmatter Specification
+
 ```yaml
 ---
-name: {skill-name}  # letters, numbers, hyphens only
+name: { skill-name } # letters, numbers, hyphens only
 description: Use when {triggering conditions ONLY - NO workflow summary, third person, <500 chars}
 ---
 ```
 
 ## Trigger Conditions
+
 - {Concrete symptom/situation}
 - {Concrete user request pattern}
 - {Repo state that signals applicability}
 
 ## Opt-Out Rule
+
 {When/how users can decline this skill, or "No opt-out - required for compliance"}
 
 ## Required Superpowers References
+
 **REQUIRED SUB-SKILL:** superpowers:{skill-name}
 **REQUIRED SUB-SKILL:** superpowers:{skill-name}
 
 Cross-references:
+
 - {other-skill-in-this-repo} for {specific case}
 
 ## Progressive Loading Strategy
+
 Main SKILL.md (target <300 words):
+
 - {Core pattern/workflow}
 - {Quick reference table}
 - {Common mistakes}
 
 references/ folder (on-demand):
+
 - {Heavy API docs or comprehensive examples}
 - {Supporting tools/scripts}
 
 ## Brainstorming Integration
+
 When brainstorming {context}:
+
 1. Present options: {option A, option B, option C}
 2. Ask about: {key decision factor}
 3. If user chooses {X}, apply this skill with {config}
-4. Surface tradeoffs: {tradeoff table}
+4. Surface trade-offs: {trade-off table}
 
 ## RED Phase - Baseline Testing (BEFORE Writing Skill)
 
 ### Pressure Scenario 1: {Name}
+
 ```gherkin
 Given agent WITHOUT {skill-name}
 And pressure: {time/sunk cost/exhaustion/authority}
@@ -70,6 +84,7 @@ Then record:
 ```
 
 ### Pressure Scenario 2: {Name}
+
 ```gherkin
 Given agent WITHOUT {skill-name}
 And pressure: {different combination of pressures}
@@ -81,6 +96,7 @@ Then record:
 ```
 
 ### Pressure Scenario 3: {Name}
+
 ```gherkin
 Given agent WITHOUT {skill-name}
 And pressure: {combined pressures - time + sunk cost + exhaustion}
@@ -92,13 +108,15 @@ Then record:
 ```
 
 ### Expected Baseline Failures
-- {Specific behavior that should fail without skill}
+
+- {Specific behaviour that should fail without skill}
 - {Rationalization pattern to identify}
 - {Common mistake from baseline testing}
 
 ## GREEN Phase - Concrete BDD Scenarios (WITH Skill)
 
 ### Scenario 1: {Primary use case}
+
 ```gherkin
 Given agent WITH {skill-name}
 When user says: "{exact concrete input}"
@@ -115,6 +133,7 @@ Evidence checklist:
 ```
 
 ### Scenario 2: {Opt-out case or edge case}
+
 ```gherkin
 Given agent WITH {skill-name}
 When user says: "{exact concrete input for opt-out case}"
@@ -126,6 +145,7 @@ Evidence checklist:
 ```
 
 ### Scenario 3: {Greenfield vs Brownfield}
+
 ```gherkin
 Given {existing codebase with legacy structure | new empty project}
 When user says: "{exact concrete input}"
@@ -133,7 +153,7 @@ Then agent responds with:
   "{Expected announcement}"
 And agent adapts approach for {greenfield | brownfield} context
 Evidence checklist:
-  - [ ] {Context-appropriate behavior}
+  - [ ] {Context-appropriate behaviour}
 ```
 
 ## REFACTOR Phase - Rationalization Closing
@@ -141,27 +161,31 @@ Evidence checklist:
 After initial GREEN tests, identify new rationalizations and add:
 
 ### Rationalizations Table
-| Excuse | Reality |
-|--------|---------|
+
+| Excuse                                    | Reality                                |
+| ----------------------------------------- | -------------------------------------- |
 | "{Specific rationalization from testing}" | {Counter-argument with why it's wrong} |
-| "{Another excuse agents use}" | {Reality check} |
+| "{Another excuse agents use}"             | {Reality check}                        |
 
 ### Red Flags - STOP
+
 - "{Pattern that signals violation}"
 - "{Another red flag from testing}"
 - "{Common rationalization to watch for}"
 
-**All of these mean: {corrective action}**
+All of these mean: {corrective action}
 
 ## Required Agent Steps
-1) {Step with clear success criteria}
-2) {Step with clear success criteria}
-3) {Step with clear success criteria}
-4) Provide evidence checklist for completion
+
+1. {Step with clear success criteria}
+2. {Step with clear success criteria}
+3. {Step with clear success criteria}
+4. Provide evidence checklist for completion
 
 ## Assertable Success Checks
+
 - [ ] Response includes {specific element} (minimum {N})
-- [ ] Response demonstrates {specific behavior}
+- [ ] Response demonstrates {specific behaviour}
 - [ ] Files created: {specific list}
 - [ ] Evidence provided: {type and format}
 - [ ] {Specific verification that can be checked}
@@ -174,15 +198,17 @@ When this skill is applied, update README.md under "Applied Conventions":
 ### Applied Conventions
 
 {skill-name}:
-  - {Convention key}: {value chosen}
-  - {Another convention}: {value}
-  - Applied on: {date}
-  - User opted out: {none | reason + date}
+
+- {Convention key}: {value chosen}
+- {Another convention}: {value}
+- Applied on: {date}
+- User opted out: {none | reason + date}
 ```
 
 Before prompting user about {specific decision}, check README.md for existing opt-out to prevent repeated prompting.
 
 ## Token Efficiency Target
+
 - Main SKILL.md: <{200-500} words (choose based on load frequency)
 - Total with references: <{500-1000} words
 - Load frequency: {Always loaded | Triggered only | On-demand}
@@ -190,23 +216,27 @@ Before prompting user about {specific decision}, check README.md for existing op
 ## Greenfield & Brownfield Applicability
 
 **Greenfield:**
+
 - {How skill applies to new projects}
 - {What gets established from scratch}
 - {Baseline structure created}
 
 **Brownfield:**
+
 - {How skill applies to existing codebases}
 - {What gets verified/retrofitted}
 - {Safe incremental adoption path}
 - {Backward compatibility considerations}
 
 ## Test Design Guidance
+
 - {Specific testing approach}
 - {Concurrency/isolation requirements}
 - {What to avoid in tests}
 - {Data setup/teardown strategy}
 
 ## Review Personas
+
 - {Persona 1 - who should review from this perspective}
 - {Persona 2 - who should review from this perspective}
 - {Persona 3 - who should review from this perspective}
@@ -220,6 +250,7 @@ Create an agentskills.io-compatible skill spec for `{skill-name}` following the 
 3. **REFACTOR phase**: Close loopholes systematically, add rationalizations table, re-verify under pressure
 
 The resulting SKILL.md must include:
+
 - Proper YAML frontmatter (name, description per CSO rules)
 - Progressive loading strategy (main content + references/ for heavy detail)
 - DRY superpowers cross-references (no duplication)

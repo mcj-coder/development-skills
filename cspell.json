@@ -11,11 +11,20 @@
     "ADR",
     "ADRs",
     "agentskills",
+    "Assertable",
+    "baselined",
+    "ENOTEMPTY",
     "frontmatter",
+    "glab",
+    "Graphviz",
+    "reqs",
     "Taskboard",
+    "teardown",
     "USERPROFILE",
     "workitem",
-    "workitems"
+    "workitems",
+    "worktree",
+    "worktrees"
   ],
   "ignorePaths": ["node_modules/**", "package-lock.json"]
 }

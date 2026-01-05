@@ -1,18 +1,19 @@
 # Broken Window Scenarios
 
-Detailed examples with expected agent behavior when broken-window skill is active.
+Detailed examples with expected agent behaviour when broken-window skill is active.
 
 ## Scenario 1: Git Line Ending Warning
 
 **Context:** Agent commits code and sees:
-```
+
+```text
 warning: LF will be replaced by CRLF in src/components/LoginForm.tsx
 The file will have its original line endings in your working directory
 ```
 
-**Expected Behavior:**
+**Expected Behaviour:**
 
-```
+```text
 Git warning detected: line ending inconsistency in LoginForm.tsx
 
 Investigating... This indicates missing or inconsistent .gitattributes configuration.
@@ -30,6 +31,7 @@ Warning resolved. Continuing with original work.
 ```
 
 **Evidence:**
+
 - [ ] Warning investigated and root cause identified
 - [ ] Fix applied (.gitattributes configured)
 - [ ] Warning no longer appears on subsequent operations
@@ -38,13 +40,14 @@ Warning resolved. Continuing with original work.
 ## Scenario 2: Package Vulnerabilities
 
 **Context:** npm install shows:
-```
+
+```text
 3 vulnerabilities (2 moderate, 1 high)
 ```
 
-**Expected Behavior:**
+**Expected Behaviour:**
 
-```
+```text
 Package vulnerabilities detected. Running npm audit for details...
 
 Analysis:
@@ -69,7 +72,8 @@ High-severity issue resolved. Moderate issues documented.
 ```
 
 **Evidence:**
-- [ ] Vulnerabilities analyzed (severity, production vs dev)
+
+- [ ] Vulnerabilities analysed (severity, production vs dev)
 - [ ] High-severity production issues fixed
 - [ ] Tests pass after updates
 - [ ] Remaining issues documented with justification
@@ -78,9 +82,9 @@ High-severity issue resolved. Moderate issues documented.
 
 **Context:** Agent finishing feature implementation.
 
-**Expected Behavior:**
+**Expected Behaviour:**
 
-```
+```text
 Feature implementation complete. Running pre-completion standards review...
 
 Checking:
@@ -111,6 +115,7 @@ All standards met. Work now complete.
 ```
 
 **Evidence:**
+
 - [ ] Standards review performed
 - [ ] All violations identified
 - [ ] Violations fixed (not deferred)
@@ -120,9 +125,9 @@ All standards met. Work now complete.
 
 **Context:** User requests feature in skills-first repository.
 
-**Expected Behavior:**
+**Expected Behaviour:**
 
-```
+```text
 Request: "Add logging to the user service"
 
 Checking repository configuration...
@@ -151,6 +156,7 @@ All prerequisites met. Beginning implementation following TDD workflow.
 ```
 
 **Evidence:**
+
 - [ ] Skills-first validation performed before starting
 - [ ] Missing skills identified
 - [ ] All required skills loaded
@@ -160,9 +166,9 @@ All prerequisites met. Beginning implementation following TDD workflow.
 
 **Context:** TypeScript build shows deprecation warning.
 
-**Expected Behavior:**
+**Expected Behaviour:**
 
-```
+```text
 Build warning detected:
 "DeprecationWarning: Foo API deprecated, will be removed in v10. Use Bar API instead."
 
@@ -194,19 +200,20 @@ User should be aware this needs scheduling.
 ```
 
 **Evidence:**
+
 - [ ] Warning investigated
 - [ ] Fix time accurately estimated
 - [ ] 2x threshold calculation shown
 - [ ] Issue documented in known-issues.md with complete information
 - [ ] Mitigation applied (version pinning)
 
-## Scenario 6: False "Normal Behavior" Rationalization
+## Scenario 6: False "Normal Behaviour" Rationalization
 
 **Context:** Agent encounters repeated test timeout warnings.
 
-**WRONG Behavior (Without Skill):**
+**WRONG Behaviour (Without Skill):**
 
-```
+```text
 Test warnings detected:
 "Warning: Test exceeded 5000ms timeout in 3 tests"
 
@@ -214,13 +221,13 @@ These timeouts are likely due to slow CI environment or network dependencies.
 This is normal for integration tests. Proceeding...
 ```
 
-**CORRECT Behavior (With Skill):**
+**CORRECT Behaviour (With Skill):**
 
-```
+```text
 Test warnings detected:
 "Warning: Test exceeded 5000ms timeout in 3 tests"
 
-RED FLAG: Rationalizing as "normal behavior"
+RED FLAG: Rationalizing as "normal behaviour"
 
 Warnings indicate problems. Investigating root cause...
 
@@ -243,7 +250,8 @@ Issue resolved. These weren't "normal" - they were broken windows.
 ```
 
 **Evidence:**
-- [ ] Rejected "normal behavior" rationalization
+
+- [ ] Rejected "normal behaviour" rationalization
 - [ ] Investigated actual root cause
 - [ ] Fixed underlying issue
 - [ ] Verified warnings eliminated
@@ -253,7 +261,8 @@ Issue resolved. These weren't "normal" - they were broken windows.
 ### Anti-Pattern 1: Offering Deferral as Default Option
 
 **WRONG:**
-```
+
+```text
 I see linting errors. Would you like me to:
 1. Fix them now
 2. Document them for later
@@ -261,7 +270,8 @@ I see linting errors. Would you like me to:
 ```
 
 **CORRECT:**
-```
+
+```text
 Linting errors detected. Applying 2x rule...
 
 Estimated fix time: 3 minutes
@@ -276,17 +286,19 @@ Done.
 ### Anti-Pattern 2: Treating Warnings as Optional
 
 **WRONG:**
-```
+
+```text
 Build completed successfully with 2 warnings.
 The warnings don't prevent the build, so we can proceed.
 ```
 
 **CORRECT:**
-```
+
+```text
 Build completed with 2 warnings - these are broken windows.
 
 Investigating warnings...
-[Analyzes each warning]
+[Analyses each warning]
 [Applies 2x rule]
 [Fixes or documents each]
 
@@ -296,13 +308,15 @@ Build now clean.
 ### Anti-Pattern 3: Skipping Pre-Completion Review
 
 **WRONG:**
-```
+
+```text
 Feature implemented and tests passing.
 Ready to commit!
 ```
 
 **CORRECT:**
-```
+
+```text
 Feature implemented and tests passing.
 
 Running pre-completion standards review...

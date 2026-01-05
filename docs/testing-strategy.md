@@ -4,19 +4,22 @@ This document describes the testing approach and patterns for this repository.
 
 ## Overview
 
-This repository does not have a traditional automated testing framework. Instead, skills are tested using **simulated testing** with BDD (Behavior-Driven Development) checklists and agent-based verification.
+This repository does not have a traditional automated testing framework. Instead, skills are tested using
+**simulated testing** with BDD (Behaviour-Driven Development) checklists and agent-based verification.
 
-**Core Principle:** Skills are documentation. Testing documentation means verifying that agents behave correctly when the documentation is present vs absent.
+**Core Principle:** Skills are documentation. Testing documentation means verifying that agents behave
+correctly when the documentation is present vs absent.
 
 ## TDD for Documentation
 
 ### The Iron Law
 
-```
+```text
 NO SKILL WITHOUT A FAILING TEST FIRST
 ```
 
 This applies to:
+
 - New skills
 - Edits to existing skills
 - Documentation updates
@@ -27,22 +30,23 @@ This applies to:
 
 Skills follow the same TDD cycle as production code:
 
-| TDD Concept | Skill Creation |
-|-------------|----------------|
-| **Test case** | Pressure scenario with subagent |
-| **Production code** | Skill document (SKILL.md) |
-| **Test fails (RED)** | Agent violates rule without skill (baseline) |
-| **Test passes (GREEN)** | Agent complies with skill present |
-| **Refactor** | Close loopholes while maintaining compliance |
+| TDD Concept             | Skill Creation                               |
+| ----------------------- | -------------------------------------------- |
+| **Test case**           | Pressure scenario with subagent              |
+| **Production code**     | Skill document (SKILL.md)                    |
+| **Test fails (RED)**    | Agent violates rule without skill (baseline) |
+| **Test passes (GREEN)** | Agent complies with skill present            |
+| **Refactor**            | Close loopholes while maintaining compliance |
 
 ### RED Phase - Baseline Testing
 
 **Purpose:** Understand what agents do naturally WITHOUT the skill.
 
 **Process:**
+
 1. Create pressure scenarios (3+ with combined pressures)
 2. Run scenarios with agent that does NOT have the skill loaded
-3. Document behavior verbatim:
+3. Document behaviour verbatim:
    - What choices did agent make?
    - What rationalizations did it use?
    - What got skipped or done incorrectly?
@@ -50,6 +54,7 @@ Skills follow the same TDD cycle as production code:
 **Output:** Baseline failures that the skill needs to address.
 
 **Example RED Phase Test:**
+
 ```gherkin
 Given agent WITHOUT architecture-testing skill
 And pressure: time constraint ("need this quickly")
@@ -66,6 +71,7 @@ Then record:
 **Purpose:** Verify the skill solves the identified problems.
 
 **Process:**
+
 1. Write minimal skill addressing specific baseline failures
 2. Run same scenarios with skill present
 3. Verify agent now complies:
@@ -76,6 +82,7 @@ Then record:
 **Output:** Concrete BDD scenarios with passing results.
 
 **Example GREEN Phase Test:**
+
 ```gherkin
 Given agent WITH architecture-testing skill
 And same pressure: time constraint + sunk cost
@@ -99,6 +106,7 @@ Evidence:
 **Purpose:** Make skill bulletproof against rationalizations.
 
 **Process:**
+
 1. Run additional pressure scenarios
 2. Identify NEW rationalizations agents use
 3. Add explicit counters to skill
@@ -115,6 +123,7 @@ Evidence:
 **Examples:** TDD, verification-before-completion, architecture-testing
 
 **Test with:**
+
 - **Academic questions:** Do they understand the rules?
 - **Pressure scenarios:** Do they comply under stress?
 - **Multiple pressures combined:** Time + sunk cost + exhaustion
@@ -123,6 +132,7 @@ Evidence:
 **Success criteria:** Agent follows rule under maximum pressure.
 
 **Pressure types:**
+
 - **Time:** "Need this quickly", "Deadline is tomorrow"
 - **Sunk cost:** "Already wrote 500 lines", "Almost done"
 - **Authority:** "Senior dev said just do it", "User wants it now"
@@ -133,6 +143,7 @@ Evidence:
 **Examples:** condition-based-waiting, root-cause-tracing
 
 **Test with:**
+
 - **Application scenarios:** Can they apply the technique correctly?
 - **Variation scenarios:** Do they handle edge cases?
 - **Missing information:** Do instructions have gaps?
@@ -144,6 +155,7 @@ Evidence:
 **Examples:** reducing-complexity, information-hiding
 
 **Test with:**
+
 - **Recognition scenarios:** Do they recognize when pattern applies?
 - **Application scenarios:** Can they use the mental model?
 - **Counter-examples:** Do they know when NOT to apply?
@@ -155,6 +167,7 @@ Evidence:
 **Examples:** API documentation, command references
 
 **Test with:**
+
 - **Retrieval scenarios:** Can they find the right information?
 - **Application scenarios:** Can they use what they found correctly?
 - **Gap testing:** Are common use cases covered?
@@ -166,10 +179,12 @@ Evidence:
 For documentation testing, use BDD checklists:
 
 **Before editing documentation:**
+
 ```markdown
 ## Documentation BDD Checklist
 
 Expected statements in docs/architecture-overview.md:
+
 - [ ] Repository structure section exists
 - [ ] Skills directory is documented
 - [ ] Integration architecture is described
@@ -177,11 +192,13 @@ Expected statements in docs/architecture-overview.md:
 - [ ] Progressive loading is explained
 
 Current status: FAILING
+
 - Missing: Repository structure section
 - Missing: Integration architecture description
 ```
 
 **After editing:**
+
 ```markdown
 ## Documentation BDD Checklist
 
@@ -194,12 +211,14 @@ All expected statements are present in docs/architecture-overview.md
 ### Combining Pressures
 
 **Single pressure (weak test):**
+
 ```gherkin
 Given agent WITH skill
 And pressure: time constraint
 ```
 
 **Multiple pressures (strong test):**
+
 ```gherkin
 Given agent WITH skill
 And pressure: time constraint ("deadline in 1 hour")
@@ -212,10 +231,12 @@ Then agent MUST still follow TDD despite all pressures
 ### Realistic Scenarios
 
 **Use concrete, realistic prompts:**
+
 - ✅ "Create a REST API for task management with users, projects, and tasks"
 - ❌ "Create an application"
 
 **Include context that creates pressure:**
+
 - ✅ "We need this for demo tomorrow, can you finish it today?"
 - ❌ "Build this feature"
 
@@ -226,12 +247,12 @@ Skills that enforce discipline must capture common excuses:
 ```markdown
 ## Rationalizations (and Reality)
 
-| Excuse | Reality |
-|--------|---------|
-| "Too simple to test first" | Simple code breaks. Test takes 30 seconds. |
+| Excuse                           | Reality                                                                 |
+| -------------------------------- | ----------------------------------------------------------------------- |
+| "Too simple to test first"       | Simple code breaks. Test takes 30 seconds.                              |
 | "Tests after achieve same goals" | Tests-after = "what does this do?" Tests-first = "what should this do?" |
-| "It's about spirit not ritual" | Violating the letter IS violating the spirit. |
-| "This is different because..." | It's not different. Write test first. |
+| "It's about spirit not ritual"   | Violating the letter IS violating the spirit.                           |
+| "This is different because..."   | It's not different. Write test first.                                   |
 ```
 
 Source these from actual baseline testing, not speculation.
@@ -258,7 +279,7 @@ Help agents self-check when rationalizing:
 
 - [ ] RED Phase completed
   - [ ] 3+ baseline scenarios run WITHOUT skill
-  - [ ] Agent behavior documented verbatim
+  - [ ] Agent behaviour documented verbatim
   - [ ] Rationalizations captured (exact wording)
   - [ ] Failure patterns identified
 
@@ -296,6 +317,7 @@ Help agents self-check when rationalizing:
 ### Abstract BDD Scenarios
 
 **Mistake:**
+
 ```gherkin
 Given user creates new service
 Then agent applies greenfield-baseline
@@ -304,6 +326,7 @@ Then agent applies greenfield-baseline
 **Why it's bad:** Not testable with concrete evidence.
 
 **Fix:**
+
 ```gherkin
 Given agent WITH greenfield-baseline
 When user says: "Create a new REST API for inventory management"
@@ -326,7 +349,7 @@ And agent creates:
 
 **Mistake:** Guessing what rationalizations agents might use.
 
-**Why it's bad:** May not match actual agent behavior.
+**Why it's bad:** May not match actual agent behaviour.
 
 **Fix:** Capture rationalizations verbatim from baseline testing.
 

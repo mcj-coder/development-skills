@@ -14,15 +14,18 @@ This document defines the coding standards, conventions, and quality requirement
 
 - **One concept per file:** Keep files small and focused
 - **Skill structure:**
-  ```
+
+  ```text
   skills/
     skill-name/
       SKILL.md              # Main specification (required)
       references/           # Heavy reference material (optional)
       supporting-file.*     # Tools, examples (only if needed)
   ```
+
 - **Documentation structure:**
-  ```
+
+  ```text
   docs/
     *.md                    # Human-readable topic docs
     adr/                    # Architecture Decision Records
@@ -31,6 +34,7 @@ This document defines the coding standards, conventions, and quality requirement
 ### Progressive Loading
 
 Skills must support progressive loading:
+
 - **Main SKILL.md:** <300 words for frequently-loaded skills, <500 for others
 - **Heavy content:** Move to `references/` subdirectory
 - **Cross-references:** Link to existing skills instead of duplicating
@@ -50,14 +54,16 @@ Skills must support progressive loading:
 Skills must follow [agentskills.io specification](https://agentskills.io/specification):
 
 **Required YAML frontmatter:**
+
 ```yaml
 ---
-name: skill-name-with-hyphens  # Only letters, numbers, hyphens
+name: skill-name-with-hyphens # Only letters, numbers, hyphens
 description: Use when {triggering conditions ONLY - third person, <500 chars}
 ---
 ```
 
 **Description rules (Critical for Claude Search Optimization):**
+
 - Start with "Use when..." to focus on triggering conditions
 - Include specific symptoms, situations, and contexts
 - **NEVER summarize the skill's process or workflow** (agents may follow description instead of reading full skill)
@@ -65,6 +71,7 @@ description: Use when {triggering conditions ONLY - third person, <500 chars}
 - Third person voice
 
 **Required sections:**
+
 - Overview (what is this, core principle)
 - When to Use (triggers and symptoms)
 - Core Pattern or Implementation
@@ -73,6 +80,7 @@ description: Use when {triggering conditions ONLY - third person, <500 chars}
 - Evidence/verification requirements
 
 **Optional but recommended:**
+
 - Red Flags list (for discipline skills)
 - Rationalizations table (for discipline skills)
 - Real-World Impact examples
@@ -80,6 +88,7 @@ description: Use when {triggering conditions ONLY - third person, <500 chars}
 ### Human-Centric Documentation
 
 When updating documentation as result of applying skills:
+
 - **Use human terminology:** "Clean Architecture", not "architecture-testing"
 - **Update appropriate doc:** `architecture-overview.md`, `coding-standards.md`, `testing-strategy.md`
 - **Don't create skill-specific files:** No `conventions/architecture-testing.md`
@@ -92,11 +101,13 @@ When updating documentation as result of applying skills:
 **CRITICAL:** Zero warnings or errors when committing changes.
 
 **During development:**
+
 - No unresolved warnings in git commits or package operations
 - Warnings must be resolved immediately, not deferred
 - Failed quality checks block commits
 
 **Before committing:**
+
 - Linting passes cleanly
 - Static analysis passes cleanly
 - All tests pass (BDD checklists verified)
@@ -118,13 +129,15 @@ When warnings, errors, or standards violations occur:
 **Example:** Remaining work = 30 minutes. Fix takes 15 minutes. Ratio = 0.5x. **Fix immediately.**
 
 **Common rationalizations to reject:**
+
 - "It's just a warning, not an error" → Warnings indicate problems
-- "This is normal behavior" → Normal warnings still indicate configuration issues
+- "This is normal behaviour" → Normal warnings still indicate configuration issues
 - "Can fix it later" → "Later" rarely happens; fix unless >2x impact
 - "No time now" → Must calculate 2x ratio first, not subjective
 - "That's scope creep" → Fixing issues is part of the work
 
 **Documentation requirement:**
+
 - **Fixed issues:** Update this file with configuration/pattern applied
 - **Deferred issues (>2x threshold):** Create tech-debt issue with:
   - Issue description and impact
@@ -154,12 +167,14 @@ Before declaring work complete, verify against repository standards:
 TDD is mandatory for all changes, including documentation.
 
 **For features/bug fixes:**
+
 1. Write failing test first
 2. Write minimal code to pass test
 3. Refactor while keeping tests green
 4. No code without failing test first
 
 **For documentation:**
+
 1. Create BDD checklist of expected statements
 2. Verify checklist fails against current docs
 3. Record failure reason (missing section, incorrect wording)
@@ -174,7 +189,7 @@ TDD is mandatory for all changes, including documentation.
 
 1. **RED Phase - Baseline Testing:**
    - Run scenarios WITHOUT skill present
-   - Document agent behavior verbatim
+   - Document agent behaviour verbatim
    - Identify rationalizations and failure patterns
    - 3+ pressure scenarios (time, sunk cost, exhaustion combinations)
 
@@ -197,6 +212,7 @@ TDD is mandatory for all changes, including documentation.
 ### Branching Strategy
 
 **GitHub Flow:**
+
 - Feature branches from `main`: `feature/issue-{number}-{brief-description}`
 - Sub-task branches from feature: `feature/issue-{number}-subtask-{description}`
 - Never commit directly to `main`
@@ -205,7 +221,8 @@ TDD is mandatory for all changes, including documentation.
 ### Commit Messages
 
 **Conventional Commits format:**
-```
+
+```text
 <type>(<scope>): <subject>
 
 <body>
@@ -214,15 +231,17 @@ TDD is mandatory for all changes, including documentation.
 ```
 
 **Types:**
+
 - `feat`: New feature
 - `fix`: Bug fix
 - `docs`: Documentation only
-- `refactor`: Code refactoring (no behavior change)
+- `refactor`: Code refactoring (no behaviour change)
 - `test`: Adding or updating tests
 - `chore`: Maintenance tasks
 
 **Examples:**
-```
+
+```text
 feat(skills): add architecture-testing skill spec
 
 Add skill for automated architecture boundary enforcement
@@ -231,7 +250,7 @@ following RED-GREEN-REFACTOR methodology.
 Refs: #1
 ```
 
-```
+```text
 docs: update coding standards with TDD requirements
 
 Add explicit TDD requirements for documentation changes
@@ -243,16 +262,19 @@ Refs: #42
 ### Merge Strategy
 
 **Before merging:**
+
 1. Rebase on latest `main`
 2. Resolve all conflicts
 3. Verify clean build
 4. Ensure all checks pass
 
 **Merge approach:**
+
 - **Squash and merge:** If excessive commits for scope
 - **Fast-forward only:** Otherwise (preferred for clean history)
 
 **Squash commit messages:**
+
 - Must be Conventional Commits format
 - Concise description of PR changes
 - Include ticket reference in footer: `Refs: #123`
@@ -288,17 +310,20 @@ For detailed TDD methodology, see superpowers:test-driven-development.
 ### Documentation Cross-References
 
 Link to existing documentation instead of repeating:
+
 - ✅ "See [architecture-overview.md](architecture-overview.md) for architectural patterns"
 - ❌ Copying architecture patterns into multiple files
 
 ### Token Efficiency
 
 **Frequently-loaded content must be concise:**
+
 - Getting-started workflows: <150 words each
 - Frequently-loaded skills: <200 words total
 - Other skills: <500 words
 
 **Techniques:**
+
 - Move heavy details to `references/` subdirectory
 - Cross-reference existing skills/docs
 - Compress examples (remove verbosity)
@@ -309,17 +334,20 @@ Link to existing documentation instead of repeating:
 ### Active Voice, Verb-First
 
 **For skills and processes:**
+
 - ✅ `creating-skills` (not `skill-creation`)
 - ✅ `condition-based-waiting` (not `async-test-helpers`)
 - ✅ `using-git-worktrees` (not `git-worktree-usage`)
 
 **Gerunds (-ing) for processes:**
+
 - `testing-skills`, `debugging-with-logs`, `writing-plans`
 - Active voice describes the action being taken
 
 ### Descriptive and Searchable
 
 **Use words users would search for:**
+
 - Error messages: "Hook timed out", "ENOTEMPTY"
 - Symptoms: "flaky", "hanging", "zombie"
 - Tools: Actual command names, library names
@@ -332,6 +360,7 @@ Link to existing documentation instead of repeating:
 **One excellent example beats many mediocre ones.**
 
 **Good examples are:**
+
 - Complete and runnable (no placeholders)
 - Well-commented explaining WHY (not just what)
 - From real scenarios (not contrived)
@@ -339,6 +368,7 @@ Link to existing documentation instead of repeating:
 - Ready to adapt (concrete, not generic template)
 
 **Don't:**
+
 - Implement in 5+ languages
 - Create fill-in-the-blank templates
 - Write contrived toy examples
@@ -347,6 +377,7 @@ Link to existing documentation instead of repeating:
 ### Language Choice
 
 Choose most relevant language for the domain:
+
 - Testing techniques → TypeScript/JavaScript
 - System debugging → Shell/Python
 - Data processing → Python
@@ -355,11 +386,13 @@ Choose most relevant language for the domain:
 ## Flowchart Usage
 
 **Use flowcharts ONLY for:**
+
 - Non-obvious decision points
 - Process loops where agents might stop too early
 - "When to use A vs B" decisions
 
 **Never use flowcharts for:**
+
 - Reference material (use tables, lists)
 - Code examples (use markdown blocks)
 - Linear instructions (use numbered lists)

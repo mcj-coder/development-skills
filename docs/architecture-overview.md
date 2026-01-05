@@ -4,16 +4,18 @@ This document describes the architectural patterns, structure, and design princi
 
 ## Project Purpose
 
-This repository hosts skill specifications and guidance that interoperate with the Superpowers skills system. It is intentionally lightweight and avoids duplicating the upstream skill library.
+This repository hosts skill specifications and guidance that interoperate with the Superpowers
+skills system. It is intentionally lightweight and avoids duplicating the upstream skill library.
 
 **Key Goals:**
+
 - Backlog and specification of new skills to be implemented
 - Documentation and references for skills that integrate with Superpowers
 - Record decisions without copying upstream skills
 
 ## Repository Structure
 
-```
+```text
 development-skills/
 ├── README.md                    # Concise overview, references detailed docs
 ├── AGENTS.md                    # Agent-specific execution rules
@@ -40,11 +42,13 @@ development-skills/
 Documentation is separated by audience:
 
 **Human-Centric Documentation** (`docs/`):
+
 - Uses industry-standard terminology
 - Aggregated by topic (architecture, coding standards, testing)
 - Examples: "Clean Architecture", "TDD", "Integration Testing"
 
 **Agent-Centric Documentation** (`skills/`):
+
 - Uses skill names as identifiers
 - Follows agentskills.io specification
 - Examples: `architecture-testing`, `greenfield-baseline`
@@ -54,6 +58,7 @@ Documentation is separated by audience:
 ### Progressive Loading
 
 Skills follow progressive loading pattern:
+
 - **Main SKILL.md:** Core content, <300 words for frequently-loaded skills
 - **references/ subdirectory:** Heavy reference material, loaded on-demand
 - **Cross-references:** Point to existing skills to avoid duplication (DRY)
@@ -63,16 +68,19 @@ Skills follow progressive loading pattern:
 This repository integrates with:
 
 **Superpowers** (Upstream):
-- Core skill library: https://github.com/obra/superpowers
+
+- Core skill library: <https://github.com/obra/superpowers>
 - Skills here extend and complement (don't duplicate) Superpowers
 - Cross-reference Superpowers skills using `**REQUIRED SUB-SKILL:** superpowers:{skill-name}`
 
 **agentskills.io Specification**:
+
 - Standard format for skill specifications
 - Ensures interoperability across agent systems
-- Reference: https://agentskills.io/specification
+- Reference: <https://agentskills.io/specification>
 
 **GitHub Issues**:
+
 - Work item tracking and task management
 - Issue-driven delivery workflow
 - Traceability from issue to implementation
@@ -106,6 +114,7 @@ This ensures skills actually solve observed problems, not hypothetical ones.
 ### Clean Build Principle
 
 **Zero tolerance for warnings or errors:**
+
 - During development: No unresolved warnings in commits or package operations
 - Before commits: All linting and static analysis must pass
 - Warnings must be resolved immediately
@@ -115,11 +124,13 @@ This ensures skills actually solve observed problems, not hypothetical ones.
 Test-Driven Development is mandatory for **all changes, including documentation:**
 
 **For code/features:**
+
 - Write failing test first
 - Minimal implementation to pass
 - Refactor with tests passing
 
 **For documentation:**
+
 - Create BDD checklist of expected statements
 - Checklist must fail against current docs
 - Edit to make checklist pass
@@ -131,12 +142,14 @@ No "verify after" changes allowed.
 ### Decision Recording
 
 **ADRs (Architecture Decision Records):**
+
 - Location: `docs/adr/`
 - Format: MADR (Markdown Architectural Decision Records)
 - Purpose: Record major architectural, tooling, and process decisions
 - See: [docs/adr/0000-use-adrs.md](adr/0000-use-adrs.md)
 
 **Exclusions:**
+
 - Location: `docs/exclusions.md`
 - Purpose: Track patterns/practices explicitly opted out
 - Prevents repeated prompting by agents
@@ -146,12 +159,13 @@ No "verify after" changes allowed.
 Skills are classified by priority for conflict resolution:
 
 - **P0 – Safety & Integrity:** Security, immutability, provenance, traceability
-- **P1 – Quality & Correctness:** Behavioral correctness, clean builds, contract stability
+- **P1 – Quality & Correctness:** Behavioural correctness, clean builds, contract stability
 - **P2 – Consistency & Governance:** Repository conventions, versioning, pipeline conformance
 - **P3 – Delivery & Flow:** Incremental execution, developer experience
 - **P4 – Optimisation & Convenience:** Ergonomics and non-critical improvements
 
 **Conflict Resolution:**
+
 1. Higher priority wins
 2. If equal priority: prefer narrower scope
 3. If scope equal: prefer stronger guardrails
@@ -159,11 +173,13 @@ Skills are classified by priority for conflict resolution:
 ## Branching and Merge Strategy
 
 **Branching:**
+
 - GitHub Flow (feature branches from `main`)
 - Never commit directly to `main`
 - Sub-task branches from feature branches
 
 **Merging:**
+
 - Rebase on latest `main` before merging
 - Squash and merge if excessive commits
 - Fast-forward only otherwise
@@ -174,6 +190,7 @@ See [docs/coding-standards.md](coding-standards.md) for details.
 ## Testing Architecture
 
 Skills testing is "simulated" (no automated test framework):
+
 - BDD-style assertions defined upfront
 - Manual verification against checklists
 - Baseline testing (without skill) to identify failures
@@ -190,6 +207,7 @@ See [docs/testing-strategy.md](testing-strategy.md) for comprehensive testing ap
 ## Future Architecture Considerations
 
 Potential additions as repository grows:
+
 - Automated skill validation (schema checking)
 - Skill dependency graph visualization
 - Automated exclusion checking for agents

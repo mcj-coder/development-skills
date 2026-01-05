@@ -1,10 +1,13 @@
 # Excluded Patterns and Suppressions
 
-This document lists patterns, checks, and automated processes that have been explicitly excluded or suppressed for this repository.
+This document lists patterns, checks, and automated processes that have been explicitly excluded or
+suppressed for this repository.
 
-**Purpose:** Prevents agents from repeatedly prompting about declined patterns. Agents must check this file before suggesting excluded patterns.
+**Purpose:** Prevents agents from repeatedly prompting about declined patterns. Agents must check this
+file before suggesting excluded patterns.
 
-**Format:** Each exclusion includes the human-readable pattern name, agent skill mapping (for agent reference), reason, date, and scope.
+**Format:** Each exclusion includes the human-readable pattern name, agent skill mapping (for agent
+reference), reason, date, and scope.
 
 ---
 
@@ -13,11 +16,13 @@ This document lists patterns, checks, and automated processes that have been exp
 ### For Agents
 
 **Before suggesting any pattern or practice:**
+
 1. Search this document for related exclusions
 2. If pattern is excluded with matching scope, DO NOT re-prompt user
 3. Only mention the pattern if context has changed significantly (note this briefly)
 
 **When user opts out of a pattern:**
+
 1. Add entry to appropriate section below
 2. Use human-readable terminology (primary)
 3. Include agent skill mapping (parenthetical reference)
@@ -36,7 +41,8 @@ If context changes and you want to reconsider an exclusion, open a discussion is
 _No exclusions currently._
 
 **Example format:**
-```
+
+```markdown
 ### Automated Architecture Boundary Enforcement
 
 - **Agent Skill:** `architecture-testing`
@@ -105,5 +111,6 @@ _No exclusions currently._
 ### Temporary Exclusions
 
 Some exclusions may be temporary (e.g., "not until we reach production"). Mark these clearly:
+
 - **Status:** Excluded (Temporary)
 - **Reconsider When:** {Specific condition or milestone}

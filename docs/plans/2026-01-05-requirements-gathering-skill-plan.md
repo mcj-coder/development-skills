@@ -59,7 +59,7 @@ grep "requirements-gathering" README.md  # Should return nothing
 **Acceptance Criteria:**
 
 - [ ] RED scenarios describe baseline failures
-- [ ] GREEN scenarios describe expected behavior (unchecked boxes)
+- [ ] GREEN scenarios describe expected behaviour (unchecked boxes)
 - [ ] Scenarios validate no design documents created
 - [ ] Scenarios validate ticket creation workflow
 
@@ -232,6 +232,7 @@ requirements-gathering → Create Issue →
    - Evidence links provided
 
 5. **Progressive disclosure compliance:**
+
    ```bash
    wc -l skills/requirements-gathering/SKILL.md  # Should be < 500
    ```
@@ -254,7 +255,7 @@ Following Conventional Commits:
 **Mitigation:** RED scenarios test for this, skill explicitly warns against it
 
 **Risk:** Integration with issue-driven-delivery unclear
-**Mitigation:** Document handoff clearly, provide workflow diagram
+**Mitigation:** Document hand-off clearly, provide workflow diagram
 
 ## Success Criteria
 

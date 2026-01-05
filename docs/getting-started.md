@@ -1,12 +1,15 @@
 # Getting Started
 
-This guide helps you get started with the development-skills repository, whether you're creating skills, contributing documentation, or using skills with your agent system.
+This guide helps you get started with the development-skills repository, whether you're creating skills,
+contributing documentation, or using skills with your agent system.
 
 ## What is This Repository?
 
-This repository hosts **skill specifications** that integrate with the Superpowers skills system. Skills are agent-facing documentation that helps AI agents apply proven techniques, patterns, and processes.
+This repository hosts **skill specifications** that integrate with the Superpowers skills system. Skills
+are agent-facing documentation that helps AI agents apply proven techniques, patterns, and processes.
 
 **Purpose:**
+
 - Backlog and specification of new skills
 - Documentation and guidance for Superpowers-compatible skills
 - Record decisions without duplicating upstream skills
@@ -24,13 +27,13 @@ This repository hosts **skill specifications** that integrate with the Superpowe
 
 ### For Using Skills with Agents
 
-- **Superpowers:** https://github.com/obra/superpowers
+- **Superpowers:** <https://github.com/obra/superpowers>
 - **Node.js:** For running Superpowers bootstrap
 - **Agent system:** Claude Code, Codex, or compatible system
 
 ### For Creating Skills
 
-- **Understanding of agentskills.io spec:** https://agentskills.io/specification
+- **Understanding of agentskills.io spec:** <https://agentskills.io/specification>
 - **Familiarity with TDD:** RED-GREEN-REFACTOR methodology
 - **Agent access:** For baseline and verification testing
 
@@ -46,11 +49,13 @@ cd development-skills
 ### 2. Read the Documentation
 
 **Start here:**
+
 - [README.md](../README.md) - Repository overview and standards
 - [CONTRIBUTING.md](../CONTRIBUTING.md) - How to contribute
 - [docs/architecture-overview.md](architecture-overview.md) - Architecture and structure
 
 **Then review:**
+
 - [docs/coding-standards.md](coding-standards.md) - Standards and conventions
 - [docs/testing-strategy.md](testing-strategy.md) - How skills are tested
 - [docs/exclusions.md](exclusions.md) - What's been opted out
@@ -58,7 +63,8 @@ cd development-skills
 ### 3. Check the Taskboard
 
 All work is tracked via GitHub issues:
-- **Taskboard:** https://github.com/mcj-coder/development-skills/issues
+
+- **Taskboard:** <https://github.com/mcj-coder/development-skills/issues>
 - Review open issues before starting new work
 - Create issue for new skills or significant changes
 
@@ -74,7 +80,7 @@ cat skills/agent-workitem-automation/SKILL.md
 
 ## Repository Structure
 
-```
+```text
 development-skills/
 ├── README.md                    # Overview and quick reference
 ├── AGENTS.md                    # Agent-specific rules
@@ -100,6 +106,7 @@ development-skills/
 ### Creating a New Skill
 
 1. **Create issue** using `.github/ISSUE_TEMPLATE/skill-spec.md`:
+
    ```bash
    # Via GitHub UI or gh CLI
    gh issue create --template skill-spec.md
@@ -111,6 +118,7 @@ development-skills/
    - **REFACTOR:** Close loopholes, add rationalizations
 
 3. **Create skill directory:**
+
    ```bash
    mkdir -p skills/my-new-skill
    ```
@@ -145,6 +153,7 @@ See [CONTRIBUTING.md](../CONTRIBUTING.md) for detailed process.
 When you decline a pattern/practice:
 
 1. **Update `docs/exclusions.md`:**
+
    ```markdown
    ### Pattern Name (Human-Readable)
 
@@ -165,6 +174,7 @@ When you decline a pattern/practice:
 For major decisions (framework choices, architectural changes):
 
 1. **Copy ADR template:**
+
    ```bash
    cp docs/adr/0000-use-adrs.md docs/adr/NNNN-my-decision.md
    ```
@@ -204,6 +214,7 @@ git checkout -b feature/issue-42-subtask-baseline-tests
 ### Before Committing
 
 **Checklist:**
+
 - [ ] Zero warnings or errors (clean build)
 - [ ] All BDD checklists pass
 - [ ] Documentation updated
@@ -228,11 +239,13 @@ gh pr create --title "feat: add new-skill specification" --body "..."
 ### Bootstrap Superpowers
 
 **Windows (PowerShell):**
+
 ```powershell
 node $env:USERPROFILE\.codex\superpowers\.codex\superpowers-codex bootstrap
 ```
 
 **Unix/Linux/Mac:**
+
 ```bash
 node ~/.codex/superpowers/.codex/superpowers-codex bootstrap
 ```
@@ -240,6 +253,7 @@ node ~/.codex/superpowers/.codex/superpowers-codex bootstrap
 ### Load Skills
 
 **Via Codex:**
+
 ```bash
 node ~/.codex/superpowers/.codex/superpowers-codex use-skill skill-name
 ```
@@ -261,11 +275,13 @@ grep -i "pattern-name" docs/exclusions.md
 ### Clean Build Principle
 
 **Zero tolerance for warnings:**
+
 - No unresolved warnings in commits
 - No errors in git operations
 - Linting and static analysis must pass
 
 **Before every commit:**
+
 ```bash
 # Verify no warnings (conceptual - adapt to your tooling)
 # For markdown, check with linter:
@@ -275,6 +291,7 @@ grep -i "pattern-name" docs/exclusions.md
 ### TDD for Everything
 
 **Including documentation:**
+
 1. Create failing checklist
 2. Make changes
 3. Verify checklist passes
@@ -283,7 +300,7 @@ grep -i "pattern-name" docs/exclusions.md
 
 ### Conventional Commits
 
-```
+```text
 <type>(<scope>): <subject>
 
 <body>
@@ -343,7 +360,7 @@ Types: `feat`, `fix`, `docs`, `refactor`, `test`, `chore`
 1. **Read repository standards:** [README.md](../README.md)
 2. **Review contribution process:** [CONTRIBUTING.md](../CONTRIBUTING.md)
 3. **Explore existing skills:** `skills/` directory
-4. **Check taskboard:** https://github.com/mcj-coder/development-skills/issues
+4. **Check taskboard:** <https://github.com/mcj-coder/development-skills/issues>
 5. **Pick an issue or create one**
 6. **Follow the process**
 

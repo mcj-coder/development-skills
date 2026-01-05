@@ -38,6 +38,7 @@ allow "verify after" changes.
 This repository enforces a **skills-first workflow** where prerequisite skills must be loaded before implementation begins.
 
 **See [AGENTS.md](AGENTS.md) for:**
+
 - Complete skills-first workflow enforcement rules
 - Prerequisites loading order
 - Bootstrap instructions for Superpowers
@@ -123,5 +124,6 @@ This repository follows standard InnerSource/OpenSource documentation practices:
 
 - **Skills are in [skills/](skills/)** - Agent-facing skill specifications
 - **Check [docs/exclusions.md](docs/exclusions.md)** before suggesting patterns that may have been declined
-- **Document using human terminology** - When applying skills, update human-readable docs (architecture-overview.md, coding-standards.md, etc.) not skill-specific files
+- **Document using human terminology** - When applying skills, update human-readable docs
+  (architecture-overview.md, coding-standards.md, etc.) not skill-specific files
 - **See [AGENTS.md](AGENTS.md)** for agent-specific execution rules and documentation standards

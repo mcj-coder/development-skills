@@ -2,7 +2,8 @@
 
 ## Overview
 
-This repository hosts skill specifications that integrate with the Superpowers skills system. Skills are agent-facing documentation that helps AI agents apply proven techniques, patterns, and processes.
+This repository hosts skill specifications that integrate with the Superpowers skills system. Skills are
+agent-facing documentation that helps AI agents apply proven techniques, patterns, and processes.
 
 ## Prerequisites
 
@@ -19,7 +20,7 @@ This repository hosts skill specifications that integrate with the Superpowers s
    - [docs/coding-standards.md](docs/coding-standards.md) - Code and documentation standards
 
 2. **Check work item tracking:**
-   - Taskboard: https://github.com/mcj-coder/development-skills/issues
+   - Taskboard: <https://github.com/mcj-coder/development-skills/issues>
    - All non-read-only work must be tied to an issue
 
 3. **Follow the workflow:**
@@ -42,6 +43,7 @@ Skills must be created following the **writing-skills RED-GREEN-REFACTOR methodo
 ### Detailed Guidance
 
 See the `superpowers:writing-skills` SKILL.md for comprehensive guidance on:
+
 - When to create skills vs when not to
 - Testing methodology and pressure scenarios
 - Progressive loading and token efficiency
@@ -51,6 +53,7 @@ See the `superpowers:writing-skills` SKILL.md for comprehensive guidance on:
 ### Issue Template
 
 All skill specifications must use `.github/ISSUE_TEMPLATE/skill-spec.md` which includes:
+
 - Frontmatter specification (YAML format)
 - RED phase baseline scenarios (3+ with pressure combinations)
 - GREEN phase concrete BDD scenarios (real inputs/outputs)
@@ -67,6 +70,7 @@ All skill specifications must use `.github/ISSUE_TEMPLATE/skill-spec.md` which i
 **Skill names are agent implementation details.** When documenting, use human-readable terminology.
 
 When applying skills, update human-centric documentation:
+
 - Architecture patterns → `docs/architecture-overview.md`
 - Code standards → `docs/coding-standards.md`
 - Testing approach → `docs/testing-strategy.md`
@@ -76,15 +80,15 @@ When applying skills, update human-centric documentation:
 
 ### Documentation Locations
 
-| Content Type | Location | Notes |
-|--------------|----------|-------|
-| Architecture patterns | `docs/architecture-overview.md` | Use industry terminology |
-| Code style, naming | `docs/coding-standards.md` | Aggregated standards |
-| Testing approach | `docs/testing-strategy.md` | Tools, patterns, strategy |
-| Onboarding | `docs/getting-started.md` | New developer guide |
-| Excluded patterns | `docs/exclusions.md` | Concise opt-outs list |
-| Major decisions | `docs/adr/` | ADRs for significant choices |
-| Skill specs | `skills/{skill-name}/SKILL.md` | Agent-facing only |
+| Content Type          | Location                        | Notes                        |
+| --------------------- | ------------------------------- | ---------------------------- |
+| Architecture patterns | `docs/architecture-overview.md` | Use industry terminology     |
+| Code style, naming    | `docs/coding-standards.md`      | Aggregated standards         |
+| Testing approach      | `docs/testing-strategy.md`      | Tools, patterns, strategy    |
+| Onboarding            | `docs/getting-started.md`       | New developer guide          |
+| Excluded patterns     | `docs/exclusions.md`            | Concise opt-outs list        |
+| Major decisions       | `docs/adr/`                     | ADRs for significant choices |
+| Skill specs           | `skills/{skill-name}/SKILL.md`  | Agent-facing only            |
 
 ### Recording Opt-Outs
 
@@ -105,6 +109,7 @@ When users decline patterns/practices:
 ### Creating ADRs
 
 Use ADRs for major decisions only:
+
 - Choosing frameworks or major libraries
 - Significant architectural changes
 - Major tooling decisions
@@ -129,7 +134,8 @@ Format: Follow [MADR](https://adr.github.io/madr/) format (see `docs/adr/0000-us
 - Include footer reference when appropriate: `Refs: #123`
 
 Examples:
-```
+
+```text
 feat: add architecture-testing skill spec
 
 Add skill for automated architecture boundary enforcement
@@ -149,6 +155,7 @@ Refs: #1
 ### Quality Gates
 
 Before submitting PR:
+
 - ✅ Zero warnings or errors (clean build principle)
 - ✅ All tests pass (BDD checklists verified)
 - ✅ Documentation updated (human-centric docs)
@@ -162,12 +169,14 @@ Before submitting PR:
 TDD is mandatory for **all changes, including documentation**.
 
 **Documentation TDD:**
+
 1. Create BDD checklist of expected statements
 2. Checklist must fail against current docs before edits
 3. Record failure reason
 4. Only after failing checklist may editing begin
 
 **Skill TDD (RED-GREEN-REFACTOR):**
+
 1. **RED:** Run baseline scenarios WITHOUT skill, document failures
 2. **GREEN:** Write minimal skill, verify scenarios pass
 3. **REFACTOR:** Close loopholes, add rationalizations, re-verify
@@ -177,7 +186,8 @@ No exceptions to TDD policy. This includes "simple" changes.
 ## Testing Skills
 
 Skills must be tested with:
-- **Baseline scenarios** (agent without skill) - Document natural behavior
+
+- **Baseline scenarios** (agent without skill) - Document natural behaviour
 - **Pressure scenarios** (time, sunk cost, exhaustion) - Test under stress
 - **Concrete BDD scenarios** (exact inputs/outputs) - Verify correctness
 - **Rationalization identification** - Capture excuses agents use
@@ -195,6 +205,7 @@ See `superpowers:writing-skills` for complete testing methodology.
 ## Repository Standards
 
 All contributors must follow standards in:
+
 - [README.md](README.md) - Repository standards and workflow
 - [AGENTS.md](AGENTS.md) - Agent-specific execution rules
 - [docs/coding-standards.md](docs/coding-standards.md) - Detailed standards

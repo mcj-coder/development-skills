@@ -54,32 +54,34 @@ These rules tighten the workflow for autonomous execution.
 
 **Skill names are agent implementation details.** When documenting, always use human-readable terminology.
 
-| ❌ Don't | ✅ Do |
-|---------|------|
-| "Applied architecture-testing skill" | "Established clean architecture with automated boundary enforcement" |
-| "greenfield-baseline configured" | "Set up project structure with quality gates" |
-| Create `docs/conventions/architecture-testing.md` | Update `docs/architecture-overview.md` with pattern |
+| ❌ Don't                                          | ✅ Do                                                                |
+| ------------------------------------------------- | -------------------------------------------------------------------- |
+| "Applied architecture-testing skill"              | "Established clean architecture with automated boundary enforcement" |
+| "greenfield-baseline configured"                  | "Set up project structure with quality gates"                        |
+| Create `docs/conventions/architecture-testing.md` | Update `docs/architecture-overview.md` with pattern                  |
 
 ### Documentation Mapping
 
 When applying skills, document in human-centric locations:
 
-| Skill Concern | Document In | Human Concept |
-|---------------|-------------|---------------|
+| Skill Concern                     | Document In                     | Human Concept                               |
+| --------------------------------- | ------------------------------- | ------------------------------------------- |
 | Architecture patterns, boundaries | `docs/architecture-overview.md` | Architectural style, layering, dependencies |
-| Code style, naming, testing | `docs/coding-standards.md` | Coding conventions and standards |
-| Testing approach, tools | `docs/testing-strategy.md` | Testing strategy and patterns |
-| Project setup, onboarding | `docs/getting-started.md` | Getting started guide |
-| Opted-out patterns | `docs/exclusions.md` | Excluded patterns (concise) |
+| Code style, naming, testing       | `docs/coding-standards.md`      | Coding conventions and standards            |
+| Testing approach, tools           | `docs/testing-strategy.md`      | Testing strategy and patterns               |
+| Project setup, onboarding         | `docs/getting-started.md`       | Getting started guide                       |
+| Opted-out patterns                | `docs/exclusions.md`            | Excluded patterns (concise)                 |
 
 ### Exclusions and Opt-Outs
 
 **Before suggesting any pattern/practice:**
+
 1. Check `docs/exclusions.md` for existing opt-outs
 2. If pattern is excluded with matching scope, DO NOT re-prompt
 3. Only mention if context has changed significantly (and note that briefly)
 
 **When user opts out of a pattern:**
+
 1. Update `docs/exclusions.md` with:
    - Human-readable pattern name (primary)
    - Agent skill mapping (for agent reference)
@@ -89,23 +91,27 @@ When applying skills, document in human-centric locations:
 3. Keep it concise (1-3 sentences)
 
 **Exclusions vs ADRs:**
+
 - **Exclusions:** Declined patterns/practices → `docs/exclusions.md` (concise)
 - **ADRs:** Major architectural/tooling decisions → `docs/adr/` (detailed with alternatives)
 
 ### Documentation Requirements
 
 **Keep README.md and AGENTS.md concise:**
+
 - Reference detailed docs, don't duplicate
 - Use standard InnerSource/OpenSource structure
 - Aggregate related information in human-readable docs
 
 **When skills apply patterns:**
+
 1. Update appropriate human-centric doc (`architecture-overview.md`, `coding-standards.md`, etc.)
 2. Use industry terminology, not skill names
 3. If creating new major pattern, consider ADR for the decision
 4. Don't create skill-specific documentation files
 
 **Example:** When `architecture-testing` skill identifies clean architecture pattern:
+
 ```markdown
 # In docs/architecture-overview.md
 
@@ -114,17 +120,20 @@ When applying skills, document in human-centric locations:
 This project follows Clean Architecture with clear boundary enforcement:
 
 **Layers:**
+
 - Domain (core business logic)
 - Application (use cases, orchestration)
 - Infrastructure (external concerns)
 - Presentation (UI, API)
 
 **Dependency Rules:**
+
 - Dependencies point inward only
 - Domain has no external dependencies
 - Automated enforcement via NetArchTest in CI
 
 **Testing:**
+
 - Architecture tests validate boundaries in `tests/Architecture.Tests/`
 - Tests fail build if dependencies violated
 ```
