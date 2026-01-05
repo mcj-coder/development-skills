@@ -1,0 +1,243 @@
+# Requirements Gathering Skill - Implementation Plan
+
+**Issue:** #51
+**Goal:** Create skill for gathering requirements and creating tickets without committing design documents
+**Status:** Planning (Refinement)
+
+## BDD Checklist (RED → GREEN)
+
+### Baseline (RED - must fail initially)
+
+- [ ] Skill exists at `skills/requirements-gathering/SKILL.md`
+  - Evidence: File does not exist currently
+- [ ] BDD tests exist at `skills/requirements-gathering/requirements-gathering.test.md`
+  - Evidence: File does not exist currently
+- [ ] SKILL.md has YAML frontmatter with name and description
+  - Evidence: N/A - file doesn't exist
+- [ ] "When to Use" section distinguishes from brainstorming and planning
+  - Evidence: N/A - file doesn't exist
+- [ ] Interactive Q&A process documented in workflow
+  - Evidence: N/A - file doesn't exist
+- [ ] Output format specified (GitHub issue body structure)
+  - Evidence: N/A - file doesn't exist
+- [ ] Explicitly states "No design documents created"
+  - Evidence: N/A - file doesn't exist
+- [ ] Integration with issue-driven-delivery documented
+  - Evidence: N/A - file doesn't exist
+- [ ] README.md lists requirements-gathering skill
+  - Evidence: README.md does not mention requirements-gathering
+- [ ] Progressive disclosure: main SKILL.md under 500 lines
+  - Evidence: N/A - file doesn't exist
+
+### RED Verification (Before Implementation)
+
+Run these checks to confirm baseline failures:
+```bash
+# Check skill doesn't exist
+ls skills/requirements-gathering/SKILL.md  # Should fail
+ls skills/requirements-gathering/requirements-gathering.test.md  # Should fail
+
+# Check README doesn't mention skill
+grep "requirements-gathering" README.md  # Should return nothing
+```
+
+## Task Breakdown
+
+### Task 1: Create BDD Test File (RED Baseline)
+
+**File:** `skills/requirements-gathering/requirements-gathering.test.md`
+
+**Content:**
+- RED scenarios: Agents creating designs without tickets
+- GREEN scenarios: Agents gathering requirements, creating tickets, no design commits
+- Pressure scenarios: Time pressure, complexity pressure, authority pressure
+
+**Acceptance Criteria:**
+- [ ] RED scenarios describe baseline failures
+- [ ] GREEN scenarios describe expected behavior (unchecked boxes)
+- [ ] Scenarios validate no design documents created
+- [ ] Scenarios validate ticket creation workflow
+
+### Task 2: Create Main SKILL.md
+
+**File:** `skills/requirements-gathering/SKILL.md`
+
+**Content:**
+- YAML frontmatter (name, description)
+- Overview: Purpose and scope
+- Prerequisites: None or minimal (gh/ado/glab CLI for ticket creation)
+- When to Use: Clear distinction from brainstorming and planning
+- Core Workflow: Interactive Q&A process
+- Output Format: Issue body structure (Goal, Requirements, Acceptance Criteria, Context)
+- Integration: How it hands off to issue-driven-delivery
+- Common Mistakes: Using this for implementation planning
+- Red Flags: Creating design documents during requirement gathering
+
+**Acceptance Criteria:**
+- [ ] Under 500 lines (progressive disclosure)
+- [ ] YAML frontmatter compliant
+- [ ] Clear "When to Use" section
+- [ ] Workflow documented
+- [ ] Output format specified
+- [ ] No design document creation stated explicitly
+
+### Task 3: Create References (if needed)
+
+**Approach:** Keep skill simple, only create references if SKILL.md exceeds 400 lines
+
+**Potential references:**
+- `references/issue-templates.md` - Example issue body formats
+- `references/question-patterns.md` - Common question flows
+
+**Decision:** Create only if needed during implementation
+
+### Task 4: Update README.md
+
+**File:** `README.md`
+
+**Changes:**
+- Add `requirements-gathering` to skills list
+- Description: "For creating work items with requirements (no design docs)"
+
+**Acceptance Criteria:**
+- [ ] Skill listed in README.md
+- [ ] Clear one-line description
+
+### Task 5: Run Linting and Validation
+
+**Commands:**
+```bash
+npm run lint
+```
+
+**Acceptance Criteria:**
+- [ ] All linting checks pass
+- [ ] No markdownlint errors
+- [ ] No spelling errors (cspell)
+
+### Task 6: Verify BDD Checklist GREEN
+
+**Process:**
+- Go through each BDD checklist item
+- Mark as complete with evidence
+- Link to specific files, lines, commits
+
+**Acceptance Criteria:**
+- [ ] All BDD items marked complete
+- [ ] Evidence provided for each item
+- [ ] GREEN scenarios remain unchecked (for test execution)
+
+## Skill Design Notes
+
+### Core Principle
+
+**Gather requirements, create ticket, stop. No design, no plan, no commits.**
+
+### Workflow Comparison
+
+| Activity | requirements-gathering | brainstorming | writing-plans |
+|----------|----------------------|--------------|---------------|
+| Gather requirements | ✅ Yes | ✅ Yes | ❌ No (assumes reqs exist) |
+| Create design | ❌ No | ✅ Yes | ❌ No |
+| Create implementation plan | ❌ No | ✅ Yes | ✅ Yes |
+| Create ticket | ✅ Yes | ❌ No | ❌ No |
+| Commit documents | ❌ No | ✅ Yes | ✅ Yes |
+
+### Key Differentiators
+
+**Use requirements-gathering when:**
+- Creating a new work item/ticket
+- Need to drive out requirements through questions
+- Don't want design documents committed yet
+- Requirements will inform future planning
+
+**Don't use requirements-gathering when:**
+- Ticket already exists (use brainstorming or planning instead)
+- Ready to create implementation plan
+- Doing actual implementation work
+
+### Output Format
+
+```markdown
+## Goal
+[One sentence goal]
+
+## Requirements
+1. [Requirement 1]
+2. [Requirement 2]
+...
+
+## Acceptance Criteria
+- [ ] [Criterion 1]
+- [ ] [Criterion 2]
+...
+
+## Context
+[Why this work is needed, background, constraints]
+```
+
+### Integration with issue-driven-delivery
+
+```text
+requirements-gathering → Create Issue →
+  (Later when picked up)
+  → Load Issue → brainstorming/planning → Implementation
+```
+
+## Verification Steps
+
+### Post-Implementation Verification
+
+1. **Skill exists and is complete:**
+   ```bash
+   ls skills/requirements-gathering/SKILL.md
+   ls skills/requirements-gathering/requirements-gathering.test.md
+   ```
+
+2. **README updated:**
+   ```bash
+   grep "requirements-gathering" README.md
+   ```
+
+3. **Linting passes:**
+   ```bash
+   npm run lint
+   ```
+
+4. **BDD checklist complete:**
+   - All items marked [x]
+   - Evidence links provided
+
+5. **Progressive disclosure compliance:**
+   ```bash
+   wc -l skills/requirements-gathering/SKILL.md  # Should be < 500
+   ```
+
+## Commit Strategy
+
+Following Conventional Commits:
+
+1. `feat(skill): add requirements-gathering BDD tests`
+2. `feat(skill): create requirements-gathering skill`
+3. `docs(readme): add requirements-gathering to skills list`
+4. `docs(plan): update BDD checklist with evidence`
+
+## Risk Mitigation
+
+**Risk:** Skill is too similar to brainstorming, causing confusion
+**Mitigation:** Clear "When to Use" section, explicit comparison table
+
+**Risk:** Users might still create design documents manually
+**Mitigation:** RED scenarios test for this, skill explicitly warns against it
+
+**Risk:** Integration with issue-driven-delivery unclear
+**Mitigation:** Document handoff clearly, provide workflow diagram
+
+## Success Criteria
+
+When complete:
+- [ ] Agents use requirements-gathering when creating tickets
+- [ ] Requirements captured in issues, not design documents
+- [ ] No design documents created during requirement gathering phase
+- [ ] Clear workflow from requirements → ticket → (later) planning → implementation
+- [ ] Loophole closed: Can't create designs without tickets
