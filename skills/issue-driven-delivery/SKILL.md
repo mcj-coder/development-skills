@@ -31,6 +31,46 @@ Infer platform from the taskboard URL (from README.md Work Items section):
 
 If the URL is not recognised, stop and ask the user to confirm the platform.
 
+## Work Item State Tracking
+
+Update work item state throughout the delivery lifecycle to maintain visibility:
+
+### Lifecycle States
+
+1. **New Feature**: Initial state when work item created
+2. **Refinement**: During planning, brainstorming, requirements gathering
+3. **Implementation**: During active development and execution
+4. **Verification**: During testing, review, and validation
+5. **Complete**: Final state when work item closed
+
+### State Transitions
+
+- **New → Refinement**: When plan creation begins
+- **Refinement → Implementation**: When plan is approved
+- **Implementation → Verification**: When all sub-tasks complete and testing begins
+- **Verification → Complete**: When all acceptance criteria met and work item closed
+
+### Platform-Specific Implementation
+
+**GitHub**: Use state labels
+
+- `state:new-feature`, `state:refinement`, `state:implementation`, `state:verification`
+
+**Azure DevOps**: Use work item state field
+
+- New → Active (Refinement) → Resolved (Implementation/Verification) → Closed
+
+**Jira**: Use issue status
+
+- To Do → In Planning → In Progress → In Review → Done
+
+### When to Update State
+
+- Set `state:refinement` when creating the plan
+- Set `state:implementation` immediately after plan approval
+- Set `state:verification` when implementation complete and testing begins
+- Set `state:complete` / close work item only after all acceptance criteria met
+
 ## Core Workflow
 
 1. Announce the skill and why it applies; confirm ticketing CLI availability.
@@ -38,13 +78,18 @@ If the URL is not recognised, stop and ask the user to confirm the platform.
    work item before making any changes. Read-only work and reviews are allowed
    without a ticket.
 3. Confirm the target work item and keep all work tied to it.
+   3a. Set work item state to `refinement` when beginning plan creation.
 4. Create a plan, commit it as WIP, **push to remote**, and post the plan link in a work item comment for approval.
+   4a. After posting plan link, work item remains in `refinement` state.
 5. Stop and wait for an explicit approval comment containing the word "approved" before continuing.
 6. Keep all plan discussions and decisions in work item comments.
 7. After approval, add work item sub-tasks for every plan task and keep a 1:1 mapping by name.
+   7a. After plan approval, set work item state to `implementation`.
 8. Execute each task and attach evidence and reviews to its sub-task.
+   8a. When all sub-tasks complete, set work item state to `verification`.
 9. Stop and wait for explicit approval before closing each sub-task.
 10. Close sub-tasks only after approval and mark the plan task complete.
+    10a. When verification complete and acceptance criteria met, close work item (state: complete).
 11. Require each persona to post a separate review comment in the work item thread using superpowers:receiving-code-review.
 12. Summarize persona recommendations in the plan and link to the individual review comments.
 13. Add follow-up fixes as new tasks in the same work item.
