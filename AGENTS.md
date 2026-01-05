@@ -25,9 +25,28 @@ These rules tighten the workflow for autonomous execution.
   squash or fast-forward only) and use a Conventional Commit squash message
   with ticket footer when appropriate.
 
+## Bootstrap (First-Time Setup)
+
+**If this is your first time in this repository**, install prerequisites before loading skills:
+
+1. **Install Superpowers** (if not already installed):
+   - Follow: <https://github.com/obra/superpowers#installation>
+   - Verify: Check that `~/.claude/superpowers` or `~/.codex/superpowers` exists
+
+2. **Clone development-skills** (this repository):
+   - Clone to agent's default skills location
+   - Claude: `~/.claude/skills/development-skills`
+   - Codex: `~/.codex/skills/development-skills`
+
+3. **Verify skills are discoverable**:
+   - Agent should auto-detect skills from standard locations
+   - Test by attempting to load `development-skills:skills-first-workflow`
+
+**After bootstrap is complete**, follow the Prerequisites First workflow below.
+
 ## Prerequisites First
 
-Before any task or response in this repo:
+Before any task or response in this repo (after bootstrap):
 
 1. Load `development-skills:skills-first-workflow` to enforce workflow.
 2. Ensure Superpowers is installed and bootstrapped.

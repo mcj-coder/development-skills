@@ -59,6 +59,11 @@ begins. Performs runtime verification and automatically fixes missing prerequisi
 
 ### Prerequisites Checked
 
+**AutoFix mechanism**: When verification fails, AutoFix reads prerequisite
+repository URLs from AGENTS.md, fetches installation instructions from source
+repositories, and executes per the agent's default installation mechanism. If
+AutoFix cannot complete automatically, it halts and provides manual instructions.
+
 1. **Superpowers available** → AutoFix: Install and bootstrap if not
 2. **using-superpowers loaded** → AutoFix: Load if not
 3. **AGENTS.md exists** → AutoFix: Create/update if not
@@ -66,7 +71,7 @@ begins. Performs runtime verification and automatically fixes missing prerequisi
 
 **Verification must pass before any implementation work begins.**
 
-See `references/AUTOFIX.md` for detailed AutoFix behaviour.
+See `references/AUTOFIX.md` for detailed AutoFix procedures and examples.
 
 ## Repository Initialization
 

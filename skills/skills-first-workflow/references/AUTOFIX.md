@@ -63,7 +63,10 @@ This document describes the detailed AutoFix behaviour for each verification che
 1. Detect brownfield scenario (existing repo without AGENTS.md)
 2. Create feature branch: `feat/add-skills-first-workflow`
 3. Create AGENTS.md using template from references/AGENTS-TEMPLATE.md
-4. Replace `[org]` placeholder with actual organization/user
+4. Replace `[org]` placeholder with actual organization/user:
+   - Extract org from remote URL: `git remote get-url origin`
+   - Parse GitHub URL format: `https://github.com/[org]/[repo]`
+   - Replace all `[org]` instances in template with extracted value
 5. Commit AGENTS.md with evidence message
 6. Verify AGENTS.md now exists and contains required sections
 
@@ -116,7 +119,10 @@ prerequisite repository URLs.
 
 1. Detect greenfield scenario (new repo creation)
 2. Create AGENTS.md using template from references/AGENTS-TEMPLATE.md
-3. Replace `[org]` placeholder with actual organization/user
+3. Replace `[org]` placeholder with actual organization/user:
+   - Extract org from remote URL: `git remote get-url origin`
+   - Parse GitHub URL format: `https://github.com/[org]/[repo]`
+   - Replace all `[org]` instances in template with extracted value
 4. Create README.md with Work Items section if it doesn't exist
 5. Commit both files as part of initialization
 6. Verify initialization complete

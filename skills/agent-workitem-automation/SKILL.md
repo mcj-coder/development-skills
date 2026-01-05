@@ -85,18 +85,21 @@ For remote agents (CI), clone the skills repo for the duration of the run and
 configure the agent to scan that path. When the task is complete, documentation
 must reference the default branch instead of the feature branch.
 
-When creating AGENTS.md in a new repo, include the Node-based Superpowers
-bootstrap command (for example,
-`node %USERPROFILE%\\.codex\\superpowers\\.codex\\superpowers-codex bootstrap`).
-Also include references to prerequisite skills repositories and where they
-should be cloned, for example:
+When creating AGENTS.md in a new repo, include references to prerequisite
+skills repositories and where they should be cloned. Use the agent's default
+skill location pattern. For example:
 
-- Superpowers: <https://github.com/obra/superpowers> (expected at
-  `%USERPROFILE%\\.codex\\superpowers`)
-- development-skills: <https://github.com/mcj-coder/development-skills> (expected
-  at `%USERPROFILE%\\.codex\\skills\\development-skills`)
+- **Superpowers**: <https://github.com/obra/superpowers>
+  - Claude: `~/.claude/superpowers`
+  - Codex: `~/.codex/superpowers` (Windows: `%USERPROFILE%\.codex\superpowers`)
+  - Bootstrap: Follow installation instructions from repository
 
-Do not assume these repos are already installed.
+- **development-skills**: <https://github.com/mcj-coder/development-skills>
+  - Claude: `~/.claude/skills/development-skills`
+  - Codex: `~/.codex/skills/development-skills` (Windows: `%USERPROFILE%\.codex\skills\development-skills`)
+
+Do not assume these repos are already installed. Reference the agent's
+installation guide for platform-specific paths.
 
 ## Workflow Integration (Minimal)
 
