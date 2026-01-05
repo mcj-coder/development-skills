@@ -118,6 +118,7 @@ This repository follows standard InnerSource/OpenSource documentation practices:
 - **[docs/coding-standards.md](docs/coding-standards.md)** - Code style, naming conventions, and patterns
 - **[docs/testing-strategy.md](docs/testing-strategy.md)** - Testing approach, tools, and patterns
 - **[docs/exclusions.md](docs/exclusions.md)** - Explicitly excluded patterns and suppressions
+- **[docs/roles/](docs/roles/)** - Team role definitions for code reviews and expert perspectives
 - **[docs/adr/](docs/adr/)** - Architecture Decision Records for major decisions
 
 ### For Agents

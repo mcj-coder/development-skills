@@ -235,11 +235,11 @@ Before prompting user about {specific decision}, check README.md for existing op
 - {What to avoid in tests}
 - {Data setup/teardown strategy}
 
-## Review Personas
+## Review Roles
 
-- {Persona 1 - who should review from this perspective}
-- {Persona 2 - who should review from this perspective}
-- {Persona 3 - who should review from this perspective}
+- {Role 1 - who should review from this perspective} (see [Team Roles](../../docs/roles/README.md))
+- {Role 2 - who should review from this perspective}
+- {Role 3 - who should review from this perspective}
 
 ## Deliverable
 

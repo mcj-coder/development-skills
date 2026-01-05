@@ -83,8 +83,8 @@ and Jira examples.
     10a. Before closing work item, verify component tag exists. Error if missing.
     10b. When verification complete and acceptance criteria met, close work item (state: complete).
     10c. Work item auto-unassigns when closed.
-11. Require each persona to post a separate review comment in the work item thread using superpowers:receiving-code-review.
-12. Summarize persona recommendations in the plan and link to the individual review comments.
+11. Require each role to post a separate review comment in the work item thread using superpowers:receiving-code-review. See [Team Roles](../../docs/roles/README.md) for role definitions.
+12. Summarize role recommendations in the plan and link to the individual review comments.
 13. Add follow-up fixes as new tasks in the same work item.
 14. Create a new work item for next steps with implementation, test detail, and acceptance criteria.
 15. Open a PR after delivery is accepted.
@@ -108,8 +108,8 @@ must be posted as clickable links in work item comments.
 **Key requirements**:
 
 - Each sub-task comment includes links to exact commits and files
-- Persona reviews are separate work item comments using
-  superpowers:receiving-code-review
+- Role reviews are separate work item comments using
+  superpowers:receiving-code-review (see [Team Roles](../../docs/roles/README.md))
 - Plan separates Original Scope Evidence from Additional Work
 - Keep only latest verification evidence in plan
 
