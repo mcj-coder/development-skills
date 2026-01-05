@@ -26,11 +26,76 @@ Every work item must be tagged with the component or component type it impacts.
 - Example components: Skills, API, UI
 - Example labels: skill, api-component, documentation
 
-## Enforcement
+## Enforcement Rules
 
-- Verify component tag exists before closing work item
-- Stop with error if work item has no component tag
-- Suggest appropriate component based on file changes
+### Mandatory Tags (Before Closing)
+
+**Always required:**
+
+- **Component tag**: Which component/area this affects
+- **Work type tag**: Type of work (new-feature, bug, etc.)
+- **Priority tag**: Priority level (P0-P4)
+
+**Required when applicable:**
+
+- **Blocked tag**: If work is currently blocked (with comment)
+
+### Enforcement Actions
+
+**Before closing work item:**
+
+1. Verify all mandatory tags exist
+2. If blocked tag exists, verify blocking comment exists
+3. Stop with error if any mandatory tag missing
+4. Suggest appropriate tags based on:
+   - File changes (for component)
+   - Issue title/body (for work type)
+   - Severity/urgency keywords (for priority)
+
+**For blocked work items:**
+
+1. Verify work item is assigned
+2. Prevent unassignment (can reassign, cannot unassign)
+3. Verify blocking comment exists
+4. Error if blocked tag without comment
+
+### Error Messages
+
+**Missing component tag:**
+
+```text
+ERROR: Cannot close work item without component tag.
+Suggestion: Based on file changes, consider: 'component:api', 'skill'
+```
+
+**Missing work type tag:**
+
+```text
+ERROR: Cannot close work item without work type tag.
+Suggestion: Based on issue title, consider: 'work-type:bug', 'work-type:enhancement'
+```
+
+**Missing priority tag:**
+
+```text
+ERROR: Cannot close work item without priority tag.
+Suggestion: Based on issue severity, consider: 'priority:p2' (Medium)
+```
+
+**Blocked without comment:**
+
+```text
+ERROR: Work item tagged as 'blocked' but no blocking comment found.
+Required: Post comment explaining what is blocking this work.
+```
+
+**Blocked work item unassigned:**
+
+```text
+ERROR: Cannot unassign blocked work item.
+Blocked work must remain assigned for accountability.
+To proceed: Either (1) remove blocked tag if no longer blocked, or (2) reassign to another person.
+```
 
 ## Automatic Tagging
 
