@@ -17,8 +17,8 @@ all times. If you cannot prove context or tooling, stop and fix that first.
 **REQUIRED SUB-SKILL:** superpowers:test-driven-development
 **REQUIRED SUB-SKILL:** superpowers:verification-before-completion
 
-If the work item is a GitHub issue and an issue-driven workflow is required,
-use `github-issue-driven-delivery`.
+If an issue-driven workflow is required (work item comments, approvals, evidence tracking),
+use `issue-driven-delivery`.
 
 ## Invocation Signals
 
@@ -105,7 +105,7 @@ installation guide for platform-specific paths.
 
 Create or update the CI workflow to trigger agent CLIs from ticket events.
 Avoid duplicating delivery workflows already covered by
-`github-issue-driven-delivery`. Keep this focused on:
+`issue-driven-delivery`. Keep this focused on:
 
 - Event trigger (for example, issue comment)
 - CLI invocation for the primary agent

@@ -106,6 +106,6 @@ Requirements for all skills:
 
 ## Skills
 
-- `github-issue-driven-delivery` (requires `gh`)
+- `issue-driven-delivery` (requires ticketing CLI: gh/ado/jira)
 - `agent-workitem-automation` (requires work item system CLI)
 - `skills-first-workflow` (requires Superpowers)
