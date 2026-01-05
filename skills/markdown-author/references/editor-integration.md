@@ -7,6 +7,7 @@ How to configure editors to use markdownlint and cspell configurations for real-
 While markdown-author skill provides validation during agent markdown writing, human contributors benefit from editor integration that shows linting and spelling errors in real-time.
 
 **Benefits:**
+
 - Immediate visual feedback on violations
 - Auto-fix on save
 - Consistent with skill behavior
@@ -39,6 +40,7 @@ code --install-extension streetsidesoftware.code-spell-checker
 ```
 
 Or via VS Code Extensions view (Ctrl+Shift+X):
+
 1. Search "markdownlint"
 2. Install "markdownlint" by David Anson
 3. Search "code spell checker"
@@ -65,6 +67,7 @@ Or via VS Code Extensions view (Ctrl+Shift+X):
 ```
 
 **Settings explained:**
+
 - `markdownlint.config.extends` - Use repository `.markdownlint.json`
 - `markdownlint.run: "onType"` - Check as you type
 - `editor.formatOnSave` - Format markdown on save
@@ -87,11 +90,13 @@ For all repositories, add to User settings (Ctrl+,):
 ### Visual Indicators
 
 **markdownlint violations:**
+
 - Yellow/orange squiggly underlines
 - Problems panel shows all violations
 - Hover for explanation and fix options
 
 **Spelling errors:**
+
 - Blue squiggly underlines
 - Hover for suggestions
 - Quick fix: Add to dictionary
@@ -99,15 +104,18 @@ For all repositories, add to User settings (Ctrl+,):
 ### Quick Fixes
 
 **Fix single violation:**
+
 1. Place cursor on violation
 2. Press Ctrl+. (Quick Fix)
 3. Select fix option
 
 **Fix all violations in file:**
+
 1. Open Command Palette (Ctrl+Shift+P)
 2. Type "Fix All" → Select "Fix All supported markdownlint violations"
 
 **Add word to dictionary:**
+
 1. Place cursor on unknown word
 2. Press Ctrl+. (Quick Fix)
 3. Select "Add to cSpell.json"
@@ -248,12 +256,14 @@ cspell "**/*.md"
 Ensures consistency between editor and git hooks:
 
 **.husky/pre-commit:**
+
 ```bash
 #!/bin/sh
 npx lint-staged
 ```
 
 **package.json:**
+
 ```json
 {
   "lint-staged": {
@@ -267,6 +277,7 @@ npx lint-staged
 ```
 
 **Workflow:**
+
 1. Editor shows violations in real-time
 2. Auto-fix on save (if configured)
 3. Pre-commit hook validates on commit
@@ -280,6 +291,7 @@ All use same configuration files (`.markdownlint.json`, `cspell.json`).
 
 **Symptom:** No violations shown in editor
 **Solutions:**
+
 1. Verify extension installed and enabled
 2. Check `.markdownlint.json` is valid JSON
 3. Reload VS Code window (Ctrl+Shift+P → "Reload Window")
@@ -289,6 +301,7 @@ All use same configuration files (`.markdownlint.json`, `cspell.json`).
 
 **Symptom:** No spelling errors shown
 **Solutions:**
+
 1. Verify "Code Spell Checker" extension installed
 2. Check `cspell.json` is valid JSON
 3. Verify `cSpell.enabled: true` in settings
@@ -298,6 +311,7 @@ All use same configuration files (`.markdownlint.json`, `cspell.json`).
 
 **Symptom:** Editor uses different rules than pre-commit hooks
 **Solutions:**
+
 1. Verify `.markdownlint.json` in repository root
 2. Verify `cspell.json` in repository root
 3. Close and reopen workspace/project
@@ -307,6 +321,7 @@ All use same configuration files (`.markdownlint.json`, `cspell.json`).
 
 **Symptom:** Violations not fixed automatically
 **Solutions:**
+
 1. Verify `editor.formatOnSave: true`
 2. Verify `source.fixAll.markdownlint: true` in `codeActionsOnSave`
 3. Check no conflicting formatters (prettier, etc.)
@@ -340,5 +355,5 @@ repository/
 
 - [Validation Rules Reference](validation-rules.md)
 - [Spelling Configuration](spelling-configuration.md)
-- VS Code markdownlint: https://marketplace.visualstudio.com/items?itemName=DavidAnson.vscode-markdownlint
-- VS Code Code Spell Checker: https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker
+- VS Code markdownlint: <https://marketplace.visualstudio.com/items?itemName=DavidAnson.vscode-markdownlint>
+- VS Code Code Spell Checker: <https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker>

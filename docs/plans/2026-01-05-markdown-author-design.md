@@ -13,6 +13,7 @@ Create a markdown-author skill that proactively enforces markdown linting rules 
 **Current state:** Markdown linting errors frequently occur in commits, requiring pre-commit hook bypasses (issue #56 tracks 69+ pre-existing errors). The repository has markdownlint and cspell configured with pre-commit hooks, but violations are discovered after writing (too late).
 
 **Problem:**
+
 - Linting violations discovered at commit time
 - Developers/agents write markdown that violates rules
 - Forces --no-verify bypasses
@@ -40,6 +41,7 @@ Create a markdown-author skill that proactively enforces markdown linting rules 
 **Purpose:** Proactively enforce markdown linting rules and spelling standards during writing, preventing violations before they're committed.
 
 **Core Behavior:**
+
 - **On first use:** Verify `.markdownlint.json` and `cspell.json` exist, create with defaults if missing
 - **Before writing:** Validate markdown content against linting rules and spelling standards
 - **Auto-fix:** Formatting issues (line length, whitespace, list markers)
@@ -47,12 +49,14 @@ Create a markdown-author skill that proactively enforces markdown linting rules 
 - **Safety net:** Git hooks still run to catch non-skill markdown changes
 
 **Configuration Loading:**
+
 - Reads `.markdownlint.json` to determine enabled rules and settings
 - Respects disabled rules (e.g., MD033: inline HTML, MD041: first-line heading)
 - Reads `cspell.json` for locale, language settings, custom dictionary
 - Fails gracefully with clear error if configs are malformed
 
 **Integration Points:**
+
 - Works with Write tool (pre-write validation)
 - Works with Edit tool (validate changes)
 - Complements pre-commit hooks (hooks catch what skill misses)
@@ -126,10 +130,12 @@ The skill handles **ALL markdownlint rules** that are enabled in `.markdownlint.
   - Respect language-specific dictionaries in code fences
 
 **Ignored Rules (Disabled in Config):**
+
 - **MD033** - Inline HTML (already disabled in repository)
 - **MD041** - First line heading (already disabled in repository)
 
 **Implementation:**
+
 - Skill dynamically reads `.markdownlint.json` on first use
 - Builds rule set based on configuration
 - Applies fixes or blocks based on rule category
@@ -139,6 +145,7 @@ The skill handles **ALL markdownlint rules** that are enabled in `.markdownlint.
 **When Skill Activates:**
 
 The skill is invoked when:
+
 1. Agent is about to write a new `.md` file
 2. Agent is about to edit an existing `.md` file
 3. User explicitly requests markdown authoring
@@ -172,6 +179,7 @@ Git hooks run as safety net
 1. **Check for `.markdownlint.json`:**
    - If exists: Parse and validate JSON
    - If missing: Create with repository defaults:
+
      ```json
      {
        "default": true,
@@ -185,6 +193,7 @@ Git hooks run as safety net
 2. **Check for `cspell.json`:**
    - If exists: Parse and validate JSON
    - If missing: Create with sensible defaults:
+
      ```json
      {
        "version": "0.2",
@@ -228,17 +237,20 @@ After:
 **Error Categories:**
 
 **1. Configuration Errors:**
+
 - **Malformed JSON:** "Error: .markdownlint.json is invalid JSON. Fix syntax or delete to regenerate."
 - **Missing required fields:** "Error: cspell.json missing 'version' field. Add or delete to regenerate."
 - **Invalid rule configuration:** "Warning: MD013.line_length must be a number. Using default: 120."
 
 **2. Auto-Fixed Violations:**
+
 - **Silent fixes (no interruption):**
   - Line length adjustments
   - Trailing space removal
   - Heading hierarchy adjustments
   - List spacing normalization
 - **Log summary after writing:**
+
   ```
   ✓ Markdown validated and auto-fixed:
     - Adjusted 3 lines exceeding 120 characters
@@ -249,13 +261,16 @@ After:
 **3. Blocking Violations (Require Input):**
 
 **Code fence without language:**
+
 ```
 ⚠ Markdown validation error:
   Line 45: Code fence requires language specification
 
   Current:
   ```
+
   npm install
+
   ```
 
   Options:
@@ -267,6 +282,7 @@ After:
 ```
 
 **Spelling error:**
+
 ```
 ⚠ Spelling error detected:
   Line 12: Unknown word 'agentskills'
@@ -280,6 +296,7 @@ After:
 ```
 
 **Duplicate heading:**
+
 ```
 ⚠ Duplicate heading detected:
   Line 67: "## Implementation" already exists at line 34
@@ -295,6 +312,7 @@ After:
 **4. Spelling Suggestions:**
 
 When unknown word detected:
+
 - Check for common typos: "recieve" → "Did you mean: receive?"
 - Suggest adding to dictionary if looks like technical term
 - Show context: "Line 12: 'We use agentskills for automation'"
@@ -302,6 +320,7 @@ When unknown word detected:
 **5. Graceful Degradation:**
 
 If skill encounters unexpected errors:
+
 ```
 ⚠ markdown-author skill error: Unable to parse .markdownlint.json
   Falling back to basic validation (line length, code fences only)
@@ -311,6 +330,7 @@ If skill encounters unexpected errors:
 ```
 
 **Feedback Principles:**
+
 - **Clear and actionable:** Always suggest specific fixes
 - **Context-aware:** Show surrounding lines for clarity
 - **Non-intrusive:** Auto-fix silently when possible
@@ -322,24 +342,28 @@ If skill encounters unexpected errors:
 **RED Scenarios (Baseline - Without Skill):**
 
 **Scenario 1: Line length violations written**
+
 - **Given:** Agent writes markdown paragraph with 150-character lines
 - **When:** Content written without markdown-author skill
 - **Then:** Lines exceed 120 character limit
 - **And:** Pre-commit hook fails with MD013 errors
 
 **Scenario 2: Code fences missing language**
+
 - **Given:** Agent writes code block without language specification
 - **When:** Content written without markdown-author skill
-- **Then:** Code fence has no language (```\n instead of ```bash\n)
+- **Then:** Code fence has no language (```\n instead of```bash\n)
 - **And:** Pre-commit hook fails with MD040 errors
 
 **Scenario 3: Heading hierarchy violations**
+
 - **Given:** Agent writes h1 followed immediately by h3
 - **When:** Content written without markdown-author skill
 - **Then:** Heading hierarchy skip occurs (h1 → h3)
 - **And:** Pre-commit hook fails with MD001 errors
 
 **Scenario 4: Spelling errors written**
+
 - **Given:** Agent writes "recieve" instead of "receive"
 - **When:** Content written without markdown-author skill
 - **Then:** Misspelled word written to file
@@ -348,6 +372,7 @@ If skill encounters unexpected errors:
 **GREEN Scenarios (With Skill):**
 
 **Scenario 1: Line length auto-fixed**
+
 - **Given:** markdown-author skill loaded
 - **When:** Agent composes 150-character line
 - **Then:** Skill breaks line at 115 characters (word boundary before 120)
@@ -355,6 +380,7 @@ If skill encounters unexpected errors:
 - **And:** Pre-commit hook passes
 
 **Scenario 2: Code fence language prompted**
+
 - **Given:** markdown-author skill loaded
 - **When:** Agent attempts to write code fence without language
 - **Then:** Skill blocks with message: "Code fence requires language. Options: bash, javascript, python, csharp, text, etc."
@@ -363,6 +389,7 @@ If skill encounters unexpected errors:
 - **And:** Pre-commit hook passes
 
 **Scenario 3: Heading hierarchy auto-corrected**
+
 - **Given:** markdown-author skill loaded with existing h1 heading
 - **When:** Agent attempts to write h3 heading next
 - **Then:** Skill auto-adjusts to h2
@@ -370,6 +397,7 @@ If skill encounters unexpected errors:
 - **And:** Pre-commit hook passes
 
 **Scenario 4: Spelling error caught and fixed**
+
 - **Given:** markdown-author skill loaded with cspell.json
 - **When:** Agent writes "recieve"
 - **Then:** Skill blocks with message: "Spelling error: 'recieve'. Did you mean: 'receive'?"
@@ -378,6 +406,7 @@ If skill encounters unexpected errors:
 - **And:** Pre-commit hook passes
 
 **Scenario 5: Configuration auto-created**
+
 - **Given:** Repository missing .markdownlint.json
 - **When:** markdown-author skill loads for first time
 - **Then:** Skill creates .markdownlint.json with defaults
@@ -385,6 +414,7 @@ If skill encounters unexpected errors:
 - **And:** Subsequent markdown writing uses configuration
 
 **Scenario 6: Custom dictionary term added**
+
 - **Given:** markdown-author skill loaded
 - **When:** Agent writes "agentskills" (project term)
 - **Then:** Skill blocks with message: "Unknown word 'agentskills'. Add to cspell.json dictionary?"
@@ -395,6 +425,7 @@ If skill encounters unexpected errors:
 **PRESSURE Scenarios (Edge Cases):**
 
 **Scenario 1: Malformed configuration**
+
 - **Given:** .markdownlint.json has invalid JSON
 - **When:** markdown-author skill loads
 - **Then:** Skill fails gracefully with clear error
@@ -402,6 +433,7 @@ If skill encounters unexpected errors:
 - **And:** Falls back to basic validation
 
 **Scenario 2: Very long code block**
+
 - **Given:** Code block with 200-character lines
 - **When:** Writing with markdown-author skill
 - **Then:** Skill respects code_blocks: false setting
@@ -409,6 +441,7 @@ If skill encounters unexpected errors:
 - **And:** Content written as-is
 
 **Scenario 3: Table formatting**
+
 - **Given:** Table with 150-character rows
 - **When:** Writing with markdown-author skill
 - **Then:** Skill respects tables: false setting
@@ -416,6 +449,7 @@ If skill encounters unexpected errors:
 - **And:** Content written as-is
 
 **Scenario 4: Multiple blocking violations**
+
 - **Given:** Content has spelling error AND missing code fence language
 - **When:** Writing with markdown-author skill
 - **Then:** Skill blocks on first violation (spelling)

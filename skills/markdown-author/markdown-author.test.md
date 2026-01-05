@@ -13,7 +13,7 @@
 
 **Given:** Agent writes code block without language specification
 **When:** Content written without markdown-author skill
-**Then:** Code fence has no language (```\n instead of ```bash\n)
+**Then:** Code fence has no language (```\n instead of```bash\n)
 **And:** Pre-commit hook fails with MD040 errors
 
 ### RED Scenario 3: Heading hierarchy violations
@@ -64,6 +64,7 @@ Without the skill, typical agent behavior:
 **And:** Pre-commit hook passes
 
 **Evidence:**
+
 ```markdown
 Original (150 chars):
 This is a very long line that exceeds the 120 character limit and should be automatically broken at word boundaries to maintain readability standards.
@@ -83,6 +84,7 @@ automatically broken at word boundaries to maintain readability standards.
 **And:** Pre-commit hook passes
 
 **Evidence:**
+
 ```
 ⚠ Markdown validation error:
   Code fence requires language specification
@@ -95,6 +97,7 @@ Result:
 ```bash
 npm install
 ```
+
 ```
 
 ### GREEN Scenario 3: Heading hierarchy auto-corrected
@@ -127,6 +130,7 @@ Auto-corrected to:
 **And:** Pre-commit hook passes
 
 **Evidence:**
+
 ```
 ⚠ Spelling error detected:
   Line 12: Unknown word 'recieve'
@@ -145,6 +149,7 @@ Agent corrects: recieve → receive
 **And:** Subsequent markdown writing uses configuration
 
 **Evidence:**
+
 ```bash
 $ ls .markdownlint.json
 ls: .markdownlint.json: No such file or directory
@@ -176,6 +181,7 @@ $ cat .markdownlint.json
 **And:** Term accepted in future writes
 
 **Evidence:**
+
 ```json
 // Before
 {
@@ -194,6 +200,7 @@ $ cat .markdownlint.json
 **When:** Agent writes content with: long lines, h1→h3 jump, trailing spaces
 **Then:** All issues auto-fixed silently
 **And:** Summary logged:
+
 ```
 ✓ Markdown validated and auto-fixed:
   - Adjusted 2 lines exceeding 120 characters
@@ -212,6 +219,7 @@ $ cat .markdownlint.json
 **And:** Falls back to basic validation (line length, code fences)
 
 **Evidence:**
+
 ```
 ⚠ markdown-author skill error: Unable to parse .markdownlint.json
   Line 5: Unexpected end of JSON input
@@ -229,11 +237,13 @@ Falling back to basic validation.
 **And:** Content written as-is
 
 **Evidence:**
+
 ```markdown
 ```bash
 # This command line is intentionally very long and exceeds 120 characters but should not be broken because it's in a code fence with code_blocks: false setting
 npm install @very/long/package/name --save-dev --legacy-peer-deps --no-audit --no-fund --prefer-offline
 ```
+
 ```
 
 ### PRESSURE Scenario 3: Table formatting
@@ -259,6 +269,7 @@ npm install @very/long/package/name --save-dev --legacy-peer-deps --no-audit --n
 **And:** Handles violations sequentially
 
 **Evidence:**
+
 ```
 ⚠ Spelling error: 'architecure' → Fix
 ⚠ Code fence missing language → Add 'python'
@@ -274,6 +285,7 @@ npm install @very/long/package/name --save-dev --legacy-peer-deps --no-audit --n
 **And:** Line breaks occur outside code spans
 
 **Evidence:**
+
 ```markdown
 Original (155 chars):
 The function `validateToken()` checks the JWT signature, while `verifyExpiration()` ensures the token hasn't expired and `checkPermissions()` validates access rights.
@@ -293,6 +305,7 @@ The function `validateToken()` checks the JWT signature, while
 **And:** Actual typos in comments still caught
 
 **Evidence:**
+
 ```csharp
 // This method recives data asynchronously
 public async Task<string> GetDataAsync()
@@ -301,6 +314,7 @@ public async Task<string> GetDataAsync()
     return result;
 }
 ```
+
 ```
 ⚠ Spelling error in comment: 'recives' → receives
 ✓ C# keywords (async, await, var, Task) correctly recognized
@@ -315,6 +329,7 @@ public async Task<string> GetDataAsync()
 **And:** Maintains hierarchy throughout document
 
 **Evidence:**
+
 ```markdown
 Existing:
 # Title

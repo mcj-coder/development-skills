@@ -50,6 +50,7 @@ designs and commits them. Writing-plans assumes requirements exist and creates i
 - `jira` (Jira CLI) - for Jira-based workflows
 
 **Optional**:
+
 - Access to repository README.md to detect platform from taskboard URL
 - Superpowers with `brainstorming` and `writing-plans` skills for full implementation workflow
 

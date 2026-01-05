@@ -5,6 +5,7 @@ How markdown-author integrates with cspell for spelling validation.
 ## Overview
 
 cspell (Code Spell Checker) validates spelling with:
+
 - Locale-aware dictionaries (en-US, en-GB, etc.)
 - Language-specific dictionaries (C#, Python, JavaScript, etc.)
 - Custom project dictionaries
@@ -52,12 +53,14 @@ markdown-author integrates with cspell to check spelling during markdown writing
 **Purpose:** Default language/locale for spell checking
 
 **Values:**
+
 - `"en-US"` - American English
 - `"en-GB"` - British English
 - `"en-CA"` - Canadian English
 - `"en-AU"` - Australian English
 
 **Example:**
+
 ```json
 "language": "en-GB"
 ```
@@ -67,6 +70,7 @@ markdown-author integrates with cspell to check spelling during markdown writing
 **Purpose:** Language-specific settings for different file types
 
 **Structure:**
+
 ```json
 "languageSettings": [
   {
@@ -86,6 +90,7 @@ markdown-author integrates with cspell to check spelling during markdown writing
 **Purpose:** Custom dictionary for project-specific terms
 
 **Structure:** Array of strings
+
 ```json
 "words": [
   "agentskills",
@@ -96,6 +101,7 @@ markdown-author integrates with cspell to check spelling during markdown writing
 ```
 
 **When to add:**
+
 - Project-specific terminology
 - Product names
 - Acronyms and abbreviations
@@ -103,6 +109,7 @@ markdown-author integrates with cspell to check spelling during markdown writing
 
 **How markdown-author uses:**
 When unknown word detected:
+
 ```
 ⚠ Spelling error: 'agentskills'
 
@@ -117,6 +124,7 @@ Options:
 **Purpose:** Files and directories to skip spell checking
 
 **Structure:** Array of glob patterns
+
 ```json
 "ignorePaths": [
   "node_modules/**",
@@ -127,6 +135,7 @@ Options:
 ```
 
 **Common patterns:**
+
 - `node_modules/**` - Dependencies
 - `package-lock.json` - Lock files
 - `dist/**` - Build output
@@ -159,6 +168,7 @@ public async Task<string> GetDataAsync() // C# keywords not flagged
     return result;
 }
 ```
+
 ```
 
 **Result:**
@@ -188,6 +198,7 @@ def calculate_total(items):
 ```
 
 **Result:**
+
 ```
 ⚠ Spelling error in comment: 'Calcuate'
   Did you mean: Calculate
@@ -198,6 +209,7 @@ def calculate_total(items):
 ### In Links
 
 URLs and file paths not spell-checked:
+
 ```markdown
 [Documentation](https://github.com/repo/veryLongRepoNameNotChecked)
 ```
@@ -205,6 +217,7 @@ URLs and file paths not spell-checked:
 ### In Inline Code
 
 Code spans checked but with more lenient rules:
+
 ```markdown
 The `validateToken` function checks the JWT signature.
 ```
@@ -228,6 +241,7 @@ Options:
 **Choosing Option 1 updates cspell.json:**
 
 Before:
+
 ```json
 {
   "words": []
@@ -235,6 +249,7 @@ Before:
 ```
 
 After:
+
 ```json
 {
   "words": ["agentskills"]
@@ -242,6 +257,7 @@ After:
 ```
 
 **Guidelines for adding words:**
+
 - ✅ Project-specific terms (agentskills, Taskboard)
 - ✅ Product names (GitHub, Azure, PostgreSQL)
 - ✅ Acronyms (BDD, TDD, CI/CD)
@@ -271,6 +287,7 @@ After:
 
 **Issue:** `colour` vs `color`, `organise` vs `organize`
 **Solution:** Configure both locales:
+
 ```json
 "languageSettings": [
   {
@@ -299,16 +316,19 @@ After:
 ### Mixed Locale Strategy
 
 For international projects, accept both:
+
 ```json
 "locale": "en-GB, en-US"
 ```
 
 **Advantages:**
+
 - Contributors can use their native spelling
 - No forced conversion
 - Spell check passes for both variants
 
 **Disadvantages:**
+
 - Inconsistent spelling across document
 - May prefer to standardize on one variant
 
@@ -327,6 +347,7 @@ cspell runs in pre-commit hooks via lint-staged:
 ```
 
 **markdown-author skill complements hooks:**
+
 - Skill catches during writing
 - Hooks catch during commit
 - Both use same cspell.json configuration
@@ -338,6 +359,7 @@ cspell runs in pre-commit hooks via lint-staged:
 
 **Symptom:** Valid word flagged as misspelled
 **Solution:**
+
 1. Verify word spelling
 2. Check if word in correct locale dictionary
 3. Add to custom dictionary if project-specific
@@ -346,6 +368,7 @@ cspell runs in pre-commit hooks via lint-staged:
 
 **Symptom:** Obvious typo not caught
 **Solution:**
+
 1. Verify cspell.json exists and is valid
 2. Check word not in custom dictionary
 3. Verify locale configuration matches content
@@ -354,12 +377,13 @@ cspell runs in pre-commit hooks via lint-staged:
 
 **Symptom:** Changes to cspell.json not reflected
 **Solution:**
+
 1. Verify JSON syntax (use JSON validator)
 2. Restart markdown-author skill (configuration cached)
 3. Check file location (must be in repository root)
 
 ## See Also
 
-- cspell documentation: https://cspell.org/
+- cspell documentation: <https://cspell.org/>
 - [Validation Rules Reference](validation-rules.md)
 - [Editor Integration](editor-integration.md)

@@ -13,8 +13,8 @@ Git hooks remain as safety net for non-skill markdown changes.
 
 ## Prerequisites
 
-- `.markdownlint.json` configuration (created automatically if missing)
-- `cspell.json` spelling configuration (created automatically if missing)
+- `.markdownlint.json` configuration (create with defaults if missing - see Configuration Verification)
+- `cspell.json` spelling configuration (create with defaults if missing - see Configuration Verification)
 - markdownlint-cli2 and cspell installed (via package.json)
 
 ## When to Use
@@ -25,6 +25,7 @@ Git hooks remain as safety net for non-skill markdown changes.
 - Writing skill specifications
 
 **Do not use for:**
+
 - Non-markdown files
 - Generated markdown (tool output)
 - Third-party markdown (node_modules, etc.)
@@ -35,7 +36,8 @@ On first use in repository, verify configurations exist:
 
 1. **Check `.markdownlint.json`:**
    - If exists: Parse and validate JSON
-   - If missing: Create with defaults:
+   - If missing: Use Write tool to create with defaults:
+
      ```json
      {
        "default": true,
@@ -49,11 +51,13 @@ On first use in repository, verify configurations exist:
        "MD041": false
      }
      ```
+
    - If malformed: Error with message to fix or delete
 
 2. **Check `cspell.json`:**
    - If exists: Parse and validate JSON
-   - If missing: Create with defaults:
+   - If missing: Use Write tool to create with defaults:
+
      ```json
      {
        "version": "0.2",
@@ -62,6 +66,7 @@ On first use in repository, verify configurations exist:
        "ignorePaths": ["node_modules/**", "package-lock.json"]
      }
      ```
+
    - If malformed: Error with message to fix or delete
 
 3. **Load rule configuration:**
@@ -106,6 +111,7 @@ For each markdown content section:
    - Duplicate heading → Rename or confirm
 
 5. **Log summary after writing:**
+
    ```
    ✓ Markdown validated and auto-fixed:
      - Adjusted 3 lines exceeding 120 characters
@@ -149,6 +155,7 @@ See [Validation Rules Reference](references/validation-rules.md) for complete li
 ### Configuration Errors
 
 **Malformed JSON:**
+
 ```
 Error: .markdownlint.json is invalid JSON
   Line 5: Unexpected token }
@@ -157,6 +164,7 @@ Fix syntax or delete file to regenerate with defaults.
 ```
 
 **Missing required fields:**
+
 ```
 Error: cspell.json missing 'version' field
 
@@ -166,13 +174,16 @@ Add field or delete file to regenerate with defaults.
 ### Blocking Violations
 
 **Code fence without language:**
+
 ```
 ⚠ Markdown validation error:
   Line 45: Code fence requires language specification
 
 Current:
 ```
+
 npm install
+
 ```
 
 Options:
@@ -184,6 +195,7 @@ What language should this code fence use?
 ```
 
 **Spelling error:**
+
 ```
 ⚠ Spelling error detected:
   Line 12: Unknown word 'agentskills'
@@ -197,6 +209,7 @@ How should this be handled?
 ```
 
 **Duplicate heading:**
+
 ```
 ⚠ Duplicate heading detected:
   Line 67: "## Implementation" already exists at line 34
@@ -265,12 +278,15 @@ for monitoring purposes.
 def validate_token(token):
     return jwt.decode(token)
 ```
+
 [Code fence has language: python ✓]
 
 ✓ Markdown validated and auto-fixed:
-  - Fixed 2 spelling errors
-  - Adjusted heading hierarchy (h3 → h2)
-  - Broke 1 line exceeding 120 characters
+
+- Fixed 2 spelling errors
+- Adjusted heading hierarchy (h3 → h2)
+- Broke 1 line exceeding 120 characters
+
 ```
 
 ### Editing Existing Markdown
@@ -324,4 +340,4 @@ Implementation details follow...
 - [Spelling Configuration](references/spelling-configuration.md) - cspell setup and custom dictionary
 - [Editor Integration](references/editor-integration.md) - VS Code and other editor setup
 - Pre-commit hooks: `.husky/pre-commit` and `package.json` lint-staged configuration
-- markdownlint rules: https://github.com/DavidAnson/markdownlint/blob/main/doc/Rules.md
+- markdownlint rules: <https://github.com/DavidAnson/markdownlint/blob/main/doc/Rules.md>
