@@ -21,103 +21,36 @@ Use work items as the source of truth for planning, approvals, execution evidenc
 
 ## Platform Resolution
 
-Infer platform from the taskboard URL (from README.md Work Items section):
+Infer platform from the taskboard URL (from README.md Work Items section).
+Supported platforms: GitHub, Azure DevOps, Jira.
 
-| Platform     | Domain patterns                     | CLI    |
-| ------------ | ----------------------------------- | ------ |
-| GitHub       | `github.com`                        | `gh`   |
-| Azure DevOps | `dev.azure.com`, `visualstudio.com` | `ado`  |
-| Jira         | `atlassian.net`, `jira.`            | `jira` |
-
-If the URL is not recognised, stop and ask the user to confirm the platform.
+See [Platform Resolution](references/platform-resolution.md) for domain patterns
+and CLI mappings.
 
 ## Work Item State Tracking
 
-Update work item state throughout the delivery lifecycle to maintain visibility:
+Update work item state throughout the delivery lifecycle to maintain visibility.
 
-### Lifecycle States
+**Lifecycle**: New Feature → Refinement → Implementation → Verification → Complete
 
-1. **New Feature**: Initial state when work item created
-2. **Refinement**: During planning, brainstorming, requirements gathering
-3. **Implementation**: During active development and execution
-4. **Verification**: During testing, review, and validation
-5. **Complete**: Final state when work item closed
-
-### State Transitions
-
-- **New → Refinement**: When plan creation begins
-- **Refinement → Implementation**: When plan is approved
-- **Implementation → Verification**: When all sub-tasks complete and testing begins
-- **Verification → Complete**: When all acceptance criteria met and work item closed
-
-### Platform-Specific Implementation
-
-**GitHub**: Use state labels
-
-- `state:new-feature`, `state:refinement`, `state:implementation`, `state:verification`
-
-**Azure DevOps**: Use work item state field
-
-- New → Active (Refinement) → Resolved (Implementation/Verification) → Closed
-
-**Jira**: Use issue status
-
-- To Do → In Planning → In Progress → In Review → Done
-
-### When to Update State
-
-- Set `state:refinement` when creating the plan
-- Set `state:implementation` immediately after plan approval
-- Set `state:verification` when implementation complete and testing begins
-- Set `state:complete` / close work item only after all acceptance criteria met
+See [State Tracking](references/state-tracking.md) for detailed lifecycle states,
+transitions, and platform-specific implementations.
 
 ## Component Tagging
 
 Every work item must be tagged with the component or component type it impacts.
 
-### Tagging Strategy
+**Enforcement**: Verify component tag exists before closing work item. Stop with
+error if missing.
 
-**Skills repository**: Use `skill` label/tag
-
-**Application repository**: Use component labels like `api`, `ui`, `database`, `auth`
-
-**Multi-project repository**: Use project labels like `project-a`, `project-b`
-
-### Platform-Specific Implementation
-
-**GitHub**: Use labels
-
-- Example: `skill`, `component:api`, `type:documentation`
-
-**Azure DevOps**: Use tags or area path
-
-- Example tags: `skill`, `api`, `ui`
-- Example area path: `ProjectName\API\Authentication`
-
-**Jira**: Use components or labels
-
-- Example components: Skills, API, UI
-- Example labels: skill, api-component, documentation
-
-### Enforcement
-
-- Verify component tag exists before closing work item
-- Stop with error if work item has no component tag
-- Suggest appropriate component based on file changes
-
-### Automatic Tagging
-
-When creating a new work item, analyze the repository structure and suggest
-appropriate component tags:
-
-- If `skills/` directory exists → suggest `skill` tag
-- If `src/api/` exists → suggest `api` tag
-- If `docs/` changes → suggest `documentation` tag
+See [Component Tagging](references/component-tagging.md) for tagging strategy,
+platform-specific implementation, and automatic suggestions.
 
 ## Core Workflow
 
-**Note:** For platform-specific CLI commands (set state, add component), see the Quick
-Reference section below with examples for GitHub, Azure DevOps, and Jira.
+**Note:** For platform-specific CLI commands (set state, add component), see
+[CLI Commands Reference](references/cli-commands.md) for GitHub, Azure DevOps,
+and Jira examples.
 
 1. Announce the skill and why it applies; confirm ticketing CLI availability.
 2. Confirm a Taskboard work item exists for the work. If none exists, create the
@@ -155,77 +88,19 @@ Reference section below with examples for GitHub, Azure DevOps, and Jira.
 
 ## Evidence Requirements
 
-- **All commits must be pushed to remote before posting links** - local commits
-  are not accessible via ticketing system URLs.
-- Evidence must be posted as clickable links in work item comments (commit URLs, blob URLs, logs, or artifacts).
-- Each sub-task comment must include links to the exact commits and files that satisfy it.
-- Persona reviews must be separate work item comments using
-  superpowers:receiving-code-review, with links captured in the summary.
-- Verify ticketing CLI authentication status before creating work items, comments, or PRs.
-- Link the PR and work item and include PR comment links when a PR exists.
-- Post evidence that required skills were applied for concrete changes before
-  opening a PR. For process-only changes, record analytical verification.
-- If post-review changes occur, re-run BDD validation and update the plan evidence.
-- In the plan, separate **Original Scope Evidence** from **Additional Work**.
-- After each additional task, re-run BDD validation and persona reviews and link the
-  verification comment to the change commit and task.
-- Keep only the latest verification evidence in the plan; prior evidence remains
-  in work item/PR comment threads.
+**Critical**: All commits must be pushed to remote before posting links. Evidence
+must be posted as clickable links in work item comments.
 
-## Evidence Checklist
+**Key requirements**:
 
-- Plan link posted and approved in work item comments.
-- Sub-tasks created for each plan task with 1:1 name mapping.
-- Work item tagged with appropriate component (e.g., `skill` for skills repositories).
-- Evidence and reviews attached to each sub-task.
-- Persona reviews posted as individual comments in the work item thread using superpowers:receiving-code-review.
-- Next steps captured in a new work item.
-- PR opened after acceptance.
-- PR and work item cross-linked with PR feedback addressed (when a PR exists).
-- Post-review changes re-verified with updated BDD evidence.
-- Plan evidence structured into original scope, additional work, and latest
-  verification only.
+- Each sub-task comment includes links to exact commits and files
+- Persona reviews are separate work item comments using
+  superpowers:receiving-code-review
+- Plan separates Original Scope Evidence from Additional Work
+- Keep only latest verification evidence in plan
 
-## Quick Reference
-
-### GitHub (gh CLI)
-
-| Step          | Action                      | Command                                        |
-| ------------- | --------------------------- | ---------------------------------------------- |
-| Set state     | Add/update label            | `gh issue edit <id> --add-label "state:impl"`  |
-| Add component | Add label                   | `gh issue edit <id> --add-label "skill"`       |
-| Plan approval | Comment with plan link      | `gh issue comment <id> --body "Plan: <url>"`   |
-| Sub-tasks     | Add task list items         | `gh issue edit <id> --body-file tasks.md`      |
-| Evidence      | Comment with links and logs | `gh issue comment <id> --body "Evidence: ..."` |
-| Next steps    | Create work item            | `gh issue create --title "..." --body "..."`   |
-| PR            | Open PR                     | `gh pr create --title "..." --body "..."`      |
-| PR feedback   | Track PR comments           | `gh pr view <id> --comments`                   |
-
-### Azure DevOps (ado CLI)
-
-| Step          | Action                     | Command                                                  |
-| ------------- | -------------------------- | -------------------------------------------------------- |
-| Set state     | Update state field         | `ado workitems update --id <id> --state "Active"`        |
-| Add component | Add tag                    | `ado workitems update --id <id> --tags "skill"`          |
-| Plan approval | Add comment with plan link | `ado workitems comment <id> "Plan: <url>"`               |
-| Sub-tasks     | Create child work items    | `ado workitems create --type Task --parent <id>`         |
-| Evidence      | Add comment with links     | `ado workitems comment <id> "Evidence: ..."`             |
-| Next steps    | Create work item           | `ado workitems create --type "User Story" --title "..."` |
-| PR            | Open PR                    | `ado repos pr create --title "..." --description "..."`  |
-| PR feedback   | Track PR comments          | `ado repos pr show --id <id> --comments`                 |
-
-### Jira (jira CLI)
-
-| Step          | Action                     | Command                                            |
-| ------------- | -------------------------- | -------------------------------------------------- |
-| Set state     | Transition issue           | `jira issue move <id> "In Progress"`               |
-| Add component | Add component or label     | `jira issue edit <id> --component "Skills"`        |
-| Plan approval | Add comment with plan link | `jira issue comment <id> "Plan: <url>"`            |
-| Sub-tasks     | Create sub-tasks           | `jira issue create --type Subtask --parent <id>`   |
-| Evidence      | Add comment with links     | `jira issue comment <id> "Evidence: ..."`          |
-| Next steps    | Create issue               | `jira issue create --type Story --summary "..."`   |
-| PR            | Open PR                    | (Depends on code hosting: GitHub, Bitbucket, etc.) |
-| PR feedback   | Track PR                   | (Use code hosting CLI)                             |
+See [Evidence Requirements](references/evidence-requirements.md) for complete
+requirements and evidence checklist.
 
 ## Implementation Notes
 
