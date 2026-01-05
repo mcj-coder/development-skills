@@ -107,6 +107,7 @@ Requirements for all skills:
 - `agent-workitem-automation` (requires work item system CLI)
 - `requirements-gathering` - For creating work items with requirements (no design docs)
 - `skills-first-workflow` (requires Superpowers)
+- `markdown-author` - Proactive markdown linting and spelling validation during writing
 
 ## Documentation
 
