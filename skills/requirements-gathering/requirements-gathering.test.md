@@ -6,7 +6,7 @@ This test suite validates that agents use requirements-gathering skill to create
 
 ## RED Scenarios (Expected Failures - Baseline)
 
-These scenarios describe the current undesired behavior that should fail:
+These scenarios describe the current undesired behaviour that should fail:
 
 ### RED-1: Agent Creates Design Without Ticket
 
@@ -28,7 +28,7 @@ These scenarios describe the current undesired behavior that should fail:
 **But**: Requirements should be in ticket, not repository
 **Result**: ❌ FAIL - Requirements committed to repo instead of ticket
 
-**Evidence**: No enforcement preventing this behavior currently
+**Evidence**: No enforcement preventing this behaviour currently
 
 ### RED-3: Agent Skips Ticket Creation
 
@@ -41,9 +41,9 @@ These scenarios describe the current undesired behavior that should fail:
 
 **Evidence**: No workflow enforcement currently exists
 
-## GREEN Scenarios (Expected Behavior - Post-Implementation)
+## GREEN Scenarios (Expected Behaviour - Post-Implementation)
 
-These scenarios describe the desired behavior after implementation:
+These scenarios describe the desired behaviour after implementation:
 
 ### GREEN-1: Agent Gathers Requirements and Creates Ticket
 
@@ -209,7 +209,7 @@ When all GREEN scenarios pass:
 
 **How to test**: Run these scenarios with an autonomous agent and verify outcomes
 
-**RED scenarios**: Should currently fail (undesired behavior exists)
+**RED scenarios**: Should currently fail (undesired behaviour exists)
 **GREEN scenarios**: Should pass after skill implementation
 **Pressure scenarios**: Validate skill works under non-ideal conditions
 **Integration scenarios**: Validate end-to-end workflow

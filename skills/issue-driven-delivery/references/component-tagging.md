@@ -12,31 +12,447 @@ Every work item must be tagged with the component or component type it impacts.
 
 ## Platform-Specific Implementation
 
-**GitHub**: Use labels
+### GitHub (using gh CLI)
 
-- Example: `skill`, `component:api`, `type:documentation`
+**Add multiple tags when creating issue:**
 
-**Azure DevOps**: Use tags or area path
+```bash
+gh issue create --label "component:api,work-type:bug,priority:p1" \
+  --title "Fix authentication error" \
+  --body "Description of the bug..."
+```
 
-- Example tags: `skill`, `api`, `ui`
-- Example area path: `ProjectName\API\Authentication`
+**Add tags to existing issue:**
 
-**Jira**: Use components or labels
+```bash
+# Add single tag
+gh issue edit 123 --add-label "priority:p2"
 
-- Example components: Skills, API, UI
-- Example labels: skill, api-component, documentation
+# Add multiple tags
+gh issue edit 123 --add-label "work-type:enhancement,priority:p2"
+```
 
-## Enforcement
+**Add blocked tag with comment:**
 
-- Verify component tag exists before closing work item
-- Stop with error if work item has no component tag
-- Suggest appropriate component based on file changes
+```bash
+# Add blocked label
+gh issue edit 123 --add-label "blocked"
 
-## Automatic Tagging
+# Post blocking comment
+gh issue comment 123 --body "Blocked by: Waiting for API design from #125
+Blocker ID: #125
+What's needed: API specification document
+Who can help: @architect"
+```
 
-When creating a new work item, analyze the repository structure and suggest
-appropriate component tags:
+**List issues by tags:**
 
-- If `skills/` directory exists → suggest `skill` tag
-- If `src/api/` exists → suggest `api` tag
-- If `docs/` changes → suggest `documentation` tag
+```bash
+# Find all P0 critical issues
+gh issue list --label "priority:p0"
+
+# Find all bugs in API component
+gh issue list --label "component:api,work-type:bug"
+
+# Find all blocked work items
+gh issue list --label "blocked"
+```
+
+### Azure DevOps (using az boards CLI)
+
+**Add tags when creating work item:**
+
+```bash
+az boards work-item create \
+  --title "Fix authentication error" \
+  --type Bug \
+  --fields System.Tags="component:api; work-type:bug; priority:p1"
+```
+
+**Add tags to existing work item:**
+
+```bash
+# Add multiple tags (semicolon-separated)
+az boards work-item update --id 123 \
+  --fields System.Tags="component:api; work-type:bug; priority:p1"
+```
+
+**Add blocked tag with comment:**
+
+```bash
+# Add blocked tag
+az boards work-item update --id 123 \
+  --fields System.Tags="component:api; work-type:bug; priority:p1; blocked"
+
+# Add blocking comment
+az boards work-item discussion create --id 123 \
+  --message "Blocked by: Waiting for API design from #125. Blocker ID: #125. What's needed: API specification document. Who can help: @architect"
+```
+
+**Query work items by tags:**
+
+```bash
+# Find all P0 critical work items
+az boards work-item query --wiql "SELECT [System.Id], [System.Title] FROM WorkItems WHERE [System.Tags] CONTAINS 'priority:p0'"
+
+# Find all blocked work items
+az boards work-item query --wiql "SELECT [System.Id], [System.Title] FROM WorkItems WHERE [System.Tags] CONTAINS 'blocked'"
+```
+
+### Jira (using jira CLI)
+
+**Add labels when creating issue:**
+
+```bash
+jira issue create \
+  --type Bug \
+  --summary "Fix authentication error" \
+  --labels "component-api,work-type-bug,priority-p1"
+```
+
+**Add labels to existing issue:**
+
+```bash
+# Add labels (comma-separated, replaces existing)
+jira issue update PROJ-123 --labels "component-api,work-type-bug,priority-p1"
+```
+
+**Add blocked label with comment:**
+
+```bash
+# Add blocked label
+jira issue update PROJ-123 --labels "component-api,work-type-bug,priority-p1,blocked"
+
+# Add blocking comment
+jira issue comment PROJ-123 "Blocked by: Waiting for API design from PROJ-125. Blocker ID: PROJ-125. What's needed: API specification document. Who can help: @architect"
+```
+
+**Find issues by labels:**
+
+```bash
+# Find all P0 critical issues
+jira issue list --jql "labels = priority-p0"
+
+# Find all bugs in API component
+jira issue list --jql "labels = component-api AND labels = work-type-bug"
+
+# Find all blocked issues
+jira issue list --jql "labels = blocked"
+```
+
+## Enforcement Rules
+
+### Mandatory Tags (Before Closing)
+
+**Always required:**
+
+- **Component tag**: Which component/area this affects
+- **Work type tag**: Type of work (new-feature, bug, etc.)
+- **Priority tag**: Priority level (P0-P4)
+
+**Required when applicable:**
+
+- **Blocked tag**: If work is currently blocked (with comment)
+
+### Enforcement Actions
+
+**Before closing work item:**
+
+1. Verify all mandatory tags exist
+2. If blocked tag exists, verify blocking comment exists
+3. Stop with error if any mandatory tag missing
+4. Suggest appropriate tags based on:
+   - File changes (for component)
+   - Issue title/body (for work type)
+   - Severity/urgency keywords (for priority)
+
+**For blocked work items:**
+
+1. Verify work item is assigned
+2. Prevent unassignment (can reassign, cannot unassign)
+3. Verify blocking comment exists
+4. Error if blocked tag without comment
+
+### Error Messages
+
+**Missing component tag:**
+
+```text
+ERROR: Cannot close work item without component tag.
+Suggestion: Based on file changes, consider: 'component:api', 'skill'
+```
+
+**Missing work type tag:**
+
+```text
+ERROR: Cannot close work item without work type tag.
+Suggestion: Based on issue title, consider: 'work-type:bug', 'work-type:enhancement'
+```
+
+**Missing priority tag:**
+
+```text
+ERROR: Cannot close work item without priority tag.
+Suggestion: Based on issue severity, consider: 'priority:p2' (Medium)
+```
+
+**Blocked without comment:**
+
+```text
+ERROR: Work item tagged as 'blocked' but no blocking comment found.
+Required: Post comment explaining what is blocking this work.
+```
+
+**Blocked work item unassigned:**
+
+```text
+ERROR: Cannot unassign blocked work item.
+Blocked work must remain assigned for accountability.
+To proceed: Either (1) remove blocked tag if no longer blocked, or (2) reassign to another person.
+```
+
+## Automatic Tag Assignment
+
+When creating a new work item, analyse content and suggest (or auto-apply) appropriate tags.
+
+### Component Tag Suggestions
+
+Analyse repository structure and file changes:
+
+- If `skills/` directory exists → suggest `skill`
+- If `src/api/` exists → suggest `api` or `component:api`
+- If `docs/` changes → suggest `documentation`
+- If `ui/` or `frontend/` → suggest `ui` or `component:ui`
+- If `database/` or `db/` → suggest `database`
+
+### Work Type Suggestions
+
+Analyse issue title and body for keywords:
+
+**new-feature:**
+
+- Keywords: "add", "create", "implement", "new", "feature"
+- Pattern: "Add [feature]", "Implement [capability]"
+
+**enhancement:**
+
+- Keywords: "improve", "enhance", "optimise", "extend", "update"
+- Pattern: "Improve [existing feature]", "Enhance [capability]"
+
+**bug:**
+
+- Keywords: "fix", "bug", "error", "crash", "broken", "issue"
+- Pattern: "Fix [problem]", "Bug: [description]"
+
+**tech-debt:**
+
+- Keywords: "refactor", "technical debt", "legacy", "clean up", "upgrade"
+- Pattern: "Refactor [component]", "Clean up [area]"
+
+**documentation:**
+
+- Keywords: "document", "docs", "readme", "guide", "documentation"
+- File changes: Only `.md` files
+
+**infrastructure:**
+
+- Keywords: "ci", "cd", "build", "deploy", "pipeline", "automation"
+- File changes: `.github/`, `ci/`, `.gitlab-ci.yml`
+
+**chore:**
+
+- Keywords: "chore", "maintenance", "dependency", "update deps"
+- Pattern: "Chore: [task]", "Update [dependency]"
+
+### Priority Suggestions
+
+Analyse issue severity indicators:
+
+**P0 (Critical):**
+
+- Keywords: "critical", "urgent", "emergency", "production down", "data loss", "security"
+
+**P1 (High):**
+
+- Keywords: "high priority", "blocking", "important", "major"
+
+**P2 (Medium):**
+
+- Keywords: "enhancement", "improvement" (with no urgency indicators)
+- Default priority if no indicators
+
+**P3 (Low):**
+
+- Keywords: "minor", "low priority", "nice to have"
+
+**P4 (Nice-to-have):**
+
+- Keywords: "future", "someday", "idea", "consider"
+
+### Auto-Assignment Behaviour
+
+**On issue creation:**
+
+1. Detect platform (GitHub, Azure DevOps, Jira)
+2. Analyse issue title, body, and file changes
+3. Suggest tags with confidence level:
+   - High confidence (>80%): Auto-apply tag
+   - Medium confidence (50-80%): Suggest in comment
+   - Low confidence (<50%): List options for manual selection
+
+**Example auto-assignment comment:**
+
+```text
+🏷️ **Suggested tags:**
+
+**Auto-applied (high confidence):**
+
+- `skill` (repository has `skills/` directory)
+- `work-type:enhancement` (title: "Extend component tagging...")
+- `priority:p2` (no urgency indicators, standard enhancement)
+
+**Please verify** these tags are appropriate, or update if needed.
+```
+
+## Priority Tagging
+
+Every work item should have a priority tag indicating urgency and importance.
+
+### Priority Levels
+
+| Level | Name         | Description                                     | Examples                                  |
+| ----- | ------------ | ----------------------------------------------- | ----------------------------------------- |
+| P0    | Critical     | System down, data loss, security breach         | Production outage, security vulnerability |
+| P1    | High         | Major functionality broken, blocking other work | Core feature broken, build failing        |
+| P2    | Medium       | Important but not urgent, has workarounds       | Enhancement, non-critical bug             |
+| P3    | Low          | Nice to have, minimal impact                    | Minor UI improvement, typo fix            |
+| P4    | Nice-to-have | Future consideration, low priority              | Feature idea, optimisation                |
+
+### When to Apply
+
+- **P0-P1**: Requires immediate attention, should be worked on now
+- **P2**: Normal priority, part of regular backlog
+- **P3-P4**: Low priority, work on when time permits
+
+### Platform-Specific Implementation
+
+**GitHub:**
+
+- Labels: `priority:p0`, `priority:p1`, `priority:p2`, `priority:p3`, `priority:p4`
+
+**Azure DevOps:**
+
+- Tags: `P0`, `P1`, `P2`, `P3`, `P4`
+- OR use Priority field: Critical, High, Medium, Low
+
+**Jira:**
+
+- Priority field: Highest, High, Medium, Low, Lowest
+- OR labels: `priority-p0`, `priority-p1`, etc.
+
+## Work Type Tagging
+
+Every work item must be tagged with its work type. This enables filtering by type of work and helps with metrics tracking.
+
+### Work Type Taxonomy
+
+| Type           | Description                                   | Example Issues                             |
+| -------------- | --------------------------------------------- | ------------------------------------------ |
+| new-feature    | New functionality that didn't exist before    | Add dark mode, implement OAuth             |
+| enhancement    | Improvement to existing functionality         | Improve search performance, add filtering  |
+| bug            | Defect that needs fixing                      | Fix login error, resolve crash             |
+| tech-debt      | Technical debt remediation                    | Refactor legacy code, upgrade dependencies |
+| documentation  | Documentation changes only                    | Update README, add API docs                |
+| refactoring    | Code restructuring without behaviour change   | Extract methods, rename variables          |
+| infrastructure | Build, deploy, CI/CD, tooling changes         | Add GitHub Actions, configure linting      |
+| chore          | Maintenance tasks not affecting functionality | Update dependencies, fix typos             |
+
+### Work Type Guidelines
+
+**new-feature vs enhancement:**
+
+- new-feature: Adds capability that didn't exist (e.g., "Add user authentication")
+- enhancement: Improves existing capability (e.g., "Add password strength indicator to existing login")
+
+**bug vs tech-debt:**
+
+- bug: Visible defect affecting users now
+- tech-debt: Code quality issue that could cause problems later
+
+**refactoring vs chore:**
+
+- refactoring: Restructures code logic/architecture
+- chore: Updates dependencies, configs, build scripts
+
+### Platform-Specific Implementation
+
+**GitHub:**
+
+- Labels: `work-type:new-feature`, `work-type:bug`, `work-type:tech-debt`, etc.
+- Can also use: `new-feature`, `bug`, `tech-debt` (simpler, already in use)
+
+**Azure DevOps:**
+
+- Work Item Type: Bug, User Story, Task, Technical Debt
+- OR tags: `new-feature`, `enhancement`, `bug`, etc.
+
+**Jira:**
+
+- Issue Type: Story, Bug, Task, Technical Debt
+- OR labels: `work-type-feature`, `work-type-bug`, etc.
+
+## Blocked Status Tagging
+
+Work items that are blocked (cannot proceed) must be tagged and require a comment explaining what's blocking them.
+
+### When to Apply Blocked Tag
+
+Apply `blocked` tag when:
+
+- Waiting for external dependency (API, service, library)
+- Blocked by another work item that must complete first
+- Blocked by decision needed from stakeholder
+- Blocked by missing information or access
+
+### Requirements for Blocked Tag
+
+1. **Add blocked tag/label**
+2. **Post comment explaining blocker** with:
+   - What is blocking this work
+   - Blocker ID (if another work item: link to it)
+   - What's needed to unblock
+   - Who can help unblock
+
+3. **Keep work item assigned**
+   - Blocked work must remain assigned (accountability)
+   - Can reassign to someone else if appropriate
+   - Cannot unassign (prevents abandonment)
+
+### Clearing Blocked Status
+
+When blocker is resolved:
+
+1. Post comment confirming blocker resolved
+2. Remove blocked tag/label
+3. Update work item state to resume work
+
+### Platform-Specific Implementation
+
+**GitHub:**
+
+- Label: `blocked`
+- Comment with blocker details
+- Use "blocked by #123" syntax for work item blockers
+
+**Azure DevOps:**
+
+- Tag: `blocked`
+- Comment with blocker details
+- Can use "Related Work" links for blockers
+
+**Jira:**
+
+- Label: `blocked`
+- OR custom status: "Blocked"
+- Comment with blocker details
+- Use "blocks"/"is blocked by" link types
