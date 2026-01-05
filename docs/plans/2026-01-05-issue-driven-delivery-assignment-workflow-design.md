@@ -392,6 +392,119 @@ Update overview to mention assignment (lines 8-10):
 Use work items as the source of truth for planning, approvals, execution evidence, and reviews. Team members self-assign work items when taking ownership and unassign at state transitions to enable pull-based coordination.
 ```
 
+## BDD Test Scenarios
+
+### RED Scenarios (Baseline - Current Behavior Without Assignment Workflow)
+
+**Test 1: No assignment guidance during refinement**
+- **Given**: Agent starts refinement on issue without assignment workflow
+- **When**: Agent creates design document
+- **Then**: Agent doesn't self-assign issue
+- **And**: No indication of who is responsible for refinement
+- **Evidence**: Check git history - design commits without assignment changes
+
+**Test 2: Unclear handoff after plan approval**
+- **Given**: Plan is approved in issue comments
+- **When**: Agent receives "approved" comment
+- **Then**: Agent doesn't unassign themselves
+- **And**: Next developer doesn't know ticket is ready to pull
+- **Evidence**: Issue remains assigned to planner after approval
+
+**Test 3: Assignment confusion during approval feedback**
+- **Given**: Agent posts design for approval
+- **When**: Reviewer posts "continue" or feedback (not "approved")
+- **Then**: Agent unassigns themselves prematurely OR is unclear about ownership
+- **Evidence**: Assignment changes during feedback loop
+
+### GREEN Scenarios (Expected Behavior With Assignment Workflow)
+
+**Test 1: Self-assign during refinement**
+- **Given**: Agent picks up issue in "New Feature" state (unassigned)
+- **When**: Agent begins refinement
+- **Then**: Agent self-assigns issue and sets `state:refinement` label
+- **Evidence**: `gh issue view <issue> --json assignees,labels`
+
+**Test 2: Stay assigned during approval feedback**
+- **Given**: Agent has posted design for approval (assigned, state:refinement)
+- **When**: Reviewer posts feedback/"continue" (not "approved")
+- **Then**: Agent stays assigned and responds to feedback
+- **And**: Agent updates design, pushes changes, re-posts link
+- **And**: Assignment unchanged throughout iteration
+- **Evidence**: Git log shows design updates, issue history shows continuous assignment
+
+**Test 3: Unassign after explicit approval**
+- **Given**: Agent posted design, received explicit "approved" comment
+- **When**: Agent proceeds to add sub-tasks
+- **Then**: Agent unassigns themselves
+- **And**: Agent sets `state:implementation` label
+- **And**: Issue is now unassigned and ready for developer to pull
+- **Evidence**: `gh issue view <issue> --json assignees,labels` shows unassigned + state:implementation
+
+**Test 4: Developer pulls and self-assigns**
+- **Given**: Issue is unassigned with `state:implementation` label
+- **When**: Developer ready to implement
+- **Then**: Developer self-assigns issue
+- **And**: Developer implements tasks
+- **Evidence**: Issue history shows developer self-assignment
+
+**Test 5: Developer unassigns after implementation**
+- **Given**: All sub-tasks complete
+- **When**: Developer finishes implementation
+- **Then**: Developer unassigns themselves
+- **And**: Developer sets `state:verification` label
+- **Evidence**: Issue unassigned + state:verification
+
+**Test 6: QA pulls and verifies**
+- **Given**: Issue unassigned with `state:verification` label
+- **When**: QA ready to verify
+- **Then**: QA self-assigns issue
+- **And**: QA verifies acceptance criteria
+- **And**: QA closes issue (auto-unassigns)
+- **Evidence**: Issue closed with QA as final assignee before close
+
+### PRESSURE Scenarios (Non-Ideal Conditions)
+
+**Test 1: Multiple tickets in queue**
+- **Given**: 5 unassigned issues in `state:implementation`
+- **When**: Developer looks for next work
+- **Then**: Developer can easily identify unassigned tickets to pull
+- **Evidence**: `gh issue list --label "state:implementation" --assignee "" --limit 5`
+
+**Test 2: Blocked during refinement**
+- **Given**: Agent assigned to issue, state:refinement
+- **When**: Agent is blocked waiting for stakeholder input
+- **Then**: Agent stays assigned (still responsible)
+- **And**: Agent posts comment explaining blocker
+- **Evidence**: Issue stays assigned with blocker comment
+
+**Test 3: Need to abandon mid-refinement**
+- **Given**: Agent assigned to issue, state:refinement, design partially done
+- **When**: Agent needs to step away (higher priority work)
+- **Then**: Agent posts status comment
+- **And**: Agent unassigns themselves
+- **And**: Issue returns to unassigned state for someone else to pick up
+- **Evidence**: Issue unassigned with status comment
+
+### Integration Scenarios
+
+**Test 1: Full lifecycle assignment flow**
+- **Given**: New issue created (unassigned, no state label)
+- **When**: Full workflow executed from refinement → implementation → verification
+- **Then**: Assignment changes match state transitions:
+  - Tech Lead assigned during refinement
+  - Unassigned after approval
+  - Developer assigned during implementation
+  - Unassigned after implementation
+  - QA assigned during verification
+  - Auto-unassigned on close
+- **Evidence**: Issue timeline shows assignment changes aligned with state changes
+
+**Test 2: Multiple platforms**
+- **Given**: Repositories on GitHub, Azure DevOps, Jira
+- **When**: Agent follows assignment workflow on each platform
+- **Then**: CLI commands work correctly for each platform
+- **Evidence**: Test on all three platforms with real tickets
+
 ## Implementation Checklist
 
 - [ ] Create `skills/issue-driven-delivery/references/assignment-workflow.md`
