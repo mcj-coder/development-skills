@@ -33,19 +33,15 @@ allow "verify after" changes.
   before editing.
 - Only after the failing checklist is established may implementation begin.
 
-## Superpowers-First Default Workflow
+## Skills-First Workflow
 
-This repo defaults to a **skills-first workflow**. Do not jump straight into
-implementation. All work begins by loading Superpowers skills, following the
-process skills, and only then editing files.
+This repository enforces a **skills-first workflow** where prerequisite skills must be loaded before implementation begins.
 
-- Bootstrap Superpowers, then load `superpowers:using-superpowers` plus any
-  relevant skills.
-- Follow process skills (brainstorming, planning, TDD) before implementation.
-- Use verification skills before claiming completion.
-- Human-driven fallback still follows the same skills-first flow.
-
-See `AGENTS.md` for agent-specific enforcement rules.
+**See [AGENTS.md](AGENTS.md) for:**
+- Complete skills-first workflow enforcement rules
+- Prerequisites loading order
+- Bootstrap instructions for Superpowers
+- Process skills required before implementation
 
 ## Coding Style & Naming Conventions
 
