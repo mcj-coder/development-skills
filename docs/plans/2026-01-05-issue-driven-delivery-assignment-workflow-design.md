@@ -88,10 +88,18 @@ after completing their phase to signal handoff to the next role.
 **Responsibilities:**
 - Create implementation plan
 - Post plan for approval
-- Respond to approval questions
+- Respond to approval questions and feedback
+- Iterate on design based on feedback
 - Add sub-tasks after approval
 
-**Handoff**: After plan approval, unassign ticket and transition to Implementation
+**Approval Feedback Loop:**
+- **Stay assigned** during the entire refinement phase
+- Feedback, questions, or "continue" = still in refinement, keep working
+- Only unassign when you see explicit "approved" or "LGTM" comment
+- If revisions needed, update design and re-post link in same issue thread
+- Assignment stays with refiner until approval received
+
+**Handoff**: After explicit plan approval, unassign ticket and transition to Implementation
 
 ### Implementation State (Developer Assigned)
 
@@ -268,6 +276,14 @@ Add assignment guidance as sub-steps at transition points in SKILL.md Core Workf
 3. Confirm the target work item and keep all work tied to it.
    3a. Self-assign the work item when beginning refinement (Tech Lead recommended).
    3b. Set work item state to `refinement` when beginning plan creation.
+   3c. Stay assigned during entire refinement phase (plan creation, approval feedback loop, iterations).
+```
+
+**Between Step 6 and Step 7 (new):**
+```markdown
+6a. During approval feedback: Stay assigned and respond to questions/feedback in work item comments.
+6b. If revisions needed: Update plan, push changes, re-post link in same thread. Stay assigned.
+6c. Only unassign after receiving explicit "approved" or "LGTM" comment.
 ```
 
 **At Step 7 (lines 66-67):**
@@ -298,6 +314,7 @@ Add to existing Common Mistakes section (after line 136):
 
 ```markdown
 - Leaving work item assigned after state transition (blocks next team member from pulling work).
+- Unassigning during approval feedback loop before receiving explicit approval (creates confusion about ownership).
 - Assigning work items to others instead of letting them self-assign (violates pull-based pattern).
 - Taking multiple assigned tickets simultaneously (creates work-in-progress bottleneck).
 ```
