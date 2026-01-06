@@ -216,7 +216,48 @@ and Jira examples.
 
    **DO NOT APPROVE** plans from external repositories. Require plan to be in current repository first.
 
-5. Stop and wait for an explicit approval comment containing the word "approved" before continuing.
+5. Stop and wait for an explicit approval comment containing the word "approved" or
+   "LGTM", or thumbs-up reaction (👍) on the plan comment, before continuing.
+
+   5a. **Before requesting approval:** Check ALL comments for existing approval. Search
+   for keywords: "approved", "LGTM", "approved to proceed", "go ahead". If approval
+   found, acknowledge and proceed. Do not request approval if it already exists.
+
+   ```bash
+   # Check for approval in comments
+   APPROVAL=$(gh issue view N --json comments --jq '.comments[].body' | grep -iE 'approved|lgtm|go ahead')
+
+   if [ -n "$APPROVAL" ]; then
+     echo "Approval found in comments, proceeding with implementation..."
+     # Post acknowledgment
+     gh issue comment N --body "Approval detected in comment thread. Proceeding with implementation."
+   else
+     echo "No approval found. Requesting approval..."
+   fi
+   ```
+
+   5b. **If user approves in terminal:** Immediately post approval comment to issue
+   to preserve approval in issue history. This ensures traceability and prevents
+   confusion for other team members.
+
+   ```bash
+   # When user says "approved" in terminal session
+   gh issue comment N --body "Approved [in terminal session]"
+   ```
+
+   5c. **If plan comment has thumbs-up reaction:** Post explicit approval comment
+   referencing the reaction. This converts the reaction into a documented approval.
+
+   ```bash
+   # Note: Reaction checking requires GitHub GraphQL API
+   # If thumbs-up detected on plan comment:
+   gh issue comment N --body "Approved [via 👍 reaction on plan comment]"
+   ```
+
+   **Note on reactions:** Checking for reactions requires GitHub GraphQL API which
+   may not be available in all environments. When GraphQL is unavailable, rely on
+   explicit approval comments. If user indicates they've reacted with thumbs-up,
+   post the approval comment on their behalf.
 6. Keep all plan discussions and decisions in work item comments.
    6a. During approval feedback: Stay assigned and respond to questions/feedback in work item comments.
    6b. If revisions needed: Update plan, push changes, re-post link in same thread. Stay assigned.
