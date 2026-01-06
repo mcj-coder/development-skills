@@ -5,7 +5,7 @@
 ## Expertise
 
 - Security architecture patterns
-- Threat modeling frameworks
+- Threat modelling frameworks
 - Compliance requirements (SOC2, GDPR, etc.)
 - Zero-trust architecture
 - Identity and access management

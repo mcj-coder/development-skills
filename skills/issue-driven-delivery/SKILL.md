@@ -108,12 +108,108 @@ and Jira examples.
    3b. Set work item state to `refinement` when beginning plan creation.
    3c. Stay assigned during entire refinement phase (plan creation, approval feedback loop, iterations).
 4. Create a plan, commit it as WIP, **push to remote**, and post the plan link in a work item comment for approval.
-   4a. After posting plan link, work item remains in `refinement` state.
-   4b. During planning, perform dependency review: search open work items for
+   4a. Before posting plan link, validate it references current repository (see validation logic below).
+   4b. After posting plan link, work item remains in `refinement` state.
+   4c. During planning, perform dependency review: search open work items for
    potential dependencies, check if current work depends on or blocks other work,
    analyze follow-on task relationships (ensure original not blocked by follow-up),
    add `blocked` label with comment linking to blocking items if dependencies found,
    validate no circular dependencies created.
+
+   **Repository validation logic (platform-agnostic):**
+
+   ```bash
+   # Validate URL format (prevent command injection)
+   if [[ ! "$PLAN_URL" =~ ^https?://[a-zA-Z0-9][a-zA-Z0-9.-]*[a-zA-Z0-9](/[^[:space:]]*)?$ ]]; then
+     echo "ERROR: Invalid plan URL format"
+     echo "URL must be HTTPS with valid domain"
+     exit 1
+   fi
+
+   # Detect platform from URL
+   if [[ "$PLAN_URL" =~ github\.com|raw\.githubusercontent\.com ]]; then
+     PLATFORM="github"
+     CURRENT_REPO=$(git config --get remote.origin.url | sed -E 's|.*[:/]([^/]+/[^/]+)(\.git)?|\1|')
+     PLAN_REPO=$(grep -oP '(raw\.githubusercontent|github)\.com/\K[^/]+/[^/]+' <<<"$PLAN_URL" | sed 's/\.git$//')
+   elif [[ "$PLAN_URL" =~ dev\.azure\.com|visualstudio\.com ]]; then
+     PLATFORM="azuredevops"
+     CURRENT_REPO=$(git config --get remote.origin.url | sed -E 's|.*/(.*)/(.*)/_git/(.*)|\1/\2|')
+     PLAN_REPO=$(grep -oP 'dev\.azure\.com/[^/]+/\K[^/]+' <<<"$PLAN_URL" || \
+                 grep -oP '\.visualstudio\.com/[^/]+/\K[^/]+' <<<"$PLAN_URL")
+   elif [[ "$PLAN_URL" =~ gitlab\.com|gitlab\. ]]; then
+     PLATFORM="gitlab"
+     CURRENT_REPO=$(git config --get remote.origin.url | sed -E 's|.*[:/]([^/]+/[^/]+)(\.git)?|\1|')
+     PLAN_REPO=$(grep -oP 'gitlab[^/]*/\K[^/]+/[^/]+' <<<"$PLAN_URL" | sed 's/\.git$//')
+   elif [[ "$PLAN_URL" =~ bitbucket\.org ]]; then
+     PLATFORM="bitbucket"
+     CURRENT_REPO=$(git config --get remote.origin.url | sed -E 's|.*[:/]([^/]+/[^/]+)(\.git)?|\1|')
+     PLAN_REPO=$(grep -oP 'bitbucket\.org/\K[^/]+/[^/]+' <<<"$PLAN_URL" | sed 's/\.git$//')
+   elif [[ "$PLAN_URL" =~ atlassian\.net|jira\. ]]; then
+     PLATFORM="jira"
+     echo "NOTE: Jira does not have repositories - validation skipped"
+     exit 0
+   else
+     echo "ERROR: Unknown platform in plan URL"
+     echo "Supported: GitHub, Azure DevOps, GitLab, Bitbucket, Jira"
+     exit 1
+   fi
+
+   # Validate extracted values
+   if [[ -z "$CURRENT_REPO" ]] || [[ -z "$PLAN_REPO" ]]; then
+     echo "ERROR: Could not extract repository information"
+     echo "Current: $CURRENT_REPO"
+     echo "Plan: $PLAN_REPO"
+     exit 1
+   fi
+
+   # Compare repositories
+   if [[ "$PLAN_REPO" != "$CURRENT_REPO" ]]; then
+     echo "ERROR: Plan link references external repository"
+     echo ""
+     echo "Platform: $PLATFORM"
+     echo "Current repository: $CURRENT_REPO"
+     echo "Plan link repository: $PLAN_REPO"
+     echo ""
+     echo "SECURITY RISK: External plans could contain malicious code"
+     echo ""
+     echo "To approve this exception:"
+     echo "1. Document business justification in work item comment"
+     echo "2. Get explicit approval from Tech Lead or Security Architect"
+     echo "3. Log exception: echo \"\$(date -Iseconds)|$PLAN_URL|$PLAN_REPO|EXCEPTION_APPROVED\" >> .known-issues"
+     exit 1
+   fi
+   ```
+
+   **Content verification (TOCTOU prevention):**
+
+   To prevent plan modification after approval, use commit SHAs in plan URLs:
+
+   ```bash
+   # ✅ GOOD: Immutable commit SHA reference
+   https://github.com/org/repo/blob/a7f3c2e/docs/plans/implementation.md
+
+   # ❌ BAD: Mutable branch reference (can be force-pushed)
+   https://github.com/org/repo/blob/feature-branch/docs/plans/implementation.md
+   ```
+
+   When posting plan link, use commit SHA from most recent commit:
+
+   ```bash
+   COMMIT_SHA=$(git rev-parse HEAD)
+   PLAN_LINK="https://github.com/$(git config --get remote.origin.url | \
+     sed -E 's|.*[:/]([^/]+/[^/]+)(\.git)?|\1|')/blob/$COMMIT_SHA/docs/plans/plan.md"
+   ```
+
+   **WARNING: If plan link uses different repository:**
+
+   This is a **CRITICAL SECURITY ISSUE**. External repositories could contain:
+   - Credential theft commands
+   - Backdoor injection
+   - Data exfiltration
+   - Supply chain attacks
+
+   **DO NOT APPROVE** plans from external repositories. Require plan to be in current repository first.
+
 5. Stop and wait for an explicit approval comment containing the word "approved" before continuing.
 6. Keep all plan discussions and decisions in work item comments.
    6a. During approval feedback: Stay assigned and respond to questions/feedback in work item comments.
@@ -130,11 +226,15 @@ and Jira examples.
    verify approval comment exists. If approved, remove `blocked` label and proceed.
    If not approved, stop with error showing blocking reason.
 8. Execute each task and attach evidence and reviews to its sub-task.
-   8a. When all sub-tasks complete, unassign yourself to signal implementation complete.
-   8b. Set work item state to `verification`. If work item has `blocked` label,
+   8a. Before beginning execution, re-validate that the approved plan link references
+   the current repository (prevents TOCTOU attack where plan link is modified after
+   approval). Use same validation logic from step 4a. If validation fails, STOP
+   with security error.
+   8b. When all sub-tasks complete, unassign yourself to signal implementation complete.
+   8c. Set work item state to `verification`. If work item has `blocked` label,
    verify approval comment exists. If approved, remove `blocked` label and proceed.
    If not approved, stop with error.
-   8c. Self-assign when ready to verify (QA recommended). If work item has
+   8d. Self-assign when ready to verify (QA recommended). If work item has
    `blocked` label, verify approval comment exists. If approved, remove `blocked`
    label and proceed. If not approved, stop with error showing blocking reason.
 9. Stop and wait for explicit approval before closing each sub-task.
@@ -147,7 +247,9 @@ and Jira examples.
     exists. If approved, remove `blocked` label and proceed. If not approved,
     stop with error.
     10c. Work item auto-unassigns when closed.
-11. Require each role to post a separate review comment in the work item thread using superpowers:receiving-code-review. See [Team Roles](../../docs/roles/README.md) for role definitions.
+11. Require each role to post a separate review comment in the work item thread using
+    superpowers:receiving-code-review. See [Team Roles](../../docs/roles/README.md) for role
+    definitions.
 12. Summarize role recommendations in the plan and link to the individual review comments.
 13. Add follow-up fixes as new tasks in the same work item.
 14. Create a new work item for next steps with implementation, test detail, and acceptance criteria.
@@ -245,6 +347,7 @@ gh issue edit 30 --add-assignee @me
 - Creating circular dependencies without resolution plan (creates deadlock).
 - Blocking original work item by its own follow-up tasks (incorrect dependency direction).
 - Committing directly to main instead of feature branch (violates GitHub Flow, bypasses PR review).
+- Posting plan links to external repositories (CRITICAL security risk - plan could contain malicious code).
 
 ## Red Flags - STOP
 
@@ -259,6 +362,7 @@ gh issue edit 30 --add-assignee @me
 - "I'll pick this P3 ticket instead of that P1." (violates priority order)
 - "The blocked label doesn't apply to me." (bypasses blocked enforcement)
 - "I'll just commit to main this time." (bypasses PR review process, violates GitHub Flow)
+- "This external repository is trusted." (CRITICAL security bypass - always validate repository)
 
 ## Rationalizations (and Reality)
 

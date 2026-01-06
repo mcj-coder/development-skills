@@ -4,13 +4,14 @@ How to configure editors to use markdownlint and cspell configurations for real-
 
 ## Overview
 
-While markdown-author skill provides validation during agent markdown writing, human contributors benefit from editor integration that shows linting and spelling errors in real-time.
+While markdown-author skill provides validation during agent markdown writing, human contributors benefit from
+editor integration that shows linting and spelling errors in real-time.
 
 **Benefits:**
 
 - Immediate visual feedback on violations
 - Auto-fix on save
-- Consistent with skill behavior
+- Consistent with skill behaviour
 - Uses same configuration files
 
 ## Visual Studio Code
@@ -33,11 +34,11 @@ Install these VS Code extensions:
 
 ### Installation
 
-```bash
+````bash
 # Via command line
 code --install-extension DavidAnson.vscode-markdownlint
 code --install-extension streetsidesoftware.code-spell-checker
-```
+```text
 
 Or via VS Code Extensions view (Ctrl+Shift+X):
 
@@ -64,7 +65,7 @@ Or via VS Code Extensions view (Ctrl+Shift+X):
   "cSpell.showStatus": true,
   "cSpell.diagnosticLevel": "Warning"
 }
-```
+```text
 
 **Settings explained:**
 
@@ -85,7 +86,7 @@ For all repositories, add to User settings (Ctrl+,):
   "markdownlint.run": "onType",
   "cSpell.enabled": true
 }
-```
+```text
 
 ### Visual Indicators
 
@@ -157,7 +158,7 @@ Using vim-plug:
 " .vimrc or init.vim
 Plug 'dense-analysis/ale'  " Async linting
 Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app && yarn install' }
-```
+```text
 
 ### ALE Configuration
 
@@ -175,7 +176,7 @@ let g:ale_fixers = {
 
 " Use repository .markdownlint.json
 let g:ale_markdown_markdownlint_options = '--config .markdownlint.json'
-```
+```text
 
 ### Spell Checking
 
@@ -185,7 +186,7 @@ autocmd FileType markdown setlocal spell spelllang=en_gb,en_us
 
 " Add custom dictionary
 set spellfile=~/.vim/spell/custom.utf-8.add
-```
+```text
 
 ## Emacs
 
@@ -219,7 +220,7 @@ Using `use-package`:
 (use-package flyspell
   :ensure t
   :hook (markdown-mode . flyspell-mode))
-```
+```text
 
 ## Command Line Tools
 
@@ -236,7 +237,7 @@ markdownlint-cli2 --fix README.md
 
 # Check all markdown
 markdownlint-cli2 "**/*.md"
-```
+```text
 
 ### cspell
 
@@ -249,7 +250,7 @@ cspell --show-suggestions README.md
 
 # Check all markdown
 cspell "**/*.md"
-```
+```text
 
 ## Pre-Commit Hook Integration
 
@@ -260,7 +261,7 @@ Ensures consistency between editor and git hooks:
 ```bash
 #!/bin/sh
 npx lint-staged
-```
+```text
 
 **package.json:**
 
@@ -274,7 +275,7 @@ npx lint-staged
     ]
   }
 }
-```
+```text
 
 **Workflow:**
 
@@ -331,7 +332,7 @@ All use same configuration files (`.markdownlint.json`, `cspell.json`).
 
 All configuration files should be in repository root:
 
-```
+```text
 repository/
 ├── .markdownlint.json       ← markdownlint configuration
 ├── cspell.json              ← cspell configuration
@@ -340,7 +341,7 @@ repository/
 ├── .husky/
 │   └── pre-commit           ← Git hooks
 └── package.json             ← lint-staged configuration
-```
+```text
 
 ## Recommended Workflow
 
@@ -357,3 +358,4 @@ repository/
 - [Spelling Configuration](spelling-configuration.md)
 - VS Code markdownlint: <https://marketplace.visualstudio.com/items?itemName=DavidAnson.vscode-markdownlint>
 - VS Code Code Spell Checker: <https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker>
+````

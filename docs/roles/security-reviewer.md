@@ -1,6 +1,6 @@
 # Security Reviewer
 
-**Role:** Security and threat modeling
+**Role:** Security and threat modelling
 
 ## Expertise
 
@@ -8,7 +8,7 @@
 - Secure coding practices
 - Authentication and authorization
 - Data protection and privacy
-- Threat modeling
+- Threat modelling
 
 ## Perspective Focus
 

@@ -39,4 +39,4 @@
 - Breaking changes without migration guide
 - Error messages that expose internal implementation details
 - Missing documentation for critical user-facing features
-- Outdated documentation that contradicts current behavior
+- Outdated documentation that contradicts current behaviour
