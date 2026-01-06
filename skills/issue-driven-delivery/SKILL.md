@@ -88,6 +88,23 @@ See [Prioritization Rules](references/prioritization-rules.md) for detailed
 hierarchy, blocking types (manual vs dependency), circular dependency resolution,
 and automatic unblocking when blockers complete.
 
+## Automation Scripts
+
+Reference scripts in `scripts/` automate prioritization and unblocking:
+
+- **`scripts/get-priority-order.sh`** - Outputs unblocked issues in delivery priority order
+- **`scripts/unblock-dependents.sh`** - Processes dependents when a blocker closes
+
+See [scripts/README.md](scripts/README.md) for usage, customization, and integration.
+
+**When to use:**
+
+- Use `get-priority-order.sh` when selecting the next issue to work on
+- Use `unblock-dependents.sh` after closing issues (step 20) to auto-unblock dependents
+
+**Note:** These are reference implementations for GitHub with default labels. Customize
+label names for your repository before use.
+
 ## Core Workflow
 
 **Note:** For platform-specific CLI commands (set state, add component), see
