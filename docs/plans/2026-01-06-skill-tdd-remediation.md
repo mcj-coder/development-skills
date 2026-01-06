@@ -2,7 +2,7 @@
 
 **Issue:** #89
 **Date:** 2026-01-06
-**Status:** Draft - Awaiting Approval
+**Status:** Complete - All skills remediated
 
 ## Summary
 
@@ -117,19 +117,42 @@ remaining skills (2 at a time per user constraint).
 ## Evidence Requirements
 
 For each skill:
-- [ ] Baseline document showing agent failures WITHOUT skill
-- [ ] Verbatim rationalizations captured
-- [ ] Verification showing agent compliance WITH skill
-- [ ] Updated test file with real observed behaviors
-- [ ] Rationalization table updated with actual data
+- [x] Baseline document showing agent failures WITHOUT skill
+- [x] Verbatim rationalizations captured
+- [x] Verification showing agent compliance WITH skill
+- [x] Updated test file with real observed behaviors
+- [x] Rationalization table updated with actual data
 
 ## Acceptance Criteria
 
-- [ ] All 5 skills have documented RED phase baselines
-- [ ] All 5 skills pass GREEN phase verification
-- [ ] Rationalization tables reflect real agent behavior
-- [ ] Red flags lists based on actual observations
+- [x] All 5 skills have documented RED phase baselines
+- [x] All 5 skills pass GREEN phase verification
+- [x] Rationalization tables reflect real agent behavior
+- [x] Red flags lists based on actual observations
 - [ ] PR merged with remediation evidence
+
+## Remediation Results
+
+| Skill | RED Baseline | GREEN Verified | Baseline File |
+|-------|--------------|----------------|---------------|
+| automated-standards-enforcement | PASS | PASS | `automated-standards-enforcement.baseline.md` |
+| walking-skeleton-delivery | PASS | PASS | `walking-skeleton-delivery.baseline.md` |
+| testcontainers-integration-tests | PASS | PASS | `testcontainers-integration-tests.baseline.md` |
+| technical-debt-prioritisation | PASS | PASS | `technical-debt-prioritisation.baseline.md` |
+| agent-workitem-automation | PASS | PASS | `agent-workitem-automation.baseline.md` |
+
+### Key Findings
+
+**Rationalizations observed across skills:**
+- Time pressure consistently led agents to skip foundational work
+- "Can do it later" rationalization appeared in 4/5 skills
+- Authority pressure caused compliance without question
+- Agents defaulted to familiar patterns over prescribed processes
+
+**Skills successfully changed behavior:**
+- All 5 skills demonstrated clear behavioral change under identical pressure
+- GREEN phase agents complied with skill requirements despite same pressures
+- Evidence-based approaches replaced gut-feel decisions
 
 ## References
 
