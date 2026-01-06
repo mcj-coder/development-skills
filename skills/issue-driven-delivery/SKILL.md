@@ -283,13 +283,14 @@ and Jira examples.
 19. If BDD assertions change, require explicit approval before updating them.
 20. When all sub-tasks are complete and all verification tasks are complete and
     all required PRs for the issue scope are merged, post final evidence comment
-    to the source work item, close it, and delete merged branches. If issue
-    requires multiple PRs, keep open until all scope delivered or remaining work
-    moved to new ticket. Do not leave work items open after all work complete.
-    After closing, search for work items blocked by this issue ("Blocked by #X")
-    and auto-unblock: if sole blocker, remove `blocked` label and comment
-    "Auto-unblocked: #X completed"; if multiple blockers, update comment to remove
-    this blocker and keep `blocked` label until all resolved.
+    to the source work item, close it, and delete merged branches. Plan is now
+    archived in `docs/plans/archive/` for reference. If issue requires multiple
+    PRs, keep open until all scope delivered or remaining work moved to new ticket.
+    Do not leave work items open after all work complete. After closing, search for
+    work items blocked by this issue ("Blocked by #X") and auto-unblock: if sole
+    blocker, remove `blocked` label and comment "Auto-unblocked: #X completed";
+    if multiple blockers, update comment to remove this blocker and keep `blocked`
+    label until all resolved.
 
 ## Evidence Requirements
 
