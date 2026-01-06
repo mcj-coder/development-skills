@@ -16,4 +16,17 @@
 
 ## GREEN: Passing Checklist (After Implementation)
 
-Will verify after updating README.md TDD section with all required content.
+- [x] README.md TDD section references BDD checklist templates (lines 39-40, 42-43)
+- [x] Clarifies verification requirements for documentation changes (lines 38-40)
+- [x] Distinguishes concrete documentation changes from process-only (lines 38-43, 45)
+- [x] Consistent with AGENTS.md requirements
+- [x] References `docs/references/bdd-checklist-templates.md`
+
+**Applied Evidence:**
+- Updated README.md TDD Behaviour section (lines 36-45)
+- Added "Verification Types" subsection
+- Documents concrete changes require applied evidence with commit SHAs
+- Documents process-only allows analytical verification
+- References BDD checklist templates for both types
+- Includes decision guide: "Did the work modify files in the repository?"
+- Aligns with AGENTS.md TDD enforcement section
