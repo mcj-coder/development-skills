@@ -434,6 +434,9 @@ gh issue edit 30 --add-assignee @me
 
 - "I will just do it quickly without posting the plan."
 - "We can discuss approval outside the issue."
+- "User approved verbally, that's enough." (must document all approvals in issue)
+- "The approval is somewhere in the comments, I'll assume it's there." (must verify by checking)
+- "Reactions don't count as real approval." (👍 reactions are valid approval signals)
 - "Sub-tasks are optional; I will skip them."
 - "I will post evidence without links."
 - "I will open a PR before acceptance."
