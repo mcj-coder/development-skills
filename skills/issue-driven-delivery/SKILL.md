@@ -105,7 +105,10 @@ and Jira examples.
    If work item has `blocked` label, verify approval comment exists ("approved to
    proceed" or "unblocked"). If approved, remove `blocked` label and proceed. If
    not approved, stop with error showing blocking reason.
-   3b. Set work item state to `refinement` when beginning plan creation.
+   3b. Set work item state to `refinement` when beginning plan creation. **Create
+   feature branch from main:** `git checkout -b feat/issue-N-description`. All
+   refinement and implementation work will be done on this feature branch. Plan
+   will be committed to this branch to keep main clean.
    3c. Stay assigned during entire refinement phase (plan creation, approval feedback loop, iterations).
 4. Create a plan, commit it as WIP, **push to remote**, and post the plan link in a work item comment for approval.
    4a. Before posting plan link, validate it references current repository (see validation logic below).
