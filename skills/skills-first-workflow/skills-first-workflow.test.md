@@ -251,3 +251,51 @@
 - [ ] Tests written before implementation code.
 - [ ] Verification completed before claiming done.
 - [ ] User attempts to skip were blocked and explained.
+
+## BDD Verification for Process-Only
+
+skills-first-workflow is process-only (enforces workflow without modifying repository files).
+
+### RED: Process Enforcement Without Analytical Verification
+
+**Setup:** Agent enforces skills-first workflow
+**Expected Behavior:** Analytical verification documents enforcement
+**Failure Without Verification:** No evidence that workflow was followed
+
+**Assertions:**
+- Workflow enforcement is process-only (no file modifications)
+- Analytical verification acceptable
+- Must state "This is analytical verification (process-only)"
+- Evidence includes verification steps taken
+
+### GREEN: Workflow Enforcement With Analytical Verification
+
+**Setup:** skills-first-workflow skill enforces prerequisites
+**Expected Behavior:** Analytical verification documents each check
+**Success:** "Analytical verification (process-only): Superpowers verified [log], AGENTS.md checked [log]"
+
+**Assertions:**
+- States analytical verification explicitly
+- Includes evidence of verification steps
+- No false claims of file modifications
+- Uses process-only BDD checklist
+
+**Example:**
+```text
+Analytical verification (process-only):
+- Verified Superpowers installed: [output log]
+- Verified using-superpowers loaded: [confirmation]
+- Verified AGENTS.md exists and current: [file check]
+- Process skills loaded: brainstorming, TDD, verification
+- No repository files modified (workflow enforcement only)
+```
+
+### Verification Type: Process-Only
+
+skills-first-workflow enforces process (verifies prerequisites, loads skills, blocks
+implementation until checks pass) but does not modify repository files. Therefore,
+it uses analytical verification, never applied evidence with commit SHAs.
+
+**Note:** If skills-first-workflow creates AGENTS.md via AutoFix in a brownfield
+repo, that specific action becomes concrete and requires applied evidence for the
+AGENTS.md creation commit. The workflow enforcement itself remains process-only.

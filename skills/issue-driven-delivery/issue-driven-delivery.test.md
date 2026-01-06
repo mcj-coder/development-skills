@@ -78,3 +78,65 @@ Then the agent searches ALL comments (not just recent ones)
 And detects the existing approval comment
 And posts acknowledgment: "Approval detected in comment thread. Proceeding with implementation."
 And does not request redundant approval
+
+### BDD Verification Pressure Scenario
+
+Given concrete changes are made (code, config, documentation files)
+When agent prepares to open PR
+Then agent must post applied evidence with commit SHAs and file links
+And evidence must show skill was actually used in THIS repository
+
+Given process-only work is performed (planning, reviews, requirements)
+When agent prepares to complete work
+Then analytical verification is acceptable with issue comment links
+And evidence must state "This is analytical verification (process-only)"
+
+## BDD Verification Test Cases
+
+### RED: Concrete Changes Without Applied Evidence
+
+**Setup:** Agent makes documentation changes
+**Expected Behavior:** Skill requires applied evidence before PR
+**Failure Without Skill:** Agent posts "Updated documentation" without commit SHA links
+
+**Assertions:**
+- Step 16 requires applied evidence for concrete changes
+- Evidence must include commit SHAs
+- Evidence must include file links
+- References BDD checklist templates
+
+### RED: Process-Only Work Treated as Concrete
+
+**Setup:** Agent performs brainstorming in issue comments
+**Expected Behavior:** Analytical verification acceptable
+**Failure Without Skill:** Agent incorrectly requires commit evidence for planning
+
+**Assertions:**
+- Step 16 allows analytical verification for process-only
+- Must state "This is analytical verification (process-only)"
+- Evidence includes issue comment links
+- References BDD checklist templates
+
+### GREEN: Concrete Changes With Applied Evidence
+
+**Setup:** Agent implements feature with TDD
+**Expected Behavior:** Evidence shows failing test, implementation, passing test
+**Success With Skill:** "TDD applied: failing test [SHA1], implementation [SHA2], passing [SHA3]"
+
+**Assertions:**
+- Applied evidence includes commit SHAs
+- References actual files modified in repository
+- Uses concrete changes checklist template
+- Evidence is verifiable by inspection
+
+### GREEN: Process-Only With Analytical Verification
+
+**Setup:** Agent conducts requirements gathering in issue
+**Expected Behavior:** Analytical verification documents process application
+**Success With Skill:** "Analytical verification (process-only): requirements captured [link], alternatives explored [link]"
+
+**Assertions:**
+- States analytical verification explicitly
+- Includes issue comment links
+- Uses process-only checklist template
+- No false claim of repository file modifications
