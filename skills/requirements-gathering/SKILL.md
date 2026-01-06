@@ -30,13 +30,14 @@ Do NOT use requirements-gathering when:
 
 ## Skill Comparison
 
-| Activity                   | requirements-gathering | brainstorming | writing-plans              |
-| -------------------------- | ---------------------- | ------------- | -------------------------- |
-| Gather requirements        | ✅ Yes                 | ✅ Yes        | ❌ No (assumes reqs exist) |
-| Create design              | ❌ No                  | ✅ Yes        | ❌ No                      |
-| Create implementation plan | ❌ No                  | ✅ Yes        | ✅ Yes                     |
-| Create ticket              | ✅ Yes                 | ❌ No         | ❌ No                      |
-| Commit documents           | ❌ No                  | ✅ Yes        | ✅ Yes                     |
+| Activity                   | requirements-gathering   | brainstorming | writing-plans              |
+| -------------------------- | ------------------------ | ------------- | -------------------------- |
+| Gather requirements        | ✅ Yes                   | ✅ Yes        | ❌ No (assumes reqs exist) |
+| Create design              | ❌ No                    | ✅ Yes        | ❌ No                      |
+| Create implementation plan | ❌ No                    | ✅ Yes        | ✅ Yes                     |
+| Create ticket              | ✅ Yes                   | ❌ No         | ❌ No                      |
+| Decompose large work       | ✅ Yes (epic + children) | ❌ No         | ❌ No                      |
+| Commit documents           | ❌ No                    | ✅ Yes        | ✅ Yes                     |
 
 **Key distinction**: requirements-gathering creates tickets WITHOUT committing design documents. Brainstorming creates
 designs and commits them. Writing-plans assumes requirements exist and creates implementation plans.
@@ -169,7 +170,134 @@ requirement gathering (for ticket creation) from implementation planning
 (which requires an existing ticket).
 ```
 
-### 4. Detect Platform and Create Ticket
+### 4. Evaluate Scope for Decomposition
+
+After structuring requirements, evaluate whether the work should be decomposed into multiple tickets.
+See `references/scope-detection.md` for detailed detection criteria.
+
+**Structural signals to check:**
+
+| Signal                     | How to Detect                                              |
+| -------------------------- | ---------------------------------------------------------- |
+| Multiple user flows        | Requirements describe 2+ distinct end-to-end scenarios     |
+| Multiple API endpoints     | Requirements mention 2+ separate HTTP operations           |
+| Multiple database entities | Requirements include 2+ new tables or major schema changes |
+| Cross-cutting concerns     | Auth, logging, caching mentioned across features           |
+| Multiple consumers         | 2+ different UI components or services                     |
+| Infrastructure + app       | Deployment/infra work combined with feature development    |
+
+**Threshold backstop:**
+
+If no structural signals but requirements exceed configured thresholds (stored in `docs/adr/`), consider decomposition.
+
+**Decision point:**
+
+```text
+I've identified signals suggesting this work could be decomposed:
+- [List detected signals]
+- [Requirements count vs threshold]
+
+Would you like me to propose a decomposition into smaller tickets?
+```
+
+If user declines or no signals detected, proceed with single ticket creation (section 7).
+
+### 5. Present Decomposition Proposal (If Applicable)
+
+When decomposition is warranted, present a complete proposal using three views.
+See `references/decomposition-formats.md` for detailed format specifications.
+
+**Outline view** (hierarchical):
+
+```text
+Epic: [Epic Title]
+├── #1 [Ticket Title] [Category]
+│   └── [Brief description]
+│   └── blocked by: —
+├── #2 [Ticket Title] [Category]
+│   └── [Brief description]
+│   └── blocked by: #1
+└── #N Remove Feature Flags [Cleanup]
+    └── Remove all feature flags, verify flows
+    └── blocked by: [all feature tickets]
+```
+
+**Details table:**
+
+```markdown
+| #   | Title   | Description          | Blocked By | Size    | Safe to Ship    |
+| --- | ------- | -------------------- | ---------- | ------- | --------------- |
+| 1   | [Title] | [What this delivers] | —          | X days  | Yes/No (reason) |
+| 2   | [Title] | [What this delivers] | #1         | X days  | Yes/Flag/No     |
+| N   | Cleanup | Remove feature flags | #X, #Y     | 0.5 day | Yes             |
+```
+
+**Dependency graph** (ASCII for terminal):
+
+```text
+                    ┌─────────────────────┐
+                    │  #1 Foundation      │
+                    └──────────┬──────────┘
+                               │
+              ┌────────────────┼────────────────┐
+              ▼                ▼                ▼
+   ┌──────────────────┐ ┌──────────────────┐ ┌──────────────────┐
+   │  #2 Feature A    │ │  #3 Feature B    │ │  #4 Feature C    │
+   └────────┬─────────┘ └────────┬─────────┘ └────────┬─────────┘
+            └───────────────┬────┴────────────────────┘
+                            ▼
+                 ┌─────────────────────┐
+                 │  #N Cleanup         │
+                 └─────────────────────┘
+```
+
+**User editing options:**
+
+After presenting the proposal, allow refinement:
+
+- **Merge**: "combine #3 and #4"
+- **Split**: "split #2 into two tickets"
+- **Reorder**: "make #5 depend on #1 only"
+- **Modify**: "change the title of #2"
+- **Add/Remove**: "add a ticket for X" or "remove #4"
+
+Iterate until user confirms with "confirm" or equivalent.
+
+### 6. Check Platform Organization (First Time Only)
+
+Before creating tickets, verify team context is stored for threshold calibration.
+
+**Check for existing ADR:**
+
+```bash
+ls docs/adr/*decomposition* docs/adr/*thresholds* 2>/dev/null
+```
+
+**If no ADR exists, ask:**
+
+```text
+I'd like to store your team's preferences for decomposition thresholds.
+
+What is your typical sprint duration?
+1. 1 week (5 days)
+2. 2 weeks (10 days)
+3. 3 weeks (15 days)
+4. 4 weeks (20 days)
+
+What's your ideal ticket size?
+1. 1 day (very granular)
+2. 2-3 days (recommended)
+3. 4-5 days (larger chunks)
+```
+
+Store in `docs/adr/NNNN-decomposition-thresholds.md` for future use.
+
+**Skip if:**
+
+- ADR already exists
+- User only creating single ticket (no decomposition)
+
+### 7. Detect Platform and Create Ticket(s)
 
 **Platform detection and ticket creation**: See `references/platform-cli-examples.md` for:
 
@@ -178,9 +306,24 @@ requirement gathering (for ticket creation) from implementation planning
 - Component tagging examples for each platform
 - CLI verification commands
 
-### 5. Stop - Do Not Proceed to Planning
+**For decomposed work:**
 
-**Critical**: After creating the ticket, STOP. Do not:
+When creating an epic with child tickets:
+
+1. Create the epic ticket first (parent)
+2. Create each child ticket, linking to parent
+3. Set up blocking relationships between children
+4. Include dependency graph (Mermaid) in epic description
+
+**Platform-specific linking:**
+
+- **GitHub**: Use task lists in epic body, labels for tracking
+- **Azure DevOps**: Use parent/child work item links
+- **Jira**: Use epic link field or parent issue
+
+### 8. Stop - Do Not Proceed to Planning
+
+**Critical**: After creating the ticket(s), STOP. Do not:
 
 - ❌ Create design documents
 - ❌ Create implementation plans
@@ -189,11 +332,11 @@ requirement gathering (for ticket creation) from implementation planning
 
 **What to do instead**:
 
-✅ Provide ticket URL to user
-✅ Confirm ticket captures requirements
+✅ Provide ticket URL(s) to user
+✅ Confirm ticket(s) capture requirements
 ✅ Stop and wait for user to decide when to work on it
 
-**Example completion message**:
+**Example completion message (single ticket)**:
 
 ```text
 I've created ticket #123 with the requirements we gathered:
@@ -207,6 +350,25 @@ The ticket captures:
 
 When you're ready to work on this, we can load the ticket and create
 an implementation plan using the writing-plans skill.
+```
+
+**Example completion message (epic + children)**:
+
+```text
+I've created an epic with 4 child tickets:
+
+Epic: #100 User Authentication System
+https://github.com/user/repo/issues/100
+
+Child tickets:
+- #101 Database schema for users and sessions (Foundation)
+- #102 Login and registration flows (Feature)
+- #103 Password reset flow (Feature)
+- #104 Remove feature flags (Cleanup)
+
+Dependencies are linked, and the epic contains a dependency graph.
+
+When you're ready to start, begin with ticket #101 (no blockers).
 ```
 
 ## Integration with Issue-Driven-Delivery
