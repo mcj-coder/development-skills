@@ -240,10 +240,13 @@ and Jira examples.
    with security error.
    8b. When all sub-tasks complete, unassign yourself to signal implementation complete.
    8b.5. Before transitioning to verification, rebase feature branch with main:
-   `git fetch origin && git rebase origin/main`. If rebase picks up changes,
-   re-run implementation verification (tests, builds, etc.) to ensure rebased
-   changes don't break accepted behavior. If conflicts occur, resolve them and
-   re-verify. Push rebased branch: `git push --force-with-lease`.
+   `git fetch origin && git rebase origin/main`. If rebase picks up changes:
+   review files changed against plan references; if plan references files that
+   changed significantly in main, review plan validity (if assumptions invalidated,
+   update plan which triggers re-approval cycle, return to step 5); re-run
+   implementation verification (tests, builds, etc.) to ensure rebased changes
+   don't break accepted behavior. If conflicts occur, resolve them and re-verify.
+   Push rebased branch: `git push --force-with-lease`.
    8c. Set work item state to `verification`. If work item has `blocked` label,
    verify approval comment exists. If approved, remove `blocked` label and proceed.
    If not approved, stop with error.
@@ -260,14 +263,18 @@ and Jira examples.
     exists. If approved, remove `blocked` label and proceed. If not approved,
     stop with error.
     10c. Work item auto-unassigns when closed.
-    10.5. Before closing work item, perform final rebase and plan archival:
-    a) Rebase feature branch with main: `git fetch origin && git rebase origin/main`
-    b) If rebase picks up changes, re-run ALL verification (acceptance criteria, tests)
-    c) Archive plan: `git mv docs/plans/YYYY-MM-DD-feature-name.md docs/plans/archive/`
-    d) Commit archive: `git commit -m "docs: archive plan for issue #N"`
-    e) Push rebased branch: `git push --force-with-lease`
-    f) Verification must confirm rebased changes preserve accepted behavior
-    g) If behavior breaks, fix issues before closing
+    10.5. Before closing work item, perform final rebase and plan archival on feature branch:
+    a) Check time since step 8b.5 rebase. If >24 hours, rebase again: `git fetch origin && git rebase origin/main`
+    b) If rebase picks up changes: review files changed against plan references; if plan
+       references files changed significantly, review plan validity (if invalidated, update
+       plan which triggers re-approval, return to step 5); re-run ALL verification
+    c) If conflicts occur, resolve them and re-verify; document resolution in work item
+    d) Archive plan on feature branch: `git mv docs/plans/YYYY-MM-DD-feature-name.md docs/plans/archive/`
+    e) Commit archive: `git commit -m "docs: archive plan for issue #N"`
+    f) Push rebased branch: `git push --force-with-lease`
+    g) Verification must confirm rebased changes preserve accepted behavior
+    h) If behavior breaks: create fix commits on feature branch, re-verify, document fixes in work item
+    i) Create PR from feature branch (includes archival commit). After merge, plan resides in main at docs/plans/archive/
 11. Require each role to post a separate review comment in the work item thread using
     superpowers:receiving-code-review. See [Team Roles](../../docs/roles/README.md) for role
     definitions.
