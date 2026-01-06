@@ -490,6 +490,8 @@ gh issue edit 30 --add-assignee @me
 - "I'll open the PR now and get reviews later" (violates SHIFT LEFT - reviews before PR)
 - "PR can be in draft while verification happens" (violates SHIFT LEFT - verification before PR)
 - "Reviews can happen during PR review" (violates SHIFT LEFT - find issues before PR, not during)
+- "I'll close the issue without creating a PR." (PR must exist and be merged before closing)
+- "Verification is complete, so I can close it now." (verification requires merged PR to close)
 
 ## Rationalizations (and Reality)
 
