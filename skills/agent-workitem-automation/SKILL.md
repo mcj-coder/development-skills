@@ -20,6 +20,39 @@ all times. If you cannot prove context or tooling, stop and fix that first.
 If an issue-driven workflow is required (work item comments, approvals, evidence tracking),
 use `issue-driven-delivery`.
 
+## End-to-End Autonomous Delivery Flow
+
+Autonomous delivery follows four explicit phases:
+
+### Phase 1: Discovery
+
+1. Read `README.md` and locate `Work Items` section with `Taskboard: <url>`.
+2. Infer platform from URL (GitHub, Azure DevOps, Jira).
+3. Load ticket details, comments, acceptance criteria, and related PRs.
+
+### Phase 2: Setup
+
+1. Verify CLI is installed for the platform (`gh`, `ado`, `jira`).
+2. Verify CLI is authenticated with appropriate permissions.
+3. Confirm required skills are available (brainstorming, TDD, verification).
+4. If any setup fails, stop and request human assistance.
+
+### Phase 3: Execution
+
+1. Determine the next required step from ticket context.
+2. Execute only one step per cycle; keep changes minimal.
+3. Post a step update comment with Summary, Evidence, Next Step, Hand-off.
+4. Update issue checklist when a task completes.
+5. Repeat until all acceptance criteria are addressed.
+
+### Phase 4: Completion
+
+1. Verify all acceptance criteria are met using `superpowers:verification-before-completion`.
+2. Update the taskboard issue with completion evidence (see Taskboard Update Procedures).
+3. Post final summary comment with all evidence links.
+4. Close the work item when verified complete.
+5. If any criteria are unclear or evidence incomplete, hand off to human.
+
 ## Invocation Signals
 
 Start when a comment mentions the agent and includes a task verb (for example,
@@ -143,14 +176,79 @@ When all steps in the current plan are complete and all required PRs are merged:
 If any acceptance criteria are unclear or evidence is incomplete, hand off to a
 human instead of closing.
 
+## Taskboard Update Procedures
+
+Keep the taskboard issue synchronized with delivery progress at all times.
+
+### During Execution
+
+1. **Checklist Updates:** Mark items complete in issue body as tasks finish.
+2. **Step Comments:** Post update comment after each significant step.
+3. **PR Links:** Add PR links to issue body or comments when opened.
+4. **Blocker Notes:** Document blockers immediately in issue comments.
+
+### On Task Completion
+
+1. **Update Issue Body:** Edit issue description to reflect final state:
+   - All checklist items marked complete
+   - Summary of what was delivered
+   - Links to merged PRs
+2. **Post Completion Comment:** Use the completion template below.
+3. **Update Labels:** Add completion label (e.g., `done`, `delivered`).
+
+### On Work Item Close
+
+1. **Final Verification:** All acceptance criteria verified with evidence.
+2. **Close Issue:** Close only when:
+   - All in-scope work is delivered
+   - All required PRs are merged
+   - Evidence links are documented
+   - No blockers remain
+3. **Follow-on Tickets:** Create new tickets for out-of-scope work discovered.
+
+### Completion Comment Template
+
+```text
+## Delivery Complete
+
+**Summary:**
+- <what was delivered>
+
+**Evidence:**
+- PR merged: <link>
+- Commit SHAs: <sha1>, <sha2>
+- Tests passing: <link or command output>
+- Verification: <link to verification comment or checklist>
+
+**Acceptance Criteria:**
+- [x] <criterion 1> - verified by <evidence>
+- [x] <criterion 2> - verified by <evidence>
+
+**Follow-on Work:**
+- <none> or <ticket links for out-of-scope items>
+```
+
+### Closure Prevention Rules
+
+Do NOT close the work item if:
+
+- Any acceptance criterion lacks verification evidence
+- Required PRs are not merged
+- Tests are failing
+- Blockers are unresolved
+- Evidence links are missing or broken
+- Scope was partially delivered without follow-on tickets
+
 Before opening a PR, confirm evidence using appropriate verification type:
 
 **Concrete Changes** (code, configuration, documentation files):
+
 - Must show applied evidence with commit SHAs and file links
 - Example: "TDD applied: failing test [SHA1], implementation [SHA2]"
 - Use concrete changes checklist: [BDD Templates](../../docs/references/bdd-checklist-templates.md)
 
 **Process-Only** (planning, reviews, requirements):
+
 - Analytical verification acceptable with issue comment links
 - Must state: "This is analytical verification (process-only)"
 - Use process-only checklist: [BDD Templates](../../docs/references/bdd-checklist-templates.md)
@@ -190,6 +288,30 @@ Hand off to a human when:
 - Risk or ambiguity is high (security, cost, production impact).
 - Scope creep is detected (work exceeds acceptance criteria).
 - Loop detection triggers (see below).
+- Evidence requirements cannot be satisfied.
+- Acceptance criteria are unclear or contradictory.
+
+### Hand-off Comment Template
+
+```text
+## Hand-off Required
+
+**Reason:** <why human decision needed>
+
+**Context:**
+- Work completed: <summary>
+- Current state: <where things stand>
+- Evidence gathered: <links>
+
+**Decision Needed:**
+- <specific question or decision required>
+
+**Options Considered:**
+- Option A: <description and tradeoffs>
+- Option B: <description and tradeoffs>
+
+**Recommendation:** <if any>
+```
 
 ## Loop Detection
 
@@ -200,6 +322,41 @@ Trigger hand-off when either condition occurs:
 
 Meaningful progress includes: plan changes, code changes, test results, or a
 resolved decision recorded on the ticket.
+
+### Loop Detection Indicators
+
+Watch for these patterns that indicate a loop:
+
+1. **Repeated Failures:** Same error occurring across cycles without resolution.
+2. **Circular Dependencies:** Step A requires B, B requires C, C requires A.
+3. **Blocked Resources:** External dependency not responding or unavailable.
+4. **Unclear Requirements:** Repeated clarification requests without answers.
+5. **Scope Expansion:** Each cycle reveals more work without convergence.
+
+### Loop Recovery Actions
+
+Before triggering hand-off:
+
+1. Document what was attempted in each cycle.
+2. Identify the specific blocker or pattern.
+3. List what information or decision would unblock progress.
+4. Post hand-off comment with full context.
+
+### Scope Creep Detection
+
+Trigger hand-off when work expands beyond original acceptance criteria:
+
+1. **New Requirements:** User adds scope mid-delivery.
+2. **Hidden Complexity:** Implementation reveals undocumented dependencies.
+3. **Integration Issues:** Work affects systems not in original scope.
+4. **Timeline Impact:** Remaining work exceeds reasonable single-session effort.
+
+When scope creep detected:
+
+1. Document current progress and evidence.
+2. Identify in-scope vs out-of-scope items.
+3. Propose: complete in-scope and create follow-on tickets, or pause for re-planning.
+4. Do not proceed with expanded scope without explicit approval.
 
 ## Common Mistakes
 
