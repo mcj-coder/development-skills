@@ -7,3 +7,4 @@ ignores:
   - ".idea/**"
   - "node_modules/**"
   - ".tmp/**"
+  - ".worktrees/**"
