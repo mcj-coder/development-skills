@@ -51,7 +51,7 @@ while [[ $# -gt 0 ]]; do
         [0-9]*)
             # Validate it's purely numeric
             if [[ ! "$1" =~ ^[0-9]+$ ]]; then
-                log_error "Invalid issue number: $1 (must be numeric)"
+                echo "[ERROR] Invalid issue number: $1 (must be numeric)" >&2
                 exit 1
             fi
             ISSUE_NUMBER="$1"
