@@ -288,9 +288,10 @@ and Jira examples.
    implementation verification (tests, builds, etc.) to ensure rebased changes
    don't break accepted behavior. If conflicts occur, resolve them and re-verify.
    Push rebased branch: `git push --force-with-lease`.
-   8c. Set work item state to `verification`. If work item has `blocked` label,
-   verify approval comment exists. If approved, remove `blocked` label and proceed.
-   If not approved, stop with error.
+   8c. Set work item state to `verification`. **Do not open PR yet.** Verification
+   and role-based reviews must complete before PR creation (SHIFT LEFT principle).
+   If work item has `blocked` label, verify approval comment exists. If approved,
+   remove `blocked` label and proceed. If not approved, stop with error.
    8d. Self-assign when ready to verify (QA recommended). If work item has
    `blocked` label, verify approval comment exists. If approved, remove `blocked`
    label and proceed. If not approved, stop with error showing blocking reason.
@@ -307,8 +308,8 @@ and Jira examples.
     10.5. Before closing work item, perform final rebase and plan archival on feature branch:
     a) Check time since step 8b.5 rebase. If >24 hours, rebase again: `git fetch origin && git rebase origin/main`
     b) If rebase picks up changes: review files changed against plan references; if plan
-       references files changed significantly, review plan validity (if invalidated, update
-       plan which triggers re-approval, return to step 5); re-run ALL verification
+    references files changed significantly, review plan validity (if invalidated, update
+    plan which triggers re-approval, return to step 5); re-run ALL verification
     c) If conflicts occur, resolve them and re-verify; document resolution in work item
     d) Archive plan on feature branch: `git mv docs/plans/YYYY-MM-DD-feature-name.md docs/plans/archive/`
     e) Commit archive: `git commit -m "docs: archive plan for issue #N"`
@@ -322,7 +323,11 @@ and Jira examples.
 12. Summarize role recommendations in the plan and link to the individual review comments.
 13. Add follow-up fixes as new tasks in the same work item.
 14. Create a new work item for next steps with implementation, test detail, and acceptance criteria.
-15. Open a PR after delivery is accepted.
+15. After all verifications and role-based reviews complete, post evidence summary to work
+    item (linking all verification and review comments), then create PR. **PR creation
+    happens AFTER verification/reviews, not before.** Use
+    superpowers:finishing-a-development-branch skill to enforce verification checkpoint
+    before PR creation. PR should reference all review comments and evidence.
 16. Before opening a PR, post evidence that required skills were applied in the
     repo when changes are concrete (config, docs, code). For process-only
     changes, note that verification is analytical.
@@ -429,6 +434,9 @@ gh issue edit 30 --add-assignee @me
 - Resolving merge conflicts without re-running tests.
 - Not archiving plan before closing (loses planning history).
 - Deleting branch before archiving plan (loses plan entirely).
+- Opening PR before verification complete (violates SHIFT LEFT - issues found late are expensive).
+- Opening PR before role-based reviews (missing critical feedback early when it's cheaper to fix).
+- Using "draft PR" as excuse to skip pre-PR verification (draft PRs still create merge pressure).
 
 ## Red Flags - STOP
 
@@ -453,6 +461,9 @@ gh issue edit 30 --add-assignee @me
 - "Conflicts are minor, just resolve and push"
 - "Plan is in main, that's fine"
 - "Archive is optional, skip it"
+- "I'll open the PR now and get reviews later" (violates SHIFT LEFT - reviews before PR)
+- "PR can be in draft while verification happens" (violates SHIFT LEFT - verification before PR)
+- "Reviews can happen during PR review" (violates SHIFT LEFT - find issues before PR, not during)
 
 ## Rationalizations (and Reality)
 
@@ -474,3 +485,6 @@ gh issue edit 30 --add-assignee @me
 | "Already verified, rebase won't break it" | Main changes can invalidate verification, must re-verify           |
 | "Plan is still valid"                     | Must review plan if main changed files the plan touches            |
 | "Conflicts are trivial"                   | Any conflict requires re-verification to ensure correctness        |
+| "Draft PR is fine before verification"    | PR creates merge pressure, undermining thorough verification       |
+| "Reviews can happen in PR comments"       | SHIFT LEFT means finding issues before PR, not during              |
+| "Opening PR early shows progress"         | Progress shown via work item state, not premature PRs              |
