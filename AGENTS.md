@@ -15,23 +15,36 @@ These rules tighten the workflow for autonomous execution.
   - **Issue state:** Issue should be in appropriate state before work begins
     (e.g., `refinement` for planning, `implementation` for coding)
 - **Traceability required.** Every change must be traceable to a Taskboard
-  issue.
+  issue; create one if it does not exist.
   - **Format:** Reference issue in commit messages (`Refs: #123`), PR titles and
     descriptions, and issue comments with evidence links
   - **Evidence:** Link commits (SHA URLs), PRs, and verification results in
     issue comments
   - **Mid-implementation:** If work is discovered during implementation, create
     issue immediately before proceeding
-- **Applied-skill evidence required.** If a skill drives concrete configuration,
-  documentation, or code changes, BDD verification must include evidence that
-  the skill was actually applied in this repo. For process-only or hypothetical
-  skills, analysis-based BDD is acceptable and must be stated as such.
+- **Applied-skill evidence required.** Verification requirements differ based on change type:
+  - **Concrete changes** (code, configuration, documentation files): Must include
+    applied evidence showing the skill was actually used in THIS repository. Evidence
+    must include commit SHAs and file links. Example: "TDD skill applied: failing test
+    at [SHA1], implementation at [SHA2], passing test at [SHA3]"
+  - **Process-only** (planning, reviews, requirements gathering): Analytical verification
+    is acceptable. Evidence includes issue comment links and decision records. Must state:
+    "This is analytical verification (process-only)." Example: "Brainstorming skill applied:
+    requirements clarified in issue #123, alternatives considered, decision documented"
+  - See [BDD Checklist Templates](docs/references/bdd-checklist-templates.md) for detailed
+    guidance on both verification types.
 - **Feature branch only.** If you are on `main`, stop and create a feature
   branch before any edits or commits. Do not commit on `main`.
 - **Skills-first enforcement.** Bootstrap, load skills, and follow process
   skills before any implementation.
-- **TDD enforcement.** Apply the README TDD standard. For documentation work,
-  capture and verify a failing BDD checklist before editing.
+- **TDD enforcement.** Apply the README TDD standard to ALL changes (code, configuration,
+  documentation). For documentation and process work, capture and verify a failing BDD
+  checklist before editing. BDD checklists serve as "tests" for non-code changes:
+  - **RED Phase:** Write failing BDD checklist, verify it fails, commit before changes
+  - **GREEN Phase:** Implement changes, verify checklist passes, document evidence
+  - See [BDD Checklist Templates](docs/references/bdd-checklist-templates.md) for
+    concrete vs process-only verification patterns. TDD applies equally to documentation
+    as it does to code - no "verify after" changes allowed.
 - **Fallback stays compliant.** If handing off to a human, the same skills-first
   workflow still applies.
 - **PR close policy.** Follow the README merge policy (rebase, then choose
