@@ -59,35 +59,6 @@ See [Component Tagging](references/component-tagging.md) for complete tagging
 taxonomy (priority levels, work types, blocked workflow), platform-specific CLI
 commands, enforcement rules, and auto-assignment strategy.
 
-## Work Item Prioritization
-
-When selecting which work item to action next, apply these prioritization rules in order:
-
-1. **Finish Started Work** (Highest Priority)
-   - Unassigned work items in progress states (refinement, implementation, verification)
-   - Exception: P0 production incidents override this rule
-
-2. **Critical Production Issues (P0)**
-   - Production outages, data loss, security breaches
-   - Immediate attention required
-
-3. **Priority Order** (P0 → P1 → P2 → P3 → P4)
-   - Work through highest-priority items first
-   - Lower priority number = higher urgency
-
-4. **Blocking Task Priority Inheritance**
-   - Blocking tasks inherit priority from blocked tasks
-   - Formula: `effective_priority = min(task_priority, min(blocked_tasks_priority))`
-   - Example: P2 task blocking P0 task becomes P0 effective priority
-
-5. **Blocking Task Tie-Breaker**
-   - Choose task that unblocks most work items (direct + transitive)
-   - Final fallback: Lower issue number (FIFO)
-
-See [Prioritization Rules](references/prioritization-rules.md) for detailed
-hierarchy, blocking types (manual vs dependency), circular dependency resolution,
-and automatic unblocking when blockers complete.
-
 ## Core Workflow
 
 **Note:** For platform-specific CLI commands (set state, add component), see
@@ -102,18 +73,10 @@ and Jira examples.
    If missing, add tags based on work scope and issue content.
 3. Confirm the target work item and keep all work tied to it.
    3a. Self-assign the work item when beginning refinement (Tech Lead recommended).
-   If work item has `blocked` label, verify approval comment exists ("approved to
-   proceed" or "unblocked"). If approved, remove `blocked` label and proceed. If
-   not approved, stop with error showing blocking reason.
    3b. Set work item state to `refinement` when beginning plan creation.
    3c. Stay assigned during entire refinement phase (plan creation, approval feedback loop, iterations).
 4. Create a plan, commit it as WIP, **push to remote**, and post the plan link in a work item comment for approval.
    4a. After posting plan link, work item remains in `refinement` state.
-   4b. During planning, perform dependency review: search open work items for
-   potential dependencies, check if current work depends on or blocks other work,
-   analyze follow-on task relationships (ensure original not blocked by follow-up),
-   add `blocked` label with comment linking to blocking items if dependencies found,
-   validate no circular dependencies created.
 5. Stop and wait for an explicit approval comment containing the word "approved" before continuing.
 6. Keep all plan discussions and decisions in work item comments.
    6a. During approval feedback: Stay assigned and respond to questions/feedback in work item comments.
@@ -121,30 +84,18 @@ and Jira examples.
    6c. Only unassign after receiving explicit "approved" or "LGTM" comment.
 7. After approval, add work item sub-tasks for every plan task and keep a 1:1 mapping by name.
    7a. Unassign yourself to signal refinement complete and handoff to implementation.
-   7b. Set work item state to `implementation`. If work item has `blocked` label,
-   verify approval comment exists. If approved, remove `blocked` label and proceed.
-   If not approved, stop with error.
-   7c. Self-assign when ready to implement (Developer recommended). If work item
-   has `blocked` label, verify approval comment exists. If approved, remove
-   `blocked` label and proceed. If not approved, stop with error showing
-   blocking reason.
+   7b. Set work item state to `implementation`.
+   7c. Self-assign when ready to implement (Developer recommended).
 8. Execute each task and attach evidence and reviews to its sub-task.
    8a. When all sub-tasks complete, unassign yourself to signal implementation complete.
-   8b. Set work item state to `verification`. If work item has `blocked` label,
-   verify approval comment exists. If approved, remove `blocked` label and proceed.
-   If not approved, stop with error.
-   8c. Self-assign when ready to verify (QA recommended). If work item has
-   `blocked` label, verify approval comment exists. If approved, remove `blocked`
-   label and proceed. If not approved, stop with error showing blocking reason.
+   8b. Set work item state to `verification`.
+   8c. Self-assign when ready to verify (QA recommended).
 9. Stop and wait for explicit approval before closing each sub-task.
 10. Close sub-tasks only after approval and mark the plan task complete.
     10a. Before closing work item, verify all mandatory tags exist (component,
     work type, priority). Error if any missing. Suggest appropriate tags
     based on work item content.
-    10b. When verification complete and acceptance criteria met, close work item
-    (state: complete). If work item has `blocked` label, verify approval comment
-    exists. If approved, remove `blocked` label and proceed. If not approved,
-    stop with error.
+    10b. When verification complete and acceptance criteria met, close work item (state: complete).
     10c. Work item auto-unassigns when closed.
 11. Require each role to post a separate review comment in the work item thread using superpowers:receiving-code-review. See [Team Roles](../../docs/roles/README.md) for role definitions.
 12. Summarize role recommendations in the plan and link to the individual review comments.
@@ -162,10 +113,6 @@ and Jira examples.
     to the source work item, close it, and delete merged branches. If issue
     requires multiple PRs, keep open until all scope delivered or remaining work
     moved to new ticket. Do not leave work items open after all work complete.
-    After closing, search for work items blocked by this issue ("Blocked by #X")
-    and auto-unblock: if sole blocker, remove `blocked` label and comment
-    "Auto-unblocked: #X completed"; if multiple blockers, update comment to remove
-    this blocker and keep `blocked` label until all resolved.
 
 ## Evidence Requirements
 
@@ -238,11 +185,6 @@ gh issue edit 30 --add-assignee @me
 - Unassigning during approval feedback loop before receiving explicit approval (creates confusion about ownership).
 - Assigning work items to others instead of letting them self-assign (violates pull-based pattern).
 - Taking multiple assigned tickets simultaneously (creates work-in-progress bottleneck).
-- Picking work without checking priority labels (may work on P3 when P1 exists).
-- Starting new work when unassigned in-progress work exists (violates finish-started-work rule).
-- Proceeding with blocked work without approval comment (bypasses blocked enforcement).
-- Creating circular dependencies without resolution plan (creates deadlock).
-- Blocking original work item by its own follow-up tasks (incorrect dependency direction).
 
 ## Red Flags - STOP
 
@@ -253,18 +195,12 @@ gh issue edit 30 --add-assignee @me
 - "I will open a PR before acceptance."
 - "I'll assign this ticket to [name] for the next phase."
 - "I'm keeping this assigned in case I need to come back to it."
-- "This blocking task can wait until later." (violates priority inheritance)
-- "I'll pick this P3 ticket instead of that P1." (violates priority order)
-- "The blocked label doesn't apply to me." (bypasses blocked enforcement)
 
 ## Rationalizations (and Reality)
 
-| Excuse                                  | Reality                                              |
-| --------------------------------------- | ---------------------------------------------------- |
-| "The plan does not need approval."      | Approval must be in work item comments.              |
-| "Sub-tasks are too much overhead."      | Required for every plan task.                        |
-| "I will summarize later."               | Discussion and evidence stay in the work item chain. |
-| "Next steps can be a note."             | Next steps require a new work item with details.     |
-| "Priority doesn't matter for this one." | Always follow prioritization hierarchy.              |
-| "I can work on blocked items anyway."   | Blocked enforcement is mandatory, not optional.      |
-| "Circular dependencies will resolve."   | Requires explicit resolution with follow-up tasks.   |
+| Excuse                             | Reality                                              |
+| ---------------------------------- | ---------------------------------------------------- |
+| "The plan does not need approval." | Approval must be in work item comments.              |
+| "Sub-tasks are too much overhead." | Required for every plan task.                        |
+| "I will summarize later."          | Discussion and evidence stay in the work item chain. |
+| "Next steps can be a note."        | Next steps require a new work item with details.     |
