@@ -105,10 +105,16 @@ and Jira examples.
    If work item has `blocked` label, verify approval comment exists ("approved to
    proceed" or "unblocked"). If approved, remove `blocked` label and proceed. If
    not approved, stop with error showing blocking reason.
-   3b. Set work item state to `refinement` when beginning plan creation.
+   3b. Set work item state to `refinement` when beginning plan creation. **Create
+   feature branch from main:** `git checkout -b feat/issue-N-description`. All
+   refinement and implementation work will be done on this feature branch. Plan
+   will be committed to this branch to keep main clean.
    3c. Stay assigned during entire refinement phase (plan creation, approval feedback loop, iterations).
-4. Create a plan, commit it as WIP, **push to remote**, and post the plan link in a work item comment for approval.
+4. Create a plan in `docs/plans/YYYY-MM-DD-feature-name.md` on the feature branch,
+   commit it as WIP, **push to remote**, and post the plan link in a work item
+   comment for approval.
    4a. Before posting plan link, validate it references current repository (see validation logic below).
+   Plan link must use commit SHA for immutability after approval.
    4b. After posting plan link, work item remains in `refinement` state.
    4c. During planning, perform dependency review: search open work items for
    potential dependencies, check if current work depends on or blocks other work,
@@ -220,17 +226,27 @@ and Jira examples.
    7b. Set work item state to `implementation`. If work item has `blocked` label,
    verify approval comment exists. If approved, remove `blocked` label and proceed.
    If not approved, stop with error.
-   7c. Self-assign when ready to implement (Developer recommended). **Create feature
-   branch from main:** `git checkout -b feat/issue-N-description`. All implementation
-   work must be done on feature branch, not main. If work item has `blocked` label,
-   verify approval comment exists. If approved, remove `blocked` label and proceed.
-   If not approved, stop with error showing blocking reason.
+   7c. Self-assign when ready to implement (Developer recommended). **Rebase feature
+   branch with main:** `git fetch origin && git rebase origin/main`. If significant
+   changes to main since plan creation (affecting files/areas in plan), review plan
+   validity, update plan if needed (requires re-approval), and push updated plan.
+   **All implementation work must be done on feature branch, not main.** If work item
+   has `blocked` label, verify approval comment exists. If approved, remove `blocked`
+   label and proceed. If not approved, stop with error showing blocking reason.
 8. Execute each task and attach evidence and reviews to its sub-task.
    8a. Before beginning execution, re-validate that the approved plan link references
    the current repository (prevents TOCTOU attack where plan link is modified after
    approval). Use same validation logic from step 4a. If validation fails, STOP
    with security error.
    8b. When all sub-tasks complete, unassign yourself to signal implementation complete.
+   8b.5. Before transitioning to verification, rebase feature branch with main:
+   `git fetch origin && git rebase origin/main`. If rebase picks up changes:
+   review files changed against plan references; if plan references files that
+   changed significantly in main, review plan validity (if assumptions invalidated,
+   update plan which triggers re-approval cycle, return to step 5); re-run
+   implementation verification (tests, builds, etc.) to ensure rebased changes
+   don't break accepted behavior. If conflicts occur, resolve them and re-verify.
+   Push rebased branch: `git push --force-with-lease`.
    8c. Set work item state to `verification`. If work item has `blocked` label,
    verify approval comment exists. If approved, remove `blocked` label and proceed.
    If not approved, stop with error.
@@ -247,6 +263,18 @@ and Jira examples.
     exists. If approved, remove `blocked` label and proceed. If not approved,
     stop with error.
     10c. Work item auto-unassigns when closed.
+    10.5. Before closing work item, perform final rebase and plan archival on feature branch:
+    a) Check time since step 8b.5 rebase. If >24 hours, rebase again: `git fetch origin && git rebase origin/main`
+    b) If rebase picks up changes: review files changed against plan references; if plan
+       references files changed significantly, review plan validity (if invalidated, update
+       plan which triggers re-approval, return to step 5); re-run ALL verification
+    c) If conflicts occur, resolve them and re-verify; document resolution in work item
+    d) Archive plan on feature branch: `git mv docs/plans/YYYY-MM-DD-feature-name.md docs/plans/archive/`
+    e) Commit archive: `git commit -m "docs: archive plan for issue #N"`
+    f) Push rebased branch: `git push --force-with-lease`
+    g) Verification must confirm rebased changes preserve accepted behavior
+    h) If behavior breaks: create fix commits on feature branch, re-verify, document fixes in work item
+    i) Create PR from feature branch (includes archival commit). After merge, plan resides in main at docs/plans/archive/
 11. Require each role to post a separate review comment in the work item thread using
     superpowers:receiving-code-review. See [Team Roles](../../docs/roles/README.md) for role
     definitions.
@@ -262,13 +290,14 @@ and Jira examples.
 19. If BDD assertions change, require explicit approval before updating them.
 20. When all sub-tasks are complete and all verification tasks are complete and
     all required PRs for the issue scope are merged, post final evidence comment
-    to the source work item, close it, and delete merged branches. If issue
-    requires multiple PRs, keep open until all scope delivered or remaining work
-    moved to new ticket. Do not leave work items open after all work complete.
-    After closing, search for work items blocked by this issue ("Blocked by #X")
-    and auto-unblock: if sole blocker, remove `blocked` label and comment
-    "Auto-unblocked: #X completed"; if multiple blockers, update comment to remove
-    this blocker and keep `blocked` label until all resolved.
+    to the source work item, close it, and delete merged branches. Plan is now
+    archived in `docs/plans/archive/` for reference. If issue requires multiple
+    PRs, keep open until all scope delivered or remaining work moved to new ticket.
+    Do not leave work items open after all work complete. After closing, search for
+    work items blocked by this issue ("Blocked by #X") and auto-unblock: if sole
+    blocker, remove `blocked` label and comment "Auto-unblocked: #X completed";
+    if multiple blockers, update comment to remove this blocker and keep `blocked`
+    label until all resolved.
 
 ## Evidence Requirements
 
@@ -348,6 +377,13 @@ gh issue edit 30 --add-assignee @me
 - Blocking original work item by its own follow-up tasks (incorrect dependency direction).
 - Committing directly to main instead of feature branch (violates GitHub Flow, bypasses PR review).
 - Posting plan links to external repositories (CRITICAL security risk - plan could contain malicious code).
+- Creating plan on main instead of feature branch (pollutes docs folder).
+- Skipping rebase before verification (may verify against stale main).
+- Not re-verifying after rebase picks up changes.
+- Ignoring plan validity when main has changed significantly.
+- Resolving merge conflicts without re-running tests.
+- Not archiving plan before closing (loses planning history).
+- Deleting branch before archiving plan (loses plan entirely).
 
 ## Red Flags - STOP
 
@@ -363,15 +399,27 @@ gh issue edit 30 --add-assignee @me
 - "The blocked label doesn't apply to me." (bypasses blocked enforcement)
 - "I'll just commit to main this time." (bypasses PR review process, violates GitHub Flow)
 - "This external repository is trusted." (CRITICAL security bypass - always validate repository)
+- "Rebase can wait until PR review"
+- "Already verified once, don't need to re-verify after rebase"
+- "Main hasn't changed much, skip rebase"
+- "Conflicts are minor, just resolve and push"
+- "Plan is in main, that's fine"
+- "Archive is optional, skip it"
 
 ## Rationalizations (and Reality)
 
-| Excuse                                  | Reality                                              |
-| --------------------------------------- | ---------------------------------------------------- |
-| "The plan does not need approval."      | Approval must be in work item comments.              |
-| "Sub-tasks are too much overhead."      | Required for every plan task.                        |
-| "I will summarize later."               | Discussion and evidence stay in the work item chain. |
-| "Next steps can be a note."             | Next steps require a new work item with details.     |
-| "Priority doesn't matter for this one." | Always follow prioritization hierarchy.              |
-| "I can work on blocked items anyway."   | Blocked enforcement is mandatory, not optional.      |
-| "Circular dependencies will resolve."   | Requires explicit resolution with follow-up tasks.   |
+| Excuse                                    | Reality                                                            |
+| ----------------------------------------- | ------------------------------------------------------------------ |
+| "The plan does not need approval."        | Approval must be in work item comments.                            |
+| "Sub-tasks are too much overhead."        | Required for every plan task.                                      |
+| "I will summarize later."                 | Discussion and evidence stay in the work item chain.               |
+| "Next steps can be a note."               | Next steps require a new work item with details.                   |
+| "Priority doesn't matter for this one."   | Always follow prioritization hierarchy.                            |
+| "I can work on blocked items anyway."     | Blocked enforcement is mandatory, not optional.                    |
+| "Circular dependencies will resolve."     | Requires explicit resolution with follow-up tasks.                 |
+| "Plan on main is easier"                  | Unactioned plans clutter main, feature branch keeps it clean       |
+| "Archive is busywork"                     | Archive preserves planning history and design decisions            |
+| "Rebase can wait until PR"                | Rebase before verification ensures tests pass against current main |
+| "Already verified, rebase won't break it" | Main changes can invalidate verification, must re-verify           |
+| "Plan is still valid"                     | Must review plan if main changed files the plan touches            |
+| "Conflicts are trivial"                   | Any conflict requires re-verification to ensure correctness        |
