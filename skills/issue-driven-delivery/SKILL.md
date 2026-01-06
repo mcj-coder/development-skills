@@ -459,6 +459,9 @@ gh issue edit 30 --add-assignee @me
 | Excuse                                    | Reality                                                            |
 | ----------------------------------------- | ------------------------------------------------------------------ |
 | "The plan does not need approval."        | Approval must be in work item comments.                            |
+| "Verbal approval is sufficient"           | All approvals must be documented in issue comments.                |
+| "I'll just ask for approval again"        | Check all existing comments first before requesting.               |
+| "Reactions are informal"                  | 👍 reactions are valid approval signals requiring documentation.   |
 | "Sub-tasks are too much overhead."        | Required for every plan task.                                      |
 | "I will summarize later."                 | Discussion and evidence stay in the work item chain.               |
 | "Next steps can be a note."               | Next steps require a new work item with details.                   |
