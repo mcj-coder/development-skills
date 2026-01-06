@@ -272,6 +272,59 @@ Jumping straight into implementation is an exception and must be explicitly
 requested by the user. The default is to load and apply skills before any repo
 actions.
 
+## Superpowers Skills Integration
+
+This repository integrates with [Superpowers](https://github.com/obra/superpowers)
+for process skills. The relationship is complementary:
+
+### What Superpowers Provides (Process Skills)
+
+- **superpowers:test-driven-development** - TDD process guidance (RED/GREEN/REFACTOR workflow)
+- **superpowers:verification-before-completion** - Verification process before claiming completion
+- **superpowers:brainstorming** - Requirements clarification and design exploration
+- **superpowers:writing-plans** - Implementation planning guidance
+- **superpowers:receiving-code-review** - Code review reception process
+
+These are **process-only skills** that guide workflow without modifying repository files.
+
+### What This Repository Provides (Concrete Requirements)
+
+- **BDD Checklist Templates** - Concrete vs process-only verification patterns
+- **Verification Requirements** - When to use applied evidence vs analytical verification
+- **Issue-Driven Workflow** - Work item tracking and evidence requirements
+- **Agent Automation** - Autonomous work item management
+
+These define **concrete requirements** for this repository's workflow.
+
+### How They Work Together
+
+1. **TDD Workflow:** Superpowers provides TDD process, this repo requires BDD checklists
+   - Superpowers: "Write test first (RED), implement (GREEN), refactor"
+   - This repo: "Create failing BDD checklist, implement, verify passing"
+   - Integration: Both apply - code uses TDD, documentation uses BDD checklists
+
+2. **Verification:** Superpowers provides verification process, this repo defines verification types
+   - Superpowers: "Verify before claiming complete"
+   - This repo: "Use concrete verification for file changes, analytical for process-only"
+   - Integration: Superpowers enforces verification, this repo defines how to verify
+
+3. **Evidence:** No conflict - complementary requirements
+   - Superpowers: Ensures verification happens
+   - This repo: Defines what verification evidence looks like (commit SHAs vs comment links)
+
+### No Conflicts Identified
+
+- Superpowers skills are process guidance (analytical verification)
+- This repo's skills may be concrete (issue-driven-delivery, markdown-author) or process-only
+- Superpowers never requires commit evidence (process-only)
+- This repo only requires commit evidence for concrete changes
+- All Superpowers skills use analytical verification when applied in this repo
+
+### References
+
+- BDD Checklist Templates: [docs/references/bdd-checklist-templates.md](docs/references/bdd-checklist-templates.md)
+- Superpowers Repository: <https://github.com/obra/superpowers>
+
 ## Canonical Skill Priority Model
 
 Skills can be classified into the following priorities:
