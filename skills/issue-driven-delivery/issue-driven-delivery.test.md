@@ -50,3 +50,31 @@ Without the skill, a typical response rationalizes skipping work item workflow s
 - State is set to `implementation` after plan approval.
 - State is set to `verification` when implementation complete.
 - Work item cannot be closed without component tag.
+
+## Approval Detection Scenarios
+
+### Scenario 1: Terminal Approval Documentation
+
+Given a user approves a plan verbally in the terminal session
+When the agent receives terminal approval
+Then the agent posts an explicit approval comment to the issue
+And the comment format is "Approved [in terminal session]"
+And approval is preserved in issue history for traceability
+
+### Scenario 2: Reaction-Based Approval Recognition
+
+Given a user adds a thumbs-up (👍) reaction to the plan comment
+When the agent checks for approval signals
+Then the agent recognizes the reaction as a valid approval
+And posts an explicit approval comment "Approved [via 👍 reaction on plan comment]"
+And proceeds with implementation
+
+### Scenario 3: Approval Detection in Comment Thread
+
+Given multiple comments exist in the issue thread
+And one comment contains "approved" or "LGTM" keyword
+When the agent checks for approval before requesting
+Then the agent searches ALL comments (not just recent ones)
+And detects the existing approval comment
+And posts acknowledgment: "Approval detected in comment thread. Proceeding with implementation."
+And does not request redundant approval
