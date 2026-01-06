@@ -9,6 +9,7 @@
 - [ ] References `docs/references/bdd-checklist-templates.md`
 
 **Failure Notes:**
+
 - Current README.md TDD section (lines 24-34) explains BDD checklists for documentation
 - Doesn't reference BDD checklist templates
 - Doesn't distinguish concrete vs process-only verification
@@ -23,6 +24,7 @@
 - [x] References `docs/references/bdd-checklist-templates.md`
 
 **Applied Evidence:**
+
 - Updated README.md TDD Behaviour section (lines 36-45)
 - Added "Verification Types" subsection
 - Documents concrete changes require applied evidence with commit SHAs

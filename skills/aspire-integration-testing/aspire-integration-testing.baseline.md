@@ -113,4 +113,5 @@
 
 ## Verification Result
 
-**PASSED** - Skill successfully changes agent behavior from test-skipping to systematic integration testing under all pressure types.
+**PASSED** - Skill successfully changes agent behavior from test-skipping to systematic
+integration testing under all pressure types.

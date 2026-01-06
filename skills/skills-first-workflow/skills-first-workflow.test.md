@@ -263,6 +263,7 @@ skills-first-workflow is process-only (enforces workflow without modifying repos
 **Failure Without Verification:** No evidence that workflow was followed
 
 **Assertions:**
+
 - Workflow enforcement is process-only (no file modifications)
 - Analytical verification acceptable
 - Must state "This is analytical verification (process-only)"
@@ -275,12 +276,14 @@ skills-first-workflow is process-only (enforces workflow without modifying repos
 **Success:** "Analytical verification (process-only): Superpowers verified [log], AGENTS.md checked [log]"
 
 **Assertions:**
+
 - States analytical verification explicitly
 - Includes evidence of verification steps
 - No false claims of file modifications
 - Uses process-only BDD checklist
 
 **Example:**
+
 ```text
 Analytical verification (process-only):
 - Verified Superpowers installed: [output log]

@@ -90,11 +90,13 @@ Assert.NotEmpty(data);
 ## Debugging Tips
 
 Set environment variable for local debugging:
+
 ```bash
 ASPIRE_ALLOW_UNSECURED_TRANSPORT=true
 ```
 
 Access logs via app services:
+
 ```csharp
 var logger = app.Services.GetRequiredService<ILogger<MyTest>>();
 ```

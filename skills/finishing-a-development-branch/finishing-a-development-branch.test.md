@@ -143,10 +143,12 @@
 ## Test 13: Automatic detection of skill changes
 
 **Given** git diff main...HEAD --name-only shows:
-```
+
+```text
 skills/test-driven-development/SKILL.md
 skills/test-driven-development/tdd.test.md
 ```
+
 **When** developer invokes finishing-a-development-branch skill
 **Then** skill automatically detects skill modifications
 **And** adds "Skill Author review required" to verification checklist
@@ -156,11 +158,13 @@ skills/test-driven-development/tdd.test.md
 ## Test 14: Automatic detection of documentation changes
 
 **Given** git diff main...HEAD --name-only shows:
-```
+
+```text
 README.md
 docs/architecture/system-design.md
 CONTRIBUTING.md
 ```
+
 **When** developer invokes finishing-a-development-branch skill
 **Then** skill automatically detects documentation modifications
 **And** adds "Documentation Expert review required" to verification checklist
@@ -247,6 +251,7 @@ CONTRIBUTING.md
 ## Verification Assertions
 
 Each test above should verify:
+
 - ✅ Verification checkpoint logic works correctly
 - ✅ Automatic detection identifies changed file types
 - ✅ Work item comments checked for review evidence

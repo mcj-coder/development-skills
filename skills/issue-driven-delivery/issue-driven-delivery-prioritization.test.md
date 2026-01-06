@@ -2,7 +2,8 @@
 
 ## Overview
 
-This test file validates the work item prioritization rules added to the issue-driven-delivery skill. Tests follow the RED-GREEN-PRESSURE pattern.
+This test file validates the work item prioritization rules added to the issue-driven-delivery skill.
+Tests follow the RED-GREEN-PRESSURE pattern.
 
 ## RED Scenarios (Baseline Without Enhancement)
 
@@ -10,35 +11,48 @@ These scenarios demonstrate failures that occur without prioritization rules.
 
 ### RED 1: Agent picks low priority over high priority
 
-**Given:** Queue has P1 and P2 work items
+#### Given
 
-```
+Queue has P1 and P2 work items
+
+```text
 #100 (P2, unblocked, state:new-feature) - Add nice-to-have feature
 #101 (P1, unblocked, state:new-feature) - Fix critical bug
 ```
 
-**When:** Agent selects work without checking priority
+#### When
 
-**Then:** Agent might pick #100 before #101
+Agent selects work without checking priority
+
+#### Then
+
+Agent might pick #100 before #101
 
 **Expected failure:** No prioritization guidance, agent may select randomly or by issue number
 
-**Why this fails:** Without explicit priority rules, agent has no guidance on which work item to select first.
+**Why this fails:** Without explicit priority rules, agent has no guidance on which work item to select
+first.
 
 ---
 
 ### RED 2: Agent starts new work while in-progress work exists
 
-**Given:** Work item in state:implementation, unassigned (abandoned)
+#### Given
 
-```
+Work item in state:implementation, unassigned (abandoned)
+
+```text
 #200 (P1, state:new-feature, unassigned) - New feature
 #201 (P2, state:implementation, unassigned) - Partially implemented feature
 ```
 
-**When:** Agent picks state:new-feature work item
+#### When
 
-**Then:** Agent selects #200, leaving #201 unfinished
+Agent picks state:new-feature work item
+
+#### Then
+
+Agent selects #200, leaving #201 unfinished
 
 **Expected failure:** No "finish started work" rule, in-progress work remains abandoned
 
@@ -48,39 +62,53 @@ These scenarios demonstrate failures that occur without prioritization rules.
 
 ### RED 3: Agent proceeds with blocked work
 
-**Given:** Work item has blocked label without approval
+#### Given
 
-```
+Work item has blocked label without approval
+
+```text
 #300 (P1, blocked, state:new-feature)
 Comment: "Blocked waiting for client API key approval"
 ```
 
-**When:** Agent attempts self-assignment
+#### When
 
-**Then:** Agent proceeds without checking for approval
+Agent attempts self-assignment
+
+#### Then
+
+Agent proceeds without checking for approval
 
 **Expected failure:** No blocked enforcement, agent starts work that cannot be completed
 
-**Why this fails:** Without blocked enforcement checks, agent ignores blocking conditions and wastes effort.
+**Why this fails:** Without blocked enforcement checks, agent ignores blocking conditions and wastes
+effort.
 
 ---
 
 ### RED 4: Circular dependency causes deadlock
 
-**Given:** A blocks B, B blocks A
+#### Given
 
-```
+A blocks B, B blocks A
+
+```text
 #400 (P1, blocked by #401) - Refactor Module A
 #401 (P1, blocked by #400) - Refactor Module B
 ```
 
-**When:** Agent analyzes dependencies
+#### When
 
-**Then:** Both remain blocked indefinitely
+Agent analyzes dependencies
+
+#### Then
+
+Both remain blocked indefinitely
 
 **Expected failure:** No circular dependency resolution, deadlock persists
 
-**Why this fails:** Without detection and resolution algorithm, circular dependencies create permanent deadlock.
+**Why this fails:** Without detection and resolution algorithm, circular dependencies create permanent
+deadlock.
 
 ---
 
@@ -90,17 +118,23 @@ These scenarios demonstrate correct behavior with prioritization rules.
 
 ### GREEN 1: Priority ordering enforced
 
-**Given:** Queue has #100 (P2), #101 (P1), #102 (P3)
+#### Given
 
-```
+Queue has #100 (P2), #101 (P1), #102 (P3)
+
+```text
 #100 (P2, unblocked, state:new-feature) - Medium priority
 #101 (P1, unblocked, state:new-feature) - High priority
 #102 (P3, unblocked, state:new-feature) - Low priority
 ```
 
-**When:** Agent applies prioritization rules
+#### When
 
-**Then:** Selects #101 (P1 first)
+Agent applies prioritization rules
+
+#### Then
+
+Selects #101 (P1 first)
 
 **Success criteria:**
 
@@ -112,16 +146,22 @@ These scenarios demonstrate correct behavior with prioritization rules.
 
 ### GREEN 2: Finish started work first
 
-**Given:** Queue has new and in-progress work
+#### Given
 
-```
+Queue has new and in-progress work
+
+```text
 #200 (P1, state:new-feature, unassigned) - New work, high priority
 #201 (P2, state:implementation, unassigned) - In-progress work, medium priority
 ```
 
-**When:** Agent applies prioritization
+#### When
 
-**Then:** Selects #201 (finish what's started)
+Agent applies prioritization
+
+#### Then
+
+Selects #201 (finish what's started)
 
 **Success criteria:**
 
@@ -134,17 +174,21 @@ These scenarios demonstrate correct behavior with prioritization rules.
 
 ### GREEN 3: Blocked work rejected without approval
 
-**Given:** Work item blocked without approval
+#### Given
 
-```
+Work item blocked without approval
+
+```text
 #300 (P1, blocked, state:new-feature)
 Comment: "Blocked waiting for client approval"
 No approval comment exists
 ```
 
-**When:** Agent attempts self-assignment
+#### When
 
-**Then:**
+Agent attempts self-assignment
+
+#### Then
 
 - Agent stops with ERROR
 - Error message shows blocking reason
@@ -159,7 +203,7 @@ No approval comment exists
 
 **Expected error message:**
 
-```
+```text
 ERROR: Cannot self-assign blocked work item #300
 Blocking reason: "Blocked waiting for client approval"
 Requires explicit approval comment to proceed.
@@ -169,17 +213,21 @@ Requires explicit approval comment to proceed.
 
 ### GREEN 4: Blocked work auto-unblocked when approved
 
-**Given:** Work item blocked, user approves
+#### Given
 
-```
+Work item blocked, user approves
+
+```text
 #400 (P1, blocked, state:new-feature)
 Comment 1: "Blocked waiting for client approval"
 Comment 2 (user): "approved to proceed"
 ```
 
-**When:** Agent attempts self-assignment
+#### When
 
-**Then:**
+Agent attempts self-assignment
+
+#### Then
 
 - Agent finds approval comment
 - Agent automatically removes `blocked` label
@@ -197,17 +245,19 @@ Comment 2 (user): "approved to proceed"
 
 ### GREEN 5: Auto-unblock on blocker completion
 
-**Given:** Work item blocked by single blocker
+#### Given
 
-```
+Work item blocked by single blocker
+
+```text
 #500 (P1, state:implementation) - Blocking work item
 #501 (P2, blocked, state:new-feature) - Blocked work item
 Comment on #501: "Blocked by #500"
 ```
 
-**When:** #500 closes
+#### When issue \#500 closes
 
-**Then:**
+#### Then
 
 - System searches for "Blocked by #500"
 - #501 `blocked` label automatically removed
@@ -225,9 +275,11 @@ Comment on #501: "Blocked by #500"
 
 ### GREEN 6: Circular dependency resolved
 
-**Given:** Circular dependency with dependency blocks only
+#### Given
 
-```
+Circular dependency with dependency blocks only
+
+```text
 #600 (P1, blocked by #601) - Refactor Module A
 Comment: "Blocked by #601 for interface definition"
 
@@ -235,9 +287,11 @@ Comment: "Blocked by #601 for interface definition"
 Comment: "Blocked by #600 for type definitions"
 ```
 
-**When:** Agent detects cycle during dependency review
+#### When
 
-**Then:**
+Agent detects cycle during dependency review
+
+#### Then
 
 - Agent detects circular dependency (#600 ↔ #601)
 - Agent verifies no manual blockers (both are dependency blocks)
@@ -259,7 +313,7 @@ Comment: "Blocked by #600 for type definitions"
 
 **Expected comment on #600:**
 
-```
+```text
 Circular dependency with #601. Delivering with temporary interface. Follow-up: #602
 ```
 
@@ -271,30 +325,32 @@ These scenarios test behavior under non-ideal conditions.
 
 ### PRESSURE 1: Multiple blockers, partial resolution
 
-**Given:** Work item blocked by multiple issues
+#### Given
 
-```
+Work item blocked by multiple issues
+
+```text
 #700 (P1, blocked by #701, #702, #703)
 Comment: "Blocked by #701, #702, #703"
 ```
 
-**When:** #701 closes
+#### When issue \#701 closes
 
-**Then:**
+#### Then \#701 closes
 
 - #700 comment updated to remove #701: "Blocked by #702, #703"
 - `blocked` label remains (still blocked by #702, #703)
 
-**When:** #702 closes
+#### When issue \#702 closes
 
-**Then:**
+#### Then \#702 closes
 
 - #700 comment updated: "Blocked by #703"
 - `blocked` label remains (still blocked by #703)
 
-**When:** #703 closes
+#### When issue \#703 closes
 
-**Then:**
+#### Then \#703 closes
 
 - #700 comment removed
 - `blocked` label removed
@@ -311,18 +367,22 @@ Comment: "Blocked by #701, #702, #703"
 
 ### PRESSURE 2: Manual block in circular dependency
 
-**Given:** Circular dependency with manual blocker
+#### Given
 
-```
+Circular dependency with manual blocker
+
+```text
 #800 (P1, blocked) - Task A
 Comment: "Blocked waiting for vendor API specification" (manual block)
 
 #801 (P1, blocked by #800) - Task B (dependency block)
 ```
 
-**When:** Agent attempts circular resolution
+#### When
 
-**Then:**
+Agent attempts circular resolution
+
+#### Then
 
 - Agent detects circular dependency (#800 → #801 → #800)
 - Agent checks for manual blockers
@@ -340,7 +400,7 @@ Comment: "Blocked waiting for vendor API specification" (manual block)
 
 **Expected error:**
 
-```
+```text
 ERROR: Circular dependency contains manual blocker
 Issue #800 has manual block: "Blocked waiting for vendor API specification"
 Requires user intervention - cannot auto-resolve.
@@ -350,17 +410,21 @@ Requires user intervention - cannot auto-resolve.
 
 ### PRESSURE 3: Priority inheritance chain
 
-**Given:** Transitive dependency chain
+#### Given
 
-```
+Transitive dependency chain
+
+```text
 #900 (P3, unblocked) - Refactor database layer
 #901 (P2, blocked by #900) - Add caching
 #902 (P0, blocked by #901) - Production performance fix
 ```
 
-**When:** Agent calculates effective priority
+#### When
 
-**Then:**
+Agent calculates effective priority
+
+#### Then
 
 - #900 effective priority: P0 (transitive through #901 from #902)
 - #901 effective priority: P0 (inherits from #902)
@@ -375,7 +439,7 @@ Requires user intervention - cannot auto-resolve.
 
 **Formula verification:**
 
-```
+```text
 #900: effective = min(P3, min(P2, P0)) = P0
 #901: effective = min(P2, min(P0)) = P0
 #902: effective = P0
@@ -385,16 +449,20 @@ Requires user intervention - cannot auto-resolve.
 
 ### PRESSURE 4: Tie-breaker with equal blocking counts
 
-**Given:** Multiple blocking tasks with same priority and same blocking count
+#### Given
 
-```
+Multiple blocking tasks with same priority and same blocking count
+
+```text
 #1000 (P1, blocks #1001, #1002, #1003) - Fix bug A
 #1100 (P1, blocks #1101, #1102, #1103) - Fix bug B
 ```
 
-**When:** Agent applies tie-breaker
+#### When
 
-**Then:**
+Agent applies tie-breaker
+
+#### Then
 
 - Both have P1 effective priority (tie)
 - Both unblock 3 items (tie)
@@ -413,10 +481,13 @@ Requires user intervention - cannot auto-resolve.
 
 **To run these tests manually:**
 
-- [ ] **RED Tests:** Confirm each RED scenario fails as expected without prioritization rules (use skill version before this PR)
-- [ ] **GREEN Tests:** Confirm each GREEN scenario passes with prioritization rules (use skill version from this PR)
+- [ ] **RED Tests:** Confirm each RED scenario fails as expected without prioritization rules
+      (use skill version before this PR)
+- [ ] **GREEN Tests:** Confirm each GREEN scenario passes with prioritization rules
+      (use skill version from this PR)
 - [ ] **PRESSURE Tests:** Confirm edge cases handled correctly with prioritization rules
-- [ ] **Integration:** Test full workflow from dependency review → blocking → priority inheritance → auto-unblock
+- [ ] **Integration:** Test full workflow from dependency review → blocking → priority inheritance →
+      auto-unblock
 - [ ] **Platform Tests:** Verify CLI commands work on GitHub (gh), Azure DevOps (az boards), Jira (jira)
 
 **Evidence requirements:**

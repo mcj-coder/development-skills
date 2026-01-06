@@ -1,24 +1,30 @@
 # Testcontainers Integration Tests Skill Implementation Plan
 
-> **For Claude:** REQUIRED SUB-SKILL: Use superpowers:executing-plans to implement this plan task-by-task.
+> **For Claude:** REQUIRED SUB-SKILL: Use superpowers:executing-plans to implement this plan
+> task-by-task.
 
-**Goal:** Create a skill that guides agents to use Testcontainers for integration tests with real infrastructure instead of mocks.
+**Goal:** Create a skill that guides agents to use Testcontainers for integration tests with real
+infrastructure instead of mocks.
 
-**Architecture:** Skill follows progressive loading pattern with core SKILL.md (<300 words) and references folder for language-specific setup, performance optimization, and CI/CD integration. References superpowers:test-driven-development and superpowers:verification-before-completion.
+**Architecture:** Skill follows progressive loading pattern with core SKILL.md (<300 words) and
+references folder for language-specific setup, performance optimization, and CI/CD integration.
+References superpowers:test-driven-development and superpowers:verification-before-completion.
 
-**Tech Stack:** Testcontainers for Java, .NET, Python, and Node.js; Docker; CI/CD platforms (GitHub Actions, GitLab CI, Azure DevOps)
+**Tech Stack:** Testcontainers for Java, .NET, Python, and Node.js; Docker; CI/CD platforms
+(GitHub Actions, GitLab CI, Azure DevOps)
 
 ---
 
 ## Task 1: Create BDD Test File (RED Phase)
 
-**Files:**
+### Files
 
 - Create: `skills/testcontainers-integration-tests/testcontainers-integration-tests.test.md`
 
-**Step 1: Write the failing BDD test scenarios**
+### Step 1: Write the failing BDD test scenarios
 
-Define baseline (RED) scenarios that should fail without the skill, then GREEN scenarios that pass with the skill. This follows the repository's TDD mandate.
+Define baseline (RED) scenarios that should fail without the skill, then GREEN scenarios that pass
+with the skill. This follows the repository's TDD mandate.
 
 ```markdown
 # testcontainers-integration-tests - Test Scenarios
@@ -308,12 +314,12 @@ Each GREEN test should verify:
 - [ ] Evidence checklist provided
 ```
 
-**Step 2: Verify checklist fails against current state**
+### Step 2: Verify checklist fails against current state
 
 Run: Check that no `skills/testcontainers-integration-tests/SKILL.md` exists
 Expected: File does not exist (RED phase confirmed)
 
-**Step 3: Commit BDD test file**
+### Step 3: Commit BDD test file
 
 ```bash
 git add skills/testcontainers-integration-tests/testcontainers-integration-tests.test.md
@@ -324,11 +330,11 @@ git commit -m "test(testcontainers): add BDD test scenarios (RED phase)"
 
 ## Task 2: Create SKILL.md Core File
 
-**Files:**
+### Files
 
 - Create: `skills/testcontainers-integration-tests/SKILL.md`
 
-**Step 1: Write the skill file (<300 words)**
+### Step 1: Write the skill file (under 300 words)
 
 ```markdown
 ---
@@ -391,12 +397,12 @@ See `references/ci-cd-integration.md` for CI/CD patterns.
 See `references/performance-optimization.md` for rationalizations table.
 ```
 
-**Step 2: Verify file is under 300 words**
+### Step 2: Verify file is under 300 words
 
 Run: Word count check on SKILL.md content (excluding code blocks)
 Expected: Under 300 words in prose content
 
-**Step 3: Commit SKILL.md**
+### Step 3: Commit SKILL.md
 
 ```bash
 git add skills/testcontainers-integration-tests/SKILL.md
@@ -407,11 +413,11 @@ git commit -m "feat(testcontainers): add core skill specification"
 
 ## Task 3: Create Language Setup Reference
 
-**Files:**
+### Files
 
 - Create: `skills/testcontainers-integration-tests/references/language-setup.md`
 
-**Step 1: Write language-specific setup guide**
+### Step 1: Write language-specific setup guide
 
 ```markdown
 # Language-Specific Testcontainers Setup
@@ -647,14 +653,14 @@ export default async function globalTeardown() {
 
 ### Container Selection by Infrastructure
 
-| Infrastructure | .NET Package | Java Module | Python Module | Node Package |
-|---------------|--------------|-------------|---------------|--------------|
-| PostgreSQL | Testcontainers.PostgreSql | postgresql | testcontainers[postgres] | @testcontainers/postgresql |
-| MySQL | Testcontainers.MySql | mysql | testcontainers[mysql] | @testcontainers/mysql |
-| MongoDB | Testcontainers.MongoDb | mongodb | testcontainers[mongodb] | @testcontainers/mongodb |
-| Redis | Testcontainers.Redis | - | testcontainers[redis] | @testcontainers/redis |
-| RabbitMQ | Testcontainers.RabbitMq | rabbitmq | testcontainers[rabbitmq] | @testcontainers/rabbitmq |
-| Kafka | Testcontainers.Kafka | kafka | testcontainers[kafka] | @testcontainers/kafka |
+| Infrastructure | .NET Package              | Java Module | Python Module            | Node Package               |
+| -------------- | ------------------------- | ----------- | ------------------------ | -------------------------- |
+| PostgreSQL     | Testcontainers.PostgreSql | postgresql  | testcontainers[postgres] | @testcontainers/postgresql |
+| MySQL          | Testcontainers.MySql      | mysql       | testcontainers[mysql]    | @testcontainers/mysql      |
+| MongoDB        | Testcontainers.MongoDb    | mongodb     | testcontainers[mongodb]  | @testcontainers/mongodb    |
+| Redis          | Testcontainers.Redis      | -           | testcontainers[redis]    | @testcontainers/redis      |
+| RabbitMQ       | Testcontainers.RabbitMq   | rabbitmq    | testcontainers[rabbitmq] | @testcontainers/rabbitmq   |
+| Kafka          | Testcontainers.Kafka      | kafka       | testcontainers[kafka]    | @testcontainers/kafka      |
 
 ### Migration Execution
 
@@ -684,9 +690,7 @@ config.set_main_option("sqlalchemy.url", connection_url)
 command.upgrade(config, "head")
 ```
 
-```
-
-**Step 2: Commit reference file**
+### Step 2: Commit reference file
 
 ```bash
 git add skills/testcontainers-integration-tests/references/language-setup.md
@@ -697,13 +701,13 @@ git commit -m "docs(testcontainers): add language-specific setup reference"
 
 ## Task 4: Create Performance Optimization Reference
 
-**Files:**
+### Files
 
 - Create: `skills/testcontainers-integration-tests/references/performance-optimization.md`
 
-**Step 1: Write performance optimization guide**
+### Step 1: Write performance optimization guide
 
-```markdown
+````markdown
 # Performance Optimization for Testcontainers
 
 ## Container Lifecycle Strategies
@@ -712,25 +716,25 @@ git commit -m "docs(testcontainers): add language-specific setup reference"
 
 Container starts before test class, stops after test class.
 
-**Pros:** Simple, isolated per test class
-**Cons:** Slower (container start per class)
-**Use when:** Few test classes, need isolation between classes
+- **Pros:** Simple, isolated per test class
+- **Cons:** Slower (container start per class)
+- **Use when:** Few test classes, need isolation between classes
 
 ### Strategy 2: Shared Fixture (Recommended for CI)
 
 Container starts once, shared across all test classes.
 
-**Pros:** Fast (single container start), still isolated with proper cleanup
-**Cons:** Requires careful state cleanup between tests
-**Use when:** Many test classes, CI optimization needed
+- **Pros:** Fast (single container start), still isolated with proper cleanup
+- **Cons:** Requires careful state cleanup between tests
+- **Use when:** Many test classes, CI optimization needed
 
 ### Strategy 3: Testcontainers Reusable Containers
 
 Containers persist between test runs (development optimization).
 
-**Pros:** Fastest for development iteration
-**Cons:** Requires explicit container management, not for CI
-**Use when:** Local development with frequent test runs
+- **Pros:** Fastest for development iteration
+- **Cons:** Requires explicit container management, not for CI
+- **Use when:** Local development with frequent test runs
 
 ## Container Reuse Implementation
 
@@ -951,26 +955,25 @@ Console.WriteLine($"Container started in {stopwatch.ElapsedMilliseconds}ms");
 
 ### Target Performance
 
-| Metric | Target | Optimized |
-|--------|--------|-----------|
-| Container startup | <30s | <10s (with reuse) |
-| Per-test time | <10s | <3s |
-| Full suite (20 tests) | <3min | <45s |
+| Metric                 | Target | Optimized         |
+| ---------------------- | ------ | ----------------- |
+| Container startup      | <30s   | <10s (with reuse) |
+| Per-test time          | <10s   | <3s               |
+| Full suite (20 tests)  | <3min  | <45s              |
 
 ## Rationalizations Table
 
-| Excuse | Reality |
-|--------|---------|
-| "Mocks are faster" | Optimized Testcontainers run in seconds. Container reuse + parallel tests achieve comparable speed. Mocks don't catch SQL bugs. |
-| "In-memory is close enough" | Database-specific features differ. JSON operators, array types, window functions behave differently. Test with production database. |
-| "Testcontainers is too slow" | Optimize with container reuse and parallel execution. Pre-pull images in CI. 4x+ speed improvements possible. |
-| "Shared test database is standard" | Shared state causes flaky tests. Testcontainers provides isolation without coordination overhead. |
-| "Can test manually" | Manual testing doesn't scale and isn't repeatable. Automate with Testcontainers for CI. |
-| "CI doesn't support Docker" | Most CI platforms support Docker. Consider cloud-based CI if truly no Docker support. |
+| Excuse                             | Reality                                                                      |
+| ---------------------------------- | ---------------------------------------------------------------------------- |
+| "Mocks are faster"                 | Optimized Testcontainers run in seconds. Reuse + parallel achieves speed.   |
+| "In-memory is close enough"        | DB features differ. JSON, arrays, window functions vary. Test with prod DB. |
+| "Testcontainers is too slow"       | Optimize with reuse and parallel. Pre-pull images. 4x+ improvement.         |
+| "Shared test database is standard" | Shared state causes flaky tests. Testcontainers provides isolation.         |
+| "Can test manually"                | Manual testing doesn't scale. Automate with Testcontainers for CI.          |
+| "CI doesn't support Docker"        | Most CI platforms support Docker. Consider cloud-based CI otherwise.        |
+````
 
-```
-
-**Step 2: Commit reference file**
+### Step 2: Commit reference file
 
 ```bash
 git add skills/testcontainers-integration-tests/references/performance-optimization.md
@@ -981,13 +984,13 @@ git commit -m "docs(testcontainers): add performance optimization reference"
 
 ## Task 5: Create CI/CD Integration Reference
 
-**Files:**
+### Files
 
 - Create: `skills/testcontainers-integration-tests/references/ci-cd-integration.md`
 
-**Step 1: Write CI/CD integration guide**
+### Step 1: Write CI/CD integration guide
 
-```markdown
+````markdown
 # CI/CD Integration for Testcontainers
 
 ## GitHub Actions
@@ -1022,7 +1025,8 @@ jobs:
 
 ### Docker-in-Docker (DinD)
 
-GitHub Actions ubuntu-latest has Docker pre-installed. No special configuration needed.
+GitHub Actions ubuntu-latest has Docker pre-installed. No special configuration
+needed.
 
 ### Parallel Jobs
 
@@ -1104,7 +1108,8 @@ steps:
 
 ### Self-Hosted Agent with Docker
 
-For self-hosted agents, ensure Docker is installed and the agent user has Docker permissions:
+For self-hosted agents, ensure Docker is installed and the agent user has Docker
+permissions:
 
 ```bash
 sudo usermod -aG docker azdevops
@@ -1193,8 +1198,8 @@ tc.cloud.token=your-token
 
 ### Issue: Container Pull Timeout
 
-**Symptom:** Tests fail with image pull timeout
-**Solution:** Pre-pull images in setup step, use specific tags
+- **Symptom:** Tests fail with image pull timeout
+- **Solution:** Pre-pull images in setup step, use specific tags
 
 ```yaml
 - name: Pre-pull with timeout
@@ -1204,8 +1209,9 @@ tc.cloud.token=your-token
 
 ### Issue: Port Conflicts
 
-**Symptom:** "Address already in use" errors
-**Solution:** Testcontainers uses random ports by default. Ensure you're using `getMappedPort()` not hardcoded ports.
+- **Symptom:** "Address already in use" errors
+- **Solution:** Testcontainers uses random ports by default. Ensure you're using `getMappedPort()`
+  not hardcoded ports.
 
 ```java
 // GOOD: Dynamic port
@@ -1217,8 +1223,8 @@ int port = 5432;  // May conflict
 
 ### Issue: Resource Exhaustion
 
-**Symptom:** Tests fail intermittently, Docker daemon unresponsive
-**Solution:** Clean up containers, limit parallel jobs, increase CI resources
+- **Symptom:** Tests fail intermittently, Docker daemon unresponsive
+- **Solution:** Clean up containers, limit parallel jobs, increase CI resources
 
 ```yaml
 # Cleanup after tests
@@ -1229,13 +1235,13 @@ int port = 5432;  // May conflict
 
 ### Issue: Slow First Test
 
-**Symptom:** First test takes 30+ seconds, subsequent tests fast
-**Solution:** Use shared fixture pattern for container reuse
+- **Symptom:** First test takes 30+ seconds, subsequent tests fast
+- **Solution:** Use shared fixture pattern for container reuse
 
 ### Issue: Flaky Tests in CI
 
-**Symptom:** Tests pass locally but fail in CI
-**Solution:** Check for timing issues, increase wait times, use health checks
+- **Symptom:** Tests pass locally but fail in CI
+- **Solution:** Check for timing issues, increase wait times, use health checks
 
 ```csharp
 .WithWaitStrategy(
@@ -1247,13 +1253,13 @@ int port = 5432;  // May conflict
 
 ## CI Resource Requirements
 
-| CI Platform | Minimum Resources | Recommended |
-|-------------|-------------------|-------------|
-| GitHub Actions | ubuntu-latest (2 CPU, 7GB) | ✅ Sufficient |
-| GitLab CI | Docker-in-Docker | Medium runner (2+ CPU) |
-| Azure DevOps | ubuntu-latest | ✅ Sufficient |
-| Jenkins | Docker socket access | 4GB+ memory |
-| CircleCI | machine executor | Large resource class |
+| CI Platform    | Minimum Resources            | Recommended           |
+|----------------|------------------------------|-----------------------|
+| GitHub Actions | ubuntu-latest (2 CPU, 7GB)   | Sufficient            |
+| GitLab CI      | Docker-in-Docker             | Medium runner (2+ CPU)|
+| Azure DevOps   | ubuntu-latest                | Sufficient            |
+| Jenkins        | Docker socket access         | 4GB+ memory           |
+| CircleCI       | machine executor             | Large resource class  |
 
 ## Performance Optimization Checklist for CI
 
@@ -1265,10 +1271,9 @@ int port = 5432;  // May conflict
 - [ ] Monitor test execution time
 - [ ] Set appropriate timeouts
 - [ ] Use health checks for container readiness
+````
 
-```
-
-**Step 2: Commit reference file**
+### Step 2: Commit reference file
 
 ```bash
 git add skills/testcontainers-integration-tests/references/ci-cd-integration.md
@@ -1279,23 +1284,23 @@ git commit -m "docs(testcontainers): add CI/CD integration reference"
 
 ## Task 6: Update cspell.json
 
-**Files:**
+### Files
 
 - Modify: `cspell.json`
 
-**Step 1: Add new words for Testcontainers domain**
+### Step 1: Add new words for Testcontainers domain
 
 Add to the words array:
 
 - "testcontainers"
 - "Testcontainers"
 
-**Step 2: Verify spelling passes**
+### Step 2: Verify spelling passes
 
 Run: `npx cspell "skills/testcontainers-integration-tests/**/*.md"` (if cspell available)
 Expected: No spelling errors
 
-**Step 3: Commit cspell changes**
+### Step 3: Commit cspell changes
 
 ```bash
 git add cspell.json
@@ -1306,19 +1311,20 @@ git commit -m "chore: add testcontainers to spell check dictionary"
 
 ## Task 7: Update README.md
 
-**Files:**
+### Files
 
 - Modify: `README.md`
 
-**Step 1: Add skill entry to Skills section**
+### Step 1: Add skill entry to Skills section
 
 Add to the Skills list:
 
 ```markdown
-- `testcontainers-integration-tests` - P1 integration testing with real infrastructure via Testcontainers
+- `testcontainers-integration-tests` - P1 integration testing with real infrastructure via
+  Testcontainers
 ```
 
-**Step 2: Commit README changes**
+### Step 2: Commit README changes
 
 ```bash
 git add README.md
@@ -1329,20 +1335,20 @@ git commit -m "docs: add testcontainers-integration-tests to skills list"
 
 ## Task 8: Final Verification and Push
 
-**Step 1: Run verification checks**
+### Step 1: Run verification checks
 
 - Check all new files exist
 - Verify SKILL.md is under 300 words (prose content)
 - Verify BDD test file has RED and GREEN phases
 - Verify references folder has all three files
 
-**Step 2: Push to remote**
+### Step 2: Push to remote
 
 ```bash
 git push -u origin feat/issue-28-testcontainers-integration-tests
 ```
 
-**Step 3: Create PR**
+### Step 3: Create PR
 
 ```bash
 gh pr create --title "feat(skill): add testcontainers-integration-tests skill (Issue #28)" --body "$(cat <<'EOF'

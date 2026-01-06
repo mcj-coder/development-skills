@@ -2,25 +2,33 @@
 
 > **For Claude:** REQUIRED SUB-SKILL: Use superpowers:executing-plans to implement this plan task-by-task.
 
-**Goal:** Update issue-driven-delivery to use feature branches from refinement through closing, with frequent rebasing and plan archival.
+## Goal
 
-**Architecture:** Modify workflow to create branch at refinement start (not implementation), keep plans on branches, rebase at state transitions, archive before closing.
+Update issue-driven-delivery to use feature branches from refinement through closing, with frequent
+rebasing and plan archival.
 
-**Tech Stack:** Git workflow, Markdown skill documentation
+## Architecture
+
+Modify workflow to create branch at refinement start (not implementation), keep plans on branches,
+rebase at state transitions, archive before closing.
+
+## Tech Stack
+
+Git workflow, Markdown skill documentation
 
 ---
 
 ## Task 1: Update Step 3b - Create Branch at Refinement Start
 
-**Files:**
+### Files
 
 - Modify: `skills/issue-driven-delivery/SKILL.md:103-109`
 
-**Step 1: Read current step 3b**
+### Step 1: Read current step 3b
 
 Read the current step 3b text to understand existing wording.
 
-**Step 2: Update step 3b to create feature branch**
+### Step 2: Update step 3b to create feature branch
 
 Replace step 3b with:
 
@@ -31,11 +39,11 @@ refinement and implementation work will be done on this feature branch. Plan
 will be committed to this branch to keep main clean.
 ```
 
-**Step 3: Verify change**
+### Step 3: Verify change
 
 Read the updated section to confirm the change is correct.
 
-**Step 4: Commit**
+### Step 4: Commit
 
 ```bash
 git add skills/issue-driven-delivery/SKILL.md
@@ -44,15 +52,15 @@ git commit -m "feat(issue-driven-delivery): create feature branch at refinement 
 
 ## Task 2: Update Step 4 - Plan on Feature Branch
 
-**Files:**
+### Files
 
 - Modify: `skills/issue-driven-delivery/SKILL.md:110-118`
 
-**Step 1: Read current step 4**
+### Step 1: Read current step 4
 
 Read the current step 4 text.
 
-**Step 2: Update step 4 introduction**
+### Step 2: Update step 4 introduction
 
 Update the introduction to specify plan goes on feature branch:
 
@@ -62,7 +70,7 @@ Update the introduction to specify plan goes on feature branch:
    comment for approval.
 ```
 
-**Step 3: Update step 4a for commit SHA**
+### Step 3: Update step 4a for commit SHA
 
 Ensure step 4a emphasizes commit SHA for immutability:
 
@@ -71,11 +79,11 @@ Ensure step 4a emphasizes commit SHA for immutability:
 Plan link must use commit SHA for immutability after approval.
 ```
 
-**Step 4: Verify changes**
+### Step 4: Verify changes
 
 Read the updated section to confirm correctness.
 
-**Step 5: Commit**
+### Step 5: Commit
 
 ```bash
 git add skills/issue-driven-delivery/SKILL.md
@@ -84,15 +92,15 @@ git commit -m "feat(issue-driven-delivery): commit plan to feature branch"
 
 ## Task 3: Update Step 7c - Rebase Before Implementation
 
-**Files:**
+### Files
 
 - Modify: `skills/issue-driven-delivery/SKILL.md:217-227`
 
-**Step 1: Read current step 7c**
+### Step 1: Read current step 7c
 
 Read the current step 7c text.
 
-**Step 2: Add rebase requirement to step 7c**
+### Step 2: Add rebase requirement to step 7c
 
 Update step 7c to include rebase and plan validity review:
 
@@ -106,11 +114,11 @@ has `blocked` label, verify approval comment exists. If approved, remove `blocke
 label and proceed. If not approved, stop with error showing blocking reason.
 ```
 
-**Step 3: Verify change**
+### Step 3: Verify change
 
 Read the updated section.
 
-**Step 4: Commit**
+### Step 4: Commit
 
 ```bash
 git add skills/issue-driven-delivery/SKILL.md
@@ -119,15 +127,16 @@ git commit -m "feat(issue-driven-delivery): rebase before implementation start"
 
 ## Task 4: Add Step 8b.5 - Rebase Before Verification
 
-**Files:**
+### Files
 
 - Modify: `skills/issue-driven-delivery/SKILL.md` (after line 232)
 
-**Step 1: Find insertion point**
+### Step 1: Find insertion point
 
-Find the line with "8b. When all sub-tasks complete, unassign yourself to signal implementation complete."
+Find the line with "8b. When all sub-tasks complete, unassign yourself to signal implementation
+complete."
 
-**Step 2: Insert new step 8b.5**
+### Step 2: Insert new step 8b.5
 
 After step 8b, insert:
 
@@ -139,15 +148,15 @@ changes don't break accepted behavior. If conflicts occur, resolve them and
 re-verify. Push rebased branch: `git push --force-with-lease`.
 ```
 
-**Step 3: Renumber subsequent steps**
+### Step 3: Renumber subsequent steps
 
 Renumber step 8c (becomes 8c.5), 8d (becomes 8d.5).
 
-**Step 4: Verify changes**
+### Step 4: Verify changes
 
 Read the updated section to ensure proper numbering.
 
-**Step 5: Commit**
+### Step 5: Commit
 
 ```bash
 git add skills/issue-driven-delivery/SKILL.md
@@ -156,15 +165,15 @@ git commit -m "feat(issue-driven-delivery): add rebase before verification"
 
 ## Task 5: Add Step 10.5 - Final Rebase and Archive
 
-**Files:**
+### Files
 
 - Modify: `skills/issue-driven-delivery/SKILL.md` (after step 10c)
 
-**Step 1: Find insertion point**
+### Step 1: Find insertion point
 
 Find the line with "10c. Work item auto-unassigns when closed."
 
-**Step 2: Insert new step 10.5**
+### Step 2: Insert new step 10.5
 
 After step 10c, insert:
 
@@ -179,11 +188,11 @@ f) Verification must confirm rebased changes preserve accepted behavior
 g) If behavior breaks, fix issues before closing
 ```
 
-**Step 3: Verify changes**
+### Step 3: Verify changes
 
 Read the updated section.
 
-**Step 4: Commit**
+### Step 4: Commit
 
 ```bash
 git add skills/issue-driven-delivery/SKILL.md
@@ -192,15 +201,15 @@ git commit -m "feat(issue-driven-delivery): add final rebase and plan archival"
 
 ## Task 6: Update Step 20 - Reference Archived Plans
 
-**Files:**
+### Files
 
 - Modify: `skills/issue-driven-delivery/SKILL.md:256-265`
 
-**Step 1: Read current step 20**
+### Step 1: Read current step 20
 
 Read the current step 20 text.
 
-**Step 2: Update step 20 to mention archived plans**
+### Step 2: Update step 20 to mention archived plans
 
 Update step 20:
 
@@ -217,11 +226,11 @@ Update step 20:
     label until all resolved.
 ```
 
-**Step 3: Verify change**
+### Step 3: Verify change
 
 Read the updated section.
 
-**Step 4: Commit**
+### Step 4: Commit
 
 ```bash
 git add skills/issue-driven-delivery/SKILL.md
@@ -230,15 +239,15 @@ git commit -m "feat(issue-driven-delivery): reference archived plans in step 20"
 
 ## Task 7: Update Red Flags Section
 
-**Files:**
+### Files
 
 - Modify: `skills/issue-driven-delivery/SKILL.md:344-363`
 
-**Step 1: Read current Red Flags section**
+### Step 1: Read current Red Flags section
 
 Read lines 344-363 to see current Red Flags.
 
-**Step 2: Add new Red Flags**
+### Step 2: Add new Red Flags
 
 Add these items to the Red Flags list:
 
@@ -251,11 +260,11 @@ Add these items to the Red Flags list:
 - "Archive is optional, skip it"
 ```
 
-**Step 3: Verify changes**
+### Step 3: Verify changes
 
 Read the updated Red Flags section.
 
-**Step 4: Commit**
+### Step 4: Commit
 
 ```bash
 git add skills/issue-driven-delivery/SKILL.md
@@ -264,15 +273,15 @@ git commit -m "feat(issue-driven-delivery): add rebase and plan Red Flags"
 
 ## Task 8: Update Common Mistakes Section
 
-**Files:**
+### Files
 
 - Modify: `skills/issue-driven-delivery/SKILL.md:325-348`
 
-**Step 1: Read current Common Mistakes section**
+### Step 1: Read current Common Mistakes section
 
 Read lines 325-348.
 
-**Step 2: Add new Common Mistakes**
+### Step 2: Add new Common Mistakes
 
 Add these items to the Common Mistakes list:
 
@@ -286,11 +295,11 @@ Add these items to the Common Mistakes list:
 - Deleting branch before archiving plan (loses plan entirely)
 ```
 
-**Step 3: Verify changes**
+### Step 3: Verify changes
 
 Read the updated Common Mistakes section.
 
-**Step 4: Commit**
+### Step 4: Commit
 
 ```bash
 git add skills/issue-driven-delivery/SKILL.md
@@ -299,15 +308,15 @@ git commit -m "feat(issue-driven-delivery): add rebase and plan Common Mistakes"
 
 ## Task 9: Update Rationalizations Table
 
-**Files:**
+### Files
 
 - Modify: `skills/issue-driven-delivery/SKILL.md:358-369`
 
-**Step 1: Read current Rationalizations table**
+### Step 1: Read current Rationalizations table
 
 Read lines 358-369.
 
-**Step 2: Add new rationalizations**
+### Step 2: Add new rationalizations
 
 Add these rows to the Rationalizations table:
 
@@ -320,11 +329,11 @@ Add these rows to the Rationalizations table:
 | "Conflicts are trivial" | Any conflict requires re-verification to ensure correctness |
 ```
 
-**Step 3: Verify changes**
+### Step 3: Verify changes
 
 Read the updated Rationalizations section.
 
-**Step 4: Commit**
+### Step 4: Commit
 
 ```bash
 git add skills/issue-driven-delivery/SKILL.md
@@ -333,11 +342,11 @@ git commit -m "feat(issue-driven-delivery): add rebase and plan Rationalizations
 
 ## Task 10: Create archive Directory Documentation
 
-**Files:**
+### Files
 
 - Create: `docs/plans/archive/README.md`
 
-**Step 1: Create archive README**
+### Step 1: Create archive README
 
 Create documentation explaining the archive folder:
 
@@ -370,7 +379,7 @@ Plans follow: `YYYY-MM-DD-feature-name.md`
 Date reflects when plan was created, not when archived.
 ```
 
-**Step 2: Commit archive README**
+### Step 2: Commit archive README
 
 ```bash
 git add docs/plans/archive/README.md
@@ -379,59 +388,60 @@ git commit -m "docs: add archive directory documentation"
 
 ## Task 11: Run Linting and Spell Check
 
-**Files:**
+### Files
 
 - Verify: `skills/issue-driven-delivery/SKILL.md`
 
-**Step 1: Run linting**
+### Step 1: Run linting
 
 ```bash
 npm run lint:check
 ```
 
-**Step 2: Run spell check**
+### Step 2: Run spell check
 
 ```bash
 npm run spell-check
 ```
 
-**Step 3: Fix any issues**
+### Step 3: Fix any issues
 
 If linting or spell check fails, fix issues and recommit.
 
-**Step 4: Verify all checks pass**
+### Step 4: Verify all checks pass
 
 Ensure both linting and spell check pass with no errors.
 
 ## Task 12: Push Plan and Request Approval
 
-**Files:**
+### Files
 
 - Push all commits to remote
 
-**Step 1: Push feature branch**
+### Step 1: Push feature branch
 
 ```bash
 git push -u origin feat/issue-74-feature-branch-workflow
 ```
 
-**Step 2: Get commit SHA**
+### Step 2: Get commit SHA
 
 ```bash
 COMMIT_SHA=$(git rev-parse HEAD)
 echo "Commit SHA: $COMMIT_SHA"
 ```
 
-**Step 3: Post plan link with commit SHA**
+### Step 3: Post plan link with commit SHA
 
 Post to issue #74:
 
-```
+```text
 Plan: https://github.com/mcj-coder/development-skills/blob/{COMMIT_SHA}/docs/plans/2026-01-06-feature-branch-workflow.md
 
-This plan updates issue-driven-delivery to use feature branches from refinement through closing, with frequent rebasing and plan archival.
+This plan updates issue-driven-delivery to use feature branches from refinement through closing,
+with frequent rebasing and plan archival.
 
-**12 Tasks:**
+### 12 Tasks
 1. Update Step 3b - Create Branch at Refinement Start
 2. Update Step 4 - Plan on Feature Branch
 3. Update Step 7c - Rebase Before Implementation

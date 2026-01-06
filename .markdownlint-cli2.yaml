@@ -8,3 +8,4 @@ ignores:
   - "node_modules/**"
   - ".tmp/**"
   - ".worktrees/**"
+  - ".*"

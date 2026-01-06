@@ -1,8 +1,10 @@
 # Skill TDD Remediation Plan
 
-**Issue:** #89
-**Date:** 2026-01-06
-**Status:** Complete - All skills remediated
+| Field  | Value                             |
+| ------ | --------------------------------- |
+| Issue  | #89                               |
+| Date   | 2026-01-06                        |
+| Status | Complete - All skills remediated  |
 
 ## Summary
 
@@ -12,13 +14,13 @@ phase) and verifying the skills address observed failures (GREEN phase).
 
 ## Skills Requiring Remediation
 
-| Skill | Issue | Current State |
-|-------|-------|---------------|
-| automated-standards-enforcement | #3 | Merged, has BDD docs but no baseline |
-| walking-skeleton-delivery | #29 | Merged, has BDD docs but no baseline |
-| testcontainers-integration-tests | #28 | Merged, has BDD docs but no baseline |
-| technical-debt-prioritisation | #27 | Merged, has BDD docs but no baseline |
-| agent-workitem-automation | #36 | Updated, has BDD docs but no baseline |
+| Skill                            | Issue | Current State                         |
+| -------------------------------- | ----- | ------------------------------------- |
+| automated-standards-enforcement  | #3    | Merged, has BDD docs but no baseline  |
+| walking-skeleton-delivery        | #29   | Merged, has BDD docs but no baseline  |
+| testcontainers-integration-tests | #28   | Merged, has BDD docs but no baseline  |
+| technical-debt-prioritisation    | #27   | Merged, has BDD docs but no baseline  |
+| agent-workitem-automation        | #36   | Updated, has BDD docs but no baseline |
 
 ## Remediation Approach
 
@@ -117,6 +119,7 @@ remaining skills (2 at a time per user constraint).
 ## Evidence Requirements
 
 For each skill:
+
 - [x] Baseline document showing agent failures WITHOUT skill
 - [x] Verbatim rationalizations captured
 - [x] Verification showing agent compliance WITH skill
@@ -133,23 +136,25 @@ For each skill:
 
 ## Remediation Results
 
-| Skill | RED Baseline | GREEN Verified | Baseline File |
-|-------|--------------|----------------|---------------|
-| automated-standards-enforcement | PASS | PASS | `automated-standards-enforcement.baseline.md` |
-| walking-skeleton-delivery | PASS | PASS | `walking-skeleton-delivery.baseline.md` |
-| testcontainers-integration-tests | PASS | PASS | `testcontainers-integration-tests.baseline.md` |
-| technical-debt-prioritisation | PASS | PASS | `technical-debt-prioritisation.baseline.md` |
-| agent-workitem-automation | PASS | PASS | `agent-workitem-automation.baseline.md` |
+| Skill                            | RED Baseline | GREEN Verified | Baseline File                                   |
+| -------------------------------- | ------------ | -------------- | ----------------------------------------------- |
+| automated-standards-enforcement  | PASS         | PASS           | `automated-standards-enforcement.baseline.md`   |
+| walking-skeleton-delivery        | PASS         | PASS           | `walking-skeleton-delivery.baseline.md`         |
+| testcontainers-integration-tests | PASS         | PASS           | `testcontainers-integration-tests.baseline.md`  |
+| technical-debt-prioritisation    | PASS         | PASS           | `technical-debt-prioritisation.baseline.md`     |
+| agent-workitem-automation        | PASS         | PASS           | `agent-workitem-automation.baseline.md`         |
 
 ### Key Findings
 
-**Rationalizations observed across skills:**
+#### Rationalizations observed across skills
+
 - Time pressure consistently led agents to skip foundational work
 - "Can do it later" rationalization appeared in 4/5 skills
 - Authority pressure caused compliance without question
 - Agents defaulted to familiar patterns over prescribed processes
 
-**Skills successfully changed behavior:**
+#### Skills successfully changed behavior
+
 - All 5 skills demonstrated clear behavioral change under identical pressure
 - GREEN phase agents complied with skill requirements despite same pressures
 - Evidence-based approaches replaced gut-feel decisions

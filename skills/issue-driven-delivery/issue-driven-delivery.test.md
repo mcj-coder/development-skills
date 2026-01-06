@@ -100,6 +100,7 @@ And evidence must state "This is analytical verification (process-only)"
 **Failure Without Skill:** Agent posts "Updated documentation" without commit SHA links
 
 **Assertions:**
+
 - Step 16 requires applied evidence for concrete changes
 - Evidence must include commit SHAs
 - Evidence must include file links
@@ -112,6 +113,7 @@ And evidence must state "This is analytical verification (process-only)"
 **Failure Without Skill:** Agent incorrectly requires commit evidence for planning
 
 **Assertions:**
+
 - Step 16 allows analytical verification for process-only
 - Must state "This is analytical verification (process-only)"
 - Evidence includes issue comment links
@@ -124,6 +126,7 @@ And evidence must state "This is analytical verification (process-only)"
 **Success With Skill:** "TDD applied: failing test [SHA1], implementation [SHA2], passing [SHA3]"
 
 **Assertions:**
+
 - Applied evidence includes commit SHAs
 - References actual files modified in repository
 - Uses concrete changes checklist template
@@ -136,6 +139,7 @@ And evidence must state "This is analytical verification (process-only)"
 **Success With Skill:** "Analytical verification (process-only): requirements captured [link], alternatives explored [link]"
 
 **Assertions:**
+
 - States analytical verification explicitly
 - Includes issue comment links
 - Uses process-only checklist template

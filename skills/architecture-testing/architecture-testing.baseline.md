@@ -80,7 +80,8 @@ No Domain, Application, Infrastructure separation.
 5. "I'd ship it and advocate for cleanup afterward"
 6. "Without explicit architectural standards in my instructions, I default to pragmatism over purity"
 
-**Critical Insight:** Agent explicitly stated that having architecture tests "already in place" in CI would change behavior - enforcement works, but won't be added proactively.
+**Critical Insight:** Agent explicitly stated that having architecture tests "already in place" in CI
+would change behavior - enforcement works, but won't be added proactively.
 
 ---
 
@@ -171,15 +172,19 @@ All baseline failures addressed. Skill successfully changes agent behavior under
 
 ### Loopholes Analyzed
 
-1. **"Tech lead explicitly accepts risk"** - Agent offered to proceed if tech lead acknowledges cost. This is acceptable because agent stated would "document this decision in the PR/commit history" - audit trail preserved.
+1. **"Tech lead explicitly accepts risk"** - Agent offered to proceed if tech lead acknowledges cost.
+   This is acceptable because agent stated would "document this decision in the PR/commit history" -
+   audit trail preserved.
 
-2. **User opts out then later requests production features** - Covered by skill workflow: opt-out documented in `docs/exclusions.md`, can be reconsidered when requirements change.
+2. **User opts out then later requests production features** - Covered by skill workflow: opt-out
+   documented in `docs/exclusions.md`, can be reconsidered when requirements change.
 
 3. **Pattern selection confusion** - Agent presented multiple patterns with selection guide. Users can make informed choice.
 
 ### No Significant Loopholes Found
 
 The skill successfully:
+
 - Blocks default "skip architecture" behavior
 - Requires explicit opt-out or documented risk acceptance
 - Provides brownfield path for existing code
@@ -187,4 +192,5 @@ The skill successfully:
 
 ### Verification Result
 
-**PASSED** - Skill successfully changes agent behavior from architecture-skipping to architecture-enforcing under all three pressure types (time, sunk cost, authority).
+**PASSED** - Skill successfully changes agent behavior from architecture-skipping to
+architecture-enforcing under all three pressure types (time, sunk cost, authority).

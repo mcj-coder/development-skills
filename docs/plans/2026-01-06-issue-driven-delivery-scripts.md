@@ -2,8 +2,8 @@
 
 > **For Claude:** REQUIRED SUB-SKILL: Use superpowers:executing-plans to implement this plan task-by-task.
 
-**Goal:** Create reference bash scripts for issue-driven-delivery prioritization and unblocking
-to save agent tokens on repetitive tasks.
+**Goal:** Create reference bash scripts for issue-driven-delivery prioritization and unblocking to
+save agent tokens on repetitive tasks.
 
 **Architecture:** Two standalone bash scripts using `gh` CLI with jq for JSON parsing. Scripts
 output simple lists by default for agent consumption, with optional verbose/graph modes.
@@ -15,17 +15,17 @@ Dry-run by default for safety.
 
 ## Task 1: Create scripts directory structure
 
-**Files:**
+### Files
 
 - Create: `skills/issue-driven-delivery/scripts/` (directory)
 
-**Step 1: Create the scripts directory**
+#### Step 1: Create the scripts directory
 
 ```bash
 mkdir -p skills/issue-driven-delivery/scripts
 ```
 
-**Step 2: Verify directory created**
+#### Step 2: Verify directory created
 
 ```bash
 ls -la skills/issue-driven-delivery/
@@ -33,7 +33,7 @@ ls -la skills/issue-driven-delivery/
 
 Expected: `scripts/` directory exists alongside `references/`
 
-**Step 3: Commit**
+#### Step 3: Commit
 
 ```bash
 git add skills/issue-driven-delivery/scripts
@@ -44,11 +44,11 @@ git commit -m "chore: create scripts directory for issue-driven-delivery"
 
 ## Task 2: Create get-priority-order.sh script
 
-**Files:**
+### Files
 
 - Create: `skills/issue-driven-delivery/scripts/get-priority-order.sh`
 
-**Step 1: Write the script**
+#### Step 1: Write the script
 
 Create `skills/issue-driven-delivery/scripts/get-priority-order.sh`:
 
@@ -249,13 +249,13 @@ main() {
 main
 ```
 
-**Step 2: Make script executable**
+#### Step 2: Make script executable
 
 ```bash
 chmod +x skills/issue-driven-delivery/scripts/get-priority-order.sh
 ```
 
-**Step 3: Test script runs without error**
+#### Step 3: Test script runs without error
 
 ```bash
 ./skills/issue-driven-delivery/scripts/get-priority-order.sh --help
@@ -263,7 +263,7 @@ chmod +x skills/issue-driven-delivery/scripts/get-priority-order.sh
 
 Expected: Help message displayed
 
-**Step 4: Test with actual issues**
+#### Step 4: Test with actual issues
 
 ```bash
 ./skills/issue-driven-delivery/scripts/get-priority-order.sh --verbose
@@ -271,7 +271,7 @@ Expected: Help message displayed
 
 Expected: List of issues with priority info (may be empty if no unblocked issues)
 
-**Step 5: Commit**
+#### Step 5: Commit
 
 ```bash
 git add skills/issue-driven-delivery/scripts/get-priority-order.sh
@@ -291,11 +291,11 @@ Refs #88"
 
 ## Task 3: Create unblock-dependents.sh script
 
-**Files:**
+### Files
 
 - Create: `skills/issue-driven-delivery/scripts/unblock-dependents.sh`
 
-**Step 1: Write the script**
+#### Step 1: Write the script
 
 Create `skills/issue-driven-delivery/scripts/unblock-dependents.sh`:
 
@@ -647,13 +647,13 @@ main() {
 main
 ```
 
-**Step 2: Make script executable**
+#### Step 2: Make script executable
 
 ```bash
 chmod +x skills/issue-driven-delivery/scripts/unblock-dependents.sh
 ```
 
-**Step 3: Test script runs without error**
+#### Step 3: Test script runs without error
 
 ```bash
 ./skills/issue-driven-delivery/scripts/unblock-dependents.sh --help
@@ -661,7 +661,7 @@ chmod +x skills/issue-driven-delivery/scripts/unblock-dependents.sh
 
 Expected: Help message displayed
 
-**Step 4: Test dry-run mode**
+#### Step 4: Test dry-run mode
 
 ```bash
 ./skills/issue-driven-delivery/scripts/unblock-dependents.sh
@@ -669,7 +669,7 @@ Expected: Help message displayed
 
 Expected: Auto-detects (or reports no) recently closed issues, shows dry-run output
 
-**Step 5: Test graph output (ASCII)**
+#### Step 5: Test graph output (ASCII)
 
 ```bash
 ./skills/issue-driven-delivery/scripts/unblock-dependents.sh 88 --graph
@@ -677,7 +677,7 @@ Expected: Auto-detects (or reports no) recently closed issues, shows dry-run out
 
 Expected: ASCII dependency graph in terminal
 
-**Step 6: Test graph output (Mermaid when piped)**
+#### Step 6: Test graph output (Mermaid when piped)
 
 ```bash
 ./skills/issue-driven-delivery/scripts/unblock-dependents.sh 88 --graph | cat
@@ -685,7 +685,7 @@ Expected: ASCII dependency graph in terminal
 
 Expected: Mermaid diagram syntax
 
-**Step 7: Commit**
+#### Step 7: Commit
 
 ```bash
 git add skills/issue-driven-delivery/scripts/unblock-dependents.sh
@@ -705,15 +705,15 @@ Refs #88"
 
 ## Task 4: Create README for scripts directory
 
-**Files:**
+### Files
 
 - Create: `skills/issue-driven-delivery/scripts/README.md`
 
-**Step 1: Write the README**
+#### Step 1: Write the README
 
 Create `skills/issue-driven-delivery/scripts/README.md`:
 
-```markdown
+````markdown
 # Issue-Driven Delivery Scripts
 
 Reference scripts implementing prioritization and unblocking logic from the issue-driven-delivery skill.
@@ -748,13 +748,13 @@ Processes dependents when a blocker closes.
 ./unblock-dependents.sh [ISSUE_NUMBER] [--apply] [--graph]
 ```
 
-**Options:**
+Options:
 
 - `ISSUE_NUMBER` - Specific issue (auto-detects recently closed if omitted)
 - `--apply` - Actually make changes (dry-run by default)
 - `--graph` - Show dependency graph (ASCII terminal, Mermaid when piped)
 
-**Features:**
+Features:
 
 - Finds issues with "Blocked by #N" in comments
 - Removes resolved blocker from blocked-by list
@@ -771,7 +771,7 @@ These scripts are **templates** for the default GitHub setup. When applying to a
 3. Adjust state labels if using different names
 4. Update any org-specific patterns
 
-**Default labels expected:**
+Default labels expected:
 
 - Priority: `priority:p0`, `priority:p1`, `priority:p2`, `priority:p3`, `priority:p4`
 - State: `state:new-feature`, `state:refinement`, `state:implementation`, `state:verification`
@@ -835,8 +835,9 @@ These scripts are **templates** for the default GitHub setup. When applying to a
 #     42 --> 17["#17"]
 #     42 --> 23["#23"]
 ```
+````
 
-**Step 2: Commit**
+#### Step 2: Commit
 
 ```bash
 git add skills/issue-driven-delivery/scripts/README.md
@@ -855,12 +856,12 @@ Refs #88"
 
 ## Task 5: Test scripts end-to-end
 
-**Files:**
+### Files
 
 - Test: `skills/issue-driven-delivery/scripts/get-priority-order.sh`
 - Test: `skills/issue-driven-delivery/scripts/unblock-dependents.sh`
 
-**Step 1: Run get-priority-order.sh**
+#### Step 1: Run get-priority-order.sh
 
 ```bash
 ./skills/issue-driven-delivery/scripts/get-priority-order.sh
@@ -868,7 +869,7 @@ Refs #88"
 
 Expected: List of issue numbers (may be empty or show current repo issues)
 
-**Step 2: Run get-priority-order.sh --verbose**
+#### Step 2: Run get-priority-order.sh --verbose
 
 ```bash
 ./skills/issue-driven-delivery/scripts/get-priority-order.sh --verbose
@@ -876,7 +877,7 @@ Expected: List of issue numbers (may be empty or show current repo issues)
 
 Expected: Detailed table with priorities
 
-**Step 3: Run unblock-dependents.sh (dry-run)**
+#### Step 3: Run unblock-dependents.sh (dry-run)
 
 ```bash
 ./skills/issue-driven-delivery/scripts/unblock-dependents.sh
@@ -884,7 +885,7 @@ Expected: Detailed table with priorities
 
 Expected: Auto-detect or report no recently closed issues
 
-**Step 4: Run unblock-dependents.sh with graph**
+#### Step 4: Run unblock-dependents.sh with graph
 
 ```bash
 ./skills/issue-driven-delivery/scripts/unblock-dependents.sh 88 --graph 2>/dev/null || echo "No dependents found (expected for new issue)"
@@ -892,7 +893,7 @@ Expected: Auto-detect or report no recently closed issues
 
 Expected: Graph output or "no dependents" message
 
-**Step 5: Verify scripts are executable**
+#### Step 5: Verify scripts are executable
 
 ```bash
 ls -la skills/issue-driven-delivery/scripts/*.sh
@@ -900,7 +901,7 @@ ls -la skills/issue-driven-delivery/scripts/*.sh
 
 Expected: Both scripts have executable permission (-rwxr-xr-x)
 
-**Step 6: Final commit if any fixes needed**
+#### Step 6: Final commit if any fixes needed
 
 If tests reveal issues, fix and commit:
 
@@ -913,20 +914,20 @@ git commit -m "fix(issue-driven-delivery): address test findings in scripts"
 
 ## Task 6: Push branch and post plan for approval
 
-**Step 1: Push feature branch**
+### Step 1: Push feature branch
 
 ```bash
 git push -u origin feat/issue-88-prioritization-scripts
 ```
 
-**Step 2: Get commit SHA for plan link**
+#### Step 2: Get commit SHA for plan link
 
 ```bash
 COMMIT_SHA=$(git rev-parse HEAD)
 echo "Plan commit: $COMMIT_SHA"
 ```
 
-**Step 3: Post plan link to issue**
+#### Step 3: Post plan link to issue
 
 ```bash
 gh issue comment 88 --body "Plan: https://github.com/mcj-coder/development-skills/blob/$COMMIT_SHA/docs/plans/2026-01-06-issue-driven-delivery-scripts.md
@@ -946,13 +947,13 @@ Ready for review and approval."
 
 ## Acceptance Criteria Mapping
 
-| Acceptance Criterion                                        | Task      |
-| ----------------------------------------------------------- | --------- |
-| `get-priority-order.sh` outputs issue numbers one per line  | Task 2    |
-| Implements 5-tier prioritization hierarchy                  | Task 2    |
-| `unblock-dependents.sh` accepts issue number or auto-detects| Task 3    |
-| Dry-run by default, requires `--apply`                      | Task 3    |
-| `--graph` outputs ASCII/Mermaid                             | Task 3    |
-| Circular dependency detection with suggestions              | Task 3    |
-| Uses default GitHub labels                                  | Task 2, 3 |
-| README explains customization                               | Task 4    |
+| Acceptance Criterion | Task |
+| --- | --- |
+| `get-priority-order.sh` outputs issue numbers one per line | Task 2 |
+| Implements 5-tier prioritization hierarchy | Task 2 |
+| `unblock-dependents.sh` accepts issue number or auto-detects | Task 3 |
+| Dry-run by default, requires `--apply` | Task 3 |
+| `--graph` outputs ASCII/Mermaid | Task 3 |
+| Circular dependency detection with suggestions | Task 3 |
+| Uses default GitHub labels | Task 2, 3 |
+| README explains customization | Task 4 |

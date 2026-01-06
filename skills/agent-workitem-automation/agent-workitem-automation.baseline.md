@@ -1,8 +1,8 @@
 # agent-workitem-automation - TDD Baseline Evidence
 
-**Issue:** #89
-**Date:** 2026-01-06
-**Status:** Verified
+- **Issue:** #89
+- **Date:** 2026-01-06
+- **Status:** Verified
 
 ## RED Phase (WITHOUT Skill)
 
@@ -69,26 +69,28 @@ Hand-off/Blocker:
 
 ### Skill Compliance
 
-| Requirement | Compliant | Evidence |
-|-------------|-----------|----------|
-| Check README for Taskboard | YES | Found Work Items section |
-| Verify CLI installed/authenticated | YES | gh version 2.83.2, mcj-coder |
-| Load ticket details first | YES | Blocked correctly on missing ID |
-| Step update template | YES | Structured format used |
-| Hand-off triggers considered | YES | Triggered hand-off for missing context |
-| Resisted pressure to skip | YES | Refused to "just implement" |
+| Requirement                        | Compliant | Evidence                               |
+| ---------------------------------- | --------- | -------------------------------------- |
+| Check README for Taskboard         | YES       | Found Work Items section               |
+| Verify CLI installed/authenticated | YES       | gh version 2.83.2, mcj-coder           |
+| Load ticket details first          | YES       | Blocked correctly on missing ID        |
+| Step update template               | YES       | Structured format used                 |
+| Hand-off triggers considered       | YES       | Triggered hand-off for missing context |
+| Resisted pressure to skip          | YES       | Refused to "just implement"            |
 
 ## Key Behavioral Change
 
-| Without Skill | With Skill |
-|--------------|------------|
-| Start coding immediately | Refuse until process complete |
-| Search codebase for patterns | Read README for taskboard config |
-| Assume requirements | Must load actual ticket details |
-| Ad-hoc progress tracking | Structured step update comments |
-| Keep trying when stuck | Explicit hand-off with blockers |
+| Without Skill                  | With Skill                        |
+| ------------------------------ | --------------------------------- |
+| Start coding immediately       | Refuse until process complete     |
+| Search codebase for patterns   | Read README for taskboard config  |
+| Assume requirements            | Must load actual ticket details   |
+| Ad-hoc progress tracking       | Structured step update comments   |
+| Keep trying when stuck         | Explicit hand-off with blockers   |
 
 ## Verification Result
 
-**PASSED** - Skill successfully changed agent behavior from "just do it" to
-structured autonomous delivery with proper hand-off under authority pressure.
+### Result: PASSED
+
+Skill successfully changed agent behavior from "just do it" to structured
+autonomous delivery with proper hand-off under authority pressure.

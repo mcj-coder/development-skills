@@ -2,7 +2,8 @@
 
 > **For Claude:** REQUIRED SUB-SKILL: Use superpowers:executing-plans to implement this plan task-by-task.
 
-**Goal:** Create skill ensuring agents establish integration tests for .NET Aspire applications with health checks and observability validation.
+**Goal:** Create skill ensuring agents establish integration tests for .NET Aspire applications
+with health checks and observability validation.
 
 **Architecture:** Follow writing-skills TDD methodology. Main SKILL.md (<300 words) plus references/ for heavy content.
 
@@ -31,11 +32,13 @@ Document baseline failures in `aspire-integration-testing.baseline.md`.
 ## Task 5: GREEN Phase - Write Minimal SKILL.md
 
 Address baseline rationalizations:
+
 - "Aspire handles health checks automatically"
 - "Too complex to test distributed systems"
 - "Can test in staging"
 
 Include:
+
 - Opt-out check for explicit testing refusal
 - Core workflow (identify components, define tests, health/observability checks)
 - Rationalizations table

@@ -1,13 +1,16 @@
 ---
 name: finishing-a-development-branch
-description: Use when implementation is complete, all tests pass, and you need to decide how to integrate the work - guides completion of development work by presenting structured options for merge, PR, or cleanup
+description: >-
+  Use when implementation is complete, all tests pass, and you need to decide how to integrate the work -
+  guides completion of development work by presenting structured options for merge, PR, or cleanup
 ---
 
 # Finishing a Development Branch
 
 ## Overview
 
-Guides developers through the proper completion workflow for development branches, enforcing SHIFT LEFT principles by ensuring verification and role-based reviews complete BEFORE pull request creation.
+Guides developers through the proper completion workflow for development branches, enforcing SHIFT LEFT
+principles by ensuring verification and role-based reviews complete BEFORE pull request creation.
 
 **Core principle:** Find and fix issues early. Verification and reviews happen before PR, not during PR.
 
@@ -21,6 +24,7 @@ Guides developers through the proper completion workflow for development branche
 ## Prerequisites
 
 Before using this skill:
+
 - All implementation tasks complete
 - Tests passing (run verification commands)
 - Changes committed to feature branch
@@ -120,9 +124,10 @@ Confirm evidence posted to work item, then proceed to Step 2.
 
 Now that verification and reviews are complete, choose how to integrate:
 
-**Option 1: Direct Merge to Main (Fast-Forward)**
+#### Option 1: Direct Merge to Main (Fast-Forward)
 
 Use when:
+
 - Linear history preferred
 - No collaborative review needed (already verified)
 - Changes are straightforward
@@ -136,9 +141,10 @@ git branch -d feat/branch-name
 git push origin --delete feat/branch-name
 ```
 
-**Option 2: Push and Create Pull Request**
+#### Option 2: Push and Create Pull Request
 
 Use when:
+
 - GitHub PR workflow required
 - Need merge commit for traceability
 - Team visibility important
@@ -172,9 +178,10 @@ EOF
 )"
 ```
 
-**Option 3: Abandon/Cleanup**
+#### Option 3: Abandon/Cleanup
 
 Use when:
+
 - Work no longer needed
 - Approach changed
 - Merging into different branch
@@ -240,6 +247,7 @@ gh pr create --title "feat: add user authentication" --body "..."
 When this skill runs, it should:
 
 1. **Check git diff for changed file types:**
+
    ```bash
    CHANGED_FILES=$(git diff main...HEAD --name-only)
 
@@ -254,6 +262,7 @@ When this skill runs, it should:
    ```
 
 2. **Check work item for verification comments:**
+
    ```bash
    # Use gh CLI to check for verification comments
    gh issue view ISSUE_NUM --json comments --jq '.comments[] | select(.body | contains("QA Verification") or contains("Skill Author Review"))'
@@ -304,14 +313,14 @@ When this skill runs, it should:
 
 ## Rationalizations (and Reality)
 
-| Excuse | Reality |
-|--------|---------|
-| "Draft PR is fine before verification" | PR creates merge pressure, undermining thorough verification |
-| "Reviews can happen in PR comments" | SHIFT LEFT means finding issues before PR, not during |
-| "Opening PR early shows progress" | Progress is shown via work item state, not premature PRs |
-| "Tests passing means ready for PR" | Acceptance criteria verification ≠ tests passing |
-| "PR is just for visibility" | Work item provides visibility without merge pressure |
-| "We can always close the PR if issues found" | Finding issues before PR is cheaper and cleaner |
+| Excuse                                       | Reality                                                          |
+| -------------------------------------------- | ---------------------------------------------------------------- |
+| "Draft PR is fine before verification"       | PR creates merge pressure, undermining thorough verification     |
+| "Reviews can happen in PR comments"          | SHIFT LEFT means finding issues before PR, not during            |
+| "Opening PR early shows progress"            | Progress is shown via work item state, not premature PRs         |
+| "Tests passing means ready for PR"           | Acceptance criteria verification ≠ tests passing                 |
+| "PR is just for visibility"                  | Work item provides visibility without merge pressure             |
+| "We can always close the PR if issues found" | Finding issues before PR is cheaper and cleaner                  |
 
 ## Benefits of SHIFT LEFT (Verification Before PR)
 
@@ -340,6 +349,7 @@ This ensures SHIFT LEFT principles are enforced at the workflow level.
 **Manual PR Creation Outside Skill:**
 
 If someone bypasses this skill and creates PR manually:
+
 - PR review should check for verification evidence in work item
 - If evidence missing, request verification completion before approval
 - Add comment linking to verification comments in work item
@@ -347,6 +357,7 @@ If someone bypasses this skill and creates PR manually:
 **Exception Handling:**
 
 If urgent hotfix requires bypassing verification:
+
 1. Document business justification in work item
 2. Get explicit Tech Lead approval
 3. Create follow-up work item for post-merge verification
@@ -355,6 +366,7 @@ If urgent hotfix requires bypassing verification:
 **Metrics and Enforcement:**
 
 Consider tracking:
+
 - Time between verification complete and PR creation
 - Number of PRs created without verification evidence
 - Issues found in verification vs PR review
