@@ -6,9 +6,22 @@ Agents must follow the standards in `README.md` before taking any action.
 These rules tighten the workflow for autonomous execution.
 
 - **No changes without a Taskboard issue.** All non-read-only work must be tied
-  to a Taskboard issue. Read-only work and reviews are allowed without a ticket.
+  to a Taskboard issue **before starting work**. Create the issue first, then
+  begin implementation.
+  - **Read-only work** (no ticket required): Code viewing, analysis, research,
+    documentation reading, answering questions, providing reviews
+  - **Non-read-only work** (ticket required): File edits, commits, PRs, branch
+    creation, configuration changes, documentation updates
+  - **Issue state:** Issue should be in appropriate state before work begins
+    (e.g., `refinement` for planning, `implementation` for coding)
 - **Traceability required.** Every change must be traceable to a Taskboard
-  issue; create one if it does not exist.
+  issue.
+  - **Format:** Reference issue in commit messages (`Refs: #123`), PR titles and
+    descriptions, and issue comments with evidence links
+  - **Evidence:** Link commits (SHA URLs), PRs, and verification results in
+    issue comments
+  - **Mid-implementation:** If work is discovered during implementation, create
+    issue immediately before proceeding
 - **Applied-skill evidence required.** If a skill drives concrete configuration,
   documentation, or code changes, BDD verification must include evidence that
   the skill was actually applied in this repo. For process-only or hypothetical
@@ -28,6 +41,76 @@ These rules tighten the workflow for autonomous execution.
   delivered (all required PRs merged), post final evidence comment and close the
   issue. If issue requires multiple PRs, keep open until all scope delivered or
   remaining work moved to new ticket. Do not leave issues open after all work complete.
+
+## Taskboard Workflow
+
+All non-read-only work follows a standard issue lifecycle with required evidence at
+each stage:
+
+**Issue Lifecycle:**
+
+1. **New Feature / Bug / Enhancement** (Initial state)
+   - Issue created with title, description, and acceptance criteria
+   - Tagged appropriately (component, work type, priority)
+   - Ready for refinement
+
+2. **Refinement** (Planning phase)
+   - Self-assign when starting refinement
+   - Create implementation plan on feature branch
+   - Commit plan with SHA reference
+   - Post plan link to issue for approval
+   - Wait for explicit approval comment
+   - Stay assigned during approval feedback loop
+   - Unassign after approval received
+
+3. **Implementation** (Execution phase)
+   - Self-assign when ready to implement
+   - Follow approved plan
+   - Commit changes with issue references (`Refs: #123`)
+   - Post progress updates and evidence to issue
+   - Create sub-tasks if work is complex
+   - Unassign after implementation complete
+
+4. **Verification** (Quality assurance phase)
+   - Self-assign when ready to verify
+   - Run tests, verify acceptance criteria met
+   - Post verification evidence to issue (test output, screenshots, etc.)
+   - Request role-based reviews if applicable
+   - Address any critical issues found
+   - Unassign after verification complete
+
+5. **Complete** (Closed)
+   - All PRs merged
+   - Final evidence comment posted with links to PRs and commits
+   - Acceptance criteria verified as met
+   - Issue closed
+   - Auto-unassigns on close
+
+**State Transition Rules:**
+
+- Always transition issue state when moving between phases
+- Post evidence comment when transitioning states
+- Self-assign when taking ownership of a phase
+- Unassign when phase complete to enable pull-based coordination
+
+**Evidence Requirements:**
+
+Each state transition requires specific evidence posted to issue comments:
+
+- **Refinement → Implementation:** Link to approved plan (commit SHA URL)
+- **Implementation → Verification:** Links to commits, PRs, implementation evidence
+- **Verification → Complete:** Links to test results, review approvals, merged PRs
+
+**Implementation Skills:**
+
+The baseline taskboard requirement can be implemented using:
+
+- **Full workflow:** `development-skills:issue-driven-delivery` (comprehensive
+  issue-driven process with plans, approvals, sub-tasks, and reviews)
+- **Agent automation:** `development-skills:agent-workitem-automation` (automated
+  agent interaction with taskboard and step updates)
+
+These skills build on the mandatory baseline established in this section.
 
 ## Bootstrap (First-Time Setup)
 
