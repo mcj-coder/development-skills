@@ -39,4 +39,4 @@
 - Business logic contradicts known requirements
 - Feature scope significantly exceeds original requirements
 - Missing validation for critical business rules
-- User-facing behavior that violates business policies
+- User-facing behaviour that violates business policies
