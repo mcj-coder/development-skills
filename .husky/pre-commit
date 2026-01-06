@@ -1,1 +1,16 @@
+# Prevent direct commits to main branch
+BRANCH=$(git rev-parse --abbrev-ref HEAD)
+if [ "$BRANCH" = "main" ]; then
+  echo "❌ ERROR: Direct commits to main are not allowed"
+  echo "📋 Required workflow:"
+  echo "   1. Create feature branch: git checkout -b feat/issue-N-description"
+  echo "   2. Commit changes to feature branch"
+  echo "   3. Push feature branch: git push -u origin feat/issue-N-description"
+  echo "   4. Create PR: gh pr create"
+  echo "   5. Merge PR after review"
+  echo ""
+  echo "ℹ️  To commit to main (emergency only), use: git commit --no-verify"
+  exit 1
+fi
+
 npx lint-staged
