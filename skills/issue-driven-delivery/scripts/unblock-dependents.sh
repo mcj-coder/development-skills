@@ -49,6 +49,11 @@ while [[ $# -gt 0 ]]; do
             exit 0
             ;;
         [0-9]*)
+            # Validate it's purely numeric
+            if [[ ! "$1" =~ ^[0-9]+$ ]]; then
+                log_error "Invalid issue number: $1 (must be numeric)"
+                exit 1
+            fi
             ISSUE_NUMBER="$1"
             shift
             ;;
@@ -85,11 +90,12 @@ detect_closed_issues() {
 }
 
 # Find issues blocked by a specific issue (excludes the blocker itself)
+# Uses tab delimiter to avoid issues with pipe characters in titles
 find_blocked_by() {
     local blocker="$1"
     gh issue list --state open --search "Blocked by #$blocker" \
         --json number,title \
-        --jq ".[] | select(.number != $blocker) | \"\(.number)|\(.title)\"" \
+        --jq ".[] | select(.number != $blocker) | \"\(.number)\t\(.title | gsub(\"\t\"; \" \"))\"" \
         2>/dev/null || echo ""
 }
 
@@ -174,7 +180,7 @@ detect_circular_deps() {
         local blocked_by_current
         blocked_by_current=$(find_blocked_by "$current")
 
-        while IFS='|' read -r num title; do
+        while IFS=$'\t' read -r num title; do
             [[ -z "$num" ]] && continue
             if detect_cycle_inner "$num"; then
                 return 0
@@ -245,7 +251,7 @@ generate_graph() {
         local total
         total=$(echo "$blocked" | grep -c . 2>/dev/null || echo 0)
 
-        while IFS='|' read -r num title; do
+        while IFS=$'\t' read -r num title; do
             [[ -z "$num" ]] && continue
             ((count++))
 
@@ -274,7 +280,7 @@ generate_graph() {
         echo "graph TD"
         echo "    ${root}[\"#$root (closed)\"]"
 
-        while IFS='|' read -r num title; do
+        while IFS=$'\t' read -r num title; do
             [[ -z "$num" ]] && continue
             echo "    ${root} --> ${num}[\"#$num\"]"
         done <<< "$blocked"
@@ -325,7 +331,7 @@ main() {
             continue
         fi
 
-        while IFS='|' read -r num title; do
+        while IFS=$'\t' read -r num title; do
             [[ -z "$num" ]] && continue
 
             log_info "Found #$num blocked by #$issue: $title"

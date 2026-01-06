@@ -48,15 +48,47 @@ Processes dependents when a blocker closes.
 - Detects circular dependencies with resolution suggestions
 - Distinguishes manual vs dependency blocks
 
+## Installation in Your Repository
+
+### Option 1: Copy Scripts (Recommended)
+
+```bash
+# From your repository root
+mkdir -p scripts/issue-driven-delivery
+# Copy from development-skills repo (adjust URL for your org)
+curl -o scripts/issue-driven-delivery/get-priority-order.sh \
+  https://raw.githubusercontent.com/OWNER/development-skills/main/skills/issue-driven-delivery/scripts/get-priority-order.sh
+curl -o scripts/issue-driven-delivery/unblock-dependents.sh \
+  https://raw.githubusercontent.com/OWNER/development-skills/main/skills/issue-driven-delivery/scripts/unblock-dependents.sh
+chmod +x scripts/issue-driven-delivery/*.sh
+```
+
+### Option 2: GitHub Actions Integration
+
+```yaml
+# .github/workflows/auto-unblock.yml
+name: Auto-unblock dependents
+on:
+  issues:
+    types: [closed]
+jobs:
+  unblock:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Unblock dependents
+        run: ./scripts/issue-driven-delivery/unblock-dependents.sh ${{ github.event.issue.number }} --apply
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+```
+
 ## Customization
 
-These scripts are **templates** for the default GitHub setup. When applying to a specific
-repository:
+These scripts are **templates** for the default GitHub setup. After copying to your repo:
 
-1. Copy scripts to `scripts/issue-driven-delivery/` in the target repo
-2. Modify label names if different (e.g., `priority:p0` → `P0`)
-3. Adjust state labels if using different names
-4. Update any org-specific patterns
+1. Modify label names if different (e.g., `priority:p0` → `P0`)
+2. Adjust state labels if using different names
+3. Update any org-specific patterns
 
 **Default labels expected:**
 
@@ -69,6 +101,19 @@ repository:
 - GitHub CLI (`gh`) installed and authenticated
 - Bash 4.0+
 - No external dependencies (uses `gh`'s built-in `--jq` for JSON parsing)
+
+## Known Limitations
+
+**Priority inheritance depth:** Inheritance only checks one level of blocked issues. If #A blocks #B
+blocks #C, #A will inherit priority from #B but not from #C. For most workflows this is sufficient;
+deeper chains are rare in practice.
+
+**Issue count limit:** Scripts fetch up to 500 open issues. Repositories with more than 500 open
+issues will have results silently truncated. For large repositories, consider filtering by milestone
+or label in a customized version.
+
+**Search accuracy:** The "Blocked by #N" search relies on GitHub's issue search which may have
+indexing delays. Recently added blocking comments may not appear immediately.
 
 ## Examples
 

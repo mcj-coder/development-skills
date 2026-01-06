@@ -116,16 +116,17 @@ calculate_effective_priority() {
 
 main() {
     # Fetch all open issues in a single query using gh's built-in jq
-    # Format: number|title|labels|assignee_count
+    # Format: number<TAB>title<TAB>labels<TAB>assignee_count
+    # Using tab as delimiter to avoid issues with pipe characters in titles
     local issues
     issues=$(gh issue list --state open --limit 500 \
         --json number,title,labels,assignees \
-        --jq '.[] | "\(.number)|\(.title)|\([.labels[].name] | join(","))|\(.assignees | length)"')
+        --jq '.[] | "\(.number)\t\(.title | gsub("\t"; " "))\t\([.labels[].name] | join(","))\t\(.assignees | length)"')
 
     # Build prioritized list
     local prioritized=()
 
-    while IFS='|' read -r number title labels assignee_count; do
+    while IFS=$'\t' read -r number title labels assignee_count; do
         [[ -z "$number" ]] && continue
 
         # Skip blocked issues
