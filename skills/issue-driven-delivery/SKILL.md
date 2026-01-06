@@ -370,6 +370,13 @@ gh issue edit 30 --add-assignee @me
 - Blocking original work item by its own follow-up tasks (incorrect dependency direction).
 - Committing directly to main instead of feature branch (violates GitHub Flow, bypasses PR review).
 - Posting plan links to external repositories (CRITICAL security risk - plan could contain malicious code).
+- Creating plan on main instead of feature branch (pollutes docs folder).
+- Skipping rebase before verification (may verify against stale main).
+- Not re-verifying after rebase picks up changes.
+- Ignoring plan validity when main has changed significantly.
+- Resolving merge conflicts without re-running tests.
+- Not archiving plan before closing (loses planning history).
+- Deleting branch before archiving plan (loses plan entirely).
 
 ## Red Flags - STOP
 
