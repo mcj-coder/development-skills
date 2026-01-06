@@ -307,6 +307,15 @@ and Jira examples.
     exists. If approved, remove `blocked` label and proceed. If not approved,
     stop with error.
     10c. Work item auto-unassigns when closed.
+
+    **Error if PR missing:**
+
+    ```text
+    ERROR: Cannot close work item without merged PR.
+    Required: Create PR using step 15, wait for review and merge.
+    Exception: Read-only work and reviews are allowed without a ticket/PR.
+    ```
+
     10.5. Before closing work item, perform final rebase and plan archival on feature branch:
     a) Check time since step 8b.5 rebase. If >24 hours, rebase again: `git fetch origin && git rebase origin/main`
     b) If rebase picks up changes: review files changed against plan references; if plan
