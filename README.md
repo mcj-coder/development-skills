@@ -121,6 +121,7 @@ Requirements for all skills:
 - `skills-first-workflow` (requires Superpowers)
 - `markdown-author` - Proactive markdown linting and spelling validation during writing
 - `walking-skeleton-delivery` - P3 delivery skill for minimal E2E architecture validation
+- `testcontainers-integration-tests` - P1 integration testing with real infrastructure via Testcontainers
 - `technical-debt-prioritisation` - P3 delivery skill for evidence-based debt prioritisation
 
 ## Documentation
