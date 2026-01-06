@@ -127,6 +127,159 @@ Based on repository structure:
 - If `docs/` changes → `documentation` tag
 - If tests modified → `testing` tag
 
+## Creating Epics
+
+### GitHub - Create Epic with Mermaid Graph
+
+```bash
+gh issue create --title "Epic: [Title]" --body "$(cat <<'EOF'
+## Goal
+
+[Epic goal statement]
+
+## Child Tickets
+
+- [ ] #TBD - [Child 1 title]
+- [ ] #TBD - [Child 2 title]
+- [ ] #TBD - [Child 3 title]
+
+## Dependency Graph
+
+```mermaid
+flowchart TD
+    A[#1 Child 1] --> B[#2 Child 2]
+    B --> C[#3 Child 3]
+```
+
+## Feature Flags
+
+| Flag | Introduced In | Purpose | Status |
+|------|---------------|---------|--------|
+| — | — | — | — |
+
+**Cleanup ticket:** TBD
+EOF
+)" --label "epic"
+```
+
+### Azure DevOps - Create Epic Work Item
+
+```bash
+az boards work-item create \
+  --type "Epic" \
+  --title "[Epic Title]" \
+  --description "$(cat <<'EOF'
+## Goal
+
+[Epic goal statement]
+
+## Acceptance Criteria
+
+- [ ] All child work items completed
+- [ ] All feature flags removed
+EOF
+)"
+```
+
+### Jira - Create Epic Issue
+
+```bash
+jira issue create \
+  --type Epic \
+  --summary "[Epic Title]" \
+  --description "$(cat <<'EOF'
+## Goal
+
+[Epic goal statement]
+
+## Child Issues
+
+Will be linked after creation.
+EOF
+)"
+```
+
+## Linking Dependencies
+
+### GitHub - Add Blocker Reference in Body
+
+GitHub doesn't have native dependency tracking. Use body text:
+
+```bash
+# When creating child issue, include blocker in body
+gh issue create --title "[Title]" --body "$(cat <<'EOF'
+**Blocked by:** #[BLOCKER_NUMBER]
+
+## Goal
+
+[Goal statement]
+
+## Requirements
+
+1. [Requirement]
+
+## Acceptance Criteria
+
+- [ ] [Criterion]
+EOF
+)"
+```
+
+### Azure DevOps - Add Predecessor Link
+
+```bash
+# Add predecessor (blocker) relationship
+az boards work-item relation add \
+  --id [WORK_ITEM_ID] \
+  --relation-type "System.LinkTypes.Dependency-Reverse" \
+  --target-id [BLOCKER_ID]
+```
+
+### Jira - Add Blocks Link
+
+```bash
+# Add "is blocked by" link
+jira issue link [ISSUE_KEY] [BLOCKER_KEY] "is blocked by"
+```
+
+## Updating Epic After Child Creation
+
+### GitHub - Update Epic Body with Child Numbers
+
+```bash
+# After creating children, update epic body with actual issue numbers
+gh issue edit [EPIC_NUMBER] --body "$(cat <<'EOF'
+## Goal
+
+[Epic goal statement]
+
+## Child Tickets
+
+- [ ] #101 - Database Schema
+- [ ] #102 - API Endpoints
+- [ ] #103 - UI Components
+- [ ] #104 - Feature Flag Cleanup
+
+## Dependency Graph
+
+```mermaid
+flowchart TD
+    A[#101 Schema] --> B[#102 API]
+    B --> C[#103 UI]
+    C --> D[#104 Cleanup]
+```
+
+## Feature Flags
+
+| Flag | Introduced In | Purpose | Status |
+|------|---------------|---------|--------|
+| `FEATURE_ENABLED` | #103 | Hide until ready | Active |
+
+**Cleanup ticket:** #104
+EOF
+)"
+```
+
 ## CLI Verification
 
 ### GitHub
