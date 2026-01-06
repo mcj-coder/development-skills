@@ -15,4 +15,15 @@
 
 ## GREEN: Passing Checklist (After Implementation)
 
-Will verify after updating agent-workitem-automation skill with all required content.
+- [x] agent-workitem-automation references BDD checklist templates (lines 151, 156)
+- [x] Clarifies verification requirements before opening PR (lines 146-158)
+- [x] Distinguishes concrete vs process-only verification (lines 148-156)
+- [x] Aligns with issue-driven-delivery requirements
+
+**Applied Evidence:**
+- Updated agent-workitem-automation SKILL.md (lines 146-158)
+- Added "Concrete Changes" section with applied evidence requirements
+- Added "Process-Only" section with analytical verification guidance
+- Included decision guide for determining verification type
+- Referenced BDD checklist templates for both types
+- Provides examples aligned with issue-driven-delivery
