@@ -328,9 +328,24 @@ and Jira examples.
     happens AFTER verification/reviews, not before.** Use
     superpowers:finishing-a-development-branch skill to enforce verification checkpoint
     before PR creation. PR should reference all review comments and evidence.
-16. Before opening a PR, post evidence that required skills were applied in the
-    repo when changes are concrete (config, docs, code). For process-only
-    changes, note that verification is analytical.
+16. Before opening a PR, post evidence using appropriate verification type:
+
+    **Concrete Changes** (code, configuration, documentation files):
+    - Require applied evidence showing skill was used in THIS repository
+    - Include commit SHAs and file links
+    - Example: "TDD skill applied: failing test at [SHA1], implementation at [SHA2]"
+    - Use concrete changes checklist from [BDD Templates](../../docs/references/bdd-checklist-templates.md)
+
+    **Process-Only** (planning, reviews, requirements gathering):
+    - Analytical verification is acceptable
+    - Include issue comment links and decision records
+    - Must state: "This is analytical verification (process-only)"
+    - Example: "Brainstorming skill applied: requirements clarified in issue #123"
+    - Use process-only checklist from [BDD Templates](../../docs/references/bdd-checklist-templates.md)
+
+    **How to determine:** Ask "Did this work modify files in the repository?"
+    - Yes → Concrete changes verification
+    - No → Process-only verification
 17. If a PR exists, link the PR and work item, monitor PR comment threads, and address PR feedback before completion.
 18. If changes occur after review feedback, re-run BDD validation and update evidence before claiming completion.
 19. If BDD assertions change, require explicit approval before updating them.

@@ -33,6 +33,17 @@ allow "verify after" changes.
   before editing.
 - Only after the failing checklist is established may implementation begin.
 
+**Verification Types:**
+
+- **Concrete changes** (code, config, documentation files): Require applied evidence
+  with commit SHAs and file links. See [BDD Checklist Templates](docs/references/bdd-checklist-templates.md)
+  for concrete changes template.
+- **Process-only** (planning, reviews, requirements): Analytical verification acceptable
+  with issue comment links. See [BDD Checklist Templates](docs/references/bdd-checklist-templates.md)
+  for process-only template.
+
+**How to determine:** Did the work modify files in the repository? Yes = Concrete, No = Process-only.
+
 ## Skills-First Workflow
 
 This repository enforces a **skills-first workflow** where prerequisite skills must be loaded before implementation begins.

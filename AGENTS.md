@@ -15,23 +15,36 @@ These rules tighten the workflow for autonomous execution.
   - **Issue state:** Issue should be in appropriate state before work begins
     (e.g., `refinement` for planning, `implementation` for coding)
 - **Traceability required.** Every change must be traceable to a Taskboard
-  issue.
+  issue; create one if it does not exist.
   - **Format:** Reference issue in commit messages (`Refs: #123`), PR titles and
     descriptions, and issue comments with evidence links
   - **Evidence:** Link commits (SHA URLs), PRs, and verification results in
     issue comments
   - **Mid-implementation:** If work is discovered during implementation, create
     issue immediately before proceeding
-- **Applied-skill evidence required.** If a skill drives concrete configuration,
-  documentation, or code changes, BDD verification must include evidence that
-  the skill was actually applied in this repo. For process-only or hypothetical
-  skills, analysis-based BDD is acceptable and must be stated as such.
+- **Applied-skill evidence required.** Verification requirements differ based on change type:
+  - **Concrete changes** (code, configuration, documentation files): Must include
+    applied evidence showing the skill was actually used in THIS repository. Evidence
+    must include commit SHAs and file links. Example: "TDD skill applied: failing test
+    at [SHA1], implementation at [SHA2], passing test at [SHA3]"
+  - **Process-only** (planning, reviews, requirements gathering): Analytical verification
+    is acceptable. Evidence includes issue comment links and decision records. Must state:
+    "This is analytical verification (process-only)." Example: "Brainstorming skill applied:
+    requirements clarified in issue #123, alternatives considered, decision documented"
+  - See [BDD Checklist Templates](docs/references/bdd-checklist-templates.md) for detailed
+    guidance on both verification types.
 - **Feature branch only.** If you are on `main`, stop and create a feature
   branch before any edits or commits. Do not commit on `main`.
 - **Skills-first enforcement.** Bootstrap, load skills, and follow process
   skills before any implementation.
-- **TDD enforcement.** Apply the README TDD standard. For documentation work,
-  capture and verify a failing BDD checklist before editing.
+- **TDD enforcement.** Apply the README TDD standard to ALL changes (code, configuration,
+  documentation). For documentation and process work, capture and verify a failing BDD
+  checklist before editing. BDD checklists serve as "tests" for non-code changes:
+  - **RED Phase:** Write failing BDD checklist, verify it fails, commit before changes
+  - **GREEN Phase:** Implement changes, verify checklist passes, document evidence
+  - See [BDD Checklist Templates](docs/references/bdd-checklist-templates.md) for
+    concrete vs process-only verification patterns. TDD applies equally to documentation
+    as it does to code - no "verify after" changes allowed.
 - **Fallback stays compliant.** If handing off to a human, the same skills-first
   workflow still applies.
 - **PR close policy.** Follow the README merge policy (rebase, then choose
@@ -258,6 +271,59 @@ skills and guardrails.
 Jumping straight into implementation is an exception and must be explicitly
 requested by the user. The default is to load and apply skills before any repo
 actions.
+
+## Superpowers Skills Integration
+
+This repository integrates with [Superpowers](https://github.com/obra/superpowers)
+for process skills. The relationship is complementary:
+
+### What Superpowers Provides (Process Skills)
+
+- **superpowers:test-driven-development** - TDD process guidance (RED/GREEN/REFACTOR workflow)
+- **superpowers:verification-before-completion** - Verification process before claiming completion
+- **superpowers:brainstorming** - Requirements clarification and design exploration
+- **superpowers:writing-plans** - Implementation planning guidance
+- **superpowers:receiving-code-review** - Code review reception process
+
+These are **process-only skills** that guide workflow without modifying repository files.
+
+### What This Repository Provides (Concrete Requirements)
+
+- **BDD Checklist Templates** - Concrete vs process-only verification patterns
+- **Verification Requirements** - When to use applied evidence vs analytical verification
+- **Issue-Driven Workflow** - Work item tracking and evidence requirements
+- **Agent Automation** - Autonomous work item management
+
+These define **concrete requirements** for this repository's workflow.
+
+### How They Work Together
+
+1. **TDD Workflow:** Superpowers provides TDD process, this repo requires BDD checklists
+   - Superpowers: "Write test first (RED), implement (GREEN), refactor"
+   - This repo: "Create failing BDD checklist, implement, verify passing"
+   - Integration: Both apply - code uses TDD, documentation uses BDD checklists
+
+2. **Verification:** Superpowers provides verification process, this repo defines verification types
+   - Superpowers: "Verify before claiming complete"
+   - This repo: "Use concrete verification for file changes, analytical for process-only"
+   - Integration: Superpowers enforces verification, this repo defines how to verify
+
+3. **Evidence:** No conflict - complementary requirements
+   - Superpowers: Ensures verification happens
+   - This repo: Defines what verification evidence looks like (commit SHAs vs comment links)
+
+### No Conflicts Identified
+
+- Superpowers skills are process guidance (analytical verification)
+- This repo's skills may be concrete (issue-driven-delivery, markdown-author) or process-only
+- Superpowers never requires commit evidence (process-only)
+- This repo only requires commit evidence for concrete changes
+- All Superpowers skills use analytical verification when applied in this repo
+
+### References
+
+- BDD Checklist Templates: [docs/references/bdd-checklist-templates.md](docs/references/bdd-checklist-templates.md)
+- Superpowers Repository: <https://github.com/obra/superpowers>
 
 ## Canonical Skill Priority Model
 

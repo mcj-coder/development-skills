@@ -143,9 +143,19 @@ When all steps in the current plan are complete and all required PRs are merged:
 If any acceptance criteria are unclear or evidence is incomplete, hand off to a
 human instead of closing.
 
-Before opening a PR, confirm evidence shows required skills were applied for
-concrete changes (config, docs, code). For process-only changes, record that
-verification is analytical.
+Before opening a PR, confirm evidence using appropriate verification type:
+
+**Concrete Changes** (code, configuration, documentation files):
+- Must show applied evidence with commit SHAs and file links
+- Example: "TDD applied: failing test [SHA1], implementation [SHA2]"
+- Use concrete changes checklist: [BDD Templates](../../docs/references/bdd-checklist-templates.md)
+
+**Process-Only** (planning, reviews, requirements):
+- Analytical verification acceptable with issue comment links
+- Must state: "This is analytical verification (process-only)"
+- Use process-only checklist: [BDD Templates](../../docs/references/bdd-checklist-templates.md)
+
+Determine type: Did work modify repository files? Yes=Concrete, No=Process-only
 
 ## Example
 

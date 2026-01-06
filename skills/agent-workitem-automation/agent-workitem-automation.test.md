@@ -85,3 +85,53 @@
 - "We can assume GitHub" without evidence from README.
 - "I'll fix auth later" instead of verifying CLI upfront.
 - "The plan is enough" without ticket context or updates.
+
+## BDD Verification Test Cases
+
+### RED: Concrete Changes Without Evidence
+
+**Setup:** Agent creates CI workflow files
+**Expected Behavior:** Skill requires applied evidence before completing
+**Failure Without Skill:** Agent posts "Configured CI" without commit SHA links
+
+**Assertions:**
+- Delivery completion requires applied evidence for concrete changes
+- Evidence must include commit SHAs and file links
+- References BDD checklist templates
+- Work cannot be closed without proper evidence
+
+### RED: Process-Only Treated as Concrete
+
+**Setup:** Agent performs ticket triage in comments
+**Expected Behavior:** Analytical verification acceptable for process work
+**Failure Without Skill:** Agent incorrectly requires file evidence for triage
+
+**Assertions:**
+- Delivery completion allows analytical verification for process-only
+- Must state "This is analytical verification (process-only)"
+- Evidence includes issue comment links
+- References BDD checklist templates
+
+### GREEN: Concrete Changes With Applied Evidence
+
+**Setup:** Agent automates work item updates with script
+**Expected Behavior:** Evidence shows script creation with commit SHA
+**Success With Skill:** "Applied evidence: automation script [SHA], config [SHA]"
+
+**Assertions:**
+- Applied evidence includes commit SHAs
+- References actual files created/modified
+- Uses concrete changes checklist
+- Evidence verifiable by file inspection
+
+### GREEN: Process-Only With Analytical Verification
+
+**Setup:** Agent coordinates work item state transitions
+**Expected Behavior:** Analytical verification documents coordination
+**Success With Skill:** "Analytical verification (process-only): state updated [link], stakeholders notified [link]"
+
+**Assertions:**
+- States analytical verification explicitly
+- Includes issue comment links showing coordination
+- Uses process-only checklist template
+- No false claims of file modifications
