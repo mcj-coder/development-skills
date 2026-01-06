@@ -517,3 +517,5 @@ gh issue edit 30 --add-assignee @me
 | "Draft PR is fine before verification"    | PR creates merge pressure, undermining thorough verification       |
 | "Reviews can happen in PR comments"       | SHIFT LEFT means finding issues before PR, not during              |
 | "Opening PR early shows progress"         | Progress shown via work item state, not premature PRs              |
+| "Verification complete means I can close" | Must create PR, get review, merge, then close                      |
+| "Changes are pushed, that's enough"       | PR provides review process and merge tracking                      |
