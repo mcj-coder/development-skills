@@ -226,11 +226,13 @@ and Jira examples.
    7b. Set work item state to `implementation`. If work item has `blocked` label,
    verify approval comment exists. If approved, remove `blocked` label and proceed.
    If not approved, stop with error.
-   7c. Self-assign when ready to implement (Developer recommended). **Create feature
-   branch from main:** `git checkout -b feat/issue-N-description`. All implementation
-   work must be done on feature branch, not main. If work item has `blocked` label,
-   verify approval comment exists. If approved, remove `blocked` label and proceed.
-   If not approved, stop with error showing blocking reason.
+   7c. Self-assign when ready to implement (Developer recommended). **Rebase feature
+   branch with main:** `git fetch origin && git rebase origin/main`. If significant
+   changes to main since plan creation (affecting files/areas in plan), review plan
+   validity, update plan if needed (requires re-approval), and push updated plan.
+   **All implementation work must be done on feature branch, not main.** If work item
+   has `blocked` label, verify approval comment exists. If approved, remove `blocked`
+   label and proceed. If not approved, stop with error showing blocking reason.
 8. Execute each task and attach evidence and reviews to its sub-task.
    8a. Before beginning execution, re-validate that the approved plan link references
    the current repository (prevents TOCTOU attack where plan link is modified after
