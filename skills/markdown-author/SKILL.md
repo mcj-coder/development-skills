@@ -7,7 +7,8 @@ description: Use when writing or editing markdown to proactively enforce linting
 
 ## Overview
 
-Proactively enforce markdown linting rules and spelling standards during writing, preventing violations before they're committed. Auto-fix formatting issues, block for structural decisions requiring context.
+Proactively enforce markdown linting rules and spelling standards during writing, preventing violations before
+they're committed. Auto-fix formatting issues, block for structural decisions requiring context.
 
 Git hooks remain as safety net for non-skill markdown changes.
 
@@ -111,9 +112,11 @@ For each markdown content section:
    - Duplicate heading → Rename or confirm
 
 5. **Log summary after writing:**
+   <!-- markdownlint-disable MD040 -->
 
    ```
    ✓ Markdown validated and auto-fixed:
+   <!-- markdownlint-enable MD040 -->
      - Adjusted 3 lines exceeding 120 characters
      - Fixed heading hierarchy (h3 → h2)
      - Added 1 term to cspell dictionary
@@ -156,35 +159,35 @@ See [Validation Rules Reference](references/validation-rules.md) for complete li
 
 **Malformed JSON:**
 
-```
+````text
 Error: .markdownlint.json is invalid JSON
   Line 5: Unexpected token }
 
 Fix syntax or delete file to regenerate with defaults.
-```
+```text
 
 **Missing required fields:**
 
-```
+```text
 Error: cspell.json missing 'version' field
 
 Add field or delete file to regenerate with defaults.
-```
+```text
 
 ### Blocking Violations
 
 **Code fence without language:**
 
-```
+```text
 ⚠ Markdown validation error:
   Line 45: Code fence requires language specification
 
 Current:
-```
+```text
 
 npm install
 
-```
+```text
 
 Options:
 - bash (recommended for shell commands)
@@ -192,11 +195,11 @@ Options:
 - json, yaml, markdown, etc.
 
 What language should this code fence use?
-```
+```text
 
 **Spelling error:**
 
-```
+```text
 ⚠ Spelling error detected:
   Line 12: Unknown word 'agentskills'
 
@@ -206,11 +209,11 @@ Options:
 3. Ignore (not recommended)
 
 How should this be handled?
-```
+```text
 
 **Duplicate heading:**
 
-```
+```text
 ⚠ Duplicate heading detected:
   Line 67: "## Implementation" already exists at line 34
 
@@ -220,19 +223,19 @@ This may cause navigation issues. Options:
 3. Keep as-is (not recommended)
 
 How should this be resolved?
-```
+```text
 
 ### Graceful Degradation
 
 If configuration error prevents full validation:
 
-```
+```text
 ⚠ markdown-author skill error: Unable to parse .markdownlint.json
   Falling back to basic validation (line length, code fences only)
 
 Full linting will run in pre-commit hook.
 Consider fixing configuration: .markdownlint.json
-```
+```text
 
 ## Example
 
@@ -249,16 +252,16 @@ Agent: [Begins composing architecture.md]
 Content composed:
 # Architecture Overview
 
-This document describes the system architecure...
-[Spell check detects: architecure → architecture]
+This document describes the system architecture...
+[Spell check detects: architecture → architecture]
 
-⚠ Spelling error: 'architecure'. Did you mean: 'architecture'?
+⚠ Spelling error: 'architecture'. Did you mean: 'architecture'?
 Agent: [Corrects to 'architecture']
 
-The application uses a microservices approach with the following componets:
-[Spell check detects: componets → components]
+The application uses a microservices approach with the following components:
+[Spell check detects: components → components]
 
-⚠ Spelling error: 'componets'. Did you mean: 'components'?
+⚠ Spelling error: 'components'. Did you mean: 'components'?
 Agent: [Corrects to 'components']
 
 ### API Gateway
@@ -277,7 +280,7 @@ for monitoring purposes.
 ```python
 def validate_token(token):
     return jwt.decode(token)
-```
+```text
 
 [Code fence has language: python ✓]
 
@@ -287,7 +290,7 @@ def validate_token(token):
 - Adjusted heading hierarchy (h3 → h2)
 - Broke 1 line exceeding 120 characters
 
-```
+```text
 
 ### Editing Existing Markdown
 
@@ -303,7 +306,7 @@ Adding new content:
 
 Implementation details follow...
 [Validation passes, writes to file]
-```
+```text
 
 ## Common Mistakes
 
@@ -341,3 +344,4 @@ Implementation details follow...
 - [Editor Integration](references/editor-integration.md) - VS Code and other editor setup
 - Pre-commit hooks: `.husky/pre-commit` and `package.json` lint-staged configuration
 - markdownlint rules: <https://github.com/DavidAnson/markdownlint/blob/main/doc/Rules.md>
+````

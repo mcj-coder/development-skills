@@ -17,7 +17,7 @@ markdown-author integrates with cspell to check spelling during markdown writing
 
 `cspell.json` in repository root:
 
-```json
+````json
 {
   "version": "0.2",
   "language": "en-GB",
@@ -38,7 +38,7 @@ markdown-author integrates with cspell to check spelling during markdown writing
     "package-lock.json"
   ]
 }
-```
+```text
 
 ## Configuration Fields
 
@@ -63,7 +63,7 @@ markdown-author integrates with cspell to check spelling during markdown writing
 
 ```json
 "language": "en-GB"
-```
+```text
 
 ### languageSettings
 
@@ -78,7 +78,7 @@ markdown-author integrates with cspell to check spelling during markdown writing
     "locale": "en-GB, en-US"
   }
 ]
-```
+```text
 
 **languageId:** File types this setting applies to
 **locale:** Comma-separated list of accepted locales
@@ -98,7 +98,7 @@ markdown-author integrates with cspell to check spelling during markdown writing
   "workitem",
   "workitems"
 ]
-```
+```text
 
 **When to add:**
 
@@ -110,14 +110,14 @@ markdown-author integrates with cspell to check spelling during markdown writing
 **How markdown-author uses:**
 When unknown word detected:
 
-```
+```text
 ⚠ Spelling error: 'agentskills'
 
 Options:
 1. Add to cspell.json dictionary ← Updates this array
 2. Fix spelling
 3. Ignore
-```
+```text
 
 ### ignorePaths
 
@@ -132,7 +132,7 @@ Options:
   "*.log",
   "dist/**"
 ]
-```
+```text
 
 **Common patterns:**
 
@@ -167,15 +167,15 @@ public async Task<string> GetDataAsync() // C# keywords not flagged
     var result = await httpClient.GetStringAsync(url);
     return result;
 }
-```
+```text
 
-```
+```text
 
 **Result:**
 - `async`, `await`, `var`, `Task` - Recognized as C# keywords, not flagged
 - Comments still checked: typos in comments will be caught
 
-## Spell Checking Behavior
+## Spell Checking Behaviour
 
 ### In Prose
 
@@ -193,18 +193,18 @@ Words checked against:
 **Example:**
 ```python
 def calculate_total(items):
-    """Calcuate the total price"""  # Typo: Calcuate
+    """Calculate the total price"""  # Typo: Calculate
     return sum(item.price for item in items)  # Keywords OK
-```
+```text
 
 **Result:**
 
-```
-⚠ Spelling error in comment: 'Calcuate'
+```text
+⚠ Spelling error in comment: 'Calculate'
   Did you mean: Calculate
 
 ✓ Python keywords recognized: def, sum, for, in, return
-```
+```text
 
 ### In Links
 
@@ -212,7 +212,7 @@ URLs and file paths not spell-checked:
 
 ```markdown
 [Documentation](https://github.com/repo/veryLongRepoNameNotChecked)
-```
+```text
 
 ### In Inline Code
 
@@ -220,7 +220,7 @@ Code spans checked but with more lenient rules:
 
 ```markdown
 The `validateToken` function checks the JWT signature.
-```
+```text
 
 - `validateToken` - Camel case recognized, not flagged
 - Acronyms in code spans tolerated
@@ -229,14 +229,14 @@ The `validateToken` function checks the JWT signature.
 
 markdown-author skill prompts when unknown word detected:
 
-```
+```text
 ⚠ Spelling error: 'agentskills'
 
 Options:
 1. Add to cspell.json dictionary (recommended for project terms)
 2. Fix spelling
 3. Ignore (not recommended)
-```
+```text
 
 **Choosing Option 1 updates cspell.json:**
 
@@ -246,7 +246,7 @@ Before:
 {
   "words": []
 }
-```
+```text
 
 After:
 
@@ -254,7 +254,7 @@ After:
 {
   "words": ["agentskills"]
 }
-```
+```text
 
 **Guidelines for adding words:**
 
@@ -295,7 +295,7 @@ After:
     "locale": "en-GB, en-US"
   }
 ]
-```
+```text
 
 ## Locale Differences
 
@@ -308,9 +308,9 @@ After:
 
 ### en-US (American English)
 
-- color, favor, behavior
+- color, favour, behaviour
 - organize, realize, analyze
-- center, theater
+- center, theatre
 - license (both noun and verb)
 
 ### Mixed Locale Strategy
@@ -319,7 +319,7 @@ For international projects, accept both:
 
 ```json
 "locale": "en-GB, en-US"
-```
+```text
 
 **Advantages:**
 
@@ -344,7 +344,7 @@ cspell runs in pre-commit hooks via lint-staged:
     "cspell"
   ]
 }
-```
+```text
 
 **markdown-author skill complements hooks:**
 
@@ -387,3 +387,4 @@ cspell runs in pre-commit hooks via lint-staged:
 - cspell documentation: <https://cspell.org/>
 - [Validation Rules Reference](validation-rules.md)
 - [Editor Integration](editor-integration.md)
+````

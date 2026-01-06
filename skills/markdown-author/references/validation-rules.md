@@ -14,9 +14,9 @@ Complete list of markdownlint rules and how markdown-author handles them.
 
 **Rule:** Headings should increment by one level at a time
 
-**Auto-Fix Behavior:**
+**Auto-Fix Behaviour:**
 
-- Analyzes existing document structure
+- Analyses existing document structure
 - Auto-selects appropriate heading level:
   - New document: Start with h1
   - Existing document: Continue from last heading level
@@ -25,16 +25,18 @@ Complete list of markdownlint rules and how markdown-author handles them.
 
 **Example:**
 
-```markdown
+`````markdown
 # Title
-### Details  ← Auto-corrected to: ## Details
-```
+
+### Details ← Auto-corrected to: ## Details
+
+````text
 
 ### MD003 - Heading Style
 
 **Rule:** Heading style consistency (ATX, setext, etc.)
 
-**Auto-Fix Behavior:**
+**Auto-Fix Behaviour:**
 
 - Enforces ATX style (# Heading) by default
 - Converts setext to ATX if found
@@ -43,7 +45,7 @@ Complete list of markdownlint rules and how markdown-author handles them.
 
 **Rule:** Consistent list marker style
 
-**Auto-Fix Behavior:**
+**Auto-Fix Behaviour:**
 
 - Normalizes to configured style (dash, asterisk, plus)
 - Default: dash (-)
@@ -52,7 +54,7 @@ Complete list of markdownlint rules and how markdown-author handles them.
 
 **Rule:** Consistent indentation for nested lists
 
-**Auto-Fix Behavior:**
+**Auto-Fix Behaviour:**
 
 - Normalizes to 2-space indentation for nested items
 
@@ -60,7 +62,7 @@ Complete list of markdownlint rules and how markdown-author handles them.
 
 **Rule:** Proper indentation amount
 
-**Auto-Fix Behavior:**
+**Auto-Fix Behaviour:**
 
 - Adjusts indentation to configured amount (default: 2 spaces)
 
@@ -68,7 +70,7 @@ Complete list of markdownlint rules and how markdown-author handles them.
 
 **Rule:** No trailing spaces
 
-**Auto-Fix Behavior:**
+**Auto-Fix Behaviour:**
 
 - Strips trailing whitespace from all lines
 - Preserves intentional double-space line breaks if detected
@@ -77,7 +79,7 @@ Complete list of markdownlint rules and how markdown-author handles them.
 
 **Rule:** Use spaces instead of tabs
 
-**Auto-Fix Behavior:**
+**Auto-Fix Behaviour:**
 
 - Replaces tabs with spaces (configured spaces per tab)
 - Preserves tabs in code fences if language-appropriate
@@ -86,7 +88,7 @@ Complete list of markdownlint rules and how markdown-author handles them.
 
 **Rule:** Correct link syntax [text](url) not [text](url)
 
-**Auto-Fix Behavior:**
+**Auto-Fix Behaviour:**
 
 - Detects reversed syntax
 - Auto-corrects to proper format
@@ -95,7 +97,7 @@ Complete list of markdownlint rules and how markdown-author handles them.
 
 **Rule:** No multiple consecutive blank lines
 
-**Auto-Fix Behavior:**
+**Auto-Fix Behaviour:**
 
 - Collapses multiple blank lines to single blank line
 
@@ -103,7 +105,7 @@ Complete list of markdownlint rules and how markdown-author handles them.
 
 **Rule:** Lines should not exceed configured length (default: 120)
 
-**Auto-Fix Behavior:**
+**Auto-Fix Behaviour:**
 
 - Breaks lines at word boundaries before limit
 - Respects exclusions:
@@ -120,13 +122,13 @@ This is a very long line that exceeds the 120 character limit and should be auto
 Auto-fixed:
 This is a very long line that exceeds the 120 character limit and should be
 automatically broken at word boundaries to maintain readability standards.
-```
+```text
 
 ### MD014 - Dollar Signs in Shell Commands
 
 **Rule:** Shell commands should not show $ prompt
 
-**Auto-Fix Behavior:**
+**Auto-Fix Behaviour:**
 
 - Removes leading $ from shell command lines in code fences
 
@@ -134,7 +136,7 @@ automatically broken at word boundaries to maintain readability standards.
 
 **Rule:** Require space after # in headings
 
-**Auto-Fix Behavior:**
+**Auto-Fix Behaviour:**
 
 - Adds space: `#Heading` → `# Heading`
 
@@ -142,7 +144,7 @@ automatically broken at word boundaries to maintain readability standards.
 
 **Rule:** Only one space after # in headings
 
-**Auto-Fix Behavior:**
+**Auto-Fix Behaviour:**
 
 - Collapses multiple spaces to single space
 
@@ -150,7 +152,7 @@ automatically broken at word boundaries to maintain readability standards.
 
 **Rule:** Blank lines before and after headings
 
-**Auto-Fix Behavior:**
+**Auto-Fix Behaviour:**
 
 - Adds blank line before heading if missing
 - Adds blank line after heading if missing
@@ -159,7 +161,7 @@ automatically broken at word boundaries to maintain readability standards.
 
 **Rule:** No indentation before headings
 
-**Auto-Fix Behavior:**
+**Auto-Fix Behaviour:**
 
 - Removes leading whitespace from headings
 
@@ -167,7 +169,7 @@ automatically broken at word boundaries to maintain readability standards.
 
 **Rule:** No trailing punctuation (., !, ?) in headings
 
-**Auto-Fix Behavior:**
+**Auto-Fix Behaviour:**
 
 - Removes trailing punctuation from headings
 
@@ -175,7 +177,7 @@ automatically broken at word boundaries to maintain readability standards.
 
 **Rule:** Only one space after > in blockquotes
 
-**Auto-Fix Behavior:**
+**Auto-Fix Behaviour:**
 
 - Collapses multiple spaces to single space
 
@@ -183,7 +185,7 @@ automatically broken at word boundaries to maintain readability standards.
 
 **Rule:** No blank lines inside blockquotes
 
-**Auto-Fix Behavior:**
+**Auto-Fix Behaviour:**
 
 - Removes blank lines within blockquote blocks
 
@@ -191,7 +193,7 @@ automatically broken at word boundaries to maintain readability standards.
 
 **Rule:** Consistent spacing after list markers
 
-**Auto-Fix Behavior:**
+**Auto-Fix Behaviour:**
 
 - Normalizes to 1 space after marker for single-line items
 - Normalizes to 1 space for multi-line items
@@ -200,7 +202,7 @@ automatically broken at word boundaries to maintain readability standards.
 
 **Rule:** Blank lines before and after code fences
 
-**Auto-Fix Behavior:**
+**Auto-Fix Behaviour:**
 
 - Adds blank line before code fence if missing
 - Adds blank line after code fence if missing
@@ -209,7 +211,7 @@ automatically broken at word boundaries to maintain readability standards.
 
 **Rule:** Blank lines before and after lists
 
-**Auto-Fix Behavior:**
+**Auto-Fix Behaviour:**
 
 - Adds blank line before list if missing
 - Adds blank line after list if missing
@@ -218,7 +220,7 @@ automatically broken at word boundaries to maintain readability standards.
 
 **Rule:** URLs should be in angle brackets or links
 
-**Auto-Fix Behavior:**
+**Auto-Fix Behaviour:**
 
 - Converts bare URLs to proper links: `https://example.com` → `<https://example.com>`
 
@@ -226,7 +228,7 @@ automatically broken at word boundaries to maintain readability standards.
 
 **Rule:** No spaces inside * or _ emphasis markers
 
-**Auto-Fix Behavior:**
+**Auto-Fix Behaviour:**
 
 - Removes spaces: `* text *` → `*text*`
 
@@ -234,7 +236,7 @@ automatically broken at word boundaries to maintain readability standards.
 
 **Rule:** No spaces inside ` code span markers
 
-**Auto-Fix Behavior:**
+**Auto-Fix Behaviour:**
 
 - Removes spaces: `` ` code ` `` → `` `code` ``
 
@@ -242,7 +244,7 @@ automatically broken at word boundaries to maintain readability standards.
 
 **Rule:** No spaces inside [ ] link text
 
-**Auto-Fix Behavior:**
+**Auto-Fix Behaviour:**
 
 - Removes spaces: `[ text ](url)` → `[text](url)`
 
@@ -250,7 +252,7 @@ automatically broken at word boundaries to maintain readability standards.
 
 **Rule:** File must end with newline character
 
-**Auto-Fix Behavior:**
+**Auto-Fix Behaviour:**
 
 - Adds newline at end of file if missing
 
@@ -258,7 +260,7 @@ automatically broken at word boundaries to maintain readability standards.
 
 **Rule:** Consistent emphasis style (asterisk vs underscore)
 
-**Auto-Fix Behavior:**
+**Auto-Fix Behaviour:**
 
 - Normalizes to configured style (default: asterisk)
 
@@ -266,7 +268,7 @@ automatically broken at word boundaries to maintain readability standards.
 
 **Rule:** Consistent strong style (asterisk vs underscore)
 
-**Auto-Fix Behavior:**
+**Auto-Fix Behaviour:**
 
 - Normalizes to configured style (default: asterisk)
 
@@ -276,87 +278,119 @@ automatically broken at word boundaries to maintain readability standards.
 
 **Rule:** Multiple headings with same content
 
-**Blocking Behavior:**
+**Blocking Behaviour:**
 
 - Respects `siblings_only: true` (only check same level)
 - Warns if duplicate heading at same level
 - Blocks if duplicates would cause navigation issues
 - Prompts:
 
-  ```
-  ⚠ Duplicate heading detected:
-    Line 67: "## Implementation" already exists at line 34
+<!-- markdownlint-disable MD031 MD040 -->
+````
+`````
 
-  Options:
-  1. Rename to "## Implementation Details"
-  2. Rename to "## Implementation (Phase 2)"
-  3. Keep as-is (not recommended)
-  ```
+```
+
+⚠ Duplicate heading detected:
+Line 67: "## Implementation" already exists at line 34
+
+Options:
+
+1. Rename to "## Implementation Details"
+2. Rename to "## Implementation (Phase 2)"
+3. Keep as-is (not recommended)
+
+```
+
+<!-- markdownlint-enable MD031 MD040 -->
 
 ### MD040 - Fenced Code Language
 
 **Rule:** Code fences must specify language
 
-**Blocking Behavior:**
+**Blocking Behaviour:**
 
-- Detects code fences without language (``` instead of ```bash)
+- Detects code fences without language (`instead of`bash)
 - Blocks until language specified
 - Prompts:
 
-  ```
-  ⚠ Code fence requires language specification
+<!-- markdownlint-disable MD031 MD040 -->
 
-  Options:
-  - bash (for shell commands)
-  - javascript, python, csharp, java, go, rust
-  - json, yaml, xml, markdown
-  - text (for plain text)
+````text
+
+⚠ Code fence requires language specification
+
+Options:
+
+- bash (for shell commands)
+- javascript, python, csharp, java, go, rust
+- json, yaml, xml, markdown
+- text (for plain text)
 
   What language should this code fence use?
+  <!-- markdownlint-disable MD040 -->
+
   ```
+
+  ```
+
+````
+
+<!-- markdownlint-enable MD031 MD040 -->
 
 ### MD045 - Images Should Have Alt Text
 
 **Rule:** Images must have alt text for accessibility
 
-**Blocking Behavior:**
+**Blocking Behaviour:**
 
 - Detects images without alt text: `![](image.png)`
 - Blocks until alt text provided
 - Prompts:
 
-  ```
-  ⚠ Image missing alt text (accessibility requirement)
+  ````text
 
-  Image: image.png
+  ```text
+  ````
 
-  What should the alt text describe?
-  ```
+<!-- markdownlint-enable MD040 -->
+
+⚠ Image missing alt text (accessibility requirement)
+
+Image: image.png
+
+What should the alt text describe?
+
+```text
 
 ### MD051 - Link Fragments Should Be Valid
 
 **Rule:** Link anchors must exist in document
 
-**Blocking Behavior:**
+**Blocking Behaviour:**
 
 - Validates fragment identifiers (#section-name)
 - Blocks if target heading doesn't exist
 - Prompts:
+<!-- markdownlint-disable MD040 -->
 
-  ```
-  ⚠ Invalid link fragment: #invalid-section
+```
 
-  Target heading not found in document.
+⚠ Invalid link fragment: #invalid-section
 
-  Options:
-  1. Fix fragment to match existing heading
-  2. Create heading for fragment
-  3. Remove fragment
-  ```
+Target heading not found in document.
+
+Options:
+
+1. Fix fragment to match existing heading
+2. Create heading for fragment
+3. Remove fragment
+
+```
 
 ### Spelling Errors
 
-**Blocking Behavior:**
+**Blocking Behaviour:**
 
 - Checks all words against cspell configuration
 - Respects language-specific dictionaries in code fences
@@ -364,16 +398,21 @@ automatically broken at word boundaries to maintain readability standards.
 - Blocks until resolved
 - Prompts:
 
-  ```
-  ⚠ Spelling error: 'agentskills'
+```
 
-  Options:
-  1. Add to cspell.json dictionary (recommended for project terms)
-  2. Fix spelling
-  3. Ignore (not recommended)
+<!-- markdownlint-enable MD040 -->
 
-  How should this be handled?
-  ```
+⚠ Spelling error: 'agentskills'
+
+Options:
+
+1. Add to cspell.json dictionary (recommended for project terms)
+2. Fix spelling
+3. Ignore (not recommended)
+
+How should this be handled?
+
+````text
 
 ## Disabled Rules
 
@@ -399,19 +438,19 @@ Rules are configured in `.markdownlint.json`:
 
 ```json
 {
-  "default": true,
-  "MD013": {
-    "line_length": 120,
-    "code_blocks": false,
-    "tables": false
-  },
-  "MD024": {
-    "siblings_only": true
-  },
-  "MD033": false,
-  "MD041": false
+"default": true,
+"MD013": {
+  "line_length": 120,
+  "code_blocks": false,
+  "tables": false
+},
+"MD024": {
+  "siblings_only": true
+},
+"MD033": false,
+"MD041": false
 }
-```
+```text
 
 - `"default": true` enables all rules by default
 - Individual rules can be disabled: `"MD033": false`
@@ -422,3 +461,4 @@ Rules are configured in `.markdownlint.json`:
 - markdownlint rules documentation: <https://github.com/DavidAnson/markdownlint/blob/main/doc/Rules.md>
 - `.markdownlint.json` configuration format
 - [Spelling Configuration](spelling-configuration.md)
+````

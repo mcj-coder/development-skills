@@ -13,7 +13,7 @@
 
 **Given:** Agent writes code block without language specification
 **When:** Content written without markdown-author skill
-**Then:** Code fence has no language (```\n instead of```bash\n)
+**Then:** Code fence has no language (`\n instead of`bash\n)
 **And:** Pre-commit hook fails with MD040 errors
 
 ### RED Scenario 3: Heading hierarchy violations
@@ -25,17 +25,17 @@
 
 ### RED Scenario 4: Spelling errors written
 
-**Given:** Agent writes "recieve" instead of "receive"
+**Given:** Agent writes "receive" instead of "receive"
 **When:** Content written without markdown-author skill
 **Then:** Misspelled word written to file
 **And:** Pre-commit hook fails with cspell errors
 
 ## Baseline Observations (Simulated)
 
-Without the skill, typical agent behavior:
+Without the skill, typical agent behaviour:
 
 - Writes long lines without considering 120 char limit
-- Creates code fences with ``` instead of ```bash
+- Creates code fences with `instead of`bash
 - Jumps heading levels (h1 → h3) without hierarchy check
 - Writes typos and domain-specific terms without spell check
 - Pre-commit hooks fail, forcing --no-verify bypasses
@@ -65,14 +65,15 @@ Without the skill, typical agent behavior:
 
 **Evidence:**
 
-```markdown
+`````markdown
 Original (150 chars):
 This is a very long line that exceeds the 120 character limit and should be automatically broken at word boundaries to maintain readability standards.
 
 Auto-fixed:
 This is a very long line that exceeds the 120 character limit and should be
 automatically broken at word boundaries to maintain readability standards.
-```
+
+````text
 
 ### GREEN Scenario 2: Code fence language prompted
 
@@ -85,7 +86,7 @@ automatically broken at word boundaries to maintain readability standards.
 
 **Evidence:**
 
-```
+```text
 ⚠ Markdown validation error:
   Code fence requires language specification
 
@@ -96,9 +97,9 @@ Agent selects: bash
 Result:
 ```bash
 npm install
-```
+```text
 
-```
+```text
 
 ### GREEN Scenario 3: Heading hierarchy auto-corrected
 
@@ -118,27 +119,27 @@ Agent attempts:
 
 Auto-corrected to:
 ## Details Section
-```
+```text
 
 ### GREEN Scenario 4: Spelling error caught and fixed
 
 **Given:** markdown-author skill loaded with cspell.json
-**When:** Agent writes "recieve"
-**Then:** Skill blocks with message: "Spelling error: 'recieve'. Did you mean: 'receive'?"
+**When:** Agent writes "receive"
+**Then:** Skill blocks with message: "Spelling error: 'receive'. Did you mean: 'receive'?"
 **And:** Agent corrects to "receive"
 **And:** Written content has correct spelling
 **And:** Pre-commit hook passes
 
 **Evidence:**
 
-```
+```text
 ⚠ Spelling error detected:
-  Line 12: Unknown word 'recieve'
+  Line 12: Unknown word 'receive'
 
 Suggestions: receive
 
-Agent corrects: recieve → receive
-```
+Agent corrects: receive → receive
+```text
 
 ### GREEN Scenario 5: Configuration auto-created
 
@@ -169,7 +170,7 @@ $ cat .markdownlint.json
   },
   ...
 }
-```
+```text
 
 ### GREEN Scenario 6: Custom dictionary term added
 
@@ -192,7 +193,7 @@ $ cat .markdownlint.json
 {
   "words": ["agentskills"]
 }
-```
+```text
 
 ### GREEN Scenario 7: Multiple auto-fixes applied
 
@@ -201,12 +202,12 @@ $ cat .markdownlint.json
 **Then:** All issues auto-fixed silently
 **And:** Summary logged:
 
-```
+```text
 ✓ Markdown validated and auto-fixed:
   - Adjusted 2 lines exceeding 120 characters
   - Fixed heading hierarchy (h3 → h2)
   - Stripped trailing spaces (3 instances)
-```
+```text
 
 ## PRESSURE Scenarios (Edge Cases)
 
@@ -220,13 +221,13 @@ $ cat .markdownlint.json
 
 **Evidence:**
 
-```
+```text
 ⚠ markdown-author skill error: Unable to parse .markdownlint.json
   Line 5: Unexpected end of JSON input
 
 Fix syntax or delete file to regenerate.
 Falling back to basic validation.
-```
+```text
 
 ### PRESSURE Scenario 2: Very long code block
 
@@ -242,9 +243,9 @@ Falling back to basic validation.
 ```bash
 # This command line is intentionally very long and exceeds 120 characters but should not be broken because it's in a code fence with code_blocks: false setting
 npm install @very/long/package/name --save-dev --legacy-peer-deps --no-audit --no-fund --prefer-offline
-```
+```text
 
-```
+```text
 
 ### PRESSURE Scenario 3: Table formatting
 
@@ -258,7 +259,7 @@ npm install @very/long/package/name --save-dev --legacy-peer-deps --no-audit --n
 ```markdown
 | Column 1                          | Column 2                          | Column 3                          | Column 4                          |
 | This row intentionally exceeds 120 characters to test that table rows are not broken when tables: false setting is configured | Value | Value | Value |
-```
+```text
 
 ### PRESSURE Scenario 4: Multiple blocking violations
 
@@ -270,11 +271,11 @@ npm install @very/long/package/name --save-dev --legacy-peer-deps --no-audit --n
 
 **Evidence:**
 
-```
-⚠ Spelling error: 'architecure' → Fix
+```text
+⚠ Spelling error: 'architecture' → Fix
 ⚠ Code fence missing language → Add 'python'
 ✓ All violations resolved
-```
+```text
 
 ### PRESSURE Scenario 5: Inline code spans with long lines
 
@@ -294,7 +295,7 @@ Auto-fixed:
 The function `validateToken()` checks the JWT signature, while
 `verifyExpiration()` ensures the token hasn't expired and
 `checkPermissions()` validates access rights.
-```
+```text
 
 ### PRESSURE Scenario 6: Spelling in code fences
 
@@ -307,24 +308,24 @@ The function `validateToken()` checks the JWT signature, while
 **Evidence:**
 
 ```csharp
-// This method recives data asynchronously
+// This method receives data asynchronously
 public async Task<string> GetDataAsync()
 {
     var result = await httpClient.GetStringAsync(url);
     return result;
 }
-```
+```text
 
-```
-⚠ Spelling error in comment: 'recives' → receives
+```text
+⚠ Spelling error in comment: 'receives' → receives
 ✓ C# keywords (async, await, var, Task) correctly recognized
-```
+```text
 
 ### PRESSURE Scenario 7: Editing middle of document
 
 **Given:** Agent edits section in middle of existing document
 **When:** Adding new h2 heading between existing h2 and h3
-**Then:** Skill analyzes full document structure
+**Then:** Skill analyses full document structure
 **And:** Auto-selects appropriate heading level (h2)
 **And:** Maintains hierarchy throughout document
 
@@ -344,7 +345,7 @@ Result maintains hierarchy:
 ## Section 1
 ## New Section 2
 ### Subsection
-```
+```text
 
 ## Integration Scenarios
 
@@ -391,3 +392,12 @@ The skill is successful when:
 7. ✅ Blocking prompts for structural decisions
 8. ✅ Pre-commit hooks pass for skill-written markdown
 9. ✅ --no-verify bypasses reduced to near-zero
+
+<!-- markdownlint-disable MD031 MD040 -->
+````
+`````
+
+```
+
+<!-- markdownlint-enable MD031 MD040 -->
+```
