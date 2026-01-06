@@ -120,6 +120,7 @@ Requirements for all skills:
 - `requirements-gathering` - For creating work items with requirements (no design docs)
 - `skills-first-workflow` (requires Superpowers)
 - `markdown-author` - Proactive markdown linting and spelling validation during writing
+- `walking-skeleton-delivery` - P3 delivery skill for minimal E2E architecture validation
 
 ## Documentation
 
