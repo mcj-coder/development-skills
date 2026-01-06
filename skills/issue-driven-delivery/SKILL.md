@@ -240,10 +240,10 @@ and Jira examples.
    with security error.
    8b. When all sub-tasks complete, unassign yourself to signal implementation complete.
    8b.5. Before transitioning to verification, rebase feature branch with main:
-         `git fetch origin && git rebase origin/main`. If rebase picks up changes,
-         re-run implementation verification (tests, builds, etc.) to ensure rebased
-         changes don't break accepted behavior. If conflicts occur, resolve them and
-         re-verify. Push rebased branch: `git push --force-with-lease`.
+   `git fetch origin && git rebase origin/main`. If rebase picks up changes,
+   re-run implementation verification (tests, builds, etc.) to ensure rebased
+   changes don't break accepted behavior. If conflicts occur, resolve them and
+   re-verify. Push rebased branch: `git push --force-with-lease`.
    8c. Set work item state to `verification`. If work item has `blocked` label,
    verify approval comment exists. If approved, remove `blocked` label and proceed.
    If not approved, stop with error.
@@ -261,13 +261,13 @@ and Jira examples.
     stop with error.
     10c. Work item auto-unassigns when closed.
     10.5. Before closing work item, perform final rebase and plan archival:
-          a) Rebase feature branch with main: `git fetch origin && git rebase origin/main`
-          b) If rebase picks up changes, re-run ALL verification (acceptance criteria, tests)
-          c) Archive plan: `git mv docs/plans/YYYY-MM-DD-feature-name.md docs/plans/archive/`
-          d) Commit archive: `git commit -m "docs: archive plan for issue #N"`
-          e) Push rebased branch: `git push --force-with-lease`
-          f) Verification must confirm rebased changes preserve accepted behavior
-          g) If behavior breaks, fix issues before closing
+    a) Rebase feature branch with main: `git fetch origin && git rebase origin/main`
+    b) If rebase picks up changes, re-run ALL verification (acceptance criteria, tests)
+    c) Archive plan: `git mv docs/plans/YYYY-MM-DD-feature-name.md docs/plans/archive/`
+    d) Commit archive: `git commit -m "docs: archive plan for issue #N"`
+    e) Push rebased branch: `git push --force-with-lease`
+    f) Verification must confirm rebased changes preserve accepted behavior
+    g) If behavior breaks, fix issues before closing
 11. Require each role to post a separate review comment in the work item thread using
     superpowers:receiving-code-review. See [Team Roles](../../docs/roles/README.md) for role
     definitions.
@@ -401,18 +401,18 @@ gh issue edit 30 --add-assignee @me
 
 ## Rationalizations (and Reality)
 
-| Excuse                                  | Reality                                              |
-| --------------------------------------- | ---------------------------------------------------- |
-| "The plan does not need approval."      | Approval must be in work item comments.              |
-| "Sub-tasks are too much overhead."      | Required for every plan task.                        |
-| "I will summarize later."               | Discussion and evidence stay in the work item chain. |
-| "Next steps can be a note."             | Next steps require a new work item with details.     |
-| "Priority doesn't matter for this one." | Always follow prioritization hierarchy.              |
-| "I can work on blocked items anyway."   | Blocked enforcement is mandatory, not optional.      |
-| "Circular dependencies will resolve."   | Requires explicit resolution with follow-up tasks.   |
-| "Plan on main is easier"                | Unactioned plans clutter main, feature branch keeps it clean |
-| "Archive is busywork"                   | Archive preserves planning history and design decisions |
-| "Rebase can wait until PR"              | Rebase before verification ensures tests pass against current main |
-| "Already verified, rebase won't break it" | Main changes can invalidate verification, must re-verify |
-| "Plan is still valid"                   | Must review plan if main changed files the plan touches |
-| "Conflicts are trivial"                 | Any conflict requires re-verification to ensure correctness |
+| Excuse                                    | Reality                                                            |
+| ----------------------------------------- | ------------------------------------------------------------------ |
+| "The plan does not need approval."        | Approval must be in work item comments.                            |
+| "Sub-tasks are too much overhead."        | Required for every plan task.                                      |
+| "I will summarize later."                 | Discussion and evidence stay in the work item chain.               |
+| "Next steps can be a note."               | Next steps require a new work item with details.                   |
+| "Priority doesn't matter for this one."   | Always follow prioritization hierarchy.                            |
+| "I can work on blocked items anyway."     | Blocked enforcement is mandatory, not optional.                    |
+| "Circular dependencies will resolve."     | Requires explicit resolution with follow-up tasks.                 |
+| "Plan on main is easier"                  | Unactioned plans clutter main, feature branch keeps it clean       |
+| "Archive is busywork"                     | Archive preserves planning history and design decisions            |
+| "Rebase can wait until PR"                | Rebase before verification ensures tests pass against current main |
+| "Already verified, rebase won't break it" | Main changes can invalidate verification, must re-verify           |
+| "Plan is still valid"                     | Must review plan if main changed files the plan touches            |
+| "Conflicts are trivial"                   | Any conflict requires re-verification to ensure correctness        |
