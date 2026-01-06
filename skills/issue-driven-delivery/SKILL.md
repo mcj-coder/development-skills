@@ -297,9 +297,11 @@ and Jira examples.
    label and proceed. If not approved, stop with error showing blocking reason.
 9. Stop and wait for explicit approval before closing each sub-task.
 10. Close sub-tasks only after approval and mark the plan task complete.
-    10a. Before closing work item, verify all mandatory tags exist (component,
-    work type, priority). Error if any missing. Suggest appropriate tags
-    based on work item content.
+    10a. Before closing work item, verify:
+    - All mandatory tags exist (component, work type, priority)
+    - PR exists and is merged (unless read-only work)
+    Error if any missing. Suggest appropriate tags based on work item content.
+    Exception: Read-only work and reviews are allowed without a ticket/PR.
     10b. When verification complete and acceptance criteria met, close work item
     (state: complete). If work item has `blocked` label, verify approval comment
     exists. If approved, remove `blocked` label and proceed. If not approved,
