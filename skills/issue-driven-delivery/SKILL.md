@@ -410,3 +410,9 @@ gh issue edit 30 --add-assignee @me
 | "Priority doesn't matter for this one." | Always follow prioritization hierarchy.              |
 | "I can work on blocked items anyway."   | Blocked enforcement is mandatory, not optional.      |
 | "Circular dependencies will resolve."   | Requires explicit resolution with follow-up tasks.   |
+| "Plan on main is easier"                | Unactioned plans clutter main, feature branch keeps it clean |
+| "Archive is busywork"                   | Archive preserves planning history and design decisions |
+| "Rebase can wait until PR"              | Rebase before verification ensures tests pass against current main |
+| "Already verified, rebase won't break it" | Main changes can invalidate verification, must re-verify |
+| "Plan is still valid"                   | Must review plan if main changed files the plan touches |
+| "Conflicts are trivial"                 | Any conflict requires re-verification to ensure correctness |
