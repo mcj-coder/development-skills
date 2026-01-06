@@ -239,6 +239,11 @@ and Jira examples.
    approval). Use same validation logic from step 4a. If validation fails, STOP
    with security error.
    8b. When all sub-tasks complete, unassign yourself to signal implementation complete.
+   8b.5. Before transitioning to verification, rebase feature branch with main:
+         `git fetch origin && git rebase origin/main`. If rebase picks up changes,
+         re-run implementation verification (tests, builds, etc.) to ensure rebased
+         changes don't break accepted behavior. If conflicts occur, resolve them and
+         re-verify. Push rebased branch: `git push --force-with-lease`.
    8c. Set work item state to `verification`. If work item has `blocked` label,
    verify approval comment exists. If approved, remove `blocked` label and proceed.
    If not approved, stop with error.
