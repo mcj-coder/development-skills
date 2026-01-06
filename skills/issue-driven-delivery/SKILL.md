@@ -85,8 +85,8 @@ and Jira examples.
    # Get current repository
    CURRENT_REPO=$(gh repo view --json nameWithOwner -q .nameWithOwner)
 
-   # Extract repository from plan URL
-   PLAN_REPO=$(echo "$PLAN_URL" | grep -oP 'github\.com/\K[^/]+/[^/]+')
+   # Extract repository from plan URL (supports github.com and raw.githubusercontent.com)
+   PLAN_REPO=$(echo "$PLAN_URL" | grep -oP '(raw\.githubusercontent|github)\.com/\K[^/]+/[^/]+' | sed 's/\.git$//')
 
    # Validate match
    if [[ "$PLAN_REPO" != "$CURRENT_REPO" ]]; then

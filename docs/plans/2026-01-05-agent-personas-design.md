@@ -501,7 +501,7 @@ formal definitions. This creates:
 **Blocking Issues (Require Escalation):**
 
 - Ambiguous instructions that could lead to multiple interpretations
-- Missing BDD tests for critical skill behaviors
+- Missing BDD tests for critical skill behaviours
 - Skill file exceeds progressive disclosure limit (>500 lines)
 - Circular dependencies between skills
 - Instructions that contradict other skills in the workflow
