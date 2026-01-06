@@ -105,8 +105,62 @@ No Domain, Application, Infrastructure separation.
 
 The skill MUST address these specific failures:
 
-- [ ] Opt-out mechanism for explicitly non-production work
-- [ ] Explicit brownfield approach for sunk cost scenarios
-- [ ] Rationalizations table countering each excuse
-- [ ] Red flags list for self-checking
-- [ ] Authority pressure handling guidance
+- [x] Opt-out mechanism for explicitly non-production work
+- [x] Explicit brownfield approach for sunk cost scenarios
+- [x] Rationalizations table countering each excuse
+- [x] Red flags list for self-checking
+- [x] Authority pressure handling guidance
+
+---
+
+## GREEN Phase (WITH Skill)
+
+### Scenario 1: Time Pressure - PASS
+
+**With skill loaded, agent response included:**
+
+- ✅ **Opt-out explicitly offered:** "Do you want production-quality architecture with enforced boundaries?"
+- ✅ **Red flag addressed:** Quoted rationalizations table - "Demo doesn't need it → Demos become production"
+- ✅ **Pattern options presented:** Clean/Hexagonal/Layered
+- ✅ **Time investment stated:** "~10-15 minutes additional setup"
+- ✅ **Waited for user decision:** "Which option do you choose?"
+
+**Key quote:** "Even with time pressure, investing 10-15 minutes now in proper boundaries will save hours later."
+
+### Scenario 2: Brownfield (Sunk Cost) - PASS
+
+**With skill loaded, agent response included:**
+
+- ✅ **Brownfield workflow followed:** "For existing code with mixed concerns, we use the brownfield approach"
+- ✅ **Minimum 3 layers defined:** Domain, Application, Infrastructure, Presentation
+- ✅ **Dependency rules explicit:** "Domain depends on nothing, Application depends only on Domain"
+- ✅ **Permissive tests with code example:** NetArchTest with `DoNotResideInNamespace("Domain.Legacy")`
+- ✅ **Did NOT propose blocking deploy:** "Does NOT block deployment - current code continues to work"
+- ✅ **Documentation planned:** "I'll create/update `docs/architecture-overview.md`"
+
+**Key quote:** "This approach prevents NEW violations, creates migration path - tighten suppressions as you refactor."
+
+### Scenario 3: Authority Pressure - PASS
+
+**With skill loaded, agent response included:**
+
+- ✅ **Red flag recognized:** "STOP - Architecture Testing Required"
+- ✅ **Tech lead clarification required:** "Please clarify with the tech lead"
+- ✅ **Rationalizations quoted:** "Tech lead said skip it → Clarify cost with tech lead"
+- ✅ **Brownfield path proposed:** 3-day timeline with Day 1 adding permissive tests
+- ✅ **Did NOT just proceed:** "Once you've had that conversation... I can proceed"
+- ✅ **Cost made explicit:** "Skipping means we ship with violations that will compound"
+
+**Key quote:** "Adding architecture tests now (2-4 hours) prevents new violations. Are you aware of this tradeoff?"
+
+---
+
+## GREEN Phase Summary
+
+| Scenario | Compliance | Key Behavior Change |
+| -------- | ---------- | ------------------- |
+| Time pressure | PASS | Offered opt-out, quoted rationalizations |
+| Brownfield | PASS | Permissive tests, no deploy blocking |
+| Authority | PASS | Required clarification before proceeding |
+
+All baseline failures addressed. Skill successfully changes agent behavior under pressure.
