@@ -140,3 +140,56 @@ And evidence must state "This is analytical verification (process-only)"
 - Includes issue comment links
 - Uses process-only checklist template
 - No false claim of repository file modifications
+
+## PR Requirement Enforcement Scenarios
+
+### RED: Closing Issue Without PR
+
+**Setup:** Agent completes verification and attempts to close work item
+**Pressure:** "Verification is complete, so I can close it now."
+**Expected Behavior:** Skill blocks closure until PR exists and is merged
+**Failure Without Enforcement:** Agent closes issue immediately after verification
+
+**Assertions:**
+
+- Step 10a verifies PR exists and is merged before closing
+- Error message displayed when attempting to close without merged PR
+- Exception documented for read-only work
+
+### RED: PR-Skipping Red Flag Detection
+
+**Setup:** Agent considers closing issue without creating PR
+**Pressure:** "I'll close the issue without creating a PR."
+**Expected Behavior:** Agent recognizes this as a red flag and stops
+**Failure Without Red Flag:** Agent proceeds with closure
+
+**Assertions:**
+
+- Red Flags section includes "I'll close the issue without creating a PR."
+- Red Flags section includes "Verification is complete, so I can close it now."
+- Agent stops when recognizing PR-skipping pattern
+
+### RED: PR Rationalization Counter
+
+**Setup:** Agent rationalizes skipping PR step
+**Pressure:** "Changes are pushed, that's enough"
+**Expected Behavior:** Rationalizations table counters this excuse
+**Failure Without Rationalization:** Agent accepts "pushed = done" logic
+
+**Assertions:**
+
+- Rationalizations table includes "Verification complete means I can close"
+- Rationalizations table includes "Changes are pushed, that's enough"
+- Reality column explains PR provides review process and merge tracking
+
+### GREEN: Proper Closure With Merged PR
+
+**Setup:** Agent has merged PR and all verifications complete
+**Expected Behavior:** Agent can close work item
+**Success With Enforcement:** Work item closes only after confirming merged PR
+
+**Assertions:**
+
+- Step 10a checklist verifies merged PR
+- Work item closes successfully when PR is merged
+- Exception path works for read-only work

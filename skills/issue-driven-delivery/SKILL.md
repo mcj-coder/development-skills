@@ -297,14 +297,25 @@ and Jira examples.
    label and proceed. If not approved, stop with error showing blocking reason.
 9. Stop and wait for explicit approval before closing each sub-task.
 10. Close sub-tasks only after approval and mark the plan task complete.
-    10a. Before closing work item, verify all mandatory tags exist (component,
-    work type, priority). Error if any missing. Suggest appropriate tags
-    based on work item content.
+    10a. Before closing work item, verify:
+    - All mandatory tags exist (component, work type, priority)
+    - PR exists and is merged (unless read-only work)
+    Error if any missing. Suggest appropriate tags based on work item content.
+    Exception: Read-only work and reviews are allowed without a ticket/PR.
     10b. When verification complete and acceptance criteria met, close work item
     (state: complete). If work item has `blocked` label, verify approval comment
     exists. If approved, remove `blocked` label and proceed. If not approved,
     stop with error.
     10c. Work item auto-unassigns when closed.
+
+    **Error if PR missing:**
+
+    ```text
+    ERROR: Cannot close work item without merged PR.
+    Required: Create PR using step 15, wait for review and merge.
+    Exception: Read-only work and reviews are allowed without a ticket/PR.
+    ```
+
     10.5. Before closing work item, perform final rebase and plan archival on feature branch:
     a) Check time since step 8b.5 rebase. If >24 hours, rebase again: `git fetch origin && git rebase origin/main`
     b) If rebase picks up changes: review files changed against plan references; if plan
@@ -452,6 +463,7 @@ gh issue edit 30 --add-assignee @me
 - Opening PR before verification complete (violates SHIFT LEFT - issues found late are expensive).
 - Opening PR before role-based reviews (missing critical feedback early when it's cheaper to fix).
 - Using "draft PR" as excuse to skip pre-PR verification (draft PRs still create merge pressure).
+- Closing work item after verification without creating PR (PR must exist and be merged first).
 
 ## Red Flags - STOP
 
@@ -479,6 +491,8 @@ gh issue edit 30 --add-assignee @me
 - "I'll open the PR now and get reviews later" (violates SHIFT LEFT - reviews before PR)
 - "PR can be in draft while verification happens" (violates SHIFT LEFT - verification before PR)
 - "Reviews can happen during PR review" (violates SHIFT LEFT - find issues before PR, not during)
+- "I'll close the issue without creating a PR." (PR must exist and be merged before closing)
+- "Verification is complete, so I can close it now." (verification requires merged PR to close)
 
 ## Rationalizations (and Reality)
 
@@ -503,3 +517,5 @@ gh issue edit 30 --add-assignee @me
 | "Draft PR is fine before verification"    | PR creates merge pressure, undermining thorough verification       |
 | "Reviews can happen in PR comments"       | SHIFT LEFT means finding issues before PR, not during              |
 | "Opening PR early shows progress"         | Progress shown via work item state, not premature PRs              |
+| "Verification complete means I can close" | Must create PR, get review, merge, then close                      |
+| "Changes are pushed, that's enough"       | PR provides review process and merge tracking                      |
