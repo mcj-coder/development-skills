@@ -260,6 +260,14 @@ and Jira examples.
     exists. If approved, remove `blocked` label and proceed. If not approved,
     stop with error.
     10c. Work item auto-unassigns when closed.
+    10.5. Before closing work item, perform final rebase and plan archival:
+          a) Rebase feature branch with main: `git fetch origin && git rebase origin/main`
+          b) If rebase picks up changes, re-run ALL verification (acceptance criteria, tests)
+          c) Archive plan: `git mv docs/plans/YYYY-MM-DD-feature-name.md docs/plans/archive/`
+          d) Commit archive: `git commit -m "docs: archive plan for issue #N"`
+          e) Push rebased branch: `git push --force-with-lease`
+          f) Verification must confirm rebased changes preserve accepted behavior
+          g) If behavior breaks, fix issues before closing
 11. Require each role to post a separate review comment in the work item thread using
     superpowers:receiving-code-review. See [Team Roles](../../docs/roles/README.md) for role
     definitions.
