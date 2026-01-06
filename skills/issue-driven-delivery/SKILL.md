@@ -463,6 +463,7 @@ gh issue edit 30 --add-assignee @me
 - Opening PR before verification complete (violates SHIFT LEFT - issues found late are expensive).
 - Opening PR before role-based reviews (missing critical feedback early when it's cheaper to fix).
 - Using "draft PR" as excuse to skip pre-PR verification (draft PRs still create merge pressure).
+- Closing work item after verification without creating PR (PR must exist and be merged first).
 
 ## Red Flags - STOP
 
