@@ -219,3 +219,116 @@ When all GREEN scenarios pass:
 - Ticket URLs (if created)
 - Git commit SHAs (to verify what was/wasn't committed)
 - Agent conversation logs (to verify skill invocation)
+
+## Decomposition Scenarios
+
+### DECOMPOSITION-1: Detect Structural Signals
+
+**Given**: Requirements mention multiple user flows AND multiple API endpoints
+**When**: Agent completes requirements structuring
+**Then**: [ ] Agent identifies decomposition signals
+**And**: [ ] Agent presents signal findings to user
+**And**: [ ] Agent asks if user wants decomposition proposal
+**Result**: ✅ PASS - Automatic signal detection works
+
+**Signals to detect**:
+
+- [ ] Multiple user flows (distinct end-to-end scenarios)
+- [ ] Multiple API endpoints (separate HTTP operations)
+- [ ] Multiple database entities (new tables or schema changes)
+- [ ] Cross-cutting concerns (auth, logging, caching)
+- [ ] Multiple consumers (different UI/services)
+- [ ] Infrastructure + application (deployment + features)
+
+### DECOMPOSITION-2: User Approves Decomposition Proposal
+
+**Given**: Agent has detected decomposition signals
+**When**: User says "yes" to decomposition proposal
+**Then**: [ ] Agent presents outline view (hierarchical tickets)
+**And**: [ ] Agent presents details table (title, description, dependencies, size)
+**And**: [ ] Agent presents dependency graph (ASCII format)
+**And**: [ ] Agent asks for edits or confirmation
+**Result**: ✅ PASS - Three-view proposal presented
+
+### DECOMPOSITION-3: User Edits Decomposition
+
+**Given**: Agent has presented decomposition proposal
+**When**: User requests changes (merge, split, reorder)
+**Then**: [ ] Agent applies requested changes
+**And**: [ ] Agent shows updated proposal
+**And**: [ ] Agent asks for further edits or confirmation
+**Result**: ✅ PASS - Full editing capability works
+
+**Edit operations to support**:
+
+- [ ] Merge tickets ("combine #2 and #3")
+- [ ] Split tickets ("split #1 into two")
+- [ ] Reorder dependencies ("make #3 depend on #1 only")
+- [ ] Modify details (titles, descriptions)
+- [ ] Add/remove tickets
+
+### DECOMPOSITION-4: Final Review Before Creation
+
+**Given**: User confirms decomposition is correct
+**When**: Agent prepares to create tickets
+**Then**: [ ] Agent shows complete final breakdown
+**And**: [ ] Agent asks for explicit confirmation
+**And**: [ ] Agent does NOT create tickets until confirmed
+**Result**: ✅ PASS - Final review gate enforced
+
+### DECOMPOSITION-5: Platform ADR Check
+
+**Given**: User confirms decomposition
+**When**: Agent checks for platform organization ADR
+**Then**: [ ] Agent checks `docs/adr/` for ticket-organization ADR
+**And**: [ ] If found: Agent uses stored decisions
+**And**: [ ] If not found: Agent presents platform options
+**Result**: ✅ PASS - ADR-based decision reuse works
+
+### DECOMPOSITION-6: Epic and Child Ticket Creation
+
+**Given**: User has approved decomposition and platform choice
+**When**: Agent creates tickets
+**Then**: [ ] Agent creates epic/parent ticket first
+**And**: [ ] Agent creates child tickets with dependencies
+**And**: [ ] Agent creates cleanup ticket if feature flags needed
+**And**: [ ] Agent embeds Mermaid graph in epic description
+**And**: [ ] Agent provides all ticket URLs
+**And**: [ ] Agent STOPS (no design, no plan, no commits)
+**Result**: ✅ PASS - Multi-ticket creation works
+
+### DECOMPOSITION-7: Single Ticket When No Signals
+
+**Given**: Requirements for small/simple feature
+**When**: Agent evaluates scope
+**Then**: [ ] Agent detects no structural signals
+**And**: [ ] Agent skips decomposition proposal
+**And**: [ ] Agent creates single ticket (current behavior)
+**Result**: ✅ PASS - Graceful fallback to simple flow
+
+### DECOMPOSITION-8: Dependency Cycle Detection
+
+**Given**: User edits create dependency cycle
+**When**: Agent validates dependencies
+**Then**: [ ] Agent detects the cycle
+**And**: [ ] Agent warns user about cycle
+**And**: [ ] Agent does NOT proceed until cycle resolved
+**Result**: ✅ PASS - Cycle prevention works
+
+### DECOMPOSITION-9: Feature Flag Tracking
+
+**Given**: Decomposition includes tickets requiring feature flags
+**When**: Agent creates tickets
+**Then**: [ ] Epic includes Feature Flags section
+**And**: [ ] Cleanup ticket created as final child
+**And**: [ ] Cleanup ticket lists all flags with removal checklist
+**And**: [ ] Epic acceptance criteria includes flag removal
+**Result**: ✅ PASS - Feature flag tracking works
+
+### DECOMPOSITION-10: User Declines Decomposition
+
+**Given**: Agent has detected decomposition signals
+**When**: User declines decomposition ("no, keep it as one ticket")
+**Then**: [ ] Agent proceeds with single ticket creation
+**And**: [ ] Agent does NOT force decomposition
+**Result**: ✅ PASS - User choice respected
