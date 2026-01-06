@@ -124,10 +124,11 @@ and Jira examples.
    7b. Set work item state to `implementation`. If work item has `blocked` label,
    verify approval comment exists. If approved, remove `blocked` label and proceed.
    If not approved, stop with error.
-   7c. Self-assign when ready to implement (Developer recommended). If work item
-   has `blocked` label, verify approval comment exists. If approved, remove
-   `blocked` label and proceed. If not approved, stop with error showing
-   blocking reason.
+   7c. Self-assign when ready to implement (Developer recommended). **Create feature
+   branch from main:** `git checkout -b feat/issue-N-description`. All implementation
+   work must be done on feature branch, not main. If work item has `blocked` label,
+   verify approval comment exists. If approved, remove `blocked` label and proceed.
+   If not approved, stop with error showing blocking reason.
 8. Execute each task and attach evidence and reviews to its sub-task.
    8a. When all sub-tasks complete, unassign yourself to signal implementation complete.
    8b. Set work item state to `verification`. If work item has `blocked` label,
@@ -243,6 +244,7 @@ gh issue edit 30 --add-assignee @me
 - Proceeding with blocked work without approval comment (bypasses blocked enforcement).
 - Creating circular dependencies without resolution plan (creates deadlock).
 - Blocking original work item by its own follow-up tasks (incorrect dependency direction).
+- Committing directly to main instead of feature branch (violates GitHub Flow, bypasses PR review).
 
 ## Red Flags - STOP
 
@@ -256,6 +258,7 @@ gh issue edit 30 --add-assignee @me
 - "This blocking task can wait until later." (violates priority inheritance)
 - "I'll pick this P3 ticket instead of that P1." (violates priority order)
 - "The blocked label doesn't apply to me." (bypasses blocked enforcement)
+- "I'll just commit to main this time." (bypasses PR review process, violates GitHub Flow)
 
 ## Rationalizations (and Reality)
 
