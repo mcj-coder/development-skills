@@ -37,12 +37,12 @@ Epic: [Epic Title]
 Tabular view with full information:
 
 ```markdown
-| #   | Title                | Description                           | Blocked By | Size   | Safe to Ship           |
-| --- | -------------------- | ------------------------------------- | ---------- | ------ | ---------------------- |
-| 1   | [Title]              | [What this delivers]                  | —          | X days | Yes/No (reason)        |
-| 2   | [Title]              | [What this delivers]                  | #1         | X days | Yes/Flag/No (reason)   |
-| ... | ...                  | ...                                   | ...        | ...    | ...                    |
-| N   | Remove Feature Flags | Remove flags, verify all flows work   | #X, #Y, #Z | 0.5 day| Yes (final cleanup)    |
+| #   | Title                | Description                         | Blocked By | Size    | Safe to Ship         |
+| --- | -------------------- | ----------------------------------- | ---------- | ------- | -------------------- |
+| 1   | [Title]              | [What this delivers]                | —          | X days  | Yes/No (reason)      |
+| 2   | [Title]              | [What this delivers]                | #1         | X days  | Yes/Flag/No (reason) |
+| ... | ...                  | ...                                 | ...        | ...     | ...                  |
+| N   | Remove Feature Flags | Remove flags, verify all flows work | #X, #Y, #Z | 0.5 day | Yes (final cleanup)  |
 ```
 
 ### Safe to Ship Values
@@ -119,10 +119,10 @@ When decomposition requires feature flags:
 ```markdown
 ## Feature Flags
 
-| Flag                    | Introduced In | Purpose                          | Status   |
-| ----------------------- | ------------- | -------------------------------- | -------- |
-| `FEATURE_X_ENABLED`     | #3            | Hide feature until #4 ready      | Active   |
-| `FEATURE_Y_ENABLED`     | #4            | Gradual rollout                  | Active   |
+| Flag                | Introduced In | Purpose                     | Status |
+| ------------------- | ------------- | --------------------------- | ------ |
+| `FEATURE_X_ENABLED` | #3            | Hide feature until #4 ready | Active |
+| `FEATURE_Y_ENABLED` | #4            | Gradual rollout             | Active |
 
 **Cleanup ticket:** #N
 ```

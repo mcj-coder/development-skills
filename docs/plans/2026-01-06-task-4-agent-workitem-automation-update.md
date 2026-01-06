@@ -8,6 +8,7 @@
 - [ ] Aligns with issue-driven-delivery requirements
 
 **Failure Notes:**
+
 - Current "Delivery Completion" section (lines 130-148) has basic evidence statement
 - Doesn't reference BDD checklist templates
 - No distinction between concrete and process-only verification
@@ -21,6 +22,7 @@
 - [x] Aligns with issue-driven-delivery requirements
 
 **Applied Evidence:**
+
 - Updated agent-workitem-automation SKILL.md (lines 146-158)
 - Added "Concrete Changes" section with applied evidence requirements
 - Added "Process-Only" section with analytical verification guidance

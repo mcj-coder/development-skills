@@ -24,7 +24,7 @@ jobs:
       - name: Set up .NET
         uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: '8.0.x'
+          dotnet-version: "8.0.x"
 
       - name: Run integration tests
         run: dotnet test --filter "Category=Integration"
@@ -84,7 +84,7 @@ integration-tests:
   script:
     - dotnet test --filter "Category=Integration"
   tags:
-    - docker-socket  # Runner with Docker socket mounted
+    - docker-socket # Runner with Docker socket mounted
 ```
 
 ## Azure DevOps
@@ -96,19 +96,19 @@ trigger:
   - main
 
 pool:
-  vmImage: 'ubuntu-latest'
+  vmImage: "ubuntu-latest"
 
 steps:
   - task: Docker@2
-    displayName: 'Pre-pull Docker images'
+    displayName: "Pre-pull Docker images"
     inputs:
-      command: 'pull'
-      arguments: 'postgres:15'
+      command: "pull"
+      arguments: "postgres:15"
 
   - task: DotNetCoreCLI@2
-    displayName: 'Run integration tests'
+    displayName: "Run integration tests"
     inputs:
-      command: 'test'
+      command: "test"
       arguments: '--filter "Category=Integration"'
 ```
 
@@ -257,13 +257,13 @@ int port = 5432;  // May conflict
 
 ## CI Resource Requirements
 
-| CI Platform    | Minimum Resources          | Recommended             |
-| -------------- | -------------------------- | ----------------------- |
-| GitHub Actions | ubuntu-latest (2 CPU, 7GB) | Sufficient              |
-| GitLab CI      | Docker-in-Docker           | Medium runner (2+ CPU)  |
-| Azure DevOps   | ubuntu-latest              | Sufficient              |
-| Jenkins        | Docker socket access       | 4GB+ memory             |
-| CircleCI       | machine executor           | Large resource class    |
+| CI Platform    | Minimum Resources          | Recommended            |
+| -------------- | -------------------------- | ---------------------- |
+| GitHub Actions | ubuntu-latest (2 CPU, 7GB) | Sufficient             |
+| GitLab CI      | Docker-in-Docker           | Medium runner (2+ CPU) |
+| Azure DevOps   | ubuntu-latest              | Sufficient             |
+| Jenkins        | Docker socket access       | 4GB+ memory            |
+| CircleCI       | machine executor           | Large resource class   |
 
 ## Performance Optimization Checklist for CI
 

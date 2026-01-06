@@ -9,6 +9,7 @@
 - [ ] Clear distinction between this repo's concrete requirements and Superpowers process guidance
 
 **Failure Notes:**
+
 - Current documentation references Superpowers skills but doesn't explain integration
 - No explicit documentation of how Superpowers TDD complements local BDD requirements
 - Unclear relationship between superpowers:verification and local verification requirements
@@ -23,6 +24,7 @@
 - [x] Clear distinction between this repo's concrete requirements and Superpowers process guidance (lines 197-214)
 
 **Applied Evidence:**
+
 - Added "Superpowers Skills Integration" section to AGENTS.md (lines 192-243)
 - Documents what Superpowers provides (process skills)
 - Documents what this repo provides (concrete requirements)

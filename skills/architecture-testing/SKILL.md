@@ -31,14 +31,14 @@ See [Pattern Details](references/architecture-patterns.md) and [NetArchTest Exam
 
 ## Rationalizations Table
 
-| Excuse | Reality |
-| ------ | ------- |
-| "Can add architecture later" | Later never happens. 10 min now saves hours later. |
-| "Speed over architecture" | Architecture prevents defects. Defects cost more time. |
-| "Demo doesn't need it" | Demos become production. Start right or rewrite. |
-| "Too disruptive to existing code" | Use brownfield approach: permissive tests, tighten gradually. |
-| "Tech lead said skip it" | Clarify cost with tech lead. They may not realize impact. |
-| "Working code ships" | Shipping debt accumulates interest. Pay now or pay more later. |
+| Excuse                            | Reality                                                        |
+| --------------------------------- | -------------------------------------------------------------- |
+| "Can add architecture later"      | Later never happens. 10 min now saves hours later.             |
+| "Speed over architecture"         | Architecture prevents defects. Defects cost more time.         |
+| "Demo doesn't need it"            | Demos become production. Start right or rewrite.               |
+| "Too disruptive to existing code" | Use brownfield approach: permissive tests, tighten gradually.  |
+| "Tech lead said skip it"          | Clarify cost with tech lead. They may not realize impact.      |
+| "Working code ships"              | Shipping debt accumulates interest. Pay now or pay more later. |
 
 ## Red Flags - STOP
 

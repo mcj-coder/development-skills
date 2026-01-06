@@ -10,6 +10,7 @@
 - [ ] States "TDD enforcement" section (line 20-21) applies to all changes including documentation
 
 **Failure Notes:**
+
 - Current AGENTS.md line 12-15 has basic applied-skill evidence requirement
 - Lacks clarity on concrete vs process-only distinction
 - No reference to BDD checklist templates
@@ -26,6 +27,7 @@
 - [x] States "TDD enforcement" section (lines 27-34) applies to all changes including documentation
 
 **Applied Evidence:**
+
 - Updated AGENTS.md applied-skill evidence section (lines 12-22)
   - Concrete changes require applied evidence with commit SHAs and file links
   - Process-only allows analytical verification with issue comment links

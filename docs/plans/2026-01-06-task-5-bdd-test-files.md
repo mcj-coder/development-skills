@@ -10,6 +10,7 @@
 - [ ] Each test file shows GREEN (passing) state after skill applied
 
 **Failure Notes:**
+
 - issue-driven-delivery.test.md exists but doesn't cover BDD verification requirements
 - agent-workitem-automation.test.md exists but needs BDD verification scenarios
 - markdown-author.test.md exists but needs concrete verification example
@@ -26,6 +27,7 @@
 - [x] Each test file shows GREEN (passing) state after skill applied
 
 **Applied Evidence:**
+
 - Updated issue-driven-delivery.test.md with BDD verification pressure scenario and 4 test cases (RED/GREEN)
 - Updated agent-workitem-automation.test.md with BDD verification test cases (RED/GREEN)
 - Updated markdown-author.test.md with concrete change verification examples

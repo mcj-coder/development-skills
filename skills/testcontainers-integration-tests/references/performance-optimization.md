@@ -161,9 +161,9 @@ public async Task CreateFreshSchema(string schemaName)
 ```json
 // xunit.runner.json
 {
-    "parallelizeAssembly": true,
-    "parallelizeTestCollections": true,
-    "maxParallelThreads": 4
+  "parallelizeAssembly": true,
+  "parallelizeTestCollections": true,
+  "maxParallelThreads": 4
 }
 ```
 
@@ -245,19 +245,19 @@ Console.WriteLine($"Container started in {stopwatch.ElapsedMilliseconds}ms");
 
 ### Target Performance
 
-| Metric                | Target | Optimized           |
-| --------------------- | ------ | ------------------- |
-| Container startup     | <30s   | <10s (with reuse)   |
-| Per-test time         | <10s   | <3s                 |
-| Full suite (20 tests) | <3min  | <45s                |
+| Metric                | Target | Optimized         |
+| --------------------- | ------ | ----------------- |
+| Container startup     | <30s   | <10s (with reuse) |
+| Per-test time         | <10s   | <3s               |
+| Full suite (20 tests) | <3min  | <45s              |
 
 ## Rationalizations Table
 
 | Excuse                             | Reality                                                                                                                        |
 | ---------------------------------- | ------------------------------------------------------------------------------------------------------------------------------ |
-| "Mocks are faster"                 | Optimized Testcontainers run in seconds. Container reuse + parallel tests achieve comparable speed. Mocks don't catch SQL bugs.|
-| "In-memory is close enough"        | Database-specific features differ. JSON operators, array types, window functions behave differently. Test with production DB. |
-| "Testcontainers is too slow"       | Optimize with container reuse and parallel execution. Pre-pull images in CI. 4x+ speed improvements possible.                 |
-| "Shared test database is standard" | Shared state causes flaky tests. Testcontainers provides isolation without coordination overhead.                             |
-| "Can test manually"                | Manual testing doesn't scale and isn't repeatable. Automate with Testcontainers for CI.                                       |
-| "CI doesn't support Docker"        | Most CI platforms support Docker. Consider cloud-based CI if truly no Docker support.                                         |
+| "Mocks are faster"                 | Optimized Testcontainers run in seconds. Container reuse + parallel tests achieve comparable speed. Mocks don't catch SQL bugs |
+| "In-memory is close enough"        | Database-specific features differ. JSON operators, array types, window functions behave differently. Test with production DB   |
+| "Testcontainers is too slow"       | Optimize with container reuse and parallel execution. Pre-pull images in CI. 4x+ speed improvements possible                   |
+| "Shared test database is standard" | Shared state causes flaky tests. Testcontainers provides isolation without coordination overhead                               |
+| "Can test manually"                | Manual testing doesn't scale and isn't repeatable. Automate with Testcontainers for CI                                         |
+| "CI doesn't support Docker"        | Most CI platforms support Docker. Consider cloud-based CI if truly no Docker support                                           |

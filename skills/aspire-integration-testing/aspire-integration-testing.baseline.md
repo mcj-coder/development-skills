@@ -63,11 +63,11 @@
 
 ## RED Phase Summary
 
-| Scenario | Integration Tests | Health Validation | Observability |
-| -------- | ----------------- | ----------------- | ------------- |
-| Time pressure | NO | Manual only | Minimal |
-| Sunk cost | NO | NO | NO |
-| Authority | NO | NO | NO |
+| Scenario      | Integration Tests | Health Validation | Observability |
+| ------------- | ----------------- | ----------------- | ------------- |
+| Time pressure | NO                | Manual only       | Minimal       |
+| Sunk cost     | NO                | NO                | NO            |
+| Authority     | NO                | NO                | NO            |
 
 ## Rationalizations to Address
 
@@ -113,4 +113,5 @@
 
 ## Verification Result
 
-**PASSED** - Skill successfully changes agent behavior from test-skipping to systematic integration testing under all pressure types.
+**PASSED** - Skill successfully changes agent behavior from test-skipping to systematic
+integration testing under all pressure types.

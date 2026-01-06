@@ -2,11 +2,13 @@
 
 ## Summary
 
-Add comprehensive work item prioritization rules to issue-driven-delivery skill to help agents and teams deliver work in optimal order, with blocked work enforcement and automatic dependency resolution.
+Add comprehensive work item prioritization rules to issue-driven-delivery skill to help agents and teams
+deliver work in optimal order, with blocked work enforcement and automatic dependency resolution.
 
 ## Problem
 
-Current issue-driven-delivery skill lacks explicit prioritization guidance. Teams and agents need clear rules for:
+Current issue-driven-delivery skill lacks explicit prioritization guidance. Teams and agents need
+clear rules for:
 
 - Which work item to pick next when multiple items are ready
 - How to handle blocking dependencies
@@ -41,19 +43,19 @@ Without these rules, agents may:
 
 ### Integration Points
 
-**1. New Reference Document:**
+#### 1. New Reference Document
 
 - File: `skills/issue-driven-delivery/references/prioritization-rules.md`
 - Content: 5-tier priority hierarchy, blocking types, circular dependency resolution
 - Similar depth to `component-tagging.md` (~300-400 lines)
 
-**2. Main SKILL.md Updates:**
+#### 2. Main SKILL.md Updates
 
 - Add "Work Item Prioritization" section after "Work Item Tagging"
 - Brief summary of 5 rules + link to reference
 - ~50 lines in main skill
 
-**3. Core Workflow Changes:**
+#### 3. Core Workflow Changes
 
 - Step 3a: Add blocked check at refinement self-assignment
 - Step 4b: Add dependency review during planning
@@ -66,33 +68,33 @@ Without these rules, agents may:
 
 ### Prioritization Hierarchy (5 Tiers)
 
-**Tier 1: Finish Started Work (Highest Priority)**
+#### Tier 1: Finish Started Work (Highest Priority)
 
 - Target: Unassigned work items in progress states (refinement, implementation, verification)
 - Rationale: Minimize WIP, complete in-flight work before starting new
 - Query: `state:(refinement|implementation|verification) assignee:""`
 - Exception: P0 production incidents override this tier
 
-**Tier 2: Critical Production Issues (P0)**
+#### Tier 2: Critical Production Issues (P0)
 
 - Target: Priority P0 with keywords: "production", "down", "data loss", "security"
 - Overrides finish-started-work rule
 - Must be actioned immediately
 
-**Tier 3: Priority Order (P0 → P1 → P2 → P3 → P4)**
+#### Tier 3: Priority Order (P0 to P1 to P2 to P3 to P4)
 
 - Standard priority-based delivery
 - Work through P0s, then P1s, then P2s, etc.
 - Lower number = higher priority
 
-**Tier 4: Blocking Task Priority Inheritance**
+#### Tier 4: Blocking Task Priority Inheritance
 
 - Blocking tasks inherit priority from blocked tasks
 - Formula: `effective_priority = min(task_priority, min(blocked_tasks_priority))`
 - Example: P2 task blocking P0 task becomes P0 effective priority
 - Transitive: Inherits from entire dependency chain
 
-**Tier 5: Blocking Task Tie-Breaker**
+#### Tier 5: Blocking Task Tie-Breaker
 
 - When multiple blocking tasks have same effective priority
 - Count: Direct + transitive blocked work items
@@ -101,9 +103,10 @@ Without these rules, agents may:
 
 ### Blocking Types
 
-**Manual Blocking (User-Added):**
+#### Manual Blocking (User-Added)
 
-- User explicitly adds `blocked` label + comment (e.g., "blocked waiting for client approval")
+- User explicitly adds `blocked` label + comment
+  (e.g., "blocked waiting for client approval")
 - Cannot be auto-resolved - requires explicit user approval
 - Comment patterns: "waiting for", "blocked by external", "needs approval from"
 - Only unblocked by:
@@ -111,7 +114,7 @@ Without these rules, agents may:
   - User removes `blocked` label
 - Circular dependency resolution cannot override manual blocks
 
-**Dependency Blocking (System-Added):**
+#### Dependency Blocking (System-Added)
 
 - Added during dependency review in refinement
 - Comment links to blocking work item: "Blocked by #123"
@@ -121,14 +124,14 @@ Without these rules, agents may:
 
 ### Blocked Work Enforcement
 
-**Check Points:**
+#### Check Points
 
 - Self-assignment (steps 3a, 7c, 8c)
 - State transitions (steps 7b, 8b, 10b)
 
-**Logic:**
+#### Logic
 
-```
+```text
 IF work_item.has_label('blocked'):
     approval_comment = find_comment(contains: "approved to proceed" OR "unblocked")
     IF approval_comment.exists():
@@ -141,9 +144,9 @@ IF work_item.has_label('blocked'):
         stop()
 ```
 
-**Error Message:**
+#### Error Message
 
-```
+```text
 ERROR: Cannot self-assign blocked work item #X
 Blocking reason: [blocking comment text]
 Requires explicit approval comment to proceed.
@@ -163,7 +166,7 @@ When work item closes (step 20):
    - Keep `blocked` label until all blockers resolved
 5. Log unblocking action for audit trail
 
-**Query Pattern:**
+#### Query Pattern
 
 ```bash
 gh issue list --search "Blocked by #100" --state open
@@ -171,15 +174,19 @@ gh issue list --search "Blocked by #100" --state open
 
 ### Circular Dependency Resolution
 
-**Detection:** A → B → C → A creates cycle
+#### Detection
 
-**Pre-check:** Verify no manual blockers in cycle
+A depends on B depends on C depends on A creates cycle
+
+#### Pre-check
+
+Verify no manual blockers in cycle
 
 - Search comments for manual blocking patterns: "waiting for", "external", "approval", "client"
-- If ANY task has manual block → STOP, cannot auto-resolve
+- If ANY task has manual block, STOP, cannot auto-resolve
 - Error: "Circular dependency contains manual blocker. Requires user intervention."
 
-**Resolution Steps (if all blocks are dependency-based):**
+#### Resolution Steps (if all blocks are dependency-based)
 
 1. Calculate rework cost for each task in cycle
 2. Choose task with minimum rework
@@ -188,7 +195,7 @@ gh issue list --search "Blocked by #100" --state open
 5. Create follow-up task for rework
 6. Link follow-up to original task
 
-**Rework Cost Heuristics:**
+#### Rework Cost Heuristics
 
 - Interface changes < Implementation changes < Architecture changes
 - Temporary mocks/stubs = low rework cost
@@ -196,7 +203,7 @@ gh issue list --search "Blocked by #100" --state open
 
 ### Dependency Review During Refinement
 
-**New Step 4b (during planning):**
+#### New Step 4b (during planning)
 
 During planning, perform dependency review:
 
@@ -214,91 +221,92 @@ During planning, perform dependency review:
 
 ### Example 1: Simple Priority Ordering
 
-**Queue state:**
+Queue state:
 
 - #100 (P2, unblocked, new-feature)
 - #101 (P1, unblocked, bug)
 - #102 (P3, unblocked, enhancement)
 
-**Selection:** #101 (highest priority wins)
+Selection: #101 (highest priority wins)
 
 ### Example 2: Finish Started Work
 
-**Queue state:**
+Queue state:
 
 - #200 (P1, state:new-feature, unassigned)
-- #201 (P2, state:implementation, unassigned) ← someone started, didn't finish
+- #201 (P2, state:implementation, unassigned) - someone started, didn't finish
 
-**Selection:** #201 (finish what's started before starting new)
+Selection: #201 (finish what's started before starting new)
 
 ### Example 3: Priority Inheritance
 
-**Initial state:**
+Initial state:
 
 - #300 (P2): Add authentication module
 - #301 (P0): Production deployment (depends on #300)
 
-**After dependency analysis:**
+After dependency analysis:
 
 - #300 effective priority: P0 (inherits from #301)
 
-**Selection:** #300 before other P2 work (inherited priority)
+Selection: #300 before other P2 work (inherited priority)
 
 ### Example 4: Tie-Breaker (Most Unblocked)
 
-**Queue state:**
+Queue state:
 
 - #400 (P1): Fix auth bug [blocks #401, #402]
 - #500 (P1): Fix DB bug [blocks #501, #502, #503, #504, #505]
 
-**Selection:** #500 (unblocks 5 items vs 2 items)
+Selection: #500 (unblocks 5 items vs 2 items)
 
 ### Example 5: Manual Block - Cannot Proceed
 
-**Work item #600:**
+Work item #600:
 
 - Labels: blocked, P1
 - Comment: "Blocked waiting for client API key approval"
 
-**Agent attempts self-assign:**
+Agent attempts self-assign:
 
-```
+```text
 ERROR: Cannot self-assign blocked work item #600
 Blocking reason: "Blocked waiting for client API key approval"
 Requires explicit approval comment to proceed.
 ```
 
-**Resolution:** Wait for user comment "approved to proceed" or "unblocked"
+Resolution: Wait for user comment "approved to proceed" or "unblocked"
 
 ### Example 6: Circular Dependency Resolution
 
-**Cycle detected:**
+Cycle detected:
 
 - #700: Refactor Module A (blocked by #701 for interface definition)
 - #701: Refactor Module B (blocked by #700 for type definitions)
 
-**Dependency analysis:**
+Dependency analysis:
 
 - Both are dependency blocks (not manual)
 - Rework cost: #700 with temp interface = LOW, #701 with temp types = MEDIUM
 
-**Resolution:**
+Resolution:
 
 1. Unblock #700 (lower rework cost)
 2. Create #702: "Update Module A with final interface from #701"
-3. Comment on #700: "Circular dependency with #701. Delivering with temporary interface. Follow-up: #702"
+3. Comment on #700: "Circular dependency with #701. Delivering with temporary interface.
+   Follow-up: #702"
 4. Remove blocked label from #700
 5. #700 proceeds, #701 remains blocked until #700 completes
 
 ### Example 7: Auto-Unblock on Completion
 
-**Initial state:**
+Initial state:
 
 - #800: Fix authentication (closed)
 - #801: Deploy authentication (blocked by #800)
 - Comment on #801: "Blocked by #800"
 
-**When #800 closes:**
+When #800 closes:
 
 1. System searches for "Blocked by #800"
 2. Finds #801
@@ -307,23 +315,23 @@ Requires explicit approval comment to proceed.
 
 ### Example 8: Multiple Blockers - Partial Resolution
 
-**Initial state:**
+Initial state:
 
 - #900: Feature X (blocked by #901, #902, #903)
 - Comment on #900: "Blocked by #901, #902, #903"
 
-**When #901 closes:**
+When #901 closes:
 
 1. System finds #900
 2. Updates comment: "Blocked by #902, #903"
 3. Keeps `blocked` label (still has 2 blockers)
 
-**When #902 closes:**
+When #902 closes:
 
 1. Updates comment: "Blocked by #903"
 2. Keeps `blocked` label (still has 1 blocker)
 
-**When #903 closes:**
+When #903 closes:
 
 1. Removes comment and `blocked` label
 2. Adds comment: "Auto-unblocked: all blockers resolved"
@@ -332,109 +340,109 @@ Requires explicit approval comment to proceed.
 
 ### RED Scenarios (Baseline Without Enhancement)
 
-**RED 1: Agent picks low priority over high priority**
+#### RED 1: Agent picks low priority over high priority
 
-- **Given:** Queue has P1 and P2 work items
-- **When:** Agent selects work without checking priority
-- **Then:** Might pick P2 before P1
-- **Expected failure:** No prioritization guidance
+- Given: Queue has P1 and P2 work items
+- When: Agent selects work without checking priority
+- Then: Might pick P2 before P1
+- Expected failure: No prioritization guidance
 
-**RED 2: Agent starts new work while in-progress work exists**
+#### RED 2: Agent starts new work while in-progress work exists
 
-- **Given:** Work item in state:implementation, unassigned (abandoned)
-- **When:** Agent picks state:new-feature work item
-- **Then:** Leaves in-progress work unfinished
-- **Expected failure:** No "finish started work" rule
+- Given: Work item in state:implementation, unassigned (abandoned)
+- When: Agent picks state:new-feature work item
+- Then: Leaves in-progress work unfinished
+- Expected failure: No "finish started work" rule
 
-**RED 3: Agent proceeds with blocked work**
+#### RED 3: Agent proceeds with blocked work
 
-- **Given:** Work item has blocked label without approval
-- **When:** Agent attempts self-assignment
-- **Then:** Proceeds without checking for approval
-- **Expected failure:** No blocked enforcement
+- Given: Work item has blocked label without approval
+- When: Agent attempts self-assignment
+- Then: Proceeds without checking for approval
+- Expected failure: No blocked enforcement
 
-**RED 4: Circular dependency causes deadlock**
+#### RED 4: Circular dependency causes deadlock
 
-- **Given:** A blocks B, B blocks A
-- **When:** Agent analyzes dependencies
-- **Then:** Both remain blocked indefinitely
-- **Expected failure:** No circular dependency resolution
+- Given: A blocks B, B blocks A
+- When: Agent analyzes dependencies
+- Then: Both remain blocked indefinitely
+- Expected failure: No circular dependency resolution
 
 ### GREEN Scenarios (With Enhancement)
 
-**GREEN 1: Priority ordering enforced**
+#### GREEN 1: Priority ordering enforced
 
-- **Given:** Queue has #100 (P2), #101 (P1), #102 (P3)
-- **When:** Agent applies prioritization rules
-- **Then:** Selects #101 (P1 first)
+- Given: Queue has #100 (P2), #101 (P1), #102 (P3)
+- When: Agent applies prioritization rules
+- Then: Selects #101 (P1 first)
 
-**GREEN 2: Finish started work first**
+#### GREEN 2: Finish started work first
 
-- **Given:** #200 (P1, new-feature), #201 (P2, implementation, unassigned)
-- **When:** Agent applies prioritization
-- **Then:** Selects #201 (finish what's started)
+- Given: #200 (P1, new-feature), #201 (P2, implementation, unassigned)
+- When: Agent applies prioritization
+- Then: Selects #201 (finish what's started)
 
-**GREEN 3: Blocked work rejected without approval**
+#### GREEN 3: Blocked work rejected without approval
 
-- **Given:** #300 has blocked label, comment "waiting for client approval"
-- **When:** Agent attempts self-assignment
-- **Then:** ERROR with blocking reason shown
-- **And:** Agent stops, waits for approval
+- Given: #300 has blocked label, comment "waiting for client approval"
+- When: Agent attempts self-assignment
+- Then: ERROR with blocking reason shown
+- And: Agent stops, waits for approval
 
-**GREEN 4: Blocked work auto-unblocked when approved**
+#### GREEN 4: Blocked work auto-unblocked when approved
 
-- **Given:** #400 blocked, user comments "approved to proceed"
-- **When:** Agent attempts self-assignment
-- **Then:** Automatically removes blocked label
-- **And:** Proceeds with assignment
-- **And:** Logs: "Blocked label removed after approval"
+- Given: #400 blocked, user comments "approved to proceed"
+- When: Agent attempts self-assignment
+- Then: Automatically removes blocked label
+- And: Proceeds with assignment
+- And: Logs: "Blocked label removed after approval"
 
-**GREEN 5: Auto-unblock on blocker completion**
+#### GREEN 5: Auto-unblock on blocker completion
 
-- **Given:** #500 blocks #501 (sole blocker)
-- **When:** #500 closes
-- **Then:** #501 blocked label automatically removed
-- **And:** Comment added: "Auto-unblocked: #500 completed"
+- Given: #500 blocks #501 (sole blocker)
+- When: #500 closes
+- Then: #501 blocked label automatically removed
+- And: Comment added: "Auto-unblocked: #500 completed"
 
-**GREEN 6: Circular dependency resolved**
+#### GREEN 6: Circular dependency resolved
 
-- **Given:** #600 blocks #601, #601 blocks #600 (both dependency blocks)
-- **When:** Agent detects cycle during dependency review
-- **Then:** Calculates rework cost for each
-- **And:** Unblocks task with minimum rework
-- **And:** Creates follow-up task for rework
-- **And:** Documents resolution in comments
+- Given: #600 blocks #601, #601 blocks #600 (both dependency blocks)
+- When: Agent detects cycle during dependency review
+- Then: Calculates rework cost for each
+- And: Unblocks task with minimum rework
+- And: Creates follow-up task for rework
+- And: Documents resolution in comments
 
 ### PRESSURE Scenarios (Edge Cases)
 
-**PRESSURE 1: Multiple blockers, partial resolution**
+#### PRESSURE 1: Multiple blockers, partial resolution
 
-- **Given:** #700 blocked by #701, #702, #703
-- **When:** #701 closes
-- **Then:** #700 comment updated to remove #701
-- **And:** Blocked label remains (still blocked by #702, #703)
-- **And:** Label only removed when all blockers resolved
+- Given: #700 blocked by #701, #702, #703
+- When: #701 closes
+- Then: #700 comment updated to remove #701
+- And: Blocked label remains (still blocked by #702, #703)
+- And: Label only removed when all blockers resolved
 
-**PRESSURE 2: Manual block in circular dependency**
+#### PRESSURE 2: Manual block in circular dependency
 
-- **Given:** #800 blocks #801 (manual: "waiting for vendor")
-- **And:** #801 blocks #800 (dependency block)
-- **When:** Agent attempts circular resolution
-- **Then:** ERROR: "Circular dependency contains manual blocker"
-- **And:** No auto-resolution attempted
+- Given: #800 blocks #801 (manual: "waiting for vendor")
+- And: #801 blocks #800 (dependency block)
+- When: Agent attempts circular resolution
+- Then: ERROR: "Circular dependency contains manual blocker"
+- And: No auto-resolution attempted
 
-**PRESSURE 3: Priority inheritance chain**
+#### PRESSURE 3: Priority inheritance chain
 
-- **Given:** #900 (P3) blocks #901 (P2) blocks #902 (P0)
-- **When:** Agent calculates effective priority
-- **Then:** #900 inherits P0 (transitive through chain)
-- **And:** #901 inherits P0
+- Given: #900 (P3) blocks #901 (P2) blocks #902 (P0)
+- When: Agent calculates effective priority
+- Then: #900 inherits P0 (transitive through chain)
+- And: #901 inherits P0
 
-**PRESSURE 4: Tie-breaker with equal blocking counts**
+#### PRESSURE 4: Tie-breaker with equal blocking counts
 
-- **Given:** #1000 (P1) blocks 3 items, #1001 (P1) blocks 3 items
-- **When:** Agent applies tie-breaker
-- **Then:** Selects lower issue number (FIFO as final fallback)
+- Given: #1000 (P1) blocks 3 items, #1001 (P1) blocks 3 items
+- When: Agent applies tie-breaker
+- Then: Selects lower issue number (FIFO as final fallback)
 
 ## Implementation Plan
 
@@ -498,18 +506,18 @@ None - design approved.
 
 ## Risks and Mitigations
 
-**Risk:** Automatic unblocking might remove blocks prematurely
+### Risk: Automatic unblocking might remove blocks prematurely
 
-- **Mitigation:** Only remove when ALL blockers resolved, maintain audit trail
+Mitigation: Only remove when ALL blockers resolved, maintain audit trail
 
-**Risk:** Circular dependency resolution might choose wrong task
+### Risk: Circular dependency resolution might choose wrong task
 
-- **Mitigation:** Use rework cost heuristics, require manual approval for manual blocks
+Mitigation: Use rework cost heuristics, require manual approval for manual blocks
 
-**Risk:** Priority inheritance might create unexpected high-priority work
+### Risk: Priority inheritance might create unexpected high-priority work
 
-- **Mitigation:** Document transitive inheritance clearly, make calculation transparent
+Mitigation: Document transitive inheritance clearly, make calculation transparent
 
-**Risk:** Agents might not follow prioritization rules
+### Risk: Agents might not follow prioritization rules
 
-- **Mitigation:** Add to Common Mistakes and Red Flags, enforce at assignment time
+Mitigation: Add to Common Mistakes and Red Flags, enforce at assignment time

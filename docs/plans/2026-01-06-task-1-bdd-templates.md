@@ -10,6 +10,7 @@
 - [ ] Clearly distinguishes when to use each template
 
 **Failure Notes:**
+
 - File does not exist yet
 - No templates available for teams to reference
 - No clear guidance on concrete vs process-only verification
@@ -24,6 +25,7 @@
 - [x] Clearly distinguishes when to use each template
 
 **Applied Evidence:**
+
 - Created `docs/references/bdd-checklist-templates.md` with comprehensive templates
 - Template 1: Concrete Changes Checklist with RED/GREEN phases
 - Template 2: Process-Only Checklist with analytical verification

@@ -1,13 +1,17 @@
 ---
 name: aspire-integration-testing
-description: Use when repository includes .NET Aspire usage, distributed application setup, or cross-component behavior validation. Produces BDD-style integration tests with health checks and observability verification.
+description: >-
+  Use when repository includes .NET Aspire usage, distributed application setup, or
+  cross-component behavior validation. Produces BDD-style integration tests with health
+  checks and observability verification.
 ---
 
 # Aspire Integration Testing
 
 ## Overview
 
-Integration tests for .NET Aspire distributed applications. Validates service startup, health endpoints, cross-component communication, and observability.
+Integration tests for .NET Aspire distributed applications. Validates service startup,
+health endpoints, cross-component communication, and observability.
 
 **REQUIRED:** superpowers:test-driven-development, superpowers:verification-before-completion
 
@@ -36,13 +40,13 @@ See [Testing Patterns](references/aspire-testing-patterns.md) and [API Reference
 
 ## Rationalizations Table
 
-| Excuse | Reality |
-| ------ | ------- |
-| "Aspire handles health checks" | Health checks exist but must be validated. Services can fail silently. |
-| "Too complex to test" | Aspire.Hosting.Testing makes it straightforward. 20 min setup. |
-| "Can test in staging" | Local testing is 10x faster. Staging debugging wastes hours. |
-| "Demo doesn't need tests" | Demos become production. Start right or rewrite. |
-| "Manual verification is enough" | Manual tests don't catch regression. Automated tests do. |
+| Excuse                          | Reality                                                                |
+| ------------------------------- | ---------------------------------------------------------------------- |
+| "Aspire handles health checks"  | Health checks exist but must be validated. Services can fail silently. |
+| "Too complex to test"           | Aspire.Hosting.Testing makes it straightforward. 20 min setup.         |
+| "Can test in staging"           | Local testing is 10x faster. Staging debugging wastes hours.           |
+| "Demo doesn't need tests"       | Demos become production. Start right or rewrite.                       |
+| "Manual verification is enough" | Manual tests don't catch regression. Automated tests do.               |
 
 ## Red Flags - STOP
 

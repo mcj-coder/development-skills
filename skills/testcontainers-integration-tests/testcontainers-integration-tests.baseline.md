@@ -1,8 +1,8 @@
 # testcontainers-integration-tests - TDD Baseline Evidence
 
-**Issue:** #89
-**Date:** 2026-01-06
-**Status:** Verified
+- **Issue:** #89
+- **Date:** 2026-01-06
+- **Status:** Verified
 
 ## RED Phase (WITHOUT Skill)
 
@@ -63,14 +63,14 @@ await cmd.ExecuteNonQueryAsync(); // Real execution, not mocks
 
 ### Skill Compliance
 
-| Requirement | Compliant | Evidence |
-|-------------|-----------|----------|
-| Real PostgreSQL | YES | Testcontainers with postgres:15 |
-| JSON operators tested | YES | `->>`, `->`, `@>`, `?` in tests |
-| Array types tested | YES | `ANY()`, `@>`, `&&` operators |
-| Transactions tested | YES | Commit, rollback, serializable isolation |
-| Container lifecycle | YES | Shared fixture with IAsyncLifetime |
-| Test isolation | YES | Transaction rollback between tests |
+| Requirement           | Compliant | Evidence                                 |
+| --------------------- | --------- | ---------------------------------------- |
+| Real PostgreSQL       | YES       | Testcontainers with postgres:15          |
+| JSON operators tested | YES       | `->>`, `->`, `@>`, `?` in tests          |
+| Array types tested    | YES       | `ANY()`, `@>`, `&&` operators            |
+| Transactions tested   | YES       | Commit, rollback, serializable isolation |
+| Container lifecycle   | YES       | Shared fixture with IAsyncLifetime       |
+| Test isolation        | YES       | Transaction rollback between tests       |
 
 ## Verification Result
 

@@ -413,6 +413,7 @@ markdown-author skill makes concrete changes (linting configuration files).
 **Failure Without Verification:** "Created markdown linting config" (no link)
 
 **Assertions:**
+
 - Configuration file creation is concrete change
 - Requires applied evidence with commit SHA
 - Must include file link to `.markdownlint.json`
@@ -425,12 +426,14 @@ markdown-author skill makes concrete changes (linting configuration files).
 **Success:** "Applied evidence: .markdownlint.json created [SHA], config at [file link]"
 
 **Assertions:**
+
 - Applied evidence includes commit SHA
 - References actual configuration file
 - Evidence verifiable by file inspection
 - Shows skill was applied in THIS repository
 
 **Example:**
+
 ```text
 Applied evidence:
 - Created .markdownlint.json: https://github.com/org/repo/blob/a7f3c2e/.markdownlint.json

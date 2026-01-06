@@ -2,7 +2,9 @@
 
 ## Overview
 
-This document defines the prioritization rules for selecting which work item to action next when multiple work items are available. These rules help agents and teams deliver work in optimal order, minimize work-in-progress, and resolve blocking dependencies efficiently.
+This document defines the prioritization rules for selecting which work item to action next when multiple
+work items are available. These rules help agents and teams deliver work in optimal order, minimize
+work-in-progress, and resolve blocking dependencies efficiently.
 
 ## The 5-Tier Prioritization Hierarchy
 
@@ -12,7 +14,8 @@ When selecting the next work item to action, apply these rules in order:
 
 **Target:** Unassigned work items in progress states (refinement, implementation, verification)
 
-**Rationale:** Minimize work-in-progress by completing in-flight work before starting new work. Unfinished work creates bottlenecks, wastes context-switching time, and reduces throughput.
+**Rationale:** Minimize work-in-progress by completing in-flight work before starting new work. Unfinished
+work creates bottlenecks, wastes context-switching time, and reduces throughput.
 
 **Query Pattern:**
 
@@ -31,7 +34,7 @@ jira issue list --jql "assignee is EMPTY AND status IN ('Refinement', 'Implement
 
 **Example:**
 
-```
+```text
 Available work items:
 - #100 (P1, state:new-feature) - Not started
 - #101 (P2, state:implementation, unassigned) - Started but abandoned
@@ -46,7 +49,8 @@ Reason: Finish started work before starting new work
 
 **Keywords:** "production", "down", "outage", "data loss", "security breach", "critical"
 
-**Rationale:** Production incidents require immediate attention to minimize business impact. These override the "finish started work" rule.
+**Rationale:** Production incidents require immediate attention to minimize business impact. These override
+the "finish started work" rule.
 
 **Identification:**
 
@@ -56,7 +60,7 @@ Reason: Finish started work before starting new work
 
 **Example:**
 
-```
+```text
 Available work items:
 - #200 (P2, state:implementation, unassigned) - Started work
 - #201 (P0, state:new-feature) - "Production API returning 500 errors"
@@ -72,19 +76,20 @@ Reason: P0 production incident overrides finish-started-work rule
 **Rationale:** Deliver highest-priority work first to maximize business value and minimize risk.
 
 **Priority Levels:**
-| Level | Name | Description |
+
+| Level | Name         | Description                                     |
 | ----- | ------------ | ----------------------------------------------- |
-| P0 | Critical | System down, data loss, security breach |
-| P1 | High | Major functionality broken, blocking other work |
-| P2 | Medium | Important but not urgent, has workarounds |
-| P3 | Low | Nice to have, minimal impact |
-| P4 | Nice-to-have | Future consideration, low priority |
+| P0    | Critical     | System down, data loss, security breach         |
+| P1    | High         | Major functionality broken, blocking other work |
+| P2    | Medium       | Important but not urgent, has workarounds       |
+| P3    | Low          | Nice to have, minimal impact                    |
+| P4    | Nice-to-have | Future consideration, low priority              |
 
 **Selection Rule:** Work through all P0 work items, then all P1s, then all P2s, etc.
 
 **Example:**
 
-```
+```text
 Available work items:
 - #300 (P2, unblocked, state:new-feature)
 - #301 (P1, unblocked, state:new-feature)
@@ -100,19 +105,20 @@ Reason: P1 has higher priority than P2 and P3
 
 **Formula:**
 
-```
+```text
 effective_priority = min(task_priority, min(blocked_tasks_priority))
 ```
 
 **Note:** Lower priority number = higher priority (P0 > P1 > P2 > P3 > P4)
 
-**Rationale:** Unblock high-priority work by completing its dependencies first. A low-priority task blocking a high-priority task becomes high-priority by necessity.
+**Rationale:** Unblock high-priority work by completing its dependencies first. A low-priority task blocking
+a high-priority task becomes high-priority by necessity.
 
 **Transitive:** Priority inheritance applies transitively through the entire dependency chain.
 
 **Example - Simple Inheritance:**
 
-```
+```text
 Initial state:
 - #400 (P2): Add authentication module
 - #401 (P0): Production deployment (blocked by #400)
@@ -126,7 +132,7 @@ Reason: Inherited P0 priority from blocked task
 
 **Example - Transitive Inheritance:**
 
-```
+```text
 Dependency chain:
 - #500 (P3): Refactor database layer
 - #501 (P2): Add caching (blocked by #500)
@@ -143,13 +149,14 @@ Reason: #500 transitively inherits P0 from end of chain
 
 ### Tier 5: Blocking Task Tie-Breaker
 
-**Target:** When multiple blocking tasks have the same effective priority, choose the task that unblocks the most work items
+**Target:** When multiple blocking tasks have the same effective priority, choose the task that unblocks the
+most work items
 
 **Count:** Sum of direct and transitive blocked work items
 
 **Formula:**
 
-```
+```text
 unblock_count = count(directly_blocked) + count(transitively_blocked)
 ```
 
@@ -159,7 +166,7 @@ unblock_count = count(directly_blocked) + count(transitively_blocked)
 
 **Example - Tie-Breaker by Count:**
 
-```
+```text
 Available work items (both P1 effective priority):
 - #600 (P1): Fix auth bug [blocks #601, #602]
 - #700 (P1): Fix DB bug [blocks #701, #702, #703, #704, #705]
@@ -174,7 +181,7 @@ Reason: Unblocks 5 items vs 2 items
 
 **Example - Final Fallback (FIFO):**
 
-```
+```text
 Available work items (both P1, both unblock 3 items):
 - #800 (P1): Fix API bug [blocks #801, #802, #803]
 - #900 (P1): Fix UI bug [blocks #901, #902, #903]
@@ -189,7 +196,8 @@ Reason: Lower issue number (FIFO as final fallback)
 
 ## Blocking Types
 
-Work items can be blocked for two distinct reasons: manual (external) blockers or dependency (internal) blockers. The type of blocker determines how it can be resolved.
+Work items can be blocked for two distinct reasons: manual (external) blockers or dependency (internal)
+blockers. The type of blocker determines how it can be resolved.
 
 ### Manual Blocking (User-Added)
 
@@ -213,7 +221,7 @@ Work items can be blocked for two distinct reasons: manual (external) blockers o
 
 **Example:**
 
-```
+```text
 Issue #1000:
 - Labels: blocked, P1
 - Comment: "Blocked waiting for client API key approval"
@@ -242,7 +250,7 @@ Resolution: Wait for user comment "approved to proceed" or user removes blocked 
 
 **Example:**
 
-```
+```text
 Issue #1100:
 - Labels: blocked, P2, state:new-feature
 - Comment: "Blocked by #1050 - requires authentication module"
@@ -256,7 +264,8 @@ When #1050 closes:
 
 ## Blocked Work Enforcement
 
-Blocked work items cannot proceed without explicit approval. The enforcement happens at two critical checkpoints:
+Blocked work items cannot proceed without explicit approval. The enforcement happens at two critical
+checkpoints:
 
 ### Checkpoints
 
@@ -272,7 +281,7 @@ Blocked work items cannot proceed without explicit approval. The enforcement hap
 
 ### Enforcement Logic
 
-```
+```text
 IF work_item.has_label('blocked'):
     approval_comment = find_comment(contains: "approved to proceed" OR "unblocked")
     IF approval_comment.exists():
@@ -287,7 +296,7 @@ IF work_item.has_label('blocked'):
 
 ### Error Message
 
-```
+```text
 ERROR: Cannot self-assign blocked work item #X
 Blocking reason: [blocking comment text]
 Requires explicit approval comment to proceed.
@@ -300,7 +309,8 @@ Requires explicit approval comment to proceed.
 
 ## Automatic Unblocking
 
-When a work item closes (step 20), the system automatically unblocks dependent work items that were blocked solely by that issue.
+When a work item closes (step 20), the system automatically unblocks dependent work items that were blocked
+solely by that issue.
 
 ### Auto-Unblock Process
 
@@ -328,9 +338,9 @@ When a work item closes (step 20), the system automatically unblocks dependent w
 
 ### Examples
 
-**Example 1: Single Blocker - Full Unblock**
+#### Example 1: Single Blocker - Full Unblock
 
-```
+```text
 Initial state:
 - #2000: Fix authentication (closed)
 - #2001: Deploy authentication (blocked by #2000)
@@ -345,9 +355,9 @@ When #2000 closes:
 Result: #2001 is now unblocked and ready to action
 ```
 
-**Example 2: Multiple Blockers - Partial Resolution**
+#### Example 2: Multiple Blockers - Partial Resolution
 
-```
+```text
 Initial state:
 - #2100: Feature X (blocked by #2101, #2102, #2103)
 - Comment on #2100: "Blocked by #2101, #2102, #2103"
@@ -370,7 +380,8 @@ Result: #2100 is now unblocked
 
 ## Circular Dependency Resolution
 
-Circular dependencies create deadlock where work items block each other in a cycle. These must be detected and resolved to allow progress.
+Circular dependencies create deadlock where work items block each other in a cycle. These must be detected
+and resolved to allow progress.
 
 ### Detection
 
@@ -378,7 +389,7 @@ Circular dependencies create deadlock where work items block each other in a cyc
 
 **Example:**
 
-```
+```text
 #3000 blocks #3001
 #3001 blocks #3002
 #3002 blocks #3000
@@ -403,7 +414,7 @@ Result: Circular dependency - all three blocked by each other
 
 ### Resolution Steps (If All Blocks Are Dependency-Based)
 
-**1. Calculate Rework Cost for Each Task in Cycle**
+#### 1. Calculate Rework Cost for Each Task in Cycle
 
 Use these heuristics to estimate rework cost:
 
@@ -425,21 +436,21 @@ Use these heuristics to estimate rework cost:
 - Schema migrations (database migrations, data migration)
 - Breaking API changes (affects many consumers)
 
-**2. Choose Task with Minimum Rework**
+#### 2. Choose Task with Minimum Rework
 
 Select the task that has the lowest rework cost when delivered with temporary solution.
 
-**3. Remove Blocked Label from Chosen Task**
+#### 3. Remove Blocked Label from Chosen Task
 
 **4. Update Comment:**
 
-```
+```text
 Unblocked to resolve circular dependency with #X, #Y.
 Delivering with [temporary solution].
 Follow-up: #Z
 ```
 
-**5. Create Follow-Up Task for Rework**
+#### 5. Create Follow-Up Task for Rework
 
 Create new work item to perform rework after blocking tasks complete:
 
@@ -447,7 +458,7 @@ Create new work item to perform rework after blocking tasks complete:
 - Link to original task
 - Set priority to match or lower than original
 
-**6. Link Follow-Up to Original Task**
+#### 6. Link Follow-Up to Original Task
 
 Add comment to original task referencing follow-up.
 
@@ -455,7 +466,7 @@ Add comment to original task referencing follow-up.
 
 **Cycle Detected:**
 
-```
+```text
 #4000: Refactor Module A (blocked by #4001 for interface definition)
 #4001: Refactor Module B (blocked by #4000 for type definitions)
 ```
@@ -470,7 +481,8 @@ Add comment to original task referencing follow-up.
 
 1. Unblock #4000 (lower rework cost)
 2. Create #4002: "Update Module A with final interface from #4001"
-3. Comment on #4000: "Circular dependency with #4001. Delivering with temporary interface. Follow-up: #4002"
+3. Comment on #4000: "Circular dependency with #4001. Delivering with temporary interface.
+   Follow-up: #4002"
 4. Remove blocked label from #4000
 5. #4000 proceeds, #4001 remains blocked until #4000 completes
 6. When #4000 completes, #4001 auto-unblocks
@@ -478,7 +490,8 @@ Add comment to original task referencing follow-up.
 
 ## Dependency Review During Refinement
 
-During refinement (before transitioning to implementation), perform dependency review to identify and document blocking relationships.
+During refinement (before transitioning to implementation), perform dependency review to identify and
+document blocking relationships.
 
 ### New Step 4b: Dependency Review (During Planning)
 
@@ -516,11 +529,11 @@ During refinement (before transitioning to implementation), perform dependency r
 
 ### Example Dependency Review
 
-**Work Item #5000: "Add user profile page"**
+#### Work Item #5000: "Add user profile page"
 
 **Dependency Review:**
 
-```
+```text
 1. Search open work items:
    - Found #4900: "Add authentication system" (state:implementation)
    - Found #5001: "Add profile editing" (state:new-feature)

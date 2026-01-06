@@ -214,4 +214,6 @@ fi
 
 ---
 
-**Conclusion:** Primary root cause is failure to create and use feature branch from the start. Workflow assumes branching knowledge but doesn't make it explicit. Fix requires both documentation updates and behavioral checkpoints to prevent future violations.
+**Conclusion:** Primary root cause is failure to create and use feature branch from the start.
+Workflow assumes branching knowledge but doesn't make it explicit. Fix requires both
+documentation updates and behavioral checkpoints to prevent future violations.

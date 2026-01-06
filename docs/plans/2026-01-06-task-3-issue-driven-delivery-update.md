@@ -9,6 +9,7 @@
 - [ ] Provides examples of each verification type
 
 **Failure Notes:**
+
 - Current step 16 (lines 285-287) has basic evidence requirement
 - Doesn't reference BDD checklist templates
 - No guidance on distinguishing concrete vs process-only
@@ -23,6 +24,7 @@
 - [x] Provides examples of each verification type (lines 290, 297)
 
 **Applied Evidence:**
+
 - Updated issue-driven-delivery SKILL.md step 16 (lines 285-302)
 - Added "Concrete Changes" section with applied evidence requirements
 - Added "Process-Only" section with analytical verification guidance

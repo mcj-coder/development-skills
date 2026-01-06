@@ -145,19 +145,19 @@ gh issue create --title "Epic: [Title]" --body "$(cat <<'EOF'
 
 ## Dependency Graph
 
-```mermaid
+\`\`\`mermaid
 flowchart TD
     A[#1 Child 1] --> B[#2 Child 2]
     B --> C[#3 Child 3]
-```
+\`\`\`
 
 ## Feature Flags
 
 | Flag | Introduced In | Purpose | Status |
-|------|---------------|---------|--------|
-| — | — | — | — |
+| ---- | ------------- | ------- | ------ |
+| —    | —             | —       | —      |
 
-**Cleanup ticket:** TBD
+Cleanup ticket: TBD
 EOF
 )" --label "epic"
 ```
@@ -262,20 +262,20 @@ gh issue edit [EPIC_NUMBER] --body "$(cat <<'EOF'
 
 ## Dependency Graph
 
-```mermaid
+\`\`\`mermaid
 flowchart TD
     A[#101 Schema] --> B[#102 API]
     B --> C[#103 UI]
     C --> D[#104 Cleanup]
-```
+\`\`\`
 
 ## Feature Flags
 
-| Flag | Introduced In | Purpose | Status |
-|------|---------------|---------|--------|
-| `FEATURE_ENABLED` | #103 | Hide until ready | Active |
+| Flag              | Introduced In | Purpose          | Status |
+| ----------------- | ------------- | ---------------- | ------ |
+| `FEATURE_ENABLED` | #103          | Hide until ready | Active |
 
-**Cleanup ticket:** #104
+Cleanup ticket: #104
 EOF
 )"
 ```

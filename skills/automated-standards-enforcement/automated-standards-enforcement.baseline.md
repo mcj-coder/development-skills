@@ -1,8 +1,8 @@
 # automated-standards-enforcement - TDD Baseline Evidence
 
-**Issue:** #89
-**Date:** 2026-01-06
-**Status:** Verified
+- **Issue:** #89
+- **Date:** 2026-01-06
+- **Status:** Verified
 
 ## RED Phase (WITHOUT Skill)
 
@@ -40,14 +40,14 @@ Agent WITH skill set up all required tooling:
 
 ### Skill Compliance
 
-| Requirement | Compliant | Evidence |
-|-------------|-----------|----------|
-| Linting configured | YES | ESLint with TypeScript rules |
-| Formatting configured | YES | Prettier proposed |
-| Spell checking configured | YES | cspell configuration |
-| Pre-commit hooks | YES | Husky + lint-staged |
-| Clean build policy | YES | Zero warnings enforced |
-| CI configuration | YES | Proposed GitHub Actions workflow |
+| Requirement               | Compliant | Evidence                         |
+| ------------------------- | --------- | -------------------------------- |
+| Linting configured        | YES       | ESLint with TypeScript rules     |
+| Formatting configured     | YES       | Prettier proposed                |
+| Spell checking configured | YES       | cspell configuration             |
+| Pre-commit hooks          | YES       | Husky + lint-staged              |
+| Clean build policy        | YES       | Zero warnings enforced           |
+| CI configuration          | YES       | Proposed GitHub Actions workflow |
 
 ## Verification Result
 

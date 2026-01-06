@@ -17,7 +17,7 @@ with user approval. Create epic + children using platform-adaptive organization 
 
 - Modify: `skills/requirements-gathering/requirements-gathering.test.md`
 
-**Step 1: Add decomposition test section to test file**
+### Step 1: Add decomposition test section to test file
 
 Add after line 215 (before end of file):
 
@@ -136,12 +136,12 @@ Add after line 215 (before end of file):
 **Result**: ✅ PASS - User choice respected
 ```
 
-**Step 2: Verify test file is valid markdown**
+### Step 2: Verify test file is valid markdown
 
 Run: `npx markdownlint-cli2 "skills/requirements-gathering/requirements-gathering.test.md"`
 Expected: No errors for new content
 
-**Step 3: Commit test scenarios**
+### Step 3: Commit test scenarios
 
 ```bash
 git add skills/requirements-gathering/requirements-gathering.test.md
@@ -156,9 +156,9 @@ git commit -m "test: add BDD scenarios for multi-ticket decomposition"
 
 - Create: `skills/requirements-gathering/references/scope-detection.md`
 
-**Step 1: Create scope detection reference document**
+### Step 1: Create scope detection reference document
 
-```markdown
+````markdown
 # Scope Detection
 
 ## Overview
@@ -190,6 +190,7 @@ Evaluate requirements for these signals during the structuring phase:
 Requirements mention: "user registration", "password reset", "profile editing"
 → 3 distinct user flows detected
 ```
+````
 
 **Multiple API endpoints:**
 
@@ -286,14 +287,13 @@ Proceed with single ticket in these cases.
 │     → Proceed with single ticket        │
 └─────────────────────────────────────────┘
 ```
-```
 
-**Step 2: Verify markdown lint passes**
+### Step 2: Verify markdown lint passes
 
 Run: `npx markdownlint-cli2 "skills/requirements-gathering/references/scope-detection.md"`
 Expected: No errors
 
-**Step 3: Commit scope detection reference**
+### Step 3: Commit scope detection reference
 
 ```bash
 git add skills/requirements-gathering/references/scope-detection.md
@@ -308,9 +308,9 @@ git commit -m "docs: add scope detection reference for decomposition"
 
 - Create: `skills/requirements-gathering/references/decomposition-formats.md`
 
-**Step 1: Create decomposition formats reference document**
+### Step 1: Create decomposition formats reference document
 
-```markdown
+````markdown
 # Decomposition Formats
 
 ## Overview
@@ -337,6 +337,7 @@ Epic: [Epic Title]
     └── Remove all feature flags, verify flows
     └── blocked by: [all feature tickets]
 ```
+````
 
 ### Category Labels
 
@@ -350,12 +351,12 @@ Epic: [Epic Title]
 Tabular view with full information:
 
 ```markdown
-| #   | Title                | Description                           | Blocked By | Size   | Safe to Ship           |
-| --- | -------------------- | ------------------------------------- | ---------- | ------ | ---------------------- |
-| 1   | [Title]              | [What this delivers]                  | —          | X days | Yes/No (reason)        |
-| 2   | [Title]              | [What this delivers]                  | #1         | X days | Yes/Flag/No (reason)   |
-| ... | ...                  | ...                                   | ...        | ...    | ...                    |
-| N   | Remove Feature Flags | Remove flags, verify all flows work   | #X, #Y, #Z | 0.5 day| Yes (final cleanup)    |
+| #   | Title                | Description                         | Blocked By | Size    | Safe to Ship         |
+| --- | -------------------- | ----------------------------------- | ---------- | ------- | -------------------- |
+| 1   | [Title]              | [What this delivers]                | —          | X days  | Yes/No (reason)      |
+| 2   | [Title]              | [What this delivers]                | #1         | X days  | Yes/Flag/No (reason) |
+| ... | ...                  | ...                                 | ...        | ...     | ...                  |
+| N   | Remove Feature Flags | Remove flags, verify all flows work | #X, #Y, #Z | 0.5 day | Yes (final cleanup)  |
 ```
 
 ### Safe to Ship Values
@@ -432,10 +433,10 @@ When decomposition requires feature flags:
 ```markdown
 ## Feature Flags
 
-| Flag                    | Introduced In | Purpose                          | Status   |
-| ----------------------- | ------------- | -------------------------------- | -------- |
-| `FEATURE_X_ENABLED`     | #3            | Hide feature until #4 ready      | Active   |
-| `FEATURE_Y_ENABLED`     | #4            | Gradual rollout                  | Active   |
+| Flag                | Introduced In | Purpose                     | Status |
+| ------------------- | ------------- | --------------------------- | ------ |
+| `FEATURE_X_ENABLED` | #3            | Hide feature until #4 ready | Active |
+| `FEATURE_Y_ENABLED` | #4            | Gradual rollout             | Active |
 
 **Cleanup ticket:** #N
 ```
@@ -474,14 +475,13 @@ This will create:
 
 Type "confirm" to create these tickets, or request changes.
 ```
-```
 
-**Step 2: Verify markdown lint passes**
+### Step 2: Verify markdown lint passes
 
 Run: `npx markdownlint-cli2 "skills/requirements-gathering/references/decomposition-formats.md"`
 Expected: No errors
 
-**Step 3: Commit decomposition formats reference**
+### Step 3: Commit decomposition formats reference
 
 ```bash
 git add skills/requirements-gathering/references/decomposition-formats.md
@@ -496,9 +496,9 @@ git commit -m "docs: add decomposition formats reference (outline, table, graph)
 
 - Create: `skills/requirements-gathering/references/platform-organization-options.md`
 
-**Step 1: Create platform organization options reference document**
+### Step 1: Create platform organization options reference document
 
-```markdown
+````markdown
 # Platform Organization Options
 
 ## Overview
@@ -522,6 +522,7 @@ in an ADR.
 │ Limitation  = No native blocker enforcement                     │
 └─────────────────────────────────────────────────────────────────┘
 ```
+````
 
 **CLI Commands:**
 
@@ -727,14 +728,13 @@ ls docs/adr/*ticket-organization* 2>/dev/null
 # If found, read and apply decisions
 # If not found, prompt user for platform options
 ```
-```
 
-**Step 2: Verify markdown lint passes**
+### Step 2: Verify markdown lint passes
 
 Run: `npx markdownlint-cli2 "skills/requirements-gathering/references/platform-organization-options.md"`
 Expected: No errors
 
-**Step 3: Commit platform organization options reference**
+### Step 3: Commit platform organization options reference
 
 ```bash
 git add skills/requirements-gathering/references/platform-organization-options.md
@@ -749,16 +749,16 @@ git commit -m "docs: add platform organization options reference (GitHub/ADO/Jir
 
 - Modify: `skills/requirements-gathering/references/platform-cli-examples.md`
 
-**Step 1: Add epic and dependency CLI commands**
+### Step 1: Add epic and dependency CLI commands
 
 Add after line 128 (after Component Tag Suggestions section):
 
-```markdown
+`````markdown
 ## Creating Epics
 
 ### GitHub - Create Epic with Mermaid Graph
 
-```bash
+````bash
 gh issue create --title "Epic: [Title]" --body "$(cat <<'EOF'
 ## Goal
 
@@ -781,13 +781,14 @@ flowchart TD
 ## Feature Flags
 
 | Flag | Introduced In | Purpose | Status |
-|------|---------------|---------|--------|
-| — | — | — | — |
+| ---- | ------------- | ------- | ------ |
+| —    | —             | —       | —      |
 
 **Cleanup ticket:** TBD
 EOF
 )" --label "epic"
-```
+````
+`````
 
 ### Azure DevOps - Create Epic Work Item
 
@@ -873,7 +874,7 @@ jira issue link [ISSUE_KEY] [BLOCKER_KEY] "is blocked by"
 
 ### GitHub - Update Epic Body with Child Numbers
 
-```bash
+````bash
 # After creating children, update epic body with actual issue numbers
 gh issue edit [EPIC_NUMBER] --body "$(cat <<'EOF'
 ## Goal
@@ -898,22 +899,21 @@ flowchart TD
 
 ## Feature Flags
 
-| Flag | Introduced In | Purpose | Status |
-|------|---------------|---------|--------|
-| `FEATURE_ENABLED` | #103 | Hide until ready | Active |
+| Flag              | Introduced In | Purpose          | Status |
+| ----------------- | ------------- | ---------------- | ------ |
+| `FEATURE_ENABLED` | #103          | Hide until ready | Active |
 
 **Cleanup ticket:** #104
 EOF
 )"
-```
-```
+````
 
-**Step 2: Verify markdown lint passes**
+### Step 2: Verify markdown lint passes
 
 Run: `npx markdownlint-cli2 "skills/requirements-gathering/references/platform-cli-examples.md"`
 Expected: No errors
 
-**Step 3: Commit platform CLI examples update**
+### Step 3: Commit platform CLI examples update
 
 ```bash
 git add skills/requirements-gathering/references/platform-cli-examples.md
@@ -928,26 +928,26 @@ git commit -m "docs: add epic and dependency CLI commands to platform examples"
 
 - Modify: `skills/requirements-gathering/SKILL.md`
 
-**Step 1: Update skill comparison table**
+### Step 1: Update skill comparison table
 
 Find line 33-39 (Skill Comparison table) and replace with:
 
 ```markdown
-| Activity                   | requirements-gathering | brainstorming | writing-plans              |
-| -------------------------- | ---------------------- | ------------- | -------------------------- |
-| Gather requirements        | ✅ Yes                 | ✅ Yes        | ❌ No (assumes reqs exist) |
-| Create design              | ❌ No                  | ✅ Yes        | ❌ No                      |
-| Create implementation plan | ❌ No                  | ✅ Yes        | ✅ Yes                     |
-| Create ticket              | ✅ Yes                 | ❌ No         | ❌ No                      |
-| Decompose large work       | ✅ Yes (epic + children)| ❌ No        | ❌ No                      |
-| Commit documents           | ❌ No                  | ✅ Yes        | ✅ Yes                     |
+| Activity                   | requirements-gathering   | brainstorming | writing-plans              |
+| -------------------------- | ------------------------ | ------------- | -------------------------- |
+| Gather requirements        | ✅ Yes                   | ✅ Yes        | ❌ No (assumes reqs exist) |
+| Create design              | ❌ No                    | ✅ Yes        | ❌ No                      |
+| Create implementation plan | ❌ No                    | ✅ Yes        | ✅ Yes                     |
+| Create ticket              | ✅ Yes                   | ❌ No         | ❌ No                      |
+| Decompose large work       | ✅ Yes (epic + children) | ❌ No         | ❌ No                      |
+| Commit documents           | ❌ No                    | ✅ Yes        | ✅ Yes                     |
 ```
 
-**Step 2: Add scope detection section after "3. Structure the Requirements"**
+### Step 2: Add scope detection section after "3. Structure the Requirements"
 
 Find line ~170 (after Structure the Requirements section) and add:
 
-```markdown
+````markdown
 ### 4. Evaluate Scope for Decomposition
 
 After structuring requirements, evaluate if work should be decomposed:
@@ -1031,9 +1031,9 @@ ls docs/adr/*ticket-organization* 2>/dev/null
 **Load platform options**: See `references/platform-organization-options.md`
 
 After user selects, delegate to ADR skill to create `docs/adr/NNNN-ticket-organization.md`.
-```
+````
 
-**Step 3: Update ticket creation section**
+### Step 3: Update ticket creation section
 
 Find the existing "4. Detect Platform and Create Ticket" section and renumber to "7. Create Tickets":
 
@@ -1058,7 +1058,7 @@ Find the existing "4. Detect Platform and Create Ticket" section and renumber to
 **Provide all ticket URLs** to user.
 ```
 
-**Step 4: Update "Stop" section**
+### Step 4: Update "Stop" section
 
 Renumber to "8. Stop" and update:
 
@@ -1080,12 +1080,12 @@ Renumber to "8. Stop" and update:
 ✅ Stop and wait for user to decide when to work on it
 ```
 
-**Step 5: Verify markdown lint passes**
+### Step 5: Verify markdown lint passes
 
 Run: `npx markdownlint-cli2 "skills/requirements-gathering/SKILL.md"`
 Expected: No errors
 
-**Step 6: Commit SKILL.md updates**
+### Step 6: Commit SKILL.md updates
 
 ```bash
 git add skills/requirements-gathering/SKILL.md
@@ -1096,7 +1096,7 @@ git commit -m "feat: add decomposition workflow to requirements-gathering skill"
 
 ## Task 7: Final Integration Test
 
-**Step 1: Verify all new files exist**
+### Step 1: Verify all new files exist
 
 ```bash
 ls -la skills/requirements-gathering/references/
@@ -1110,7 +1110,7 @@ Expected files:
 - `decomposition-formats.md` (new)
 - `platform-organization-options.md` (new)
 
-**Step 2: Run full lint check on skill**
+### Step 2: Run full lint check on skill
 
 ```bash
 npx markdownlint-cli2 "skills/requirements-gathering/**/*.md"
@@ -1118,7 +1118,7 @@ npx markdownlint-cli2 "skills/requirements-gathering/**/*.md"
 
 Expected: No errors (or only pre-existing errors in other files)
 
-**Step 3: Verify test file has new scenarios**
+### Step 3: Verify test file has new scenarios
 
 ```bash
 grep -c "DECOMPOSITION-" skills/requirements-gathering/requirements-gathering.test.md
@@ -1126,7 +1126,7 @@ grep -c "DECOMPOSITION-" skills/requirements-gathering/requirements-gathering.te
 
 Expected: 10 (scenarios DECOMPOSITION-1 through DECOMPOSITION-10)
 
-**Step 4: Create final commit with all changes**
+### Step 4: Create final commit with all changes
 
 ```bash
 git status
@@ -1142,7 +1142,7 @@ Verify commits:
 5. `docs: add epic and dependency CLI commands to platform examples`
 6. `feat: add decomposition workflow to requirements-gathering skill`
 
-**Step 5: Push and update PR**
+### Step 5: Push and update PR
 
 ```bash
 git push
@@ -1152,14 +1152,14 @@ git push
 
 ## Execution Summary
 
-| Task | Description                              | Files                                        |
-| ---- | ---------------------------------------- | -------------------------------------------- |
-| 1    | Add BDD test scenarios                   | `requirements-gathering.test.md`             |
-| 2    | Create scope detection reference         | `references/scope-detection.md`              |
-| 3    | Create decomposition formats reference   | `references/decomposition-formats.md`        |
-| 4    | Create platform organization reference   | `references/platform-organization-options.md`|
-| 5    | Update platform CLI examples             | `references/platform-cli-examples.md`        |
-| 6    | Update main SKILL.md                     | `SKILL.md`                                   |
-| 7    | Final integration test                   | All files                                    |
+| Task | Description                            | Files                                         |
+| ---- | -------------------------------------- | --------------------------------------------- |
+| 1    | Add BDD test scenarios                 | `requirements-gathering.test.md`              |
+| 2    | Create scope detection reference       | `references/scope-detection.md`               |
+| 3    | Create decomposition formats reference | `references/decomposition-formats.md`         |
+| 4    | Create platform organization reference | `references/platform-organization-options.md` |
+| 5    | Update platform CLI examples           | `references/platform-cli-examples.md`         |
+| 6    | Update main SKILL.md                   | `SKILL.md`                                    |
+| 7    | Final integration test                 | All files                                     |
 
 Total commits: 6 feature commits + design doc commit = 7 commits
