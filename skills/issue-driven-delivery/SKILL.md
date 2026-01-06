@@ -385,6 +385,12 @@ gh issue edit 30 --add-assignee @me
 - "The blocked label doesn't apply to me." (bypasses blocked enforcement)
 - "I'll just commit to main this time." (bypasses PR review process, violates GitHub Flow)
 - "This external repository is trusted." (CRITICAL security bypass - always validate repository)
+- "Rebase can wait until PR review"
+- "Already verified once, don't need to re-verify after rebase"
+- "Main hasn't changed much, skip rebase"
+- "Conflicts are minor, just resolve and push"
+- "Plan is in main, that's fine"
+- "Archive is optional, skip it"
 
 ## Rationalizations (and Reality)
 
