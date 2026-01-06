@@ -403,6 +403,10 @@ gh issue edit 30 --add-assignee @me
 
 - Committing locally without pushing to remote (breaks all ticketing system links).
 - Proceeding without a plan approval comment.
+- Not documenting terminal approvals in issue comments (loses traceability).
+- Missing approval comments in long threads (failing to check all comments before requesting).
+- Not checking for reactions as approval signals (ignoring thumbs-up on plan comment).
+- Requesting approval when it already exists in comments (creates redundant approval requests).
 - Tracking work in local notes instead of work item comments.
 - Closing sub-tasks without evidence or review.
 - Posting evidence without clickable links.
