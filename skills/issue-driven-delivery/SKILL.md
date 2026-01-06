@@ -266,8 +266,8 @@ and Jira examples.
     10.5. Before closing work item, perform final rebase and plan archival on feature branch:
     a) Check time since step 8b.5 rebase. If >24 hours, rebase again: `git fetch origin && git rebase origin/main`
     b) If rebase picks up changes: review files changed against plan references; if plan
-       references files changed significantly, review plan validity (if invalidated, update
-       plan which triggers re-approval, return to step 5); re-run ALL verification
+    references files changed significantly, review plan validity (if invalidated, update
+    plan which triggers re-approval, return to step 5); re-run ALL verification
     c) If conflicts occur, resolve them and re-verify; document resolution in work item
     d) Archive plan on feature branch: `git mv docs/plans/YYYY-MM-DD-feature-name.md docs/plans/archive/`
     e) Commit archive: `git commit -m "docs: archive plan for issue #N"`
