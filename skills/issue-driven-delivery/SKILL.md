@@ -110,8 +110,11 @@ and Jira examples.
    refinement and implementation work will be done on this feature branch. Plan
    will be committed to this branch to keep main clean.
    3c. Stay assigned during entire refinement phase (plan creation, approval feedback loop, iterations).
-4. Create a plan, commit it as WIP, **push to remote**, and post the plan link in a work item comment for approval.
+4. Create a plan in `docs/plans/YYYY-MM-DD-feature-name.md` on the feature branch,
+   commit it as WIP, **push to remote**, and post the plan link in a work item
+   comment for approval.
    4a. Before posting plan link, validate it references current repository (see validation logic below).
+   Plan link must use commit SHA for immutability after approval.
    4b. After posting plan link, work item remains in `refinement` state.
    4c. During planning, perform dependency review: search open work items for
    potential dependencies, check if current work depends on or blocks other work,
