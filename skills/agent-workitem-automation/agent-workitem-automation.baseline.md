@@ -80,13 +80,13 @@ Hand-off/Blocker:
 
 ## Key Behavioral Change
 
-| Without Skill                  | With Skill                        |
-| ------------------------------ | --------------------------------- |
-| Start coding immediately       | Refuse until process complete     |
-| Search codebase for patterns   | Read README for taskboard config  |
-| Assume requirements            | Must load actual ticket details   |
-| Ad-hoc progress tracking       | Structured step update comments   |
-| Keep trying when stuck         | Explicit hand-off with blockers   |
+| Without Skill                | With Skill                       |
+| ---------------------------- | -------------------------------- |
+| Start coding immediately     | Refuse until process complete    |
+| Search codebase for patterns | Read README for taskboard config |
+| Assume requirements          | Must load actual ticket details  |
+| Ad-hoc progress tracking     | Structured step update comments  |
+| Keep trying when stuck       | Explicit hand-off with blockers  |
 
 ## Verification Result
 

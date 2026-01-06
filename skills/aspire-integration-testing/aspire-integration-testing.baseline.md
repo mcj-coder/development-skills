@@ -63,11 +63,11 @@
 
 ## RED Phase Summary
 
-| Scenario | Integration Tests | Health Validation | Observability |
-| -------- | ----------------- | ----------------- | ------------- |
-| Time pressure | NO | Manual only | Minimal |
-| Sunk cost | NO | NO | NO |
-| Authority | NO | NO | NO |
+| Scenario      | Integration Tests | Health Validation | Observability |
+| ------------- | ----------------- | ----------------- | ------------- |
+| Time pressure | NO                | Manual only       | Minimal       |
+| Sunk cost     | NO                | NO                | NO            |
+| Authority     | NO                | NO                | NO            |
 
 ## Rationalizations to Address
 

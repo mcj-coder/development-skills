@@ -53,10 +53,10 @@
 
 ## Quick Selection Guide
 
-| Pattern | Best For |
-| ------- | -------- |
-| Clean | Complex domain logic, testability focus |
-| Hexagonal | Multiple I/O adapters (APIs, queues, DBs) |
-| Onion | Domain-centric applications |
-| Layered | Simple CRUD, small teams |
-| Modular Monolith | Future microservice extraction |
+| Pattern          | Best For                                  |
+| ---------------- | ----------------------------------------- |
+| Clean            | Complex domain logic, testability focus   |
+| Hexagonal        | Multiple I/O adapters (APIs, queues, DBs) |
+| Onion            | Domain-centric applications               |
+| Layered          | Simple CRUD, small teams                  |
+| Modular Monolith | Future microservice extraction            |

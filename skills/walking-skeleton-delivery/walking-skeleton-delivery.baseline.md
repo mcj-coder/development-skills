@@ -57,13 +57,13 @@ Deployment: DONE ON DAY 1
 
 ### Skill Compliance
 
-| Requirement               | Compliant | Evidence                             |
-| ------------------------- | --------- | ------------------------------------ |
-| Skeleton goal defined     | YES       | What we're proving documented        |
-| BDD/Gherkin flow          | YES       | Two scenarios for E2E validation     |
-| Explicit scope (IN/OUT)   | YES       | Clear boundary set                   |
-| Deployment Day 1          | YES       | Pipeline prioritized first           |
-| Resisted feature pressure | YES       | Deferred items, quantities, pricing  |
+| Requirement               | Compliant | Evidence                            |
+| ------------------------- | --------- | ----------------------------------- |
+| Skeleton goal defined     | YES       | What we're proving documented       |
+| BDD/Gherkin flow          | YES       | Two scenarios for E2E validation    |
+| Explicit scope (IN/OUT)   | YES       | Clear boundary set                  |
+| Deployment Day 1          | YES       | Pipeline prioritized first          |
+| Resisted feature pressure | YES       | Deferred items, quantities, pricing |
 
 ## Verification Result
 

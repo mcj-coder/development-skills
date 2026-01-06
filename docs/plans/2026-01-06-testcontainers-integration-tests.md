@@ -377,14 +377,14 @@ See `references/ci-cd-integration.md` for CI/CD patterns.
 
 ## Quick Reference
 
-| Container | Use Case | Image |
-|-----------|----------|-------|
-| PostgreSQL | Relational DB | postgres:15 |
-| MySQL | Relational DB | mysql:8 |
-| MongoDB | Document DB | mongo:6 |
-| Redis | Cache | redis:7-alpine |
-| RabbitMQ | Message Queue | rabbitmq:3.12-management |
-| Kafka | Event Streaming | confluentinc/cp-kafka:7.4 |
+| Container  | Use Case        | Image                     |
+| ---------- | --------------- | ------------------------- |
+| PostgreSQL | Relational DB   | postgres:15               |
+| MySQL      | Relational DB   | mysql:8                   |
+| MongoDB    | Document DB     | mongo:6                   |
+| Redis      | Cache           | redis:7-alpine            |
+| RabbitMQ   | Message Queue   | rabbitmq:3.12-management  |
+| Kafka      | Event Streaming | confluentinc/cp-kafka:7.4 |
 
 ## Red Flags - STOP
 
@@ -419,7 +419,7 @@ git commit -m "feat(testcontainers): add core skill specification"
 
 ### Step 1: Write language-specific setup guide
 
-```markdown
+````markdown
 # Language-Specific Testcontainers Setup
 
 ## .NET (Testcontainers for .NET)
@@ -431,6 +431,7 @@ dotnet add package Testcontainers.PostgreSql
 dotnet add package Testcontainers.RabbitMq
 # Additional modules as needed
 ```
+````
 
 ### Basic Setup
 
@@ -611,23 +612,26 @@ npm install --save-dev testcontainers
 ### Basic Setup (Jest)
 
 ```typescript
-import { PostgreSqlContainer, StartedPostgreSqlContainer } from "@testcontainers/postgresql";
+import {
+  PostgreSqlContainer,
+  StartedPostgreSqlContainer,
+} from "@testcontainers/postgresql";
 
 describe("OrderRepository", () => {
-    let container: StartedPostgreSqlContainer;
+  let container: StartedPostgreSqlContainer;
 
-    beforeAll(async () => {
-        container = await new PostgreSqlContainer("postgres:15").start();
-    }, 60000);
+  beforeAll(async () => {
+    container = await new PostgreSqlContainer("postgres:15").start();
+  }, 60000);
 
-    afterAll(async () => {
-        await container.stop();
-    });
+  afterAll(async () => {
+    await container.stop();
+  });
 
-    it("can save and retrieve order", async () => {
-        const connectionUri = container.getConnectionUri();
-        // Use connectionUri with your repository
-    });
+  it("can save and retrieve order", async () => {
+    const connectionUri = container.getConnectionUri();
+    // Use connectionUri with your repository
+  });
 });
 ```
 
@@ -638,14 +642,14 @@ describe("OrderRepository", () => {
 import { PostgreSqlContainer } from "@testcontainers/postgresql";
 
 export default async function globalSetup() {
-    const container = await new PostgreSqlContainer("postgres:15").start();
-    process.env.DATABASE_URL = container.getConnectionUri();
-    (global as any).__POSTGRES_CONTAINER__ = container;
+  const container = await new PostgreSqlContainer("postgres:15").start();
+  process.env.DATABASE_URL = container.getConnectionUri();
+  (global as any).__POSTGRES_CONTAINER__ = container;
 }
 
 // globalTeardown.ts
 export default async function globalTeardown() {
-    await (global as any).__POSTGRES_CONTAINER__?.stop();
+  await (global as any).__POSTGRES_CONTAINER__?.stop();
 }
 ```
 
@@ -871,9 +875,9 @@ public async Task CreateFreshSchema(string schemaName)
 ```json
 // xunit.runner.json
 {
-    "parallelizeAssembly": true,
-    "parallelizeTestCollections": true,
-    "maxParallelThreads": 4
+  "parallelizeAssembly": true,
+  "parallelizeTestCollections": true,
+  "maxParallelThreads": 4
 }
 ```
 
@@ -955,16 +959,16 @@ Console.WriteLine($"Container started in {stopwatch.ElapsedMilliseconds}ms");
 
 ### Target Performance
 
-| Metric                 | Target | Optimized         |
-| ---------------------- | ------ | ----------------- |
-| Container startup      | <30s   | <10s (with reuse) |
-| Per-test time          | <10s   | <3s               |
-| Full suite (20 tests)  | <3min  | <45s              |
+| Metric                | Target | Optimized         |
+| --------------------- | ------ | ----------------- |
+| Container startup     | <30s   | <10s (with reuse) |
+| Per-test time         | <10s   | <3s               |
+| Full suite (20 tests) | <3min  | <45s              |
 
 ## Rationalizations Table
 
-| Excuse                             | Reality                                                                      |
-| ---------------------------------- | ---------------------------------------------------------------------------- |
+| Excuse                             | Reality                                                                     |
+| ---------------------------------- | --------------------------------------------------------------------------- |
 | "Mocks are faster"                 | Optimized Testcontainers run in seconds. Reuse + parallel achieves speed.   |
 | "In-memory is close enough"        | DB features differ. JSON, arrays, window functions vary. Test with prod DB. |
 | "Testcontainers is too slow"       | Optimize with reuse and parallel. Pre-pull images. 4x+ improvement.         |
@@ -1017,7 +1021,7 @@ jobs:
       - name: Set up .NET
         uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: '8.0.x'
+          dotnet-version: "8.0.x"
 
       - name: Run integration tests
         run: dotnet test --filter "Category=Integration"
@@ -1078,7 +1082,7 @@ integration-tests:
   script:
     - dotnet test --filter "Category=Integration"
   tags:
-    - docker-socket  # Runner with Docker socket mounted
+    - docker-socket # Runner with Docker socket mounted
 ```
 
 ## Azure DevOps
@@ -1090,19 +1094,19 @@ trigger:
   - main
 
 pool:
-  vmImage: 'ubuntu-latest'
+  vmImage: "ubuntu-latest"
 
 steps:
   - task: Docker@2
-    displayName: 'Pre-pull Docker images'
+    displayName: "Pre-pull Docker images"
     inputs:
-      command: 'pull'
-      arguments: 'postgres:15'
+      command: "pull"
+      arguments: "postgres:15"
 
   - task: DotNetCoreCLI@2
-    displayName: 'Run integration tests'
+    displayName: "Run integration tests"
     inputs:
-      command: 'test'
+      command: "test"
       arguments: '--filter "Category=Integration"'
 ```
 
@@ -1253,13 +1257,13 @@ int port = 5432;  // May conflict
 
 ## CI Resource Requirements
 
-| CI Platform    | Minimum Resources            | Recommended           |
-|----------------|------------------------------|-----------------------|
-| GitHub Actions | ubuntu-latest (2 CPU, 7GB)   | Sufficient            |
-| GitLab CI      | Docker-in-Docker             | Medium runner (2+ CPU)|
-| Azure DevOps   | ubuntu-latest                | Sufficient            |
-| Jenkins        | Docker socket access         | 4GB+ memory           |
-| CircleCI       | machine executor             | Large resource class  |
+| CI Platform    | Minimum Resources          | Recommended            |
+| -------------- | -------------------------- | ---------------------- |
+| GitHub Actions | ubuntu-latest (2 CPU, 7GB) | Sufficient             |
+| GitLab CI      | Docker-in-Docker           | Medium runner (2+ CPU) |
+| Azure DevOps   | ubuntu-latest              | Sufficient             |
+| Jenkins        | Docker socket access       | 4GB+ memory            |
+| CircleCI       | machine executor           | Large resource class   |
 
 ## Performance Optimization Checklist for CI
 

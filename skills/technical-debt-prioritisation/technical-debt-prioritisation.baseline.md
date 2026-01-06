@@ -1,7 +1,7 @@
 # technical-debt-prioritisation - TDD Baseline Evidence
 
 | Property | Value      |
-|----------|------------|
+| -------- | ---------- |
 | Issue    | #89        |
 | Date     | 2026-01-06 |
 | Status   | Verified   |
@@ -53,13 +53,13 @@ Agent WITH skill applied three-dimensional scoring:
 
 ### Scoring Framework Applied
 
-| Item                     | Impact | Risk | Effort | Score  | Category      |
-|--------------------------|--------|------|--------|--------|---------------|
-| Hardcoded DB credentials | 5      | 5    | 1      | 10.0   | Security      |
-| Flaky integration tests  | 4      | 4    | 2      | 4.0    | Testing       |
-| Circular dependencies    | 4      | 3    | 3      | 2.33   | Architecture  |
-| React v16 upgrade        | 3      | 3    | 4      | 1.5    | Dependencies  |
-| API documentation        | 2      | 1    | 2      | 1.5    | Documentation |
+| Item                     | Impact | Risk | Effort | Score | Category      |
+| ------------------------ | ------ | ---- | ------ | ----- | ------------- |
+| Hardcoded DB credentials | 5      | 5    | 1      | 10.0  | Security      |
+| Flaky integration tests  | 4      | 4    | 2      | 4.0   | Testing       |
+| Circular dependencies    | 4      | 3    | 3      | 2.33  | Architecture  |
+| React v16 upgrade        | 3      | 3    | 4      | 1.5   | Dependencies  |
+| API documentation        | 2      | 1    | 2      | 1.5   | Documentation |
 
 ### Quick Wins Identified Objectively
 
@@ -68,14 +68,14 @@ Agent WITH skill applied three-dimensional scoring:
 
 ### Skill Compliance
 
-| Requirement                | Compliant | Evidence                               |
-|----------------------------|-----------|----------------------------------------|
-| Three-dimensional scoring  | YES       | All 5 items scored on Impact/Risk/Eff  |
-| Evidence for each score    | YES       | Justification provided for each        |
-| Debt categorized by type   | YES       | 5 categories identified                |
-| Quick wins using formula   | YES       | Score > 4.0, effort <= 2               |
-| Multi-horizon roadmap      | YES       | Sprint, Quarterly, 6-Month             |
-| Resisted authority press   | YES       | Auth refactor required separate score  |
+| Requirement               | Compliant | Evidence                              |
+| ------------------------- | --------- | ------------------------------------- |
+| Three-dimensional scoring | YES       | All 5 items scored on Impact/Risk/Eff |
+| Evidence for each score   | YES       | Justification provided for each       |
+| Debt categorized by type  | YES       | 5 categories identified               |
+| Quick wins using formula  | YES       | Score > 4.0, effort <= 2              |
+| Multi-horizon roadmap     | YES       | Sprint, Quarterly, 6-Month            |
+| Resisted authority press  | YES       | Auth refactor required separate score |
 
 ## Verification Result
 

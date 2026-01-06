@@ -947,13 +947,13 @@ Ready for review and approval."
 
 ## Acceptance Criteria Mapping
 
-| Acceptance Criterion | Task |
-| --- | --- |
-| `get-priority-order.sh` outputs issue numbers one per line | Task 2 |
-| Implements 5-tier prioritization hierarchy | Task 2 |
-| `unblock-dependents.sh` accepts issue number or auto-detects | Task 3 |
-| Dry-run by default, requires `--apply` | Task 3 |
-| `--graph` outputs ASCII/Mermaid | Task 3 |
-| Circular dependency detection with suggestions | Task 3 |
-| Uses default GitHub labels | Task 2, 3 |
-| README explains customization | Task 4 |
+| Acceptance Criterion                                         | Task      |
+| ------------------------------------------------------------ | --------- |
+| `get-priority-order.sh` outputs issue numbers one per line   | Task 2    |
+| Implements 5-tier prioritization hierarchy                   | Task 2    |
+| `unblock-dependents.sh` accepts issue number or auto-detects | Task 3    |
+| Dry-run by default, requires `--apply`                       | Task 3    |
+| `--graph` outputs ASCII/Mermaid                              | Task 3    |
+| Circular dependency detection with suggestions               | Task 3    |
+| Uses default GitHub labels                                   | Task 2, 3 |
+| README explains customization                                | Task 4    |

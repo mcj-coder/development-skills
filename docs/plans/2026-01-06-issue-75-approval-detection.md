@@ -172,10 +172,10 @@ Acceptance Criteria:
 
 ## Risks and Mitigations
 
-| Risk | Impact | Mitigation |
-| --- | --- | --- |
-| Breaking existing workflow | High | Test all existing scenarios, ensure backward compatibility |
-| GraphQL API unavailable | Medium | Document limitation and provide workaround guidance |
+| Risk                              | Impact | Mitigation                                                         |
+| --------------------------------- | ------ | ------------------------------------------------------------------ |
+| Breaking existing workflow        | High   | Test all existing scenarios, ensure backward compatibility         |
+| GraphQL API unavailable           | Medium | Document limitation and provide workaround guidance                |
 | Confusion about approval priority | Medium | Clearly order approval detection logic (check first, then request) |
 
 ## Testing Strategy

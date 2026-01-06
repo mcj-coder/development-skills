@@ -228,12 +228,12 @@ coupling and maintenance debt.
 
 ## Quick Reference
 
-| Pattern | Key Boundary Rule |
-|---------|------------------|
-| Clean | Dependencies point inward only |
-| Hexagonal | Ports/adapters isolate core |
-| Onion | Domain at center, no outward deps |
-| Layered | Each layer depends only on layer below |
+| Pattern   | Key Boundary Rule                      |
+| --------- | -------------------------------------- |
+| Clean     | Dependencies point inward only         |
+| Hexagonal | Ports/adapters isolate core            |
+| Onion     | Domain at center, no outward deps      |
+| Layered   | Each layer depends only on layer below |
 
 See [Pattern Details](references/architecture-patterns.md) and
 [NetArchTest Examples](references/netarchtest-examples.md).
@@ -279,6 +279,7 @@ git commit -m "feat(architecture-testing): GREEN phase - minimal skill addressin
 ## Clean Architecture
 
 **Layers (inside out):**
+
 1. Domain - Entities, value objects, domain services
 2. Application - Use cases, DTOs, interfaces
 3. Infrastructure - Database, external services, frameworks
@@ -289,6 +290,7 @@ git commit -m "feat(architecture-testing): GREEN phase - minimal skill addressin
 ## Hexagonal Architecture (Ports & Adapters)
 
 **Structure:**
+
 - Core: Domain logic and port interfaces
 - Adapters: Implementations (DB, HTTP, messaging)
 
@@ -297,6 +299,7 @@ git commit -m "feat(architecture-testing): GREEN phase - minimal skill addressin
 ## Onion Architecture
 
 **Layers:**
+
 1. Domain Model (center)
 2. Domain Services
 3. Application Services
@@ -307,6 +310,7 @@ git commit -m "feat(architecture-testing): GREEN phase - minimal skill addressin
 ## Layered Architecture
 
 **Layers:**
+
 1. Presentation
 2. Business Logic
 3. Data Access
@@ -316,6 +320,7 @@ git commit -m "feat(architecture-testing): GREEN phase - minimal skill addressin
 ## Modular Monolith
 
 **Structure:**
+
 - Independent modules with clear boundaries
 - Modules communicate through defined interfaces
 - Can be extracted to microservices later

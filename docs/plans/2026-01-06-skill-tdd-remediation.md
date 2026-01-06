@@ -1,10 +1,10 @@
 # Skill TDD Remediation Plan
 
-| Field  | Value                             |
-| ------ | --------------------------------- |
-| Issue  | #89                               |
-| Date   | 2026-01-06                        |
-| Status | Complete - All skills remediated  |
+| Field  | Value                            |
+| ------ | -------------------------------- |
+| Issue  | #89                              |
+| Date   | 2026-01-06                       |
+| Status | Complete - All skills remediated |
 
 ## Summary
 
@@ -136,13 +136,13 @@ For each skill:
 
 ## Remediation Results
 
-| Skill                            | RED Baseline | GREEN Verified | Baseline File                                   |
-| -------------------------------- | ------------ | -------------- | ----------------------------------------------- |
-| automated-standards-enforcement  | PASS         | PASS           | `automated-standards-enforcement.baseline.md`   |
-| walking-skeleton-delivery        | PASS         | PASS           | `walking-skeleton-delivery.baseline.md`         |
-| testcontainers-integration-tests | PASS         | PASS           | `testcontainers-integration-tests.baseline.md`  |
-| technical-debt-prioritisation    | PASS         | PASS           | `technical-debt-prioritisation.baseline.md`     |
-| agent-workitem-automation        | PASS         | PASS           | `agent-workitem-automation.baseline.md`         |
+| Skill                            | RED Baseline | GREEN Verified | Baseline File                                  |
+| -------------------------------- | ------------ | -------------- | ---------------------------------------------- |
+| automated-standards-enforcement  | PASS         | PASS           | `automated-standards-enforcement.baseline.md`  |
+| walking-skeleton-delivery        | PASS         | PASS           | `walking-skeleton-delivery.baseline.md`        |
+| testcontainers-integration-tests | PASS         | PASS           | `testcontainers-integration-tests.baseline.md` |
+| technical-debt-prioritisation    | PASS         | PASS           | `technical-debt-prioritisation.baseline.md`    |
+| agent-workitem-automation        | PASS         | PASS           | `agent-workitem-automation.baseline.md`        |
 
 ### Key Findings
 

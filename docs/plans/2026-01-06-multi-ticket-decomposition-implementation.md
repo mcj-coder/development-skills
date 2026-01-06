@@ -158,7 +158,7 @@ git commit -m "test: add BDD scenarios for multi-ticket decomposition"
 
 ### Step 1: Create scope detection reference document
 
-```markdown
+````markdown
 # Scope Detection
 
 ## Overview
@@ -190,6 +190,7 @@ Evaluate requirements for these signals during the structuring phase:
 Requirements mention: "user registration", "password reset", "profile editing"
 → 3 distinct user flows detected
 ```
+````
 
 **Multiple API endpoints:**
 
@@ -309,7 +310,7 @@ git commit -m "docs: add scope detection reference for decomposition"
 
 ### Step 1: Create decomposition formats reference document
 
-```markdown
+````markdown
 # Decomposition Formats
 
 ## Overview
@@ -336,6 +337,7 @@ Epic: [Epic Title]
     └── Remove all feature flags, verify flows
     └── blocked by: [all feature tickets]
 ```
+````
 
 ### Category Labels
 
@@ -349,12 +351,12 @@ Epic: [Epic Title]
 Tabular view with full information:
 
 ```markdown
-| #   | Title                | Description                           | Blocked By | Size   | Safe to Ship           |
-| --- | -------------------- | ------------------------------------- | ---------- | ------ | ---------------------- |
-| 1   | [Title]              | [What this delivers]                  | —          | X days | Yes/No (reason)        |
-| 2   | [Title]              | [What this delivers]                  | #1         | X days | Yes/Flag/No (reason)   |
-| ... | ...                  | ...                                   | ...        | ...    | ...                    |
-| N   | Remove Feature Flags | Remove flags, verify all flows work   | #X, #Y, #Z | 0.5 day| Yes (final cleanup)    |
+| #   | Title                | Description                         | Blocked By | Size    | Safe to Ship         |
+| --- | -------------------- | ----------------------------------- | ---------- | ------- | -------------------- |
+| 1   | [Title]              | [What this delivers]                | —          | X days  | Yes/No (reason)      |
+| 2   | [Title]              | [What this delivers]                | #1         | X days  | Yes/Flag/No (reason) |
+| ... | ...                  | ...                                 | ...        | ...     | ...                  |
+| N   | Remove Feature Flags | Remove flags, verify all flows work | #X, #Y, #Z | 0.5 day | Yes (final cleanup)  |
 ```
 
 ### Safe to Ship Values
@@ -431,10 +433,10 @@ When decomposition requires feature flags:
 ```markdown
 ## Feature Flags
 
-| Flag                    | Introduced In | Purpose                          | Status   |
-| ----------------------- | ------------- | -------------------------------- | -------- |
-| `FEATURE_X_ENABLED`     | #3            | Hide feature until #4 ready      | Active   |
-| `FEATURE_Y_ENABLED`     | #4            | Gradual rollout                  | Active   |
+| Flag                | Introduced In | Purpose                     | Status |
+| ------------------- | ------------- | --------------------------- | ------ |
+| `FEATURE_X_ENABLED` | #3            | Hide feature until #4 ready | Active |
+| `FEATURE_Y_ENABLED` | #4            | Gradual rollout             | Active |
 
 **Cleanup ticket:** #N
 ```
@@ -496,7 +498,7 @@ git commit -m "docs: add decomposition formats reference (outline, table, graph)
 
 ### Step 1: Create platform organization options reference document
 
-```markdown
+````markdown
 # Platform Organization Options
 
 ## Overview
@@ -520,6 +522,7 @@ in an ADR.
 │ Limitation  = No native blocker enforcement                     │
 └─────────────────────────────────────────────────────────────────┘
 ```
+````
 
 **CLI Commands:**
 
@@ -750,12 +753,12 @@ git commit -m "docs: add platform organization options reference (GitHub/ADO/Jir
 
 Add after line 128 (after Component Tag Suggestions section):
 
-````markdown
+`````markdown
 ## Creating Epics
 
 ### GitHub - Create Epic with Mermaid Graph
 
-```bash
+````bash
 gh issue create --title "Epic: [Title]" --body "$(cat <<'EOF'
 ## Goal
 
@@ -784,8 +787,8 @@ flowchart TD
 **Cleanup ticket:** TBD
 EOF
 )" --label "epic"
-
-```
+````
+`````
 
 ### Azure DevOps - Create Epic Work Item
 
@@ -871,7 +874,7 @@ jira issue link [ISSUE_KEY] [BLOCKER_KEY] "is blocked by"
 
 ### GitHub - Update Epic Body with Child Numbers
 
-```bash
+````bash
 # After creating children, update epic body with actual issue numbers
 gh issue edit [EPIC_NUMBER] --body "$(cat <<'EOF'
 ## Goal
@@ -903,7 +906,6 @@ flowchart TD
 **Cleanup ticket:** #104
 EOF
 )"
-```
 ````
 
 ### Step 2: Verify markdown lint passes
@@ -931,14 +933,14 @@ git commit -m "docs: add epic and dependency CLI commands to platform examples"
 Find line 33-39 (Skill Comparison table) and replace with:
 
 ```markdown
-| Activity                   | requirements-gathering | brainstorming | writing-plans              |
-| -------------------------- | ---------------------- | ------------- | -------------------------- |
-| Gather requirements        | ✅ Yes                 | ✅ Yes        | ❌ No (assumes reqs exist) |
-| Create design              | ❌ No                  | ✅ Yes        | ❌ No                      |
-| Create implementation plan | ❌ No                  | ✅ Yes        | ✅ Yes                     |
-| Create ticket              | ✅ Yes                 | ❌ No         | ❌ No                      |
-| Decompose large work       | ✅ Yes (epic + children)| ❌ No        | ❌ No                      |
-| Commit documents           | ❌ No                  | ✅ Yes        | ✅ Yes                     |
+| Activity                   | requirements-gathering   | brainstorming | writing-plans              |
+| -------------------------- | ------------------------ | ------------- | -------------------------- |
+| Gather requirements        | ✅ Yes                   | ✅ Yes        | ❌ No (assumes reqs exist) |
+| Create design              | ❌ No                    | ✅ Yes        | ❌ No                      |
+| Create implementation plan | ❌ No                    | ✅ Yes        | ✅ Yes                     |
+| Create ticket              | ✅ Yes                   | ❌ No         | ❌ No                      |
+| Decompose large work       | ✅ Yes (epic + children) | ❌ No         | ❌ No                      |
+| Commit documents           | ❌ No                    | ✅ Yes        | ✅ Yes                     |
 ```
 
 ### Step 2: Add scope detection section after "3. Structure the Requirements"
@@ -1150,14 +1152,14 @@ git push
 
 ## Execution Summary
 
-| Task | Description                              | Files                                        |
-| ---- | ---------------------------------------- | -------------------------------------------- |
-| 1    | Add BDD test scenarios                   | `requirements-gathering.test.md`             |
-| 2    | Create scope detection reference         | `references/scope-detection.md`              |
-| 3    | Create decomposition formats reference   | `references/decomposition-formats.md`        |
-| 4    | Create platform organization reference   | `references/platform-organization-options.md`|
-| 5    | Update platform CLI examples             | `references/platform-cli-examples.md`        |
-| 6    | Update main SKILL.md                     | `SKILL.md`                                   |
-| 7    | Final integration test                   | All files                                    |
+| Task | Description                            | Files                                         |
+| ---- | -------------------------------------- | --------------------------------------------- |
+| 1    | Add BDD test scenarios                 | `requirements-gathering.test.md`              |
+| 2    | Create scope detection reference       | `references/scope-detection.md`               |
+| 3    | Create decomposition formats reference | `references/decomposition-formats.md`         |
+| 4    | Create platform organization reference | `references/platform-organization-options.md` |
+| 5    | Update platform CLI examples           | `references/platform-cli-examples.md`         |
+| 6    | Update main SKILL.md                   | `SKILL.md`                                    |
+| 7    | Final integration test                 | All files                                     |
 
 Total commits: 6 feature commits + design doc commit = 7 commits

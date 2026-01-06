@@ -258,6 +258,7 @@ and Jira examples.
    may not be available in all environments. When GraphQL is unavailable, rely on
    explicit approval comments. If user indicates they've reacted with thumbs-up,
    post the approval comment on their behalf.
+
 6. Keep all plan discussions and decisions in work item comments.
    6a. During approval feedback: Stay assigned and respond to questions/feedback in work item comments.
    6b. If revisions needed: Update plan, push changes, re-post link in same thread. Stay assigned.
@@ -300,13 +301,13 @@ and Jira examples.
     10a. Before closing work item, verify:
     - All mandatory tags exist (component, work type, priority)
     - PR exists and is merged (unless read-only work)
-    Error if any missing. Suggest appropriate tags based on work item content.
-    Exception: Read-only work and reviews are allowed without a ticket/PR.
-    10b. When verification complete and acceptance criteria met, close work item
-    (state: complete). If work item has `blocked` label, verify approval comment
-    exists. If approved, remove `blocked` label and proceed. If not approved,
-    stop with error.
-    10c. Work item auto-unassigns when closed.
+      Error if any missing. Suggest appropriate tags based on work item content.
+      Exception: Read-only work and reviews are allowed without a ticket/PR.
+      10b. When verification complete and acceptance criteria met, close work item
+      (state: complete). If work item has `blocked` label, verify approval comment
+      exists. If approved, remove `blocked` label and proceed. If not approved,
+      stop with error.
+      10c. Work item auto-unassigns when closed.
 
     **Error if PR missing:**
 
@@ -328,6 +329,7 @@ and Jira examples.
     g) Verification must confirm rebased changes preserve accepted behavior
     h) If behavior breaks: create fix commits on feature branch, re-verify, document fixes in work item
     i) Create PR from feature branch (includes archival commit). After merge, plan resides in main at docs/plans/archive/
+
 11. Require each role to post a separate review comment in the work item thread using
     superpowers:receiving-code-review. See [Team Roles](../../docs/roles/README.md) for role
     definitions.
@@ -357,6 +359,7 @@ and Jira examples.
     **How to determine:** Ask "Did this work modify files in the repository?"
     - Yes → Concrete changes verification
     - No → Process-only verification
+
 17. If a PR exists, link the PR and work item, monitor PR comment threads, and address PR feedback before completion.
 18. If changes occur after review feedback, re-run BDD validation and update evidence before claiming completion.
 19. If BDD assertions change, require explicit approval before updating them.

@@ -313,14 +313,14 @@ When this skill runs, it should:
 
 ## Rationalizations (and Reality)
 
-| Excuse                                       | Reality                                                          |
-| -------------------------------------------- | ---------------------------------------------------------------- |
-| "Draft PR is fine before verification"       | PR creates merge pressure, undermining thorough verification     |
-| "Reviews can happen in PR comments"          | SHIFT LEFT means finding issues before PR, not during            |
-| "Opening PR early shows progress"            | Progress is shown via work item state, not premature PRs         |
-| "Tests passing means ready for PR"           | Acceptance criteria verification ≠ tests passing                 |
-| "PR is just for visibility"                  | Work item provides visibility without merge pressure             |
-| "We can always close the PR if issues found" | Finding issues before PR is cheaper and cleaner                  |
+| Excuse                                       | Reality                                                      |
+| -------------------------------------------- | ------------------------------------------------------------ |
+| "Draft PR is fine before verification"       | PR creates merge pressure, undermining thorough verification |
+| "Reviews can happen in PR comments"          | SHIFT LEFT means finding issues before PR, not during        |
+| "Opening PR early shows progress"            | Progress is shown via work item state, not premature PRs     |
+| "Tests passing means ready for PR"           | Acceptance criteria verification ≠ tests passing             |
+| "PR is just for visibility"                  | Work item provides visibility without merge pressure         |
+| "We can always close the PR if issues found" | Finding issues before PR is cheaper and cleaner              |
 
 ## Benefits of SHIFT LEFT (Verification Before PR)
 

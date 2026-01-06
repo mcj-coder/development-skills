@@ -189,23 +189,26 @@ npm install --save-dev testcontainers
 ### Basic Setup (Jest)
 
 ```typescript
-import { PostgreSqlContainer, StartedPostgreSqlContainer } from "@testcontainers/postgresql";
+import {
+  PostgreSqlContainer,
+  StartedPostgreSqlContainer,
+} from "@testcontainers/postgresql";
 
 describe("OrderRepository", () => {
-    let container: StartedPostgreSqlContainer;
+  let container: StartedPostgreSqlContainer;
 
-    beforeAll(async () => {
-        container = await new PostgreSqlContainer("postgres:15").start();
-    }, 60000);
+  beforeAll(async () => {
+    container = await new PostgreSqlContainer("postgres:15").start();
+  }, 60000);
 
-    afterAll(async () => {
-        await container.stop();
-    });
+  afterAll(async () => {
+    await container.stop();
+  });
 
-    it("can save and retrieve order", async () => {
-        const connectionUri = container.getConnectionUri();
-        // Use connectionUri with your repository
-    });
+  it("can save and retrieve order", async () => {
+    const connectionUri = container.getConnectionUri();
+    // Use connectionUri with your repository
+  });
 });
 ```
 
@@ -216,14 +219,14 @@ describe("OrderRepository", () => {
 import { PostgreSqlContainer } from "@testcontainers/postgresql";
 
 export default async function globalSetup() {
-    const container = await new PostgreSqlContainer("postgres:15").start();
-    process.env.DATABASE_URL = container.getConnectionUri();
-    (global as any).__POSTGRES_CONTAINER__ = container;
+  const container = await new PostgreSqlContainer("postgres:15").start();
+  process.env.DATABASE_URL = container.getConnectionUri();
+  (global as any).__POSTGRES_CONTAINER__ = container;
 }
 
 // globalTeardown.ts
 export default async function globalTeardown() {
-    await (global as any).__POSTGRES_CONTAINER__?.stop();
+  await (global as any).__POSTGRES_CONTAINER__?.stop();
 }
 ```
 

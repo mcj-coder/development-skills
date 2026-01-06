@@ -77,13 +77,13 @@ Reason: P0 production incident overrides finish-started-work rule
 
 **Priority Levels:**
 
-| Level | Name | Description |
+| Level | Name         | Description                                     |
 | ----- | ------------ | ----------------------------------------------- |
-| P0 | Critical | System down, data loss, security breach |
-| P1 | High | Major functionality broken, blocking other work |
-| P2 | Medium | Important but not urgent, has workarounds |
-| P3 | Low | Nice to have, minimal impact |
-| P4 | Nice-to-have | Future consideration, low priority |
+| P0    | Critical     | System down, data loss, security breach         |
+| P1    | High         | Major functionality broken, blocking other work |
+| P2    | Medium       | Important but not urgent, has workarounds       |
+| P3    | Low          | Nice to have, minimal impact                    |
+| P4    | Nice-to-have | Future consideration, low priority              |
 
 **Selection Rule:** Work through all P0 work items, then all P1s, then all P2s, etc.
 

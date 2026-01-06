@@ -87,11 +87,11 @@ would change behavior - enforcement works, but won't be added proactively.
 
 ## Summary of Baseline Failures
 
-| Scenario | Boundaries Defined | Tests Added | Enforcement |
-| -------- | ------------------ | ----------- | ----------- |
-| Time pressure | NO | NO | NO |
-| Sunk cost | Conceptual only | Partial | NO |
-| Authority | NO | NO | NO |
+| Scenario      | Boundaries Defined | Tests Added | Enforcement |
+| ------------- | ------------------ | ----------- | ----------- |
+| Time pressure | NO                 | NO          | NO          |
+| Sunk cost     | Conceptual only    | Partial     | NO          |
+| Authority     | NO                 | NO          | NO          |
 
 ## Rationalizations to Address in GREEN Phase
 
@@ -158,11 +158,11 @@ The skill MUST address these specific failures:
 
 ## GREEN Phase Summary
 
-| Scenario | Compliance | Key Behavior Change |
-| -------- | ---------- | ------------------- |
-| Time pressure | PASS | Offered opt-out, quoted rationalizations |
-| Brownfield | PASS | Permissive tests, no deploy blocking |
-| Authority | PASS | Required clarification before proceeding |
+| Scenario      | Compliance | Key Behavior Change                      |
+| ------------- | ---------- | ---------------------------------------- |
+| Time pressure | PASS       | Offered opt-out, quoted rationalizations |
+| Brownfield    | PASS       | Permissive tests, no deploy blocking     |
+| Authority     | PASS       | Required clarification before proceeding |
 
 All baseline failures addressed. Skill successfully changes agent behavior under pressure.
 

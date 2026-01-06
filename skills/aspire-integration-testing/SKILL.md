@@ -40,13 +40,13 @@ See [Testing Patterns](references/aspire-testing-patterns.md) and [API Reference
 
 ## Rationalizations Table
 
-| Excuse | Reality |
-| ------ | ------- |
-| "Aspire handles health checks" | Health checks exist but must be validated. Services can fail silently. |
-| "Too complex to test" | Aspire.Hosting.Testing makes it straightforward. 20 min setup. |
-| "Can test in staging" | Local testing is 10x faster. Staging debugging wastes hours. |
-| "Demo doesn't need tests" | Demos become production. Start right or rewrite. |
-| "Manual verification is enough" | Manual tests don't catch regression. Automated tests do. |
+| Excuse                          | Reality                                                                |
+| ------------------------------- | ---------------------------------------------------------------------- |
+| "Aspire handles health checks"  | Health checks exist but must be validated. Services can fail silently. |
+| "Too complex to test"           | Aspire.Hosting.Testing makes it straightforward. 20 min setup.         |
+| "Can test in staging"           | Local testing is 10x faster. Staging debugging wastes hours.           |
+| "Demo doesn't need tests"       | Demos become production. Start right or rewrite.                       |
+| "Manual verification is enough" | Manual tests don't catch regression. Automated tests do.               |
 
 ## Red Flags - STOP
 

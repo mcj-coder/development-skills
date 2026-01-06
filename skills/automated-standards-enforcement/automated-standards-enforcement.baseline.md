@@ -40,14 +40,14 @@ Agent WITH skill set up all required tooling:
 
 ### Skill Compliance
 
-| Requirement                | Compliant | Evidence                          |
-| -------------------------- | --------- | --------------------------------- |
-| Linting configured         | YES       | ESLint with TypeScript rules      |
-| Formatting configured      | YES       | Prettier proposed                 |
-| Spell checking configured  | YES       | cspell configuration              |
-| Pre-commit hooks           | YES       | Husky + lint-staged               |
-| Clean build policy         | YES       | Zero warnings enforced            |
-| CI configuration           | YES       | Proposed GitHub Actions workflow  |
+| Requirement               | Compliant | Evidence                         |
+| ------------------------- | --------- | -------------------------------- |
+| Linting configured        | YES       | ESLint with TypeScript rules     |
+| Formatting configured     | YES       | Prettier proposed                |
+| Spell checking configured | YES       | cspell configuration             |
+| Pre-commit hooks          | YES       | Husky + lint-staged              |
+| Clean build policy        | YES       | Zero warnings enforced           |
+| CI configuration          | YES       | Proposed GitHub Actions workflow |
 
 ## Verification Result
 

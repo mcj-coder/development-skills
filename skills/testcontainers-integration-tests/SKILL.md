@@ -38,14 +38,14 @@ See `references/ci-cd-integration.md` for CI/CD patterns.
 
 ## Quick Reference
 
-| Container  | Use Case        | Image                      |
-| ---------- | --------------- | -------------------------- |
-| PostgreSQL | Relational DB   | postgres:15                |
-| MySQL      | Relational DB   | mysql:8                    |
-| MongoDB    | Document DB     | mongo:6                    |
-| Redis      | Cache           | redis:7-alpine             |
-| RabbitMQ   | Message Queue   | rabbitmq:3.12-management   |
-| Kafka      | Event Streaming | confluentinc/cp-kafka:7.4  |
+| Container  | Use Case        | Image                     |
+| ---------- | --------------- | ------------------------- |
+| PostgreSQL | Relational DB   | postgres:15               |
+| MySQL      | Relational DB   | mysql:8                   |
+| MongoDB    | Document DB     | mongo:6                   |
+| Redis      | Cache           | redis:7-alpine            |
+| RabbitMQ   | Message Queue   | rabbitmq:3.12-management  |
+| Kafka      | Event Streaming | confluentinc/cp-kafka:7.4 |
 
 ## Red Flags - STOP
 
