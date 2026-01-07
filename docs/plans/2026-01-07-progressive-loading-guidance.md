@@ -2,13 +2,18 @@
 
 **Issue:** #100
 **Date:** 2026-01-07
-**Status:** Draft
+**Status:** Draft (Rev 2 - addressing Tech Lead feedback)
 
 ## Overview
 
 Add agent guidance for progressive document loading (frontmatter first, full content when
-relevant) to AGENTS.md, with BDD tests to verify compliance. This consolidates the loading
-patterns established in #97 (roles), #98 (ADRs), and #99 (playbooks).
+relevant) to AGENTS.md, with BDD tests to verify compliance. This provides the central
+directive that references the specific guidance in #97 (roles), #98 (ADRs), and #99
+(playbooks) READMEs.
+
+**Clarification on BDD Test File:** Issue #100 acceptance criteria explicitly requires
+"BDD test file created with RED/GREEN scenarios" - this is a mandatory deliverable, not
+scope creep.
 
 ## Scope
 
@@ -32,13 +37,18 @@ patterns established in #97 (roles), #98 (ADRs), and #99 (playbooks).
 Add section after "Documentation Standards for Agents" containing:
 
 1. **Progressive Loading Principle** - Load frontmatter first, full content when relevant
-2. **Summary Fields by Document Type** table:
+2. **Summary Fields by Document Type** table (from issue #100 AC):
    - Roles: `name`, `description`, `model`
    - ADRs: `name`, `description`, `decision`, `status`
    - Playbooks: `name`, `description`, `summary`, `triggers`
 3. **When Frontmatter Suffices** - Selection, checking applicability, building lists
 4. **When Full Document Needed** - Execution, understanding rationale, step-by-step
 5. **Loading Algorithm** - Step-by-step process for agents
+6. **Cross-reference** - Link to specific README guidance (roles, ADRs, playbooks)
+
+**Note:** AGENTS.md provides the central directive. Detailed workflows are in document
+type READMEs (already implemented in #97-99). This section references them, not
+duplicates them.
 
 **Deliverable:** Updated `AGENTS.md`
 
