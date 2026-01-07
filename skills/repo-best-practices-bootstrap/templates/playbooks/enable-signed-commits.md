@@ -186,15 +186,76 @@ git config --global user.email "your.gpg.email@example.com"
 
 ## Pre-commit Hook Verification
 
-Add this to `.husky/pre-commit` to warn if signing isn't configured:
+Add this to `.husky/pre-commit` to block commits if signing isn't configured:
 
 ```bash
-# Check if GPG signing is enabled
+# Require GPG commit signing to be configured
 if [ "$(git config --get commit.gpgsign)" != "true" ]; then
-  echo "⚠️  WARNING: GPG commit signing is not enabled"
-  echo "   Run: git config --global commit.gpgsign true"
-  echo "   See: docs/playbooks/enable-signed-commits.md"
+  echo ""
+  echo "❌ ERROR: GPG commit signing is not enabled"
+  echo "   All commits must be cryptographically signed."
+  echo ""
+  echo "   To enable signed commits:"
+  echo "   1. Follow the setup guide: docs/playbooks/enable-signed-commits.md"
+  echo "   2. Configure git: git config --global commit.gpgsign true"
+  echo "   3. Ensure your GPG key is added to GitHub"
+  echo ""
+  echo "ℹ️  To bypass (not recommended): git commit --no-verify"
+  exit 1
 fi
+```
+
+## Pre-push Hook Verification
+
+Add `.husky/pre-push` to detect unsigned commits before pushing:
+
+```bash
+# Check for unsigned commits before pushing
+while read local_ref local_sha remote_ref remote_sha; do
+  if [ "$remote_sha" = "0000000000000000000000000000000000000000" ]; then
+    range="$local_sha"
+  else
+    range="$remote_sha..$local_sha"
+  fi
+
+  unsigned=$(git log --format="%H %G?" $range 2>/dev/null | grep -E " N$")
+  if [ -n "$unsigned" ]; then
+    echo "❌ ERROR: Found unsigned commits"
+    echo "Run: git rebase origin/main --exec 'git commit --amend --no-edit -S'"
+    exit 1
+  fi
+done
+```
+
+## Fixing Unsigned Commits
+
+If you have existing unsigned commits that need to be signed:
+
+### Rebase and Re-sign All Commits
+
+```bash
+# Fetch latest main
+git fetch origin main
+
+# Rebase and sign each commit
+git rebase origin/main --exec "git commit --amend --no-edit -S"
+
+# Force push (with lease for safety)
+git push --force-with-lease
+```
+
+### Sign Only the Last Commit
+
+```bash
+git commit --amend --no-edit -S
+git push --force-with-lease
+```
+
+### Verify Commits Are Signed
+
+```bash
+# Check signature status (G=Good, N=None)
+git log --format="%h %G? %s" origin/main..HEAD
 ```
 
 ## See Also

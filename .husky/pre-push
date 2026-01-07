@@ -1,0 +1,49 @@
+# Check for unsigned commits before pushing
+# This prevents pushing commits that won't pass the signed commits requirement
+
+REMOTE="$1"
+URL="$2"
+
+# Get the range of commits being pushed
+while read local_ref local_sha remote_ref remote_sha; do
+  if [ "$local_sha" = "0000000000000000000000000000000000000000" ]; then
+    # Branch is being deleted, skip
+    continue
+  fi
+
+  if [ "$remote_sha" = "0000000000000000000000000000000000000000" ]; then
+    # New branch, check all commits
+    range="$local_sha"
+  else
+    # Existing branch, check new commits only
+    range="$remote_sha..$local_sha"
+  fi
+
+  # Check for unsigned commits
+  unsigned_commits=$(git log --format="%H %G?" $range 2>/dev/null | grep -E " N$" | cut -d' ' -f1)
+
+  if [ -n "$unsigned_commits" ]; then
+    echo ""
+    echo "❌ ERROR: Found unsigned commits that will be rejected by branch protection"
+    echo ""
+    echo "Unsigned commits:"
+    for commit in $unsigned_commits; do
+      echo "  - $(git log -1 --format='%h %s' $commit)"
+    done
+    echo ""
+    echo "To fix this, rebase and re-sign your commits:"
+    echo ""
+    echo "  git rebase origin/main --exec 'git commit --amend --no-edit -S'"
+    echo ""
+    echo "Then force push:"
+    echo ""
+    echo "  git push --force-with-lease"
+    echo ""
+    echo "See: docs/playbooks/enable-signed-commits.md"
+    echo ""
+    echo "ℹ️  To bypass (not recommended): git push --no-verify"
+    exit 1
+  fi
+done
+
+exit 0

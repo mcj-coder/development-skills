@@ -193,16 +193,66 @@ Ask: "Do you have a GPG key configured for signing commits?"
   git config --get commit.gpgsign
   ```
 
-##### Step C: Add pre-commit hook verification
+##### Step C: Add git hook verification
 
-Add to `.husky/pre-commit`:
+Add blocking check to `.husky/pre-commit`:
 
 ```bash
-# Check if GPG signing is enabled
+# Require GPG commit signing to be configured
 if [ "$(git config --get commit.gpgsign)" != "true" ]; then
-  echo "⚠️  WARNING: GPG commit signing is not enabled"
-  echo "   See: docs/playbooks/enable-signed-commits.md"
+  echo ""
+  echo "❌ ERROR: GPG commit signing is not enabled"
+  echo "   All commits must be cryptographically signed."
+  echo ""
+  echo "   To enable signed commits:"
+  echo "   1. Follow the setup guide: docs/playbooks/enable-signed-commits.md"
+  echo "   2. Configure git: git config --global commit.gpgsign true"
+  echo "   3. Ensure your GPG key is added to GitHub"
+  echo ""
+  echo "ℹ️  To bypass (not recommended): git commit --no-verify"
+  exit 1
 fi
+```
+
+Add `.husky/pre-push` to detect unsigned commits before pushing:
+
+```bash
+#!/bin/sh
+
+# Check for unsigned commits before pushing
+REMOTE="$1"
+URL="$2"
+
+while read local_ref local_sha remote_ref remote_sha; do
+  if [ "$local_sha" = "0000000000000000000000000000000000000000" ]; then
+    continue
+  fi
+
+  if [ "$remote_sha" = "0000000000000000000000000000000000000000" ]; then
+    range="$local_sha"
+  else
+    range="$remote_sha..$local_sha"
+  fi
+
+  unsigned=$(git log --format="%H %G?" $range 2>/dev/null | grep -E " N$" | cut -d' ' -f1)
+
+  if [ -n "$unsigned" ]; then
+    echo ""
+    echo "❌ ERROR: Found unsigned commits that will be rejected by branch protection"
+    echo ""
+    echo "To fix, rebase and re-sign your commits:"
+    echo ""
+    echo "  git rebase origin/main --exec 'git commit --amend --no-edit -S'"
+    echo "  git push --force-with-lease"
+    echo ""
+    echo "See: docs/playbooks/enable-signed-commits.md"
+    echo ""
+    echo "ℹ️  To bypass (not recommended): git push --no-verify"
+    exit 1
+  fi
+done
+
+exit 0
 ```
 
 ##### Step D: Test before enabling branch protection
