@@ -1,8 +1,8 @@
 {
-  "$schema": "https://json-schema.org/draft/2020-12/schema",
   "_comment": "GitHub Branch Protection API payload - for classic branch protection on existing repos",
   "_usage": "gh api repos/{owner}/{repo}/branches/main/protection --method PUT --input branch-protection.json",
   "_docs": "https://docs.github.com/en/rest/branches/branch-protection",
+  "_note": "IMPORTANT: Remove all underscore-prefixed fields before API submission. GitHub API rejects unknown fields.",
 
   "required_status_checks": {
     "strict": true,

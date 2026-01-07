@@ -1,0 +1,64 @@
+# Repository Bootstrap Configuration
+# ===================================
+# This file stores opt-out decisions for the repo-best-practices-bootstrap skill.
+# Commit this file to persist opt-out decisions across sessions.
+#
+# Documentation: skills/repo-best-practices-bootstrap/SKILL.md
+
+# Opt-out configuration
+opt_out:
+  # Category-level opt-outs
+  # Uncomment a category to skip all features in that category
+  categories: []
+    # - repository-security    # Skip all repository security features
+    # - ci-cd-security         # Skip all CI/CD security features
+    # - code-quality           # Skip all code quality gates
+    # - documentation          # Skip all documentation features
+    # - agent-enablement       # Skip all agent enablement features
+    # - development-standards  # Skip all development standards
+
+  # Feature-level opt-outs
+  # Uncomment individual features to skip them
+  features: []
+    # Repository Security
+    # - branch-protection      # Using external branch management
+    # - signed-commits         # Team not using GPG/SSH signing
+    # - secret-scanning        # Using alternative secret detection
+    # - vulnerability-alerts   # Using external vulnerability scanner
+    # - security-policy        # Security handled externally
+
+    # CI/CD Security
+    # - actions-permissions    # Using legacy permission model
+    # - oidc-deployments       # Using traditional secrets
+    # - artifact-signing       # Not publishing artifacts
+    # - slsa-provenance        # Not requiring SLSA compliance
+    # - fork-workflow-approval # Private repo, no forks
+
+    # Code Quality
+    # - required-reviews       # Small team, no review needed
+    # - required-checks        # Using external CI system
+    # - linting                # Using IDE-only linting
+    # - no-direct-commits      # Trusted team, direct commits OK
+    # - conventional-commits   # Not using conventional commits
+
+    # Documentation
+    # - readme                 # Using alternative docs system
+    # - contributing           # Not accepting contributions
+    # - license                # Internal/proprietary project
+    # - security-policy        # Handled via repository-security
+    # - codeowners             # Not using code ownership
+
+    # Agent Enablement
+    # - claude-md              # Not using Claude Code
+    # - agents-md              # Not using AI agents
+    # - skills-bootstrap       # Not using skills library
+    # - agent-hooks            # No agent-specific hooks
+
+    # Development Standards
+    # - editorconfig           # Using IDE-specific settings
+    # - gitignore              # Using global gitignore
+    # - gitattributes          # Using default Git behavior
+    # - pre-commit             # Using CI-only checks
+    # - ci-pipeline            # Using external CI system
+
+# Template from: repo-best-practices-bootstrap skill

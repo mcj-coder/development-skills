@@ -1,8 +1,8 @@
 {
-  "$schema": "https://json-schema.org/draft/2020-12/schema",
   "_comment": "GitHub Repository Ruleset - modern alternative to branch protection (recommended for new repos)",
   "_usage": "gh api repos/{owner}/{repo}/rulesets --method POST --input ruleset.json",
   "_docs": "https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-rulesets",
+  "_note": "IMPORTANT: Remove all underscore-prefixed fields before API submission. GitHub API rejects unknown fields.",
 
   "name": "main-branch-protection",
   "target": "branch",
