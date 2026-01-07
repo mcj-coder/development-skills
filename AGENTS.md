@@ -236,6 +236,66 @@ This project follows Clean Architecture with clear boundary enforcement:
 
 Not: "architecture-testing skill applied with clean architecture configuration"
 
+## Progressive Document Loading
+
+Agents SHOULD load document frontmatter first, then full content only when needed. This
+reduces context consumption and improves selection accuracy.
+
+### Progressive Loading Principle
+
+**Load frontmatter first, full content when relevant.** Frontmatter contains summary fields
+sufficient for selection and applicability decisions. Only load full document body when
+execution or detailed rationale is required.
+
+### Summary Fields by Document Type
+
+| Document Type | Selection Fields      | Execution Fields             |
+| ------------- | --------------------- | ---------------------------- |
+| Roles         | `name`, `description` | `model` (for tier selection) |
+| ADRs          | `name`, `description` | `decision`, `status`         |
+| Playbooks     | `name`, `triggers`    | `description`, `summary`     |
+
+For complete field definitions and validation rules, see the respective README files.
+
+### When Frontmatter Suffices
+
+Use frontmatter only when:
+
+- **Selecting** which document applies to current context
+- **Checking applicability** of a role, decision, or playbook
+- **Building lists** of relevant documents for a task
+- **Quick reference** to a decision or trigger condition
+
+### When Full Document Needed
+
+Load the full document body when:
+
+- **Executing** a playbook requires details beyond the summary
+- **Understanding rationale** for why a decision was made
+- **Following step-by-step** procedures with nested steps or decision points
+- **Reviewing alternatives** that were considered (ADRs)
+- **Learning capabilities** of a role beyond its description
+
+### Loading Algorithm
+
+1. **Scan frontmatter** of all documents in the relevant directory
+   - Use `Read` tool with `limit: 20` to capture frontmatter block
+   - Frontmatter ends at closing `---` delimiter (typically lines 1-15)
+2. **Filter** by matching triggers, descriptions, or status (for ADRs)
+3. **Select** the most applicable document(s) using conflict resolution rules
+4. **Execute** using summary fields if sufficient
+5. **Load body** only if summary references details not provided
+   - Use `Read` without limit for full document content
+
+### Cross-References
+
+For detailed guidance on each document type:
+
+- **Roles**: See [docs/roles/README.md](docs/roles/README.md) - frontmatter schema and selection
+- **ADRs**: See [docs/adr/README.md](docs/adr/README.md) - status semantics and agent workflow
+- **Playbooks**: See [docs/playbooks/README.md](docs/playbooks/README.md) - trigger matching
+  and progressive disclosure workflow
+
 ## Prerequisites First
 
 Before any task or response in this repo (after bootstrap):
