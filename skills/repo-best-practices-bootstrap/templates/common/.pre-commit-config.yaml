@@ -1,0 +1,68 @@
+# Pre-commit hooks configuration
+# https://pre-commit.com
+#
+# Install: pip install pre-commit && pre-commit install
+# Run manually: pre-commit run --all-files
+
+repos:
+  # General file fixes
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.5.0
+    hooks:
+      - id: trailing-whitespace
+      - id: end-of-file-fixer
+      - id: check-yaml
+      - id: check-json
+      - id: check-added-large-files
+        args: ["--maxkb=1000"]
+      - id: check-merge-conflict
+      - id: detect-private-key
+
+  # Secret detection
+  - repo: https://github.com/Yelp/detect-secrets
+    rev: v1.4.0
+    hooks:
+      - id: detect-secrets
+        args: ["--baseline", ".secrets.baseline"]
+
+  # Markdown linting
+  - repo: https://github.com/igorshubovych/markdownlint-cli
+    rev: v0.38.0
+    hooks:
+      - id: markdownlint
+        args: ["--fix"]
+
+  # Prettier formatting (JS, TS, JSON, YAML, MD)
+  - repo: https://github.com/pre-commit/mirrors-prettier
+    rev: v3.1.0
+    hooks:
+      - id: prettier
+        types_or: [javascript, jsx, ts, tsx, json, yaml, markdown]
+
+  # Conventional commits (optional - uncomment if using)
+  # - repo: https://github.com/compilerla/conventional-pre-commit
+  #   rev: v3.0.0
+  #   hooks:
+  #     - id: conventional-pre-commit
+  #       stages: [commit-msg]
+
+# Language-specific hooks - uncomment as needed:
+
+# Python
+# - repo: https://github.com/astral-sh/ruff-pre-commit
+#   rev: v0.1.9
+#   hooks:
+#     - id: ruff
+#       args: ["--fix"]
+#     - id: ruff-format
+
+# JavaScript/TypeScript
+# - repo: https://github.com/pre-commit/mirrors-eslint
+#   rev: v8.56.0
+#   hooks:
+#     - id: eslint
+#       additional_dependencies:
+#         - eslint@8.56.0
+#         - typescript@5.3.3
+
+# Template from: repo-best-practices-bootstrap skill

@@ -1,0 +1,91 @@
+# .NET gitignore template
+# https://github.com/github/gitignore/blob/main/VisualStudio.gitignore
+
+# Build results
+[Dd]ebug/
+[Dd]ebugPublic/
+[Rr]elease/
+[Rr]eleases/
+x64/
+x86/
+[Ww][Ii][Nn]32/
+[Aa][Rr][Mm]/
+[Aa][Rr][Mm]64/
+bld/
+[Bb]in/
+[Oo]bj/
+[Oo]ut/
+[Ll]og/
+[Ll]ogs/
+
+# NuGet
+*.nupkg
+**/[Pp]ackages/*
+!**/[Pp]ackages/build/
+*.nuget.props
+*.nuget.targets
+
+# Visual Studio
+.vs/
+*.user
+*.userosscache
+*.sln.docstates
+*.suo
+*.cache
+*.dbmdl
+*.jfm
+
+# Rider
+.idea/
+*.sln.iml
+
+# ReSharper
+_ReSharper*/
+*.[Rr]e[Ss]harper
+
+# NCrunch
+_NCrunch_*
+*.ncrunchproject
+*.ncrunchsolution
+
+# Test results
+[Tt]est[Rr]esult*/
+[Bb]uild[Ll]og.*
+TestResults/
+*.trx
+coverage/
+
+# Tools
+tools/
+*.DotSettings.user
+
+# Build
+*.msbuild
+*.dotnetcli
+
+# Publish profiles
+PublishProfiles/
+
+# Environment
+.env
+appsettings.local.json
+appsettings.*.local.json
+
+# IDE
+*.swp
+*.swo
+*~
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Optional: JetBrains Rider
+.idea/
+
+# Optional: SQL Server
+*.mdf
+*.ldf
+*.ndf
+
+# Template from: repo-best-practices-bootstrap skill

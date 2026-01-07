@@ -1,0 +1,102 @@
+# Dependabot Configuration
+# https://docs.github.com/en/code-security/dependabot/dependabot-version-updates/configuration-options-for-the-dependabot.yml-file
+#
+# This file should be placed at: .github/dependabot.yml
+
+version: 2
+updates:
+  # GitHub Actions
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+    commit-message:
+      prefix: "chore(deps)"
+    labels:
+      - "dependencies"
+      - "github-actions"
+    # Group minor and patch updates
+    groups:
+      actions:
+        patterns:
+          - "*"
+        update-types:
+          - "minor"
+          - "patch"
+
+  # npm (Node.js)
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+    commit-message:
+      prefix: "chore(deps)"
+    labels:
+      - "dependencies"
+      - "javascript"
+    # Limit open PRs
+    open-pull-requests-limit: 10
+    # Group updates by type
+    groups:
+      dev-dependencies:
+        dependency-type: "development"
+        update-types:
+          - "minor"
+          - "patch"
+      prod-dependencies:
+        dependency-type: "production"
+        update-types:
+          - "patch"
+
+  # # pip (Python) - uncomment if needed
+  # - package-ecosystem: "pip"
+  #   directory: "/"
+  #   schedule:
+  #     interval: "weekly"
+  #   commit-message:
+  #     prefix: "chore(deps)"
+  #   labels:
+  #     - "dependencies"
+  #     - "python"
+
+  # # NuGet (.NET) - uncomment if needed
+  # - package-ecosystem: "nuget"
+  #   directory: "/"
+  #   schedule:
+  #     interval: "weekly"
+  #   commit-message:
+  #     prefix: "chore(deps)"
+  #   labels:
+  #     - "dependencies"
+  #     - "dotnet"
+
+  # # Docker - uncomment if needed
+  # - package-ecosystem: "docker"
+  #   directory: "/"
+  #   schedule:
+  #     interval: "weekly"
+  #   commit-message:
+  #     prefix: "chore(deps)"
+  #   labels:
+  #     - "dependencies"
+  #     - "docker"
+
+  # # Terraform - uncomment if needed
+  # - package-ecosystem: "terraform"
+  #   directory: "/infrastructure"
+  #   schedule:
+  #     interval: "weekly"
+  #   commit-message:
+  #     prefix: "chore(deps)"
+  #   labels:
+  #     - "dependencies"
+  #     - "terraform"
+
+# Template from: repo-best-practices-bootstrap skill
+# Customize:
+# - Enable/disable package ecosystems for your project
+# - Adjust schedule frequency
+# - Configure grouping strategy
+# - Set reviewer assignments

@@ -1,0 +1,44 @@
+# CI Workflow Template
+# This workflow mirrors pre-commit hooks to ensure enforcement in CI
+# Customize the jobs based on your repository's tooling
+
+name: CI
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+    branches: [main, master]
+
+jobs:
+  lint:
+    name: Lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+
+      - name: Install dependencies
+        run: npm ci
+
+      # Prettier - code formatting
+      - name: Check formatting
+        run: npx prettier --check .
+
+      # Markdownlint - markdown linting
+      - name: Lint markdown
+        run: npx markdownlint-cli2
+
+      # Secretlint - secret scanning
+      - name: Scan for secrets
+        run: npx secretlint "**/*"
+
+  # Add additional jobs as needed:
+  # - test: Run unit tests
+  # - build: Build the project
+  # - security: Run security scans
