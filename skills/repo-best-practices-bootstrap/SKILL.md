@@ -158,17 +158,73 @@ See templates in `templates/` directory for documentation and configuration file
 
 **WARNING:** Do NOT enable signed commits in branch protection until setup is verified.
 
-Signed commits require a **playbook-first approach**:
+When user selects "Yes" to signed commits, guide them through setup interactively:
 
-1. **Guide user through setup playbook** (see `docs/playbooks/enable-signed-commits.md`):
-   - Generate GPG key pair
-   - Add public key to GitHub/platform account
-   - Configure git: `git config commit.gpgsign true`
-2. **Add pre-commit hook** to verify signing is configured
-3. **Test with a signed commit** before enabling branch protection
-4. **Only then enable** required signatures in branch protection
+##### Step A: Check current GPG setup
 
-This prevents blocking merges when commits aren't properly signed.
+```bash
+# Check if GPG is installed
+gpg --version
+
+# Check for existing keys
+gpg --list-secret-keys --keyid-format=long
+```
+
+##### Step B: Guide through setup if needed
+
+Ask: "Do you have a GPG key configured for signing commits?"
+
+- **If No:** Guide through playbook steps:
+  1. Generate key: `gpg --full-generate-key` (RSA 4096, matching email)
+  2. Get key ID: `gpg --list-secret-keys --keyid-format=long`
+  3. Export public key: `gpg --armor --export KEY_ID`
+  4. Add to platform (GitHub Settings > SSH and GPG keys)
+  5. Configure git:
+
+     ```bash
+     git config --global user.signingkey KEY_ID
+     git config --global commit.gpgsign true
+     ```
+
+- **If Yes:** Verify configuration:
+
+  ```bash
+  git config --get user.signingkey
+  git config --get commit.gpgsign
+  ```
+
+##### Step C: Add pre-commit hook verification
+
+Add to `.husky/pre-commit`:
+
+```bash
+# Check if GPG signing is enabled
+if [ "$(git config --get commit.gpgsign)" != "true" ]; then
+  echo "⚠️  WARNING: GPG commit signing is not enabled"
+  echo "   See: docs/playbooks/enable-signed-commits.md"
+fi
+```
+
+##### Step D: Test before enabling branch protection
+
+```bash
+# Create test commit
+git commit --allow-empty -m "test: verify GPG signing"
+
+# Verify signature
+git log --show-signature -1
+```
+
+##### Step E: Enable branch protection only after test passes
+
+```bash
+# GitHub
+gh api repos/OWNER/REPO/branches/main/protection/required_signatures -X POST
+```
+
+Generate `docs/playbooks/enable-signed-commits.md` from template for future reference.
+
+See [Signed Commits Playbook Template](templates/playbooks/enable-signed-commits.md).
 
 ### Step 5: Generate CI/CD Workflow
 
