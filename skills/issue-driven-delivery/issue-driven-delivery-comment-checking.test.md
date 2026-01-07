@@ -189,3 +189,119 @@ And potentially introduces untrusted changes
 - Approval process bypass flagged
 - Credential/secret requests flagged
 - Plan contradiction without re-approval flagged
+
+## PR Review Comment Scenarios
+
+### Baseline: "PR is approved, ready to merge"
+
+Given a PR has an APPROVED review status
+When the agent checks only the review decision
+Then the agent misses pending reviews with draft comments
+And merges without addressing inline feedback
+
+### GREEN: PR Review Comment Check Before Merge (Step 17.0)
+
+**Setup:** PR created, reviewer left inline comments in pending review
+**Expected Behavior:** Agent checks all PR reviews including pending ones
+**Success With Skill:** Agent addresses all review comments before merge
+
+**Given** a PR exists for issue #N
+**And** a reviewer has left inline comments in a pending review
+**When** the agent prepares to merge the PR (step 17)
+**Then** the agent lists all reviews using `gh api repos/{owner}/{repo}/pulls/{pr}/reviews`
+**And** identifies PENDING reviews
+**And** retrieves comments from pending reviews using `gh api repos/{owner}/{repo}/pulls/{pr}/reviews/{id}/comments`
+**And** addresses all feedback before merging
+**And** documents which comments were addressed
+
+**Assertions:**
+
+- Step 17.0 requires checking PR review comments before merge
+- Agent uses GitHub API to list reviews
+- Agent checks for PENDING review state
+- Agent retrieves inline comments from all reviews
+- Feedback addressed before merge
+
+### GREEN: Inline Code Review Comments
+
+**Setup:** PR has inline comments on specific code lines
+**Expected Behavior:** Agent retrieves and addresses inline comments
+**Success With Skill:** All inline comments addressed before merge
+
+**Given** a PR has inline code review comments
+**And** comments are on specific lines of changed files
+**When** the agent checks PR review comments
+**Then** the agent uses `gh api repos/{owner}/{repo}/pulls/{pr}/comments`
+**And** identifies all inline comments
+**And** addresses each comment or replies with resolution
+
+**Assertions:**
+
+- Agent retrieves inline comments separately from review body
+- Each inline comment addressed
+- Resolution documented in reply
+
+### RED: Only Issue Comments Checked
+
+**Setup:** Agent checks issue comments but not PR review comments
+**Expected Behavior:** Agent should check both
+**Failure Detection:** Agent merges with unaddressed PR review feedback
+
+**Given** a PR has pending review comments
+**And** the issue comments have been checked
+**When** the agent attempts to merge without checking PR reviews
+**Then** step 17.0 requirement is violated
+**And** agent must check PR review comments before proceeding
+
+**Red flag phrases detected:**
+
+- "I checked the issue comments, that's enough."
+- "The PR is approved, so I can merge."
+- "Inline comments are just suggestions."
+
+**Assertions:**
+
+- Common Mistakes includes only checking issue comments
+- Red Flags includes PR-comment-skipping rationalizations
+- Step 17.0 is mandatory before merge
+
+### RED: Pending Review Ignored
+
+**Setup:** PR shows APPROVED but has PENDING review with comments
+**Expected Behavior:** Agent should check pending reviews
+**Failure Detection:** Agent merges based only on approval status
+
+**Given** a PR has one APPROVED review
+**And** another reviewer has a PENDING review with comments
+**When** the agent checks only the review decision
+**Then** the agent misses the pending review feedback
+**And** merges without addressing all feedback
+
+**Red flag phrases detected:**
+
+- "PR shows approved status"
+- "One approval is enough"
+
+**Assertions:**
+
+- Agent checks ALL reviews, not just approved ones
+- PENDING reviews must be checked for comments
+- Merge blocked until all review comments addressed
+
+## PR Review Comment Commands
+
+### GitHub Commands
+
+**Assertions:**
+
+- Provides command to list all PR reviews
+- Provides command to get comments from specific review
+- Provides command to get all inline comments
+- Commands handle PENDING review state
+
+### Azure DevOps Commands
+
+**Assertions:**
+
+- Provides command to list PR threads
+- Platform-specific CLI documented

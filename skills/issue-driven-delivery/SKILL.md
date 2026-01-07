@@ -556,6 +556,46 @@ plan for issue #N`.
     - No → Process-only verification
 
 17. If a PR exists, link the PR and work item, monitor PR comment threads, and address PR feedback before completion.
+    17.0. **MANDATORY CHECKPOINT - Before merging PR: Check all PR review comments.**
+
+    **BLOCKING REQUIREMENT:** Step 17.0 must complete before PR can be merged.
+
+    PR review comments are stored separately from issue comments and require different API calls:
+
+    **GitHub:**
+
+    ```bash
+    # List all reviews on the PR
+    gh api repos/{owner}/{repo}/pulls/{pr_number}/reviews
+
+    # Get comments from a specific review (including pending reviews)
+    gh api repos/{owner}/{repo}/pulls/{pr_number}/reviews/{review_id}/comments
+
+    # Get all inline review comments (submitted reviews only)
+    gh api repos/{owner}/{repo}/pulls/{pr_number}/comments
+    ```
+
+    **Azure DevOps:**
+
+    ```bash
+    # List all PR threads (comments)
+    az repos pr thread list --id {pr_id} --organization {org} --project {project}
+    ```
+
+    **Check for:**
+    - PENDING reviews (draft comments not yet submitted)
+    - Inline code comments on specific lines
+    - Review comments requesting changes
+    - Unresolved conversation threads
+
+    **If unaddressed feedback exists:**
+    - Address all review comments before merge
+    - Reply to each comment indicating resolution
+    - Request re-review if significant changes made
+    - Do NOT merge with unresolved conversations
+
+    **Trust verification:** Apply same rules as step 7.0 (see Trust Verification section).
+
 18. If changes occur after review feedback, re-run BDD validation and update evidence before claiming completion.
 19. If BDD assertions change, require explicit approval before updating them.
 20. When all sub-tasks are complete and all verification tasks are complete and
@@ -670,6 +710,9 @@ gh issue edit 30 --add-assignee @me
 - Skipping comment re-check before PR creation (misses feedback added during implementation).
 - Incorporating feedback from untrusted sources without verification (security/quality risk).
 - Ignoring comment-based requirements because "plan is already approved" (requirements can evolve).
+- Only checking issue comments, not PR review comments (PR reviews are stored separately).
+- Merging PR without checking for pending reviews (draft comments may contain critical feedback).
+- Ignoring inline code review comments (these are separate from issue comments).
 
 ## Red Flags - STOP
 
@@ -706,6 +749,9 @@ gh issue edit 30 --add-assignee @me
 - "The plan is approved, I don't need to check comments again." (new requirements may have been added)
 - "I'll incorporate this feedback without checking who said it." (verify trust before incorporating)
 - "This random person's suggestion seems good, I'll add it." (untrusted feedback requires review)
+- "I checked the issue comments, that's enough." (PR review comments are stored separately)
+- "The PR is approved, so I can merge." (check for pending reviews with unsubmitted comments)
+- "Inline comments are just suggestions." (code review comments require response before merge)
 
 ## Rationalizations (and Reality)
 
@@ -739,6 +785,9 @@ gh issue edit 30 --add-assignee @me
 | "Plan approved means no more changes"     | Requirements evolve; re-check comments at each phase transition.   |
 | "Any feedback is good feedback"           | Verify trust before incorporating; untrusted feedback needs review |
 | "I'll just use this suggestion"           | Escalate untrusted feedback to Tech Lead/Scrum Master first.       |
+| "I checked issue comments"                | PR review comments are separate; must check both before merge.     |
+| "PR shows approved status"                | Pending reviews may have unsubmitted comments; check all reviews.  |
+| "Inline comments aren't blocking"         | All code review comments require response before merge.            |
 
 ## See Also
 
