@@ -13,4 +13,16 @@ if [ "$BRANCH" = "main" ]; then
   exit 1
 fi
 
+# Check if GPG commit signing is configured (warning only)
+if [ "$(git config --get commit.gpgsign)" != "true" ]; then
+  echo ""
+  echo "⚠️  WARNING: GPG commit signing is not enabled"
+  echo "   Your commits will not be cryptographically verified."
+  echo ""
+  echo "   To enable signed commits:"
+  echo "   1. Follow the setup guide: docs/playbooks/enable-signed-commits.md"
+  echo "   2. Or run: git config --global commit.gpgsign true"
+  echo ""
+fi
+
 npx lint-staged
