@@ -249,11 +249,13 @@ execution or detailed rationale is required.
 
 ### Summary Fields by Document Type
 
-| Document Type | Summary Fields                               | Purpose                              |
-| ------------- | -------------------------------------------- | ------------------------------------ |
-| Roles         | `name`, `description`, `model`               | Select expertise and model tier      |
-| ADRs          | `name`, `description`, `decision`, `status`  | Apply decisions without full read    |
-| Playbooks     | `name`, `description`, `summary`, `triggers` | Match triggers, execute from summary |
+| Document Type | Selection Fields      | Execution Fields             |
+| ------------- | --------------------- | ---------------------------- |
+| Roles         | `name`, `description` | `model` (for tier selection) |
+| ADRs          | `name`, `description` | `decision`, `status`         |
+| Playbooks     | `name`, `triggers`    | `description`, `summary`     |
+
+For complete field definitions and validation rules, see the respective README files.
 
 ### When Frontmatter Suffices
 
@@ -277,10 +279,13 @@ Load the full document body when:
 ### Loading Algorithm
 
 1. **Scan frontmatter** of all documents in the relevant directory
+   - Use `Read` tool with `limit: 20` to capture frontmatter block
+   - Frontmatter ends at closing `---` delimiter (typically lines 1-15)
 2. **Filter** by matching triggers, descriptions, or status (for ADRs)
 3. **Select** the most applicable document(s) using conflict resolution rules
 4. **Execute** using summary fields if sufficient
 5. **Load body** only if summary references details not provided
+   - Use `Read` without limit for full document content
 
 ### Cross-References
 

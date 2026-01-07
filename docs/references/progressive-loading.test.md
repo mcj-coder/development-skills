@@ -162,6 +162,6 @@ These scenarios represent proper progressive loading implementation.
 This test file validates the central progressive loading directive in AGENTS.md. For
 document-type-specific workflows, see:
 
-- [docs/roles/README.md](../roles/README.md) - Role selection workflow
-- [docs/adr/README.md](../adr/README.md) - ADR application workflow
-- [docs/playbooks/README.md](../playbooks/README.md) - Playbook progressive disclosure
+- **Roles**: [docs/roles/README.md](../roles/README.md) - Role selection workflow
+- **ADRs**: [docs/adr/README.md](../adr/README.md) - ADR application workflow
+- **Playbooks**: [docs/playbooks/README.md](../playbooks/README.md) - Playbook progressive disclosure
