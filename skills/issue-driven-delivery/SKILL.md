@@ -112,9 +112,9 @@ label names for your repository before use.
 and Jira examples.
 
 1. Announce the skill and why it applies; confirm ticketing CLI availability.
-2. Confirm a Taskboard work item exists for the work. If none exists, create the
-   work item before making any changes. Read-only work and reviews are allowed
-   without a ticket.
+2. Confirm a Taskboard work item exists for the work. If none exists, use the
+   `requirements-gathering` skill to create the work item before making any changes.
+   Read-only work and reviews are allowed without a ticket.
    2a. Verify work item has appropriate tags (component, work type, priority).
    If missing, add tags based on work scope and issue content.
 3. Confirm the target work item and keep all work tied to it.
@@ -539,3 +539,9 @@ gh issue edit 30 --add-assignee @me
 | "Opening PR early shows progress"         | Progress shown via work item state, not premature PRs              |
 | "Verification complete means I can close" | Must create PR, get review, merge, then close                      |
 | "Changes are pushed, that's enough"       | PR provides review process and merge tracking                      |
+
+## See Also
+
+- `requirements-gathering` - Create work items when none exist (creates ticket then stops)
+- `superpowers:brainstorming` - Explore design for existing tickets
+- `superpowers:writing-plans` - Create implementation plans for existing tickets
