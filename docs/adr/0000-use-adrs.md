@@ -1,8 +1,8 @@
 ---
 name: use-adrs
 description: |
-  Apply when deciding how to document architectural decisions.
-  Use when questioning why ADRs are used in this repository.
+  Apply when deciding how to document architectural decisions
+  or questioning why ADRs are used in this repository.
 decision: Use MADR format ADRs in docs/adr/ for significant architectural and process decisions.
 status: accepted
 ---

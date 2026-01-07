@@ -125,9 +125,9 @@ When `status: deprecated`, the ADR body MUST explain why it's no longer applicab
 
 ### Handling Status Values
 
-1. **`accepted`**: Apply the decision when the description matches your context
-2. **`superseded`**: Do NOT apply. Read body to find replacement ADR, then load that instead
-3. **`deprecated`**: Do NOT apply. Read body to understand why it's obsolete
+1. **`accepted`**: SHOULD apply the decision when the description matches your context
+2. **`superseded`**: MUST NOT apply. Read the `## Status` section in body to find replacement ADR
+3. **`deprecated`**: MUST NOT apply. Read body to understand why it's obsolete
 
 ### Conflict Resolution
 
