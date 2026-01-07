@@ -4,7 +4,7 @@ description: |
   Use for deployment planning, CI/CD reviews, and operational readiness.
   Validates monitoring, logging, rollback strategies, and infrastructure
   as code practices.
-model: balanced # General development → sonnet, gpt-4o
+model: balanced # General development → Sonnet 4.5, GPT-5.1
 ---
 
 # DevOps Engineer

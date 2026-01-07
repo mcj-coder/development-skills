@@ -4,7 +4,7 @@ description: |
   Use for enterprise architecture decisions, system integration reviews, and
   major technology selection. Validates architectural patterns, service
   boundaries, and data architecture.
-model: reasoning # Complex analysis → opus, o3
+model: reasoning # Complex analysis → Opus 4.5, GPT-5.2
 ---
 
 # Technical Architect

@@ -4,7 +4,7 @@ description: |
   Use for accessibility reviews, WCAG compliance validation, and assistive
   technology compatibility. Validates keyboard navigation, screen reader
   support, and inclusive design patterns.
-model: balanced # General development → sonnet, gpt-4o
+model: balanced # General development → Sonnet 4.5, GPT-5.1
 ---
 
 # Accessibility Expert

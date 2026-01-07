@@ -4,7 +4,7 @@ description: |
   Use for code quality reviews, implementation patterns, and clean code
   principles. Validates code readability, maintainability, and adherence
   to team conventions.
-model: balanced # General development → sonnet, gpt-4o
+model: balanced # General development → Sonnet 4.5, GPT-5.1
 ---
 
 # Senior Developer

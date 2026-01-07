@@ -4,7 +4,7 @@ description: |
   Use for documentation reviews, API documentation validation, and user
   guide quality. Validates clarity, completeness, and documentation
   standards compliance.
-model: balanced # General development → sonnet, gpt-4o
+model: balanced # General development → Sonnet 4.5, GPT-5.1
 ---
 
 # Documentation Specialist

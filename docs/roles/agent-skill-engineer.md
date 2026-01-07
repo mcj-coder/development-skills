@@ -4,7 +4,7 @@ description: |
   Use for skill creation reviews, BDD test design, and agent workflow
   optimization. Validates skill clarity, composability, and progressive
   disclosure patterns.
-model: balanced # General development → sonnet, gpt-4o
+model: balanced # General development → Sonnet 4.5, GPT-5.1
 ---
 
 # Agent Skill Engineer

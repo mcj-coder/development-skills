@@ -4,7 +4,7 @@ description: |
   Use for requirements validation, business logic reviews, and acceptance
   criteria verification. Validates user value, feature scope, and alignment
   with business requirements.
-model: balanced # General development → sonnet, gpt-4o
+model: balanced # General development → Sonnet 4.5, GPT-5.1
 ---
 
 # Product Owner

@@ -4,7 +4,7 @@ description: |
   Use for testing strategy reviews, quality gate definition, and test
   coverage analysis. Validates edge cases, test reliability, and
   overall quality assurance approach.
-model: balanced # General development → sonnet, gpt-4o
+model: balanced # General development → Sonnet 4.5, GPT-5.1
 ---
 
 # QA Engineer

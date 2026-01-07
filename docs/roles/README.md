@@ -31,12 +31,12 @@ model: balanced # Task-based model tier
 
 Task-based values that map to platform-specific models:
 
-| Value       | Use Case                                                   | Claude                | OpenAI      |
-| ----------- | ---------------------------------------------------------- | --------------------- | ----------- |
-| `reasoning` | Complex analysis, architecture design, security compliance | opus, claude-sonnet-4 | o3, gpt-4.1 |
-| `balanced`  | Code review, implementation validation, security review    | sonnet                | gpt-4o      |
-| `speed`     | Quick validation, formatting checks, simple lookups        | haiku                 | gpt-4o-mini |
-| `inherit`   | Use caller's model (see below)                             | (varies)              | (varies)    |
+| Value       | Use Case                                                   | Claude     | OpenAI     |
+| ----------- | ---------------------------------------------------------- | ---------- | ---------- |
+| `reasoning` | Complex analysis, architecture design, security compliance | Opus 4.5   | GPT-5.2    |
+| `balanced`  | Code review, implementation validation, security review    | Sonnet 4.5 | GPT-5.1    |
+| `speed`     | Quick validation, formatting checks, simple lookups        | Haiku 4.5  | GPT-5-nano |
+| `inherit`   | Use caller's model (see below)                             | (varies)   | (varies)   |
 
 ### Choosing Model Tiers
 
@@ -73,7 +73,7 @@ description: |
   Use for technical architecture decisions, design reviews, and cross-cutting
   concerns. Validates system design, evaluates trade-offs, and ensures
   architectural consistency.
-model: reasoning # Complex analysis → opus/claude-sonnet-4, o3/gpt-4.1
+model: reasoning # Complex analysis → Opus 4.5, GPT-5.2
 ---
 ```
 

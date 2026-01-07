@@ -4,7 +4,7 @@ description: |
   Use for security architecture decisions, compliance requirements, and
   threat modelling frameworks. Validates zero-trust principles, security
   boundaries, and regulatory compliance (SOC2, GDPR).
-model: reasoning # Complex analysis → opus, o3
+model: reasoning # Complex analysis → Opus 4.5, GPT-5.2
 ---
 
 # Security Architect

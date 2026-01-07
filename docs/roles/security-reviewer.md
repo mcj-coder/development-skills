@@ -5,7 +5,7 @@ description: |
   vulnerability checks, and secure coding patterns. Validates authentication,
   authorization, and data protection in code. For architecture-level security,
   threat modelling, or compliance requirements, use Security Architect instead.
-model: balanced # Implementation-level security → sonnet, gpt-4o
+model: balanced # Implementation-level security → Sonnet 4.5, GPT-5.1
 ---
 
 # Security Reviewer
