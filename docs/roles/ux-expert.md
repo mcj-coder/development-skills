@@ -1,3 +1,12 @@
+---
+name: ux-expert
+description: |
+  Use for user-facing feature reviews, workflow design, and interaction
+  patterns. Validates user flows, interface consistency, and feedback
+  mechanisms.
+model: balanced # General development → Sonnet 4.5, GPT-5.1
+---
+
 # UX Expert
 
 **Role:** User experience and interface design

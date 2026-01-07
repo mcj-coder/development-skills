@@ -1,3 +1,13 @@
+---
+name: security-reviewer
+description: |
+  Use for implementation-level security reviews: input validation, OWASP
+  vulnerability checks, and secure coding patterns. Validates authentication,
+  authorization, and data protection in code. For architecture-level security,
+  threat modelling, or compliance requirements, use Security Architect instead.
+model: balanced # Implementation-level security → Sonnet 4.5, GPT-5.1
+---
+
 # Security Reviewer
 
 **Role:** Security and threat modelling
