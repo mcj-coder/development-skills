@@ -2,13 +2,16 @@
 
 ## Required Reading
 
-Before ANY work in this repository, you MUST:
+Before ANY work in this repository, you MUST complete these steps in order:
 
 1. Read `README.md` completely
 2. Read `AGENTS.md` completely
 3. Acknowledge by stating: "I have read and understood README.md and AGENTS.md for development-skills"
+4. Load `development-skills:skills-first-workflow` as instructed in AGENTS.md
 
 **Do not proceed with any task until you have completed these steps and stated the acknowledgement.**
+
+> **Loading Order**: This file (CLAUDE.md) → Read docs → State acknowledgement → Load skills-first-workflow → Begin work
 
 ---
 
@@ -82,15 +85,17 @@ Specialized expert personas are defined in `docs/roles/*.md`:
 | Product & Design | Product Owner, UX Expert, Accessibility Expert                      |
 | Documentation    | Documentation Specialist, Technical Architect, Agent Skill Engineer |
 
+Use canonical names from `docs/roles/README.md` when referencing personas.
+
 ### Delegation Rules
 
 1. **Use subagents for specialized tasks** - Delegate to the most appropriate persona
    to reduce context pollution in the main conversation
-2. **Select the right model** for the task:
+2. **Select the right model** for the task (Claude model tiers):
    - `opus` - Complex architectural decisions, security reviews, nuanced analysis
    - `sonnet` - General development, code review, implementation
    - `haiku` - Quick lookups, simple validations, formatting tasks
-3. **Codex is available locally** - Use for parallel tasks or when local execution is preferred
+3. **Codex available locally** - If installed, use for parallel tasks or local execution
 4. **Load the persona** - Read the relevant `docs/roles/<persona>.md` before executing the delegated task
 
 ### Mandatory Retrospective
@@ -106,7 +111,7 @@ After EVERY persona-delegated task completes:
    - Task completed and outcome
    - Retrospective findings (compliance, quality, issues)
 
-3. **If meaningful issues found**:
+3. **If meaningful issues found** (any Critical, 2+ Important, or patterns worth capturing):
    - Write retrospective to `docs/retrospectives/YYYY-MM-DD-<topic>.md`
    - Create GitHub issues for corrective actions
    - Reference retrospective in issue description
@@ -144,18 +149,15 @@ After EVERY persona-delegated task completes:
 
 ## Bootstrap Requirements
 
-If Superpowers is not already installed:
-
-1. Install Superpowers skill library first
-2. Clone this repo to your agent's default skills location
-3. Verify skills are discoverable before proceeding
+See AGENTS.md "Bootstrap (First-Time Setup)" for detailed instructions on installing
+Superpowers and configuring this skill library.
 
 ## Quick Reference
 
 | Resource                        | Purpose                                       |
 | ------------------------------- | --------------------------------------------- |
 | `README.md`                     | Repository standards, skill list, format spec |
-| `AGENTS.md`                     | Complete agent execution rules (18K words)    |
+| `AGENTS.md`                     | Complete agent execution rules                |
 | `CONTRIBUTING.md`               | Contribution process                          |
 | `docs/roles/*.md`               | Expert persona definitions                    |
 | `docs/architecture-overview.md` | Architectural patterns                        |
