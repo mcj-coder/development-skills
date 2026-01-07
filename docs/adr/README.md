@@ -141,6 +141,7 @@ When multiple ADRs have overlapping `description` triggers:
 
 - [0000-use-adrs.md](0000-use-adrs.md) - Use MADR format ADRs for architectural decisions
 - [0001-skill-design-philosophy.md](0001-skill-design-philosophy.md) - Bootstrap defaults, defer to target repo
+- [0002-automation-first-principle.md](0002-automation-first-principle.md) - Automate repetitive processes via scripts
 
 ## Creating New ADRs
 
