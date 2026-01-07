@@ -13,16 +13,19 @@ if [ "$BRANCH" = "main" ]; then
   exit 1
 fi
 
-# Check if GPG commit signing is configured (warning only)
+# Require GPG commit signing to be configured
 if [ "$(git config --get commit.gpgsign)" != "true" ]; then
   echo ""
-  echo "⚠️  WARNING: GPG commit signing is not enabled"
-  echo "   Your commits will not be cryptographically verified."
+  echo "❌ ERROR: GPG commit signing is not enabled"
+  echo "   All commits must be cryptographically signed."
   echo ""
   echo "   To enable signed commits:"
   echo "   1. Follow the setup guide: docs/playbooks/enable-signed-commits.md"
-  echo "   2. Or run: git config --global commit.gpgsign true"
+  echo "   2. Configure git: git config --global commit.gpgsign true"
+  echo "   3. Ensure your GPG key is added to GitHub"
   echo ""
+  echo "ℹ️  To bypass (not recommended): git commit --no-verify"
+  exit 1
 fi
 
 npx lint-staged
