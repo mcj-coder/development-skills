@@ -23,6 +23,8 @@ Applicable to both greenfield (new repository) and brownfield (existing reposito
 4. Documentation Baseline - README, CONTRIBUTING, LICENSE, SECURITY
 5. Agent Enablement - CLAUDE.md, AGENTS.md, skills bootstrap, pre-commit hooks
 6. Development Standards - .editorconfig, .gitignore, .gitattributes, pre-commit config
+7. Project Management - Project board linking, kanban/sprint workflow configuration
+8. Standard Tooling - husky, prettier, markdownlint, lint-staged, local secret scanning
 
 ## When to Use
 

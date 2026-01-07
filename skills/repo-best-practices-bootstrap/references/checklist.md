@@ -768,3 +768,409 @@ test -f azure-pipelines.yml && echo "EXISTS" || echo "MISSING"
 # Check if pipeline exists
 test -f .gitlab-ci.yml && echo "EXISTS" || echo "MISSING"
 ```
+
+## 7. Project Management
+
+### 7.1 Project Board Linking
+
+**Description:** Link repository to a project board (kanban/sprint) for work tracking.
+
+**Cost:** Free
+
+**Opt-out:** `project-management` (category) or `project-board` (feature)
+
+**GitHub:**
+
+```bash
+# List linked projects
+gh api graphql -f query='
+{
+  repository(owner: "{owner}", name: "{repo}") {
+    projectsV2(first: 10) {
+      nodes { title url }
+    }
+  }
+}'
+
+# List organization projects available for linking
+gh project list --owner {owner}
+
+# Link project to repository (requires project number)
+gh project link {project-number} --owner {owner} --repo {owner}/{repo}
+```
+
+**Azure DevOps:**
+
+```bash
+# Azure repos are always linked to their project's boards
+# List work items linked to repository
+az boards query --wiql "SELECT [System.Id] FROM WorkItems WHERE [System.TeamProject] = '{project}'"
+
+# Verify board exists
+az boards show --board "Kanban Board" --team {team} --project {project}
+```
+
+**GitLab:**
+
+```bash
+# GitLab uses issue boards per project
+# List boards
+glab api projects/{project-id}/boards
+
+# Create kanban board if none exists
+glab api projects/{project-id}/boards --method POST -f name="Kanban"
+```
+
+### 7.2 Kanban/Sprint Board Configuration
+
+**Description:** Configure board columns and workflows for consistent team process.
+
+**Cost:** Free
+
+**Opt-out:** `project-management` (category) or `board-config` (feature)
+
+**GitHub Projects:**
+
+```bash
+# List project fields (columns, status)
+gh project field-list {project-number} --owner {owner}
+
+# Add standard status field options
+# Note: Column configuration done via UI or GraphQL mutations
+```
+
+**Recommended columns:**
+
+- Backlog / To Do
+- In Progress
+- In Review
+- Done
+
+**Azure DevOps:**
+
+```bash
+# Configure board columns
+az boards column update \
+  --board "Kanban Board" \
+  --column "Doing" \
+  --name "In Progress" \
+  --team {team} \
+  --project {project}
+```
+
+**GitLab:**
+
+```bash
+# Add board lists (columns)
+glab api projects/{project-id}/boards/{board-id}/lists \
+  --method POST \
+  -f label_id={label-id}
+```
+
+### 7.3 Issue Labels
+
+**Description:** Create standard labels for issue categorisation and board filtering.
+
+**Cost:** Free
+
+**Opt-out:** `project-management` (category) or `issue-labels` (feature)
+
+**GitHub:**
+
+```bash
+# List existing labels
+gh label list
+
+# Create standard labels
+gh label create "type: bug" --color d73a4a --description "Something isn't working"
+gh label create "type: feature" --color 0075ca --description "New feature request"
+gh label create "type: docs" --color 0052cc --description "Documentation improvements"
+gh label create "priority: high" --color b60205 --description "High priority"
+gh label create "priority: medium" --color ffc000 --description "Medium priority"
+gh label create "priority: low" --color c5def5 --description "Low priority"
+gh label create "status: blocked" --color d93f0b --description "Blocked by dependency"
+gh label create "status: ready" --color 0e8a16 --description "Ready for work"
+```
+
+**Azure DevOps:**
+
+```bash
+# Azure uses work item types and area paths instead of labels
+# Configure via Project Settings > Boards > Team configuration
+```
+
+**GitLab:**
+
+```bash
+# Create labels
+glab label create "type::bug" --color "#d73a4a" --description "Something isn't working"
+glab label create "type::feature" --color "#0075ca" --description "New feature request"
+glab label create "priority::high" --color "#b60205" --description "High priority"
+```
+
+## 8. Standard Tooling
+
+### 8.1 Git Hooks Manager (husky)
+
+**Description:** Install husky for managing Git hooks in Node.js projects.
+
+**Cost:** Free
+
+**Opt-out:** `standard-tooling` (category) or `husky` (feature)
+
+**Node.js Projects:**
+
+```bash
+# Check if husky is configured
+test -d .husky && echo "EXISTS" || echo "MISSING"
+
+# Install husky
+npm install --save-dev husky
+npx husky init
+
+# Verify installation
+cat .husky/pre-commit
+```
+
+**Alternative for non-Node projects:**
+
+```bash
+# Use pre-commit framework (Python-based, language-agnostic)
+pip install pre-commit
+pre-commit install
+```
+
+### 8.2 Code Formatter (prettier)
+
+**Description:** Install Prettier for consistent code formatting.
+
+**Cost:** Free
+
+**Opt-out:** `standard-tooling` (category) or `prettier` (feature)
+
+**Node.js Projects:**
+
+```bash
+# Check if prettier is configured
+test -f .prettierrc -o -f .prettierrc.json -o -f prettier.config.js && echo "EXISTS" || echo "MISSING"
+
+# Install prettier
+npm install --save-dev prettier
+
+# Create config file
+cat > .prettierrc << 'EOF'
+{
+  "semi": true,
+  "singleQuote": true,
+  "tabWidth": 2,
+  "trailingComma": "es5"
+}
+EOF
+
+# Create ignore file
+cat > .prettierignore << 'EOF'
+node_modules/
+dist/
+build/
+coverage/
+*.min.js
+EOF
+```
+
+### 8.3 Markdown Linter (markdownlint)
+
+**Description:** Install markdownlint for consistent markdown formatting.
+
+**Cost:** Free
+
+**Opt-out:** `standard-tooling` (category) or `markdownlint` (feature)
+
+**Node.js Projects:**
+
+```bash
+# Check if markdownlint is configured
+test -f .markdownlint.json -o -f .markdownlint.yaml && echo "EXISTS" || echo "MISSING"
+
+# Install markdownlint
+npm install --save-dev markdownlint-cli2
+
+# Create config file
+cat > .markdownlint.json << 'EOF'
+{
+  "default": true,
+  "MD013": false,
+  "MD033": false
+}
+EOF
+```
+
+**Python/Other Projects:**
+
+```bash
+# Install via pip
+pip install markdownlint-cli2
+# Or use pre-commit hook (see 8.6)
+```
+
+### 8.4 Staged File Linter (lint-staged)
+
+**Description:** Run linters only on staged files for faster commits.
+
+**Cost:** Free
+
+**Opt-out:** `standard-tooling` (category) or `lint-staged` (feature)
+
+**Node.js Projects:**
+
+```bash
+# Check if lint-staged is configured
+grep -q "lint-staged" package.json && echo "EXISTS" || echo "MISSING"
+
+# Install lint-staged
+npm install --save-dev lint-staged
+
+# Add configuration to package.json
+# Or create .lintstagedrc.json:
+cat > .lintstagedrc.json << 'EOF'
+{
+  "*.{js,ts,jsx,tsx}": ["eslint --fix", "prettier --write"],
+  "*.{md,json,yaml,yml}": ["prettier --write"],
+  "*.md": ["markdownlint-cli2 --fix"]
+}
+EOF
+
+# Configure husky pre-commit hook
+echo "npx lint-staged" > .husky/pre-commit
+```
+
+### 8.5 Local Secret Scanning
+
+**Description:** Scan for secrets in commits before they reach the remote.
+
+**Cost:** Free
+
+**Opt-out:** `standard-tooling` (category) or `local-secret-scanning` (feature)
+
+**Using secretlint (Recommended for Node.js projects):**
+
+```bash
+# Check if secretlint is configured
+test -f .secretlintrc.json && echo "EXISTS" || echo "MISSING"
+
+# Install secretlint
+npm install --save-dev secretlint @secretlint/secretlint-rule-preset-recommend
+
+# Create config file
+cat > .secretlintrc.json << 'EOF'
+{
+  "rules": [
+    {
+      "id": "@secretlint/secretlint-rule-preset-recommend"
+    }
+  ]
+}
+EOF
+
+# Scan repository
+npx secretlint "**/*"
+
+# Add to package.json scripts
+# "secretlint": "secretlint \"**/*\""
+
+# Add to lint-staged
+# "*.{js,ts,json,yaml,yml,env}": ["secretlint"]
+```
+
+**Using git-secrets (AWS-focused):**
+
+```bash
+# Install git-secrets
+# macOS: brew install git-secrets
+# Linux: https://github.com/awslabs/git-secrets
+
+# Check if configured
+git secrets --list 2>/dev/null && echo "CONFIGURED" || echo "NOT CONFIGURED"
+
+# Install hooks
+git secrets --install
+git secrets --register-aws
+```
+
+**Using detect-secrets (Python projects):**
+
+```bash
+# Install detect-secrets
+pip install detect-secrets
+
+# Check if baseline exists
+test -f .secrets.baseline && echo "EXISTS" || echo "MISSING"
+
+# Create baseline
+detect-secrets scan > .secrets.baseline
+
+# Add to pre-commit
+# - repo: https://github.com/Yelp/detect-secrets
+#   rev: v1.4.0
+#   hooks:
+#     - id: detect-secrets
+#       args: ['--baseline', '.secrets.baseline']
+```
+
+### 8.6 Pre-commit Integration
+
+**Description:** Integrate all tools via pre-commit hooks for consistent enforcement.
+
+**Cost:** Free
+
+**Opt-out:** `standard-tooling` (category) or `precommit-integration` (feature)
+
+**Node.js Projects (husky + lint-staged):**
+
+```bash
+# .husky/pre-commit
+#!/bin/sh
+. "$(dirname "$0")/_/husky.sh"
+
+npx lint-staged
+```
+
+**All Projects (pre-commit framework):**
+
+```yaml
+# .pre-commit-config.yaml
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.5.0
+    hooks:
+      - id: trailing-whitespace
+      - id: end-of-file-fixer
+      - id: check-yaml
+      - id: check-json
+
+  - repo: https://github.com/igorshubovych/markdownlint-cli
+    rev: v0.38.0
+    hooks:
+      - id: markdownlint-fix
+
+  - repo: https://github.com/pre-commit/mirrors-prettier
+    rev: v3.1.0
+    hooks:
+      - id: prettier
+        types_or: [javascript, typescript, json, yaml, markdown]
+
+  - repo: local
+    hooks:
+      - id: secretlint
+        name: secretlint
+        entry: npx secretlint
+        language: system
+        files: .*
+```
+
+```bash
+# Install pre-commit hooks
+pre-commit install
+
+# Run on all files
+pre-commit run --all-files
+```
