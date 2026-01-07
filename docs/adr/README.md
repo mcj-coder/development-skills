@@ -41,7 +41,7 @@ status: accepted
 
 - When to load or apply this ADR
 - Include trigger conditions agents can match
-- 1-3 sentences using format: "Apply when {condition}. Use when {context}."
+- 1-3 sentences using format: "Apply when {condition} or {alternative condition}."
 - Must be sufficient for agents to decide relevance without reading full ADR
 
 #### `decision`
