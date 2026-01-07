@@ -792,12 +792,18 @@ gh api graphql -f query='
   }
 }'
 
-# List organization projects available for linking
+# List user/org projects available for linking
 gh project list --owner {owner}
 
-# Link project to repository (requires project number)
+# Create project if none exists
+gh project create --owner {owner} --title "{repo} Kanban"
+
+# IMPORTANT: Link project to repository (required for repo Projects tab)
 gh project link {project-number} --owner {owner} --repo {owner}/{repo}
 ```
+
+**Note:** Creating a project does NOT automatically link it to the repository.
+You must run `gh project link` for the project to appear in the repo's Projects tab.
 
 **Azure DevOps:**
 
