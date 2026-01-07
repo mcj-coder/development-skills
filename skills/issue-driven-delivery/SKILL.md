@@ -280,7 +280,7 @@ plan for issue #N`.
    explicit approval comments. If user indicates they've reacted with thumbs-up,
    post the approval comment on their behalf.
 
-   5d. **Record approval in plan:** Immediately after detecting explicit approval:
+   5d. **Record approval in plan:** After approval detected per step 5a/5b/5c:
    1. Add approval row to Approval History table:
       - Phase: "Plan Approval"
       - Reviewer: Role of approver (e.g., "Tech Lead")
@@ -358,12 +358,14 @@ plan for issue #N`.
       - Append to Review History under "Implementation Reviews"
       - Link to commits that addressed feedback
    3. Commit: `docs(plan): record implementation review for issue #N`
-      8f. **Record final approval:** After final Tech Lead approval:
-   4. Add final approval row to Approval History:
-      - Phase: "Final Approval"
-      - Decision: "APPROVED"
-   5. Update plan status to "Complete"
-   6. Commit: `docs(plan): mark plan complete for issue #N`
+
+   8f. **Record final approval:** After final Tech Lead approval:
+   - Add final approval row to Approval History:
+     - Phase: "Final Approval"
+     - Decision: "APPROVED"
+   - Update plan status to "Complete"
+   - Commit: `docs(plan): mark plan complete for issue #N`
+
 9. Stop and wait for explicit approval before closing each sub-task.
 10. Close sub-tasks only after approval and mark the plan task complete.
     10a. Before closing work item, verify:
@@ -624,6 +626,7 @@ gh issue edit 30 --add-assignee @me
 
 ## See Also
 
+- `docs/references/plan-template.md` - Plan template with Approval History and Review History
 - `requirements-gathering` - Create work items when none exist (creates ticket then stops)
 - `superpowers:brainstorming` - Explore design for existing tickets
 - `superpowers:writing-plans` - Create implementation plans for existing tickets
