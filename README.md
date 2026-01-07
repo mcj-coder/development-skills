@@ -14,6 +14,65 @@ Taskboard: <https://github.com/mcj-coder/development-skills/issues>
 - Documentation and references for skills that integrate with Superpowers.
 - A place to record decisions without copying the upstream skills.
 
+## Installation
+
+Install this skill library by creating a symlink from your agent's skill directory
+to this repository.
+
+### Prerequisites
+
+- Git (for cloning)
+- Superpowers installed ([installation guide](https://github.com/obra/superpowers#installation))
+
+### Clone the Repository
+
+```bash
+# Clone to a location of your choice
+git clone https://github.com/mcj-coder/development-skills.git ~/repos/development-skills
+```
+
+### Create Symlink
+
+**Unix/macOS (Claude Code):**
+
+```bash
+ln -s ~/repos/development-skills ~/.claude/skills/development-skills
+```
+
+**Unix/macOS (Codex):**
+
+```bash
+ln -s ~/repos/development-skills ~/.codex/skills/development-skills
+```
+
+**Windows (Claude Code) - Run as Administrator:**
+
+```powershell
+New-Item -ItemType SymbolicLink -Path "$env:USERPROFILE\.claude\skills\development-skills" -Target "C:\repos\development-skills"
+```
+
+**Windows (Codex) - Run as Administrator:**
+
+```powershell
+New-Item -ItemType SymbolicLink -Path "$env:USERPROFILE\.codex\skills\development-skills" -Target "C:\repos\development-skills"
+```
+
+> **Note:** On Windows, creating symlinks requires Administrator privileges or
+> Developer Mode enabled.
+
+### Verify Installation
+
+Confirm the symlink was created and skills are discoverable:
+
+```bash
+# Check symlink exists
+ls -la ~/.claude/skills/development-skills  # Unix/macOS
+dir "$env:USERPROFILE\.claude\skills\development-skills"  # Windows PowerShell
+
+# Test skill loading (in Claude Code)
+# Try loading: development-skills:skills-first-workflow
+```
+
 ## Repository Standards (All Contributors)
 
 **CRITICAL**: Follow a clean build principle. When changes are committed there
