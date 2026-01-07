@@ -154,6 +154,22 @@ For each feature the user wants to configure:
 
 See templates in `templates/` directory for documentation and configuration files.
 
+#### Signed Commits (Special Handling)
+
+**WARNING:** Do NOT enable signed commits in branch protection until setup is verified.
+
+Signed commits require a **playbook-first approach**:
+
+1. **Guide user through setup playbook** (see `docs/playbooks/enable-signed-commits.md`):
+   - Generate GPG key pair
+   - Add public key to GitHub/platform account
+   - Configure git: `git config commit.gpgsign true`
+2. **Add pre-commit hook** to verify signing is configured
+3. **Test with a signed commit** before enabling branch protection
+4. **Only then enable** required signatures in branch protection
+
+This prevents blocking merges when commits aren't properly signed.
+
 ### Step 5: Generate CI/CD Workflow
 
 **IMPORTANT:** Pre-commit hooks can be bypassed. CI/CD enforcement is mandatory.

@@ -53,6 +53,7 @@
     "GHAS",
     "glab",
     "gofmt",
+    "gpgsign",
     "golangci",
     "Graphviz",
     "Grazie",
