@@ -193,16 +193,84 @@ Ask: "Do you have a GPG key configured for signing commits?"
   git config --get commit.gpgsign
   ```
 
-##### Step C: Add pre-commit hook verification
+##### Step C: Add git hook verification
 
-Add to `.husky/pre-commit`:
+Add blocking check to `.husky/pre-commit`:
 
 ```bash
-# Check if GPG signing is enabled
+# Require GPG commit signing to be configured
 if [ "$(git config --get commit.gpgsign)" != "true" ]; then
-  echo "⚠️  WARNING: GPG commit signing is not enabled"
-  echo "   See: docs/playbooks/enable-signed-commits.md"
+  echo ""
+  echo "❌ ERROR: GPG commit signing is not enabled"
+  echo "   All commits must be cryptographically signed."
+  echo ""
+  echo "   To enable signed commits:"
+  echo "   1. Follow the setup guide: docs/playbooks/enable-signed-commits.md"
+  echo "   2. Configure git: git config --global commit.gpgsign true"
+  echo "   3. Ensure your GPG key is added to GitHub"
+  echo ""
+  echo "ℹ️  To bypass (not recommended): git commit --no-verify"
+  exit 1
 fi
+```
+
+Create `.husky/pre-push` to detect commits with invalid or missing signatures:
+
+```bash
+# Check for unsigned or invalid commits before pushing
+# Valid signatures: G (Good), U (Good but untrusted)
+# Invalid: N (None), B (Bad), E (Error), R (Revoked), X/Y (Expired)
+
+REMOTE="$1"
+URL="$2"
+
+# Detect the default branch dynamically
+DEFAULT_BRANCH=$(git symbolic-ref refs/remotes/origin/HEAD 2>/dev/null | sed 's@^refs/remotes/origin/@@')
+if [ -z "$DEFAULT_BRANCH" ]; then
+  DEFAULT_BRANCH="main"
+fi
+
+while read local_ref local_sha remote_ref remote_sha; do
+  # Skip branch deletions and tag pushes
+  if [ "$local_sha" = "0000000000000000000000000000000000000000" ]; then
+    continue
+  fi
+  if echo "$local_ref" | grep -q '^refs/tags/'; then
+    continue
+  fi
+
+  if [ "$remote_sha" = "0000000000000000000000000000000000000000" ]; then
+    # New branch - check commits since divergence from default branch
+    merge_base=$(git merge-base "origin/$DEFAULT_BRANCH" "$local_sha" 2>/dev/null)
+    if [ -n "$merge_base" ]; then
+      range="$merge_base..$local_sha"
+    else
+      range="$local_sha~50..$local_sha"
+    fi
+  else
+    range="$remote_sha..$local_sha"
+  fi
+
+  # Check for any non-valid signatures
+  invalid=$(git log --format="%H %G?" "$range" 2>/dev/null | grep -vE " [GU]$" | cut -d' ' -f1)
+
+  if [ -n "$invalid" ]; then
+    echo ""
+    echo "❌ ERROR: Found commits with invalid or missing signatures"
+    echo ""
+    echo "To fix, rebase and re-sign your commits:"
+    echo ""
+    echo "  git rebase origin/$DEFAULT_BRANCH --exec 'git commit --amend --no-edit -S'"
+    echo "  git push --force-with-lease"
+    echo ""
+    echo "See: docs/playbooks/enable-signed-commits.md"
+    echo ""
+    echo "ℹ️  To bypass (not recommended): git push --no-verify"
+    exit 1
+  fi
+done
+
+exit 0
 ```
 
 ##### Step D: Test before enabling branch protection
