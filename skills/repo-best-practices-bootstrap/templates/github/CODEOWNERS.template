@@ -1,0 +1,54 @@
+# CODEOWNERS file
+# https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-code-owners
+#
+# Each line is a file pattern followed by one or more owners.
+# These owners will be requested for review when someone opens a pull request
+# that modifies code that matches the pattern.
+#
+# Order matters - later rules take precedence over earlier ones.
+# Use @ to prefix usernames or team names.
+
+# Default owners for everything in the repo
+*       @[TEAM-OR-USER]
+
+# Documentation
+*.md    @[DOCS-TEAM]
+/docs/  @[DOCS-TEAM]
+
+# CI/CD workflows
+/.github/workflows/  @[DEVOPS-TEAM]
+
+# Infrastructure
+/infrastructure/  @[DEVOPS-TEAM]
+/terraform/       @[DEVOPS-TEAM]
+
+# Security-sensitive files
+/security/        @[SECURITY-TEAM]
+SECURITY.md       @[SECURITY-TEAM]
+
+# API definitions
+/api/             @[API-TEAM]
+*.openapi.yaml    @[API-TEAM]
+
+# Frontend
+/src/components/  @[FRONTEND-TEAM]
+/src/pages/       @[FRONTEND-TEAM]
+
+# Backend
+/src/services/    @[BACKEND-TEAM]
+/src/api/         @[BACKEND-TEAM]
+
+# Database
+/migrations/      @[DATABASE-TEAM]
+*.sql             @[DATABASE-TEAM]
+
+# Template from: repo-best-practices-bootstrap skill
+# Replace placeholders:
+#   [TEAM-OR-USER] - Default owner (e.g., @myorg/maintainers)
+#   [DOCS-TEAM] - Documentation team
+#   [DEVOPS-TEAM] - DevOps/Platform team
+#   [SECURITY-TEAM] - Security team
+#   [API-TEAM] - API team
+#   [FRONTEND-TEAM] - Frontend team
+#   [BACKEND-TEAM] - Backend team
+#   [DATABASE-TEAM] - Database team

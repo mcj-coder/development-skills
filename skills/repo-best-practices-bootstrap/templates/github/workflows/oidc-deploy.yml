@@ -1,0 +1,126 @@
+# OIDC Deployment Template
+# Uses OpenID Connect for secure, secretless authentication to cloud providers
+#
+# Benefits:
+# - No long-lived secrets stored in GitHub
+# - Automatic credential rotation
+# - Fine-grained permissions via cloud IAM
+#
+# Prerequisites:
+# - Configure OIDC identity provider in your cloud account
+# - Create IAM role/service account with appropriate permissions
+# - Trust the GitHub OIDC provider
+
+name: Deploy
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+# IMPORTANT: id-token permission required for OIDC
+permissions:
+  contents: read
+  id-token: write # Required for OIDC authentication
+
+jobs:
+  # ============================================
+  # AWS Deployment using OIDC
+  # ============================================
+  deploy-aws:
+    if: false # Enable when ready
+    runs-on: ubuntu-latest
+    environment: production
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Configure AWS credentials (OIDC)
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: arn:aws:iam::ACCOUNT_ID:role/ROLE_NAME
+          aws-region: us-east-1
+          # Optional: role session name for audit trail
+          role-session-name: github-actions-${{ github.run_id }}
+
+      - name: Deploy to AWS
+        run: |
+          # Your deployment commands here
+          echo "Deploying to AWS..."
+          # aws s3 sync ./dist s3://my-bucket
+          # aws cloudformation deploy ...
+
+  # ============================================
+  # Azure Deployment using OIDC
+  # ============================================
+  deploy-azure:
+    if: false # Enable when ready
+    runs-on: ubuntu-latest
+    environment: production
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Azure login (OIDC)
+        uses: azure/login@v2
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
+      - name: Deploy to Azure
+        run: |
+          # Your deployment commands here
+          echo "Deploying to Azure..."
+          # az webapp deploy ...
+          # az containerapp update ...
+
+  # ============================================
+  # GCP Deployment using OIDC
+  # ============================================
+  deploy-gcp:
+    if: false # Enable when ready
+    runs-on: ubuntu-latest
+    environment: production
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Authenticate to Google Cloud (OIDC)
+        uses: google-github-actions/auth@v2
+        with:
+          workload_identity_provider: projects/PROJECT_NUMBER/locations/global/workloadIdentityPools/POOL_NAME/providers/PROVIDER_NAME
+          service_account: SERVICE_ACCOUNT@PROJECT_ID.iam.gserviceaccount.com
+
+      - name: Set up Cloud SDK
+        uses: google-github-actions/setup-gcloud@v2
+
+      - name: Deploy to GCP
+        run: |
+          # Your deployment commands here
+          echo "Deploying to GCP..."
+          # gcloud run deploy ...
+          # gcloud app deploy ...
+
+# Template from: repo-best-practices-bootstrap skill
+#
+# Setup Instructions:
+#
+# AWS:
+# 1. Create OIDC identity provider: https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_providers_create_oidc.html
+# 2. Provider URL: https://token.actions.githubusercontent.com
+# 3. Audience: sts.amazonaws.com
+# 4. Create IAM role with trust policy for GitHub OIDC
+#
+# Azure:
+# 1. Create app registration in Azure AD
+# 2. Add federated credential for GitHub Actions
+# 3. Configure secrets: AZURE_CLIENT_ID, AZURE_TENANT_ID, AZURE_SUBSCRIPTION_ID
+#
+# GCP:
+# 1. Create workload identity pool
+# 2. Create workload identity provider for GitHub
+# 3. Grant service account permissions

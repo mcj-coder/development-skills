@@ -1,0 +1,84 @@
+# CI Workflow Template
+# Features:
+# - Explicit permissions block (least privilege)
+# - Caching for faster builds
+# - Matrix testing (optional)
+# - Artifact upload (optional)
+
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+# IMPORTANT: Set explicit permissions (least privilege)
+# This prevents supply chain attacks via compromised dependencies
+permissions:
+  contents: read
+  # Add only what you need:
+  # pull-requests: write  # For PR comments
+  # issues: write         # For issue comments
+  # checks: write         # For check runs
+
+# Cancel in-progress runs on new push
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      # Example: Node.js setup with caching
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run linting
+        run: npm run lint
+
+      - name: Run tests
+        run: npm test
+
+      - name: Build
+        run: npm run build
+
+      # Optional: Upload artifacts
+      # - name: Upload build artifacts
+      #   uses: actions/upload-artifact@v4
+      #   with:
+      #     name: build
+      #     path: dist/
+      #     retention-days: 7
+
+  # Optional: Matrix testing for multiple versions
+  # test-matrix:
+  #   runs-on: ubuntu-latest
+  #   strategy:
+  #     matrix:
+  #       node-version: [18, 20, 22]
+  #   steps:
+  #     - uses: actions/checkout@v4
+  #     - uses: actions/setup-node@v4
+  #       with:
+  #         node-version: ${{ matrix.node-version }}
+  #     - run: npm ci
+  #     - run: npm test
+
+# Template from: repo-best-practices-bootstrap skill
+# Customize:
+# - Update language/runtime (Node.js, Python, .NET, Go, etc.)
+# - Add/remove jobs as needed
+# - Configure caching for your package manager
+# - Add deployment steps if needed
