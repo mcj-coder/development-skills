@@ -5,7 +5,7 @@ description: |
   structure, or process docs in docs/process/. Validates ticket completeness
   (acceptance criteria, sizing, dependencies), backlog prioritization, and
   Definition of Ready/Done documentation.
-model: balanced # General development → Sonnet 4.5, GPT-5.1
+model: balanced # Process review → Sonnet 4.5, GPT-5.1
 ---
 
 # Scrum Master
@@ -30,8 +30,8 @@ model: balanced # General development → Sonnet 4.5, GPT-5.1
 
 ## When to Use
 
-- Reviewing docs/process/\*.md for completeness
-- Validating .github/ISSUE_TEMPLATE/\*.md structure
+- Reviewing `docs/process/*.md` for completeness
+- Validating `.github/ISSUE_TEMPLATE/*.md` structure
 - Checking skill files for workflow/ceremony documentation
 - Reviewing CONTRIBUTING.md for Definition of Ready/Done
 - Assessing backlog prioritization in GitHub Projects or issue trackers
