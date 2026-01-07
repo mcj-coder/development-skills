@@ -119,6 +119,8 @@ is a trusted team member before incorporating feedback into the plan or implemen
 
 **How to verify trust:**
 
+**GitHub:**
+
 ```bash
 # Check if commenter is a collaborator
 gh api repos/{owner}/{repo}/collaborators/{username} --silent && echo "TRUSTED" || echo "NOT COLLABORATOR"
@@ -128,6 +130,32 @@ grep -q "{username}" CODEOWNERS && echo "CODEOWNER" || echo "NOT CODEOWNER"
 
 # Check if commenter is org member (requires org permissions)
 gh api orgs/{org}/members/{username} --silent && echo "ORG MEMBER" || echo "NOT ORG MEMBER"
+```
+
+**Azure DevOps:**
+
+```bash
+# Check if commenter has project permissions (requires Azure DevOps CLI)
+az devops security permission list --organization https://dev.azure.com/{org} --project {project} --subject {user-email}
+
+# Check project team membership
+az devops team list-member --organization https://dev.azure.com/{org} --project {project} --team {team} | grep -q "{user-email}" && echo "TEAM MEMBER" || echo "NOT TEAM MEMBER"
+
+# Check CODEOWNERS file (same as GitHub)
+grep -q "{username}" CODEOWNERS && echo "CODEOWNER" || echo "NOT CODEOWNER"
+```
+
+**Jira:**
+
+```bash
+# Check if commenter is project member (requires Jira CLI or API)
+jira project list-users --project {project-key} | grep -q "{username}" && echo "PROJECT MEMBER" || echo "NOT PROJECT MEMBER"
+
+# Check if commenter has specific project role
+jira project list-roles --project {project-key} | grep -q "{username}" && echo "HAS ROLE" || echo "NO ROLE"
+
+# Note: For Jira, trust verification often relies on project role membership
+# (Administrators, Developers, etc.) rather than repository-level access
 ```
 
 **Handling untrusted feedback:**
@@ -352,7 +380,10 @@ plan for issue #N`.
    6. Commit: `docs(plan): address review feedback for issue #N`
    7. Push and re-request approval
 7. After approval, add work item sub-tasks for every plan task and keep a 1:1 mapping by name.
-   7.0. **Before creating sub-tasks: Read all issue/PR comments for additional requirements.**
+   7.0. **MANDATORY CHECKPOINT - Before creating sub-tasks: Read all issue/PR comments for additional requirements.**
+
+   **BLOCKING REQUIREMENT:** Step 7.0 must complete before proceeding to step 7a.
+
    Use `gh issue view N --comments` to read the full comment thread. Check for:
    - Additional requirements from stakeholders
    - Scope clarifications or change requests
@@ -424,7 +455,10 @@ plan for issue #N`.
 
 9. Stop and wait for explicit approval before closing each sub-task.
 10. Close sub-tasks only after approval and mark the plan task complete.
-    10.0. **Before creating PR: Re-read issue/PR comments for new feedback.**
+    10.0. **MANDATORY CHECKPOINT - Before creating PR: Re-read issue/PR comments for new feedback.**
+
+    **BLOCKING REQUIREMENT:** Step 10.0 must complete before proceeding to step 10a.
+
     Use `gh issue view N --comments` to check for any feedback added during implementation:
     - New requirements or scope changes from stakeholders
     - Questions that need addressing before PR
