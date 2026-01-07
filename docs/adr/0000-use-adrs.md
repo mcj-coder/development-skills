@@ -1,7 +1,15 @@
+---
+name: use-adrs
+description: |
+  Apply when deciding how to document architectural decisions
+  or questioning why ADRs are used in this repository.
+decision: Use MADR format ADRs in docs/adr/ for significant architectural and process decisions.
+status: accepted
+---
+
 # 0. Use Architecture Decision Records
 
 Date: 2026-01-05
-Status: accepted
 Deciders: development-skills maintainers
 Tags: process, documentation
 
