@@ -1,10 +1,11 @@
 ---
 name: security-reviewer
 description: |
-  Use for security-sensitive code reviews, input validation, and OWASP
-  vulnerability checks. Validates authentication, authorization, and
-  data protection in implementation code.
-model: balanced # General development → sonnet, gpt-4o
+  Use for implementation-level security reviews: input validation, OWASP
+  vulnerability checks, and secure coding patterns. Validates authentication,
+  authorization, and data protection in code. For architecture-level security,
+  threat modelling, or compliance requirements, use Security Architect instead.
+model: balanced # Implementation-level security → sonnet, gpt-4o
 ---
 
 # Security Reviewer

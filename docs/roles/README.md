@@ -33,10 +33,36 @@ Task-based values that map to platform-specific models:
 
 | Value       | Use Case                                                   | Claude                | OpenAI      |
 | ----------- | ---------------------------------------------------------- | --------------------- | ----------- |
-| `reasoning` | Complex analysis, architecture decisions, security reviews | opus, claude-sonnet-4 | o3, gpt-4.1 |
-| `balanced`  | General development, code review, implementation           | sonnet                | gpt-4o      |
-| `speed`     | Quick lookups, formatting, validation                      | haiku                 | gpt-4o-mini |
-| `inherit`   | Use parent/caller's model (default)                        | —                     | —           |
+| `reasoning` | Complex analysis, architecture design, security compliance | opus, claude-sonnet-4 | o3, gpt-4.1 |
+| `balanced`  | Code review, implementation validation, security review    | sonnet                | gpt-4o      |
+| `speed`     | Quick validation, formatting checks, simple lookups        | haiku                 | gpt-4o-mini |
+| `inherit`   | Use caller's model (see below)                             | (varies)              | (varies)    |
+
+### Choosing Model Tiers
+
+- **`reasoning`**: Use for roles requiring complex analysis, architectural decisions, threat
+  modelling, or regulatory compliance. These tasks involve multi-step reasoning and trade-off
+  evaluation.
+- **`balanced`**: Use for most development roles - code review, implementation validation,
+  testing, documentation. This is the default for implementation-focused work.
+- **`speed`**: Use for quick validations, formatting checks, or simple lookups. Currently no
+  roles use this tier as all roles require at least balanced capability for meaningful review.
+- **`inherit`**: Use when the role's complexity should match the caller's context.
+
+When in doubt, use `balanced`. Only use `reasoning` when the role explicitly requires deep
+analysis beyond typical code review.
+
+### Using `inherit`
+
+The `inherit` tier means the role uses whatever model the calling agent or skill is using.
+Use this when:
+
+- The role's complexity matches the caller's context
+- You want to avoid model switching overhead
+- The role is a subprocess of a larger task
+
+Do not use `inherit` for roles that require specific model capabilities (e.g., security
+architecture requiring reasoning models).
 
 ### Example
 
@@ -47,7 +73,7 @@ description: |
   Use for technical architecture decisions, design reviews, and cross-cutting
   concerns. Validates system design, evaluates trade-offs, and ensures
   architectural consistency.
-model: reasoning # Complex analysis → opus, o3
+model: reasoning # Complex analysis → opus/claude-sonnet-4, o3/gpt-4.1
 ---
 ```
 
@@ -155,3 +181,69 @@ Use these exact names when referencing roles:
 **In markdown**: `**Tech Lead**` or `@role:tech-lead`
 
 **In code comments**: `@role tech-lead` or `// Review: Tech Lead perspective needed`
+
+## Role Selection Guide
+
+When multiple roles seem applicable, use these criteria:
+
+### By Scope
+
+| Scope            | Use These Roles                                |
+| ---------------- | ---------------------------------------------- |
+| Single component | Senior Developer, Security Reviewer, QA        |
+| Cross-cutting    | Tech Lead, Performance Engineer, DevOps        |
+| Enterprise-wide  | Technical Architect, Security Architect, Cloud |
+
+### By Phase
+
+| Phase          | Use These Roles                                 |
+| -------------- | ----------------------------------------------- |
+| Design         | Tech Lead, Technical Architect, Cloud Architect |
+| Implementation | Senior Developer, Security Reviewer             |
+| Review         | QA Engineer, Documentation Specialist           |
+
+### Overlapping Domains
+
+- **Tech Lead vs Technical Architect**: Tech Lead for project-level decisions; Technical
+  Architect for enterprise or cross-project concerns
+- **Security Reviewer vs Security Architect**: Security Reviewer for code-level issues;
+  Security Architect for compliance, threat modelling, or system-level security
+- **Senior Developer vs QA Engineer**: Senior Developer for code quality; QA Engineer
+  for test strategy and coverage
+
+## Validation
+
+Role frontmatter is validated during:
+
+- **Pre-commit hooks**: Format and syntax validation via prettier
+- **CI pipeline**: Markdown linting via markdownlint-cli2
+- **Manual check**: Run `npm run lint` to validate all role files
+
+Required fields (`name`, `description`, `model`) are enforced by convention. Invalid
+frontmatter will cause YAML parsing errors when roles are loaded by agents.
+
+## Troubleshooting
+
+**Issue**: Agent selects wrong role for task
+
+- Check the `description` field includes specific trigger conditions
+- Ensure overlapping roles have clear differentiation (see Role Selection Guide)
+- Consider adding "use X instead" guidance for ambiguous cases
+
+**Issue**: Model tier seems incorrect for role complexity
+
+- Review the Choosing Model Tiers guidance above
+- Use `balanced` as the default; only use `reasoning` for complex analysis
+- Add escalation guidance in description if role may need higher tier
+
+**Issue**: Frontmatter validation fails
+
+- Ensure YAML syntax is correct (proper indentation, `|` for multiline)
+- Check all required fields are present: `name`, `description`, `model`
+- Run `npm run format` to auto-fix formatting issues
+
+**Issue**: Multiple roles apply to a task
+
+- Use scope criteria: single component vs cross-cutting vs enterprise
+- Use phase criteria: design vs implementation vs review
+- When still unclear, prefer the more specific role over general ones

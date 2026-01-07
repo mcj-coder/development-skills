@@ -3,8 +3,9 @@ name: performance-engineer
 description: |
   Use for performance-critical reviews, scalability analysis, and resource
   optimization. Validates algorithmic complexity, caching strategies, and
-  database query efficiency.
-model: balanced # General development → sonnet, gpt-4o
+  database query efficiency. For distributed system scalability or complex
+  architectural trade-offs, escalate to Technical Architect.
+model: balanced # Implementation-level optimization → sonnet, gpt-4o
 ---
 
 # Performance Engineer
