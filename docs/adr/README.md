@@ -140,6 +140,7 @@ When multiple ADRs have overlapping `description` triggers:
 ## ADR Index
 
 - [0000-use-adrs.md](0000-use-adrs.md) - Use MADR format ADRs for architectural decisions
+- [0001-skill-design-philosophy.md](0001-skill-design-philosophy.md) - Bootstrap defaults, defer to target repo
 
 ## Creating New ADRs
 
