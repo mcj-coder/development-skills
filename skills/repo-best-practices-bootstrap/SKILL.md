@@ -86,6 +86,9 @@ See [Platform Detection](references/platform-detection.md) for full detection lo
 
 ### Step 3: Guided Configuration
 
+**MANDATORY:** Walk through ALL 8 categories. Categories cannot be skipped.
+Only individual features within a category can be opted out.
+
 For each category, **interactively guide the user** through configuration:
 
 1. **Present the category** and explain its purpose
@@ -174,17 +177,21 @@ See [CI/CD Templates](templates/github/workflows/) for workflow templates.
 
 ## Opt-Out Mechanism
 
-Users can opt out of specific features or entire categories. Opt-outs are respected
+Users can opt out of specific features within a category. Opt-outs are respected
 during checklist execution and do not generate gaps.
 
-**Category opt-out:** Skip all features in a category
-**Feature opt-out:** Skip a specific feature
+**IMPORTANT:** Categories cannot be skipped. All 8 categories must be presented
+to the user. Only individual features can be opted out.
 
-When a feature is opted out, document the reason in the opt-out file.
+**Feature opt-out:** Skip a specific feature (with documented reason)
+
+When a feature is opted out, document the reason via ADR (preferred) or opt-out file.
 
 ## Opt-Out Persistence
 
-Opt-out decisions are stored in `.repo-bootstrap.yml` in the target repository:
+**Preferred:** Use ADRs in `docs/decisions/` to document opt-out decisions with full context.
+
+**Alternative:** If ADRs are not used, store opt-outs in `.repo-bootstrap.yml`:
 
 ```yaml
 # .repo-bootstrap.yml
@@ -192,14 +199,12 @@ Opt-out decisions are stored in `.repo-bootstrap.yml` in the target repository:
 # See: skills/repo-best-practices-bootstrap/SKILL.md
 
 opt_out:
-  categories:
-    - ci-cd-security # Opt out entire category (reason: using external CI system)
   features:
-    - signed-commits # Opt out specific feature (reason: team not using GPG)
-    - artifact-signing # Opt out specific feature (reason: not publishing artifacts)
+    - signed-commits # Reason: team not using GPG keys
+    - artifact-signing # Reason: not publishing artifacts
 ```
 
-Commit this file to the repository to persist opt-out decisions across sessions.
+Commit the opt-out documentation to persist decisions across sessions.
 
 ## Cost Considerations
 
