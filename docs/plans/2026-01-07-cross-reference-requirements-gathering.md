@@ -2,7 +2,7 @@
 
 **Issue:** #117
 **Date:** 2026-01-07
-**Status:** Draft
+**Status:** Draft (Rev 2 - addressing Documentation Specialist feedback)
 
 ## Overview
 
@@ -31,7 +31,8 @@ Update step 2 in `skills/issue-driven-delivery/SKILL.md`:
 
 ```markdown
 2. Confirm a Taskboard work item exists for the work. If none exists, create the
-   work item before making any changes.
+   work item before making any changes. Read-only work and reviews are allowed
+   without a ticket.
 ```
 
 **Proposed:**
@@ -39,7 +40,10 @@ Update step 2 in `skills/issue-driven-delivery/SKILL.md`:
 ```markdown
 2. Confirm a Taskboard work item exists for the work. If none exists, use the
    `requirements-gathering` skill to create the work item before making any changes.
+   Read-only work and reviews are allowed without a ticket.
 ```
+
+**Note:** Preserves existing "Read-only work" qualifier (Documentation Specialist I1).
 
 **Deliverable:** Updated step 2
 
@@ -50,10 +54,12 @@ Add "See Also" section at end of `skills/issue-driven-delivery/SKILL.md`:
 ```markdown
 ## See Also
 
-- `requirements-gathering` - Use when no work item exists; creates ticket then stops
-- `superpowers:brainstorming` - Design exploration for existing tickets
-- `superpowers:writing-plans` - Implementation planning for existing tickets
+- `requirements-gathering` - Create work items when none exist (creates ticket then stops)
+- `superpowers:brainstorming` - Explore design for existing tickets
+- `superpowers:writing-plans` - Create implementation plans for existing tickets
 ```
+
+**Note:** Uses parallel verb structure (Documentation Specialist I2).
 
 **Deliverable:** New See Also section
 
