@@ -138,6 +138,10 @@ and Jira examples.
    analyze follow-on task relationships (ensure original not blocked by follow-up),
    add `blocked` label with comment linking to blocking items if dependencies found,
    validate no circular dependencies created.
+   4d. **Plan lifecycle initialization:** Plan MUST include empty Approval History
+   table and empty Review History section (see `docs/references/plan-template.md`).
+   Plan status starts at "Draft". Commit message: `docs(plan): create implementation
+plan for issue #N`.
 
    **Repository validation logic (platform-agnostic):**
 
@@ -276,10 +280,39 @@ and Jira examples.
    explicit approval comments. If user indicates they've reacted with thumbs-up,
    post the approval comment on their behalf.
 
+   5d. **Record approval in plan:** Immediately after detecting explicit approval:
+   1. Add approval row to Approval History table:
+      - Phase: "Plan Approval"
+      - Reviewer: Role of approver (e.g., "Tech Lead")
+      - Decision: "APPROVED"
+      - Date: Current date (YYYY-MM-DD)
+      - Plan Commit: SHA of plan version that was approved
+      - Comment Link: Link to approval comment
+   2. Update plan status from "Draft (Rev N)" to "Approved"
+   3. Commit: `docs(plan): record plan approval for issue #N`
+   4. Push to remote
+   5. Post acknowledgment: "Plan approval recorded in [commit SHA]"
+
 6. Keep all plan discussions and decisions in work item comments.
    6a. During approval feedback: Stay assigned and respond to questions/feedback in work item comments.
    6b. If revisions needed: Update plan, push changes, re-post link in same thread. Stay assigned.
    6c. Only unassign after receiving explicit "approved" or "LGTM" comment.
+   6d. **Record revision feedback in plan:** After receiving review feedback (before approval):
+   1. Add feedback row to Approval History table:
+      - Phase: "Plan Refinement"
+      - Reviewer: Role of reviewer
+      - Decision: "Feedback"
+      - Date: Current date (YYYY-MM-DD)
+      - Plan Commit: SHA of plan when reviewed
+      - Comment Link: Link to feedback comment
+   2. Append feedback summary to Review History section:
+      - Use severity prefixes: C (Critical), I (Important), M (Minor)
+      - Include link to full review comment
+   3. Implement resolutions for each issue
+   4. Append resolutions to Review History (issue → resolution pattern)
+   5. Increment status: "Draft" → "Draft (Rev 2)" → "Draft (Rev 3)"
+   6. Commit: `docs(plan): address review feedback for issue #N`
+   7. Push and re-request approval
 7. After approval, add work item sub-tasks for every plan task and keep a 1:1 mapping by name.
    7a. Unassign yourself to signal refinement complete and handoff to implementation.
    7b. Set work item state to `implementation`. If work item has `blocked` label,
@@ -313,6 +346,24 @@ and Jira examples.
    8d. Self-assign when ready to verify (QA recommended). If work item has
    `blocked` label, verify approval comment exists. If approved, remove `blocked`
    label and proceed. If not approved, stop with error showing blocking reason.
+   8e. **Record implementation reviews in plan:** After receiving each implementation review:
+   1. Add review row to Approval History table:
+      - Phase: "Implementation"
+      - Reviewer: Role of reviewer
+      - Decision: "Feedback" or "APPROVED"
+      - Date: Current date (YYYY-MM-DD)
+      - Plan Commit: SHA of implementation at review time
+      - Comment Link: Link to review comment
+   2. If feedback received:
+      - Append to Review History under "Implementation Reviews"
+      - Link to commits that addressed feedback
+   3. Commit: `docs(plan): record implementation review for issue #N`
+      8f. **Record final approval:** After final Tech Lead approval:
+   4. Add final approval row to Approval History:
+      - Phase: "Final Approval"
+      - Decision: "APPROVED"
+   5. Update plan status to "Complete"
+   6. Commit: `docs(plan): mark plan complete for issue #N`
 9. Stop and wait for explicit approval before closing each sub-task.
 10. Close sub-tasks only after approval and mark the plan task complete.
     10a. Before closing work item, verify:
@@ -334,18 +385,39 @@ and Jira examples.
     Exception: Read-only work and reviews are allowed without a ticket/PR.
     ```
 
-    10.5. Before closing work item, perform final rebase and plan archival on feature branch:
+    10.5. Before creating PR, perform plan lifecycle completion and archival on feature branch:
+
+    **Plan Lifecycle Verification (MUST complete before archive):**
+    - [ ] Plan status is "Complete" (not Draft, Approved, or In Progress)
+    - [ ] Approval History table exists with markdown table format
+    - [ ] Approval History has Plan Approval entry (Tech Lead)
+    - [ ] Approval History has >= 1 Implementation entry per Review Persona
+    - [ ] Approval History has Final Approval entry (Tech Lead)
+    - [ ] Review History section exists
+    - [ ] Review History has entry for each "Feedback" decision
+    - [ ] Review History resolutions link to fixing commits
+
+    **If verification fails:** Update plan to address missing items before proceeding.
+    Plan status MUST be "Complete" before archival. If reviews are incomplete, complete
+    them (step 8e/8f) before proceeding.
+
+    **Final rebase and archive:**
+
     a) Check time since step 8b.5 rebase. If >24 hours, rebase again: `git fetch origin && git rebase origin/main`
     b) If rebase picks up changes: review files changed against plan references; if plan
     references files changed significantly, review plan validity (if invalidated, update
     plan which triggers re-approval, return to step 5); re-run ALL verification
     c) If conflicts occur, resolve them and re-verify; document resolution in work item
     d) Archive plan on feature branch: `git mv docs/plans/YYYY-MM-DD-feature-name.md docs/plans/archive/`
-    e) Commit archive: `git commit -m "docs: archive plan for issue #N"`
+    e) Commit archive with lifecycle completion: `git commit -m "docs(plan): complete lifecycle and archive for issue #N"`
     f) Push rebased branch: `git push --force-with-lease`
     g) Verification must confirm rebased changes preserve accepted behavior
     h) If behavior breaks: create fix commits on feature branch, re-verify, document fixes in work item
     i) Create PR from feature branch (includes archival commit). After merge, plan resides in main at docs/plans/archive/
+
+    **Post-archive verification:**
+    - [ ] Plan archived: file exists at `docs/plans/archive/YYYY-MM-DD-*.md`
+    - [ ] Plan NOT in active: file removed from `docs/plans/`
 
 11. Require each role to post a separate review comment in the work item thread using
     superpowers:receiving-code-review. See [Team Roles](../../docs/roles/README.md) for role
@@ -480,6 +552,10 @@ gh issue edit 30 --add-assignee @me
 - Resolving merge conflicts without re-running tests.
 - Not archiving plan before closing (loses planning history).
 - Deleting branch before archiving plan (loses plan entirely).
+- Not recording approval in plan's Approval History (loses traceability audit trail).
+- Not updating plan status after approval (plan shows Draft when Approved).
+- Skipping Review History entries for feedback (loses resolution traceability).
+- Archiving plan with status other than "Complete" (incomplete lifecycle).
 - Opening PR before verification complete (violates SHIFT LEFT - issues found late are expensive).
 - Opening PR before role-based reviews (missing critical feedback early when it's cheaper to fix).
 - Using "draft PR" as excuse to skip pre-PR verification (draft PRs still create merge pressure).
@@ -508,6 +584,9 @@ gh issue edit 30 --add-assignee @me
 - "Conflicts are minor, just resolve and push"
 - "Plan is in main, that's fine"
 - "Archive is optional, skip it"
+- "Plan status doesn't need updating" (status tracks lifecycle progress)
+- "Approval History is just paperwork" (provides audit trail for compliance)
+- "Review History can be reconstructed later" (must capture feedback at time received)
 - "I'll open the PR now and get reviews later" (violates SHIFT LEFT - reviews before PR)
 - "PR can be in draft while verification happens" (violates SHIFT LEFT - verification before PR)
 - "Reviews can happen during PR review" (violates SHIFT LEFT - find issues before PR, not during)
@@ -530,6 +609,9 @@ gh issue edit 30 --add-assignee @me
 | "Circular dependencies will resolve."     | Requires explicit resolution with follow-up tasks.                 |
 | "Plan on main is easier"                  | Unactioned plans clutter main, feature branch keeps it clean       |
 | "Archive is busywork"                     | Archive preserves planning history and design decisions            |
+| "Plan status doesn't matter"              | Status tracks lifecycle; "Complete" required before archive        |
+| "Approval History is overhead"            | Provides audit trail for compliance and traceability               |
+| "Review History can wait"                 | Must capture feedback and resolutions at time received             |
 | "Rebase can wait until PR"                | Rebase before verification ensures tests pass against current main |
 | "Already verified, rebase won't break it" | Main changes can invalidate verification, must re-verify           |
 | "Plan is still valid"                     | Must review plan if main changed files the plan touches            |
