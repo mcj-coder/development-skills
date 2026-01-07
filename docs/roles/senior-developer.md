@@ -1,3 +1,12 @@
+---
+name: senior-developer
+description: |
+  Use for code quality reviews, implementation patterns, and clean code
+  principles. Validates code readability, maintainability, and adherence
+  to team conventions.
+model: balanced # General development → sonnet, gpt-4o
+---
+
 # Senior Developer
 
 **Role:** Code quality and implementation excellence

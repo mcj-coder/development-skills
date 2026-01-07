@@ -5,6 +5,52 @@
 Team role definitions for both human teams and agent perspectives. These roles provide standardized
 expert perspectives during code reviews, planning, and validation.
 
+## Frontmatter Standard
+
+All role documents MUST include YAML frontmatter with these fields:
+
+```yaml
+---
+name: role-name
+description: |
+  When to use this role and what expertise it provides.
+  Include specific trigger conditions for agents.
+model: balanced # Task-based model tier
+---
+```
+
+### Required Fields
+
+| Field         | Description                                                                                  |
+| ------------- | -------------------------------------------------------------------------------------------- |
+| `name`        | Kebab-case identifier (e.g., `tech-lead`, `senior-developer`)                                |
+| `description` | When to use this role; must be sufficient for agents to select without reading full document |
+| `model`       | Task-based model tier (see below)                                                            |
+
+### Model Tiers
+
+Task-based values that map to platform-specific models:
+
+| Value       | Use Case                                                   | Claude                | OpenAI      |
+| ----------- | ---------------------------------------------------------- | --------------------- | ----------- |
+| `reasoning` | Complex analysis, architecture decisions, security reviews | opus, claude-sonnet-4 | o3, gpt-4.1 |
+| `balanced`  | General development, code review, implementation           | sonnet                | gpt-4o      |
+| `speed`     | Quick lookups, formatting, validation                      | haiku                 | gpt-4o-mini |
+| `inherit`   | Use parent/caller's model (default)                        | —                     | —           |
+
+### Example
+
+```yaml
+---
+name: tech-lead
+description: |
+  Use for technical architecture decisions, design reviews, and cross-cutting
+  concerns. Validates system design, evaluates trade-offs, and ensures
+  architectural consistency.
+model: reasoning # Complex analysis → opus, o3
+---
+```
+
 ## Role Index
 
 ### Development Roles

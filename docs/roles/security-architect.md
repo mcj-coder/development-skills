@@ -1,3 +1,12 @@
+---
+name: security-architect
+description: |
+  Use for security architecture decisions, compliance requirements, and
+  threat modelling frameworks. Validates zero-trust principles, security
+  boundaries, and regulatory compliance (SOC2, GDPR).
+model: reasoning # Complex analysis → opus, o3
+---
+
 # Security Architect
 
 **Role:** Security architecture and compliance

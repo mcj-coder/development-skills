@@ -1,3 +1,12 @@
+---
+name: security-reviewer
+description: |
+  Use for security-sensitive code reviews, input validation, and OWASP
+  vulnerability checks. Validates authentication, authorization, and
+  data protection in implementation code.
+model: balanced # General development → sonnet, gpt-4o
+---
+
 # Security Reviewer
 
 **Role:** Security and threat modelling
