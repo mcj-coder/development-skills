@@ -207,21 +207,49 @@ fi
 
 ## Pre-push Hook Verification
 
-Add `.husky/pre-push` to detect unsigned commits before pushing:
+While the pre-commit hook ensures GPG signing is **configured**, it cannot detect commits
+that were created before signing was enabled, or commits created using `--no-verify`.
+
+Create `.husky/pre-push` to detect commits with **invalid or missing signatures** before
+pushing. This prevents branch protection from rejecting your push:
 
 ```bash
-# Check for unsigned commits before pushing
+# Check for unsigned or invalid commits before pushing
+# Valid signatures: G (Good), U (Good but untrusted)
+# Invalid: N (None), B (Bad), E (Error), R (Revoked), X/Y (Expired)
+
+# Detect the default branch dynamically
+DEFAULT_BRANCH=$(git symbolic-ref refs/remotes/origin/HEAD 2>/dev/null | sed 's@^refs/remotes/origin/@@')
+if [ -z "$DEFAULT_BRANCH" ]; then
+  DEFAULT_BRANCH="main"
+fi
+
 while read local_ref local_sha remote_ref remote_sha; do
+  # Skip branch deletions and tag pushes
+  if [ "$local_sha" = "0000000000000000000000000000000000000000" ]; then
+    continue
+  fi
+  if echo "$local_ref" | grep -q '^refs/tags/'; then
+    continue
+  fi
+
   if [ "$remote_sha" = "0000000000000000000000000000000000000000" ]; then
-    range="$local_sha"
+    # New branch - check commits since divergence from default branch
+    merge_base=$(git merge-base "origin/$DEFAULT_BRANCH" "$local_sha" 2>/dev/null)
+    if [ -n "$merge_base" ]; then
+      range="$merge_base..$local_sha"
+    else
+      range="$local_sha~50..$local_sha"
+    fi
   else
     range="$remote_sha..$local_sha"
   fi
 
-  unsigned=$(git log --format="%H %G?" $range 2>/dev/null | grep -E " N$")
-  if [ -n "$unsigned" ]; then
-    echo "❌ ERROR: Found unsigned commits"
-    echo "Run: git rebase origin/main --exec 'git commit --amend --no-edit -S'"
+  # Check for any non-valid signatures
+  invalid=$(git log --format="%H %G?" "$range" 2>/dev/null | grep -vE " [GU]$")
+  if [ -n "$invalid" ]; then
+    echo "❌ ERROR: Found commits with invalid or missing signatures"
+    echo "Run: git rebase origin/$DEFAULT_BRANCH --exec 'git commit --amend --no-edit -S'"
     exit 1
   fi
 done
@@ -254,9 +282,20 @@ git push --force-with-lease
 ### Verify Commits Are Signed
 
 ```bash
-# Check signature status (G=Good, N=None)
+# Check signature status
 git log --format="%h %G? %s" origin/main..HEAD
 ```
+
+Signature status codes:
+
+- `G` - Good signature
+- `U` - Good signature, but untrusted key
+- `N` - No signature (unsigned)
+- `B` - Bad signature (tampered)
+- `E` - Cannot check signature (missing key)
+- `R` - Good signature from revoked key
+- `X` - Expired signature
+- `Y` - Good signature from expired key
 
 ## See Also
 

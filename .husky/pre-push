@@ -1,8 +1,16 @@
-# Check for unsigned commits before pushing
+# Check for unsigned or invalid commits before pushing
 # This prevents pushing commits that won't pass the signed commits requirement
 
 REMOTE="$1"
 URL="$2"
+
+# Detect the default branch for remediation instructions
+DEFAULT_BRANCH=$(git symbolic-ref refs/remotes/origin/HEAD 2>/dev/null | sed 's@^refs/remotes/origin/@@')
+if [ -z "$DEFAULT_BRANCH" ]; then
+  DEFAULT_BRANCH="main"
+fi
+
+refs_checked=0
 
 # Get the range of commits being pushed
 while read local_ref local_sha remote_ref remote_sha; do
@@ -11,29 +19,53 @@ while read local_ref local_sha remote_ref remote_sha; do
     continue
   fi
 
+  # Skip tag pushes - tags have separate signing requirements
+  if echo "$local_ref" | grep -q '^refs/tags/'; then
+    continue
+  fi
+
+  refs_checked=$((refs_checked + 1))
+
   if [ "$remote_sha" = "0000000000000000000000000000000000000000" ]; then
-    # New branch, check all commits
-    range="$local_sha"
+    # New branch - check commits not in the default branch
+    merge_base=$(git merge-base "origin/$DEFAULT_BRANCH" "$local_sha" 2>/dev/null)
+    if [ -n "$merge_base" ]; then
+      range="$merge_base..$local_sha"
+    else
+      # Fallback: can't find merge base, check last 50 commits
+      range="$local_sha~50..$local_sha"
+    fi
   else
     # Existing branch, check new commits only
     range="$remote_sha..$local_sha"
   fi
 
-  # Check for unsigned commits
-  unsigned_commits=$(git log --format="%H %G?" $range 2>/dev/null | grep -E " N$" | cut -d' ' -f1)
+  # Check for invalid signatures: N=None, B=Bad, E=Error, R=Revoked, X/Y=Expired
+  # Valid signatures are G (Good) and U (Good but untrusted)
+  invalid_commits=$(git log --format="%H %G?" "$range" 2>/dev/null | grep -vE " [GU]$" | cut -d' ' -f1)
 
-  if [ -n "$unsigned_commits" ]; then
+  if [ -n "$invalid_commits" ]; then
     echo ""
-    echo "❌ ERROR: Found unsigned commits that will be rejected by branch protection"
+    echo "❌ ERROR: Found commits with invalid or missing signatures"
     echo ""
-    echo "Unsigned commits:"
-    for commit in $unsigned_commits; do
-      echo "  - $(git log -1 --format='%h %s' $commit)"
+    echo "Problematic commits:"
+    for commit in $invalid_commits; do
+      sig_status=$(git log -1 --format="%G?" "$commit" 2>/dev/null)
+      case "$sig_status" in
+        N) sig_desc="unsigned" ;;
+        B) sig_desc="bad signature" ;;
+        E) sig_desc="cannot verify (missing key)" ;;
+        R) sig_desc="revoked key" ;;
+        X) sig_desc="expired signature" ;;
+        Y) sig_desc="expired key" ;;
+        *) sig_desc="unknown status: $sig_status" ;;
+      esac
+      echo "  - $(git log -1 --format='%h %s' "$commit") [$sig_desc]"
     done
     echo ""
-    echo "To fix this, rebase and re-sign your commits:"
+    echo "To fix, rebase and re-sign your commits:"
     echo ""
-    echo "  git rebase origin/main --exec 'git commit --amend --no-edit -S'"
+    echo "  git rebase origin/$DEFAULT_BRANCH --exec 'git commit --amend --no-edit -S'"
     echo ""
     echo "Then force push:"
     echo ""
