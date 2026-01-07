@@ -971,28 +971,57 @@ gh project item-add {project-number} --owner {owner} \
 **GitHub Projects Automation:**
 
 ```bash
-# GitHub Projects v2 supports built-in automations:
-# - Auto-add items when issues created
-# - Auto-set status when PR merged
-# Configure via: Project Settings > Workflows
+# Check current workflow status
+gh api graphql -f query='
+{
+  user(login: "{owner}") {
+    projectV2(number: {project-number}) {
+      workflows(first: 10) {
+        nodes { id name enabled }
+      }
+    }
+  }
+}'
 
-# Example: Set status field value via GraphQL
+# Enable/disable workflow via GraphQL
 gh api graphql -f query='
 mutation {
-  updateProjectV2ItemFieldValue(
-    input: {
-      projectId: "{project-node-id}"
-      itemId: "{item-node-id}"
-      fieldId: "{status-field-id}"
-      value: { singleSelectOptionId: "{option-id}" }
-    }
-  ) { projectV2Item { id } }
+  updateProjectV2Workflow(input: {
+    workflowId: "{workflow-id}"
+    enabled: true
+  }) { projectV2Workflow { id enabled } }
 }'
 ```
 
+**Required Workflows for issue-driven-delivery:**
+
+| Workflow              | Action          | Status Set To    |
+| --------------------- | --------------- | ---------------- |
+| Item added to project | New issues      | Backlog          |
+| Item reopened         | Reopened issues | Todo             |
+| Pull request linked   | PR opened       | In Review        |
+| Pull request merged   | PR merged       | Done             |
+| Item closed           | Issue closed    | Done             |
+| Auto-add sub-issues   | Child issues    | (inherit parent) |
+
+**Status Field Configuration (via GitHub UI):**
+
+1. Go to Project Settings > Status field
+2. Add these statuses with colors:
+   - Backlog (Gray) - Unassigned issues
+   - Ready (Green) - Ready for work
+   - In Progress (Yellow) - Actively being worked
+   - In Review (Purple) - PR created, awaiting review
+   - Blocked (Red) - Blocked by dependency
+   - Done (Green) - Completed
+
 **Sync Checklist:**
 
-- [ ] Project board columns match workflow states
+- [ ] Status field has all required options (Backlog, Ready, In Progress, In Review, Blocked, Done)
+- [ ] "Item added to project" workflow sets status to Backlog
+- [ ] "Pull request linked" workflow sets status to In Review
+- [ ] "Pull request merged" workflow sets status to Done
+- [ ] "Item closed" workflow sets status to Done
 - [ ] Auto-add enabled for new issues
 - [ ] Auto-move on PR merge configured
 - [ ] Blocked column/label synchronised
