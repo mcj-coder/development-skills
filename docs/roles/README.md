@@ -99,6 +99,7 @@ model: reasoning # Complex analysis → Opus 4.5, GPT-5.2
 ### Product and Design
 
 - **[Product Owner](product-owner.md)** - Business value and requirements
+- **[Scrum Master](scrum-master.md)** - Process compliance and documentation completeness
 - **[UX Expert](ux-expert.md)** - User experience and interface design
 - **[Accessibility Expert](accessibility-expert.md)** - Accessibility and inclusive design
 
@@ -164,6 +165,7 @@ Use these exact names when referencing roles:
 - `Performance Engineer` (not: "Performance", "Perf Engineer")
 - `DevOps Engineer` (not: "DevOps", "SRE", "Ops")
 - `Product Owner` (not: "PO", "Product", "Product Manager")
+- `Scrum Master` (not: "SM", "Scrum", "Process Manager", "Agile Coach")
 - `Documentation Specialist` (not: "Docs", "Tech Writer")
 - `UX Expert` (not: "UX", "UX Designer", "UI/UX")
 - `Accessibility Expert` (not: "A11y", "Accessibility", "WCAG Expert")
