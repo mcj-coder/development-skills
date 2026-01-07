@@ -133,10 +133,12 @@ These skills build on the mandatory baseline established in this section.
    - Follow: <https://github.com/obra/superpowers#installation>
    - Verify: Check that `~/.claude/superpowers` or `~/.codex/superpowers` exists
 
-2. **Clone development-skills** (this repository):
-   - Clone to agent's default skills location
-   - Claude: `~/.claude/skills/development-skills`
-   - Codex: `~/.codex/skills/development-skills`
+2. **Install development-skills** (this repository):
+   - **Option A (Symlink):** Clone elsewhere and symlink to skills directory (recommended
+     for development). See [README.md Installation section](README.md#installation).
+   - **Option B (Direct):** Clone directly to skills location:
+     - Claude: `~/.claude/skills/development-skills`
+     - Codex: `~/.codex/skills/development-skills`
 
 3. **Verify skills are discoverable**:
    - Agent should auto-detect skills from standard locations

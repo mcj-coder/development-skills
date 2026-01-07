@@ -26,9 +26,34 @@ to this repository.
 
 ### Clone the Repository
 
+**Unix/macOS:**
+
 ```bash
-# Clone to a location of your choice
 git clone https://github.com/mcj-coder/development-skills.git ~/repos/development-skills
+```
+
+**Windows PowerShell:**
+
+```powershell
+git clone https://github.com/mcj-coder/development-skills.git $env:USERPROFILE\repos\development-skills
+```
+
+### Create Skills Directory
+
+Create the skills directory if it does not exist:
+
+**Unix/macOS:**
+
+```bash
+mkdir -p ~/.claude/skills   # For Claude Code
+mkdir -p ~/.codex/skills    # For Codex
+```
+
+**Windows PowerShell:**
+
+```powershell
+New-Item -ItemType Directory -Path "$env:USERPROFILE\.claude\skills" -Force   # For Claude Code
+New-Item -ItemType Directory -Path "$env:USERPROFILE\.codex\skills" -Force    # For Codex
 ```
 
 ### Create Symlink
@@ -48,13 +73,13 @@ ln -s ~/repos/development-skills ~/.codex/skills/development-skills
 **Windows (Claude Code) - Run as Administrator:**
 
 ```powershell
-New-Item -ItemType SymbolicLink -Path "$env:USERPROFILE\.claude\skills\development-skills" -Target "C:\repos\development-skills"
+New-Item -ItemType SymbolicLink -Path "$env:USERPROFILE\.claude\skills\development-skills" -Target "$env:USERPROFILE\repos\development-skills"
 ```
 
 **Windows (Codex) - Run as Administrator:**
 
 ```powershell
-New-Item -ItemType SymbolicLink -Path "$env:USERPROFILE\.codex\skills\development-skills" -Target "C:\repos\development-skills"
+New-Item -ItemType SymbolicLink -Path "$env:USERPROFILE\.codex\skills\development-skills" -Target "$env:USERPROFILE\repos\development-skills"
 ```
 
 > **Note:** On Windows, creating symlinks requires Administrator privileges or
@@ -64,14 +89,21 @@ New-Item -ItemType SymbolicLink -Path "$env:USERPROFILE\.codex\skills\developmen
 
 Confirm the symlink was created and skills are discoverable:
 
-```bash
-# Check symlink exists
-ls -la ~/.claude/skills/development-skills  # Unix/macOS
-dir "$env:USERPROFILE\.claude\skills\development-skills"  # Windows PowerShell
+**Unix/macOS:**
 
-# Test skill loading (in Claude Code)
-# Try loading: development-skills:skills-first-workflow
+```bash
+ls -la ~/.claude/skills/development-skills   # Claude Code
+ls -la ~/.codex/skills/development-skills    # Codex
 ```
+
+**Windows PowerShell:**
+
+```powershell
+dir "$env:USERPROFILE\.claude\skills\development-skills"   # Claude Code
+dir "$env:USERPROFILE\.codex\skills\development-skills"    # Codex
+```
+
+**Test skill loading:** In your agent, try loading `development-skills:skills-first-workflow`
 
 ## Repository Standards (All Contributors)
 
