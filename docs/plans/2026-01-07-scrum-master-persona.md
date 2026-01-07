@@ -2,7 +2,7 @@
 
 **Issue:** #109
 **Date:** 2026-01-07
-**Status:** Draft
+**Status:** Draft (Rev 2 - addressing review feedback)
 
 ## Overview
 
@@ -35,10 +35,11 @@ Create `docs/roles/scrum-master.md` following the established role format:
 ---
 name: scrum-master
 description: |
-  Use for process compliance reviews, ticket quality validation, and
-  ensuring workflows and ceremonies are properly documented. Reviews
-  skills and process documentation for completeness against Scrum practices.
-model: balanced # Process review → Sonnet 4.5, GPT-5.1
+  Use when reviewing issue templates, workflow documentation, backlog
+  structure, or process docs in docs/process/. Validates ticket completeness
+  (acceptance criteria, sizing, dependencies), backlog prioritization, and
+  Definition of Ready/Done documentation.
+model: balanced # General development → Sonnet 4.5, GPT-5.1
 ---
 ```
 
@@ -49,25 +50,25 @@ model: balanced # Process review → Sonnet 4.5, GPT-5.1
    - `**Role:** Process compliance and documentation completeness`
 
 2. **Expertise**
-   - Process compliance and workflow validation
-   - Ticket quality (acceptance criteria, sizing, dependencies)
-   - Backlog grooming and prioritization
-   - Process documentation review
-   - Ceremony documentation and structure
+   - Process documentation completeness (Definition of Ready, Definition of Done, workflow states)
+   - Issue template validation (acceptance criteria format, dependency links, size labels)
+   - Backlog structure (priority ordering, rationale documentation in issue bodies)
+   - Workflow documentation (CONTRIBUTING.md, docs/process/ ceremony descriptions)
+   - WIP limit documentation (workflow files, team agreements)
 
 3. **Perspective Focus**
-   - Is the process clearly defined?
-   - Are tickets complete with AC, sizing, and dependencies?
-   - Is the backlog properly maintained and prioritized?
-   - Are ceremonies documented with clear structure?
-   - Are WIP limits defined and respected?
+   - Does process documentation include required sections (Purpose, Inputs, Outputs, Steps)?
+   - Do tickets include acceptance criteria with testable conditions?
+   - Is the backlog ordered with priority rationale in issue descriptions?
+   - Are ceremonies documented with participants, inputs, outputs, and cadence?
+   - Are WIP limits defined numerically in workflow documentation?
 
 4. **When to Use**
-   - Process documentation review
-   - Skill review for process completeness
-   - Ticket quality validation
-   - Backlog grooming review
-   - Workflow definition review
+   - Reviewing docs/process/\*.md for completeness
+   - Validating .github/ISSUE_TEMPLATE/\*.md structure
+   - Checking skill files for workflow/ceremony documentation
+   - Reviewing CONTRIBUTING.md for Definition of Ready/Done
+   - Assessing backlog prioritization in GitHub Projects or issue trackers
 
 5. **Example Review Questions**
    - "Are acceptance criteria clear and testable?"
@@ -77,11 +78,11 @@ model: balanced # Process review → Sonnet 4.5, GPT-5.1
    - "Is the backlog prioritized with clear rationale?"
 
 6. **Blocking Issues (Require Escalation)**
-   - Tickets without acceptance criteria
-   - Undefined or unclear workflow processes
-   - Missing Definition of Ready/Done
-   - Backlog items without priority or rationale
-   - Processes that skip required ceremonies
+   - Issue templates missing `## Acceptance Criteria` section
+   - Issues with `ready` label but missing size labels (S/M/L/XL)
+   - CONTRIBUTING.md missing Definition of Ready or Definition of Done
+   - Workflow documentation without ceremony descriptions (participants, cadence)
+   - Issue dependencies not linked with GitHub issue references (#123)
 
 7. **Scope Clarification**
    - Section explaining that this role reviews documentation for completeness
@@ -94,8 +95,19 @@ model: balanced # Process review → Sonnet 4.5, GPT-5.1
 
 Update `docs/roles/README.md` to include Scrum Master:
 
-- Add new category section (if needed) or add to existing category
-- Add to Canonical Names list
+**Category Placement:** Add to "Product and Design" category (alongside Product Owner)
+
+**Entry Format:**
+
+```markdown
+- **[Scrum Master](scrum-master.md)** - Process compliance and documentation completeness reviews
+```
+
+**Canonical Name Entry:**
+
+```markdown
+- `Scrum Master` (not: "SM", "Scrum", "Process Manager", "Agile Coach")
+```
 
 **Deliverable:** Updated README.md
 
@@ -137,9 +149,10 @@ Update `docs/roles/README.md` to include Scrum Master:
 
 ### Task 2: Index Update
 
-- [ ] `docs/roles/README.md` includes Scrum Master in appropriate category
+- [ ] `docs/roles/README.md` includes Scrum Master in "Product and Design" category
 - [ ] Entry format: `- **[Scrum Master](scrum-master.md)** - Description`
-- [ ] Canonical Names list includes `Scrum Master` with aliases
+- [ ] Canonical Names list includes `Scrum Master` with rejected aliases
+- [ ] Role placed alongside Product Owner in category
 
 ### Task 3: Validation
 
@@ -160,3 +173,24 @@ Update `docs/roles/README.md` to include Scrum Master:
 - File links to created/modified files
 - Lint output showing clean build
 - Review comments linked in issue thread
+
+## Review Feedback Addressed (Rev 2)
+
+### Documentation Specialist Feedback
+
+| Issue                               | Resolution                                       |
+| ----------------------------------- | ------------------------------------------------ |
+| I-1: Description lacks triggers     | Added file paths and specific validation targets |
+| I-2: Role index category not spec   | Specified "Product and Design" category          |
+| I-3: Canonical name/aliases missing | Added canonical entry with rejected aliases      |
+| M-1: Model tier rationale           | Updated comment to match README standard         |
+
+### Agent Skill Engineer Feedback
+
+| Issue                                 | Resolution                                              |
+| ------------------------------------- | ------------------------------------------------------- |
+| I-1: Ambiguous trigger conditions     | Made file-path based (docs/process/, ISSUE_TEMPLATE/)   |
+| I-2: Non-actionable expertise         | Added specific document structures and formats          |
+| I-3: Unmeasurable blocking issues     | Made structural and objective (sections, labels, links) |
+| M-4: Perspective focus abstract       | Added concrete checks with required sections            |
+| M-5: Missing file path in When to Use | Added explicit file paths for each scenario             |
