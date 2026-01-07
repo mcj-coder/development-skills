@@ -1,0 +1,95 @@
+# Security Policy
+
+## Supported Versions
+
+| Version | Supported          | End of Life    |
+| ------- | ------------------ | -------------- |
+| x.x.x   | :white_check_mark: | Active         |
+| x.x.x   | :white_check_mark: | [DATE]         |
+| < x.x   | :x:                | [DATE]         |
+
+## Reporting a Vulnerability
+
+We take security vulnerabilities seriously. Please report them responsibly.
+
+### How to Report
+
+**Do NOT report security vulnerabilities through public GitHub issues.**
+
+Instead, please report them via one of the following methods:
+
+1. **GitHub Security Advisories (Preferred)**:
+   - Navigate to the Security tab of this repository
+   - Click "Report a vulnerability"
+   - Follow the prompts to submit your report
+
+2. **Email**:
+   - Send details to: [SECURITY-EMAIL]
+   - Use the subject line: `[SECURITY] [PROJECT-NAME] - Brief Description`
+
+### What to Include
+
+Please include the following in your report:
+
+- Type of vulnerability (e.g., XSS, SQL injection, authentication bypass)
+- Location of the affected source code (file path, line numbers)
+- Steps to reproduce the issue
+- Proof of concept or exploit code (if available)
+- Impact assessment
+- Suggested fix (if you have one)
+
+### Response Timeline
+
+| Action                          | Timeframe              |
+| ------------------------------- | ---------------------- |
+| Initial response                | Within 48 hours        |
+| Triage and severity assessment  | Within 1 week          |
+| Fix development                 | Based on severity      |
+| Security advisory publication   | After fix is available |
+
+### Severity-Based Response
+
+| Severity | Fix Timeline    | Disclosure        |
+| -------- | --------------- | ----------------- |
+| Critical | Within 48 hours | Immediate patch   |
+| High     | Within 1 week   | Next release      |
+| Medium   | Within 1 month  | Next minor release|
+| Low      | Best effort     | Next major release|
+
+## What to Expect
+
+1. **Acknowledgment**: We will acknowledge receipt of your report within 48 hours.
+
+2. **Communication**: We will keep you informed of our progress and ask for
+   additional information if needed.
+
+3. **Credit**: If you wish, we will credit you in the security advisory and
+   release notes.
+
+4. **Confidentiality**: We ask that you keep the vulnerability confidential
+   until we have released a fix and published a security advisory.
+
+## Safe Harbor
+
+We consider security research conducted in accordance with this policy to be:
+
+- Authorized and we will not initiate legal action
+- Exempt from DMCA restrictions on circumvention
+- Exempt from restrictions in our Terms of Service
+
+If legal action is initiated by a third party, we will make it known that
+the actions were conducted in compliance with this policy.
+
+## Security Best Practices
+
+When contributing to this project:
+
+- Never commit secrets or credentials
+- Use environment variables for sensitive configuration
+- Follow the principle of least privilege
+- Validate and sanitize all inputs
+- Keep dependencies up to date
+
+---
+
+<!-- Template from: repo-best-practices-bootstrap skill -->

@@ -1,0 +1,74 @@
+# CLAUDE.md - Agent Onboarding
+
+## Required Reading
+
+Before ANY work in this repository, you MUST complete these steps in order:
+
+1. Read `README.md` completely
+2. Read `AGENTS.md` completely
+3. Acknowledge by stating: "I have read and understood README.md and AGENTS.md for [PROJECT-NAME]"
+4. Load prerequisite skills as instructed in AGENTS.md
+
+**Do not proceed with any task until you have completed these steps and stated the acknowledgement.**
+
+---
+
+## Project Overview
+
+[Brief description of what this project does and its purpose.]
+
+## Quick Start
+
+```bash
+# Clone the repository
+git clone [REPO-URL]
+cd [PROJECT-NAME]
+
+# Install dependencies
+[INSTALL-COMMAND]
+
+# Run tests
+[TEST-COMMAND]
+
+# Start development
+[DEV-COMMAND]
+```
+
+## Critical Standards
+
+These are non-negotiable. Full details in AGENTS.md.
+
+### TDD is Mandatory
+
+- ALL changes require TDD - code, config, AND documentation
+- No "verify after" - write failing test/checklist FIRST
+- Documentation uses BDD checklists as tests
+
+### Issue-Driven Workflow
+
+- No changes without a GitHub issue (read-only work exempt)
+- Reference issues in commits, PRs, and comments
+- Never commit directly to `main` - use feature branches
+
+### Clean Build Principle
+
+- Zero tolerance for warnings or errors
+- All linting must pass before committing
+- Run: `[LINT-COMMAND]` to verify
+
+---
+
+## Quality Commands
+
+```bash
+[LINT-COMMAND]          # Run all linting
+[TEST-COMMAND]          # Run tests
+[BUILD-COMMAND]         # Build project
+```
+
+---
+
+_This file ensures agents are properly onboarded. For complete rules, see AGENTS.md._
+
+<!-- Template from: repo-best-practices-bootstrap skill -->
+<!-- Cross-reference: skills/skills-first-workflow/references/AGENTS-TEMPLATE.md -->

@@ -1,0 +1,105 @@
+# Contributing to [PROJECT-NAME]
+
+Thank you for your interest in contributing! This document provides guidelines
+and steps for contributing.
+
+## Code of Conduct
+
+Please read and follow our Code of Conduct. Be respectful and constructive
+in all interactions.
+
+## Getting Started
+
+1. Fork the repository
+2. Clone your fork locally
+3. Set up the development environment (see README.md)
+4. Create a feature branch
+
+## Development Workflow
+
+### 1. Create an Issue
+
+Before starting work, create or claim a GitHub issue describing the change.
+This ensures visibility and prevents duplicate work.
+
+### 2. Create a Feature Branch
+
+```bash
+git checkout -b feature/issue-number-description
+```
+
+### 3. Make Changes
+
+- Follow the coding standards in this document
+- Write tests first (TDD)
+- Keep commits small and focused
+
+### 4. Test Your Changes
+
+```bash
+[TEST-COMMAND]
+[LINT-COMMAND]
+```
+
+### 5. Submit a Pull Request
+
+- Reference the issue in the PR description
+- Provide a clear description of changes
+- Respond to review feedback promptly
+
+## Definition of Ready
+
+An issue is ready to work on when:
+
+- [ ] Clear acceptance criteria defined
+- [ ] Dependencies identified
+- [ ] Size estimated (S/M/L/XL)
+- [ ] No blocking issues
+
+## Definition of Done
+
+A change is done when:
+
+- [ ] Code implemented and tested
+- [ ] All tests pass
+- [ ] Linting passes
+- [ ] Documentation updated
+- [ ] PR reviewed and approved
+- [ ] Merged to main
+
+## Coding Standards
+
+### Commit Messages
+
+Use conventional commit format:
+
+```text
+type(scope): description
+
+[optional body]
+
+[optional footer]
+```
+
+Types: `feat`, `fix`, `docs`, `style`, `refactor`, `test`, `chore`
+
+### Code Style
+
+- Follow existing code style
+- Use meaningful variable names
+- Write self-documenting code
+- Add comments for complex logic
+
+### Testing
+
+- Write tests for all new functionality
+- Maintain or improve code coverage
+- Include edge cases and error scenarios
+
+## Questions?
+
+Open an issue or reach out to the maintainers.
+
+---
+
+<!-- Template from: repo-best-practices-bootstrap skill -->

@@ -1,0 +1,55 @@
+# Agent Guidelines
+
+## Agent Execution Rules
+
+Agents must follow the standards in `README.md` before taking any action.
+These rules tighten the workflow for autonomous execution.
+
+- **Skills-first enforcement.** Bootstrap, load skills, and follow process
+  skills before any implementation.
+- **No changes without an issue.** All non-read-only work must be tied
+  to a GitHub/taskboard issue.
+- **TDD enforcement.** Apply TDD standard - failing test before implementation.
+- **Feature branch only.** Do not commit on main/master.
+
+## Prerequisites First
+
+Before any task or response in this repo:
+
+1. Load skill library and apply `using-superpowers` (if using Superpowers)
+2. Read and understand `README.md` and this file
+3. Load relevant skills for the task
+
+## Skill Library Setup
+
+Install and configure skill libraries:
+
+- **Superpowers**: https://github.com/obra/superpowers (optional but recommended)
+- Add project-specific skills as needed
+
+## No Implementation First
+
+Jumping straight into implementation is an exception and must be explicitly
+requested by the user. The default is to load and apply skills before any repo
+actions.
+
+## Commit Standards
+
+- Use conventional commit format: `type(scope): description`
+- Reference issue numbers: `fixes #123` or `refs #123`
+- Keep commits atomic and focused
+
+## Pull Request Process
+
+1. Create feature branch from `main`
+2. Make changes following TDD
+3. Ensure all tests pass
+4. Ensure all linting passes
+5. Create PR with description referencing issue
+6. Address review feedback
+7. Merge when approved
+
+---
+
+<!-- Template from: repo-best-practices-bootstrap skill -->
+<!-- Cross-reference: skills/skills-first-workflow/references/AGENTS-TEMPLATE.md -->
