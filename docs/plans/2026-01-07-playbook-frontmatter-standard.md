@@ -2,7 +2,7 @@
 
 **Issue:** #99
 **Date:** 2026-01-07
-**Status:** Draft
+**Status:** Draft (Rev 2 - addressing review feedback)
 
 ## Overview
 
@@ -31,20 +31,41 @@ established in #97 (roles) and #98 (ADRs).
 
 Create `docs/playbooks/README.md` documenting:
 
-1. **Frontmatter Standard section** with required fields table
-2. **Field specifications:**
+1. **Frontmatter Standard section** with required fields table and canonical field order:
+   `name` → `description` → `summary` → `triggers`
+
+2. **Field specifications with clear distinctions:**
    - `name`: kebab-case identifier (e.g., `incident-response`)
-   - `description`: General context about what the playbook covers (1-2 sentences)
-   - `summary`: Actionable process overview sufficient to apply without full read
+   - `description`: What this playbook covers (context, not action). 1-2 sentences.
+   - `summary`: Actionable step-by-step overview. Must contain all critical steps
+     so agents can execute using only summary. Format: numbered/bulleted steps.
    - `triggers`: YAML list of explicit conditions when playbook applies
-3. **Trigger format guidance:**
-   - Use lowercase, action-oriented phrases
-   - Be specific enough for agents to pattern-match
-   - Include common variations (e.g., "production incident" and "prod outage")
-4. **Agent workflow guidance:**
-   - When to read triggers vs full playbook
-   - How to select between multiple matching playbooks
-5. **Example playbook template** with all fields populated
+
+3. **Trigger format guidance with pattern matching rules:**
+   - Lowercase with spaces, present tense (e.g., "production incident detected")
+   - Include synonym variations (e.g., "prod outage", "service down")
+   - Matching rule: case-insensitive substring matching against context
+   - Anti-patterns: "help" (too vague), "something wrong" (not specific)
+
+4. **Agent workflow guidance (progressive disclosure):**
+   - Step 1: Scan all playbook triggers
+   - Step 2: Load summaries for matches
+   - Step 3: Select most applicable (see conflict resolution)
+   - Step 4: Execute from summary
+   - Step 5: Load full body only if summary references details needed
+
+5. **Conflict resolution for multiple matching playbooks:**
+   - Most specific trigger wins
+   - If tie, prefer more recent playbook
+   - Agents may apply multiple non-conflicting playbooks sequentially
+
+6. **Additional sections (matching roles/ADRs pattern):**
+   - Playbook Index (empty initially, with guidance on maintaining)
+   - Creating New Playbooks (when to create, quick reference steps)
+   - Validation (pre-commit hooks, CI, manual)
+   - Troubleshooting (common issues and resolutions)
+
+7. **Example playbook template** with all fields populated, plus good/bad examples
 
 **Deliverable:** `docs/playbooks/README.md`
 
@@ -74,13 +95,20 @@ Create `docs/playbooks/README.md` documenting:
 - [ ] `docs/playbooks/` directory exists
 - [ ] README.md exists at `docs/playbooks/README.md`
 - [ ] Contains Frontmatter Standard section with required fields table
+- [ ] Specifies canonical field order: name → description → summary → triggers
 - [ ] Documents `name` field with kebab-case format requirement
-- [ ] Documents `description` field with context guidance
-- [ ] Documents `summary` field with actionable format requirement
+- [ ] Documents `description` field (context, not action)
+- [ ] Documents `summary` field (actionable steps, executable from summary alone)
 - [ ] Documents `triggers` field as YAML list with examples
-- [ ] Includes trigger format guidance (lowercase, action-oriented)
-- [ ] Provides agent workflow guidance (trigger matching, selection)
-- [ ] Includes complete example playbook template
+- [ ] Includes trigger format guidance (lowercase, present tense, anti-patterns)
+- [ ] Includes trigger matching rules (case-insensitive substring)
+- [ ] Provides agent workflow guidance (5-step progressive disclosure)
+- [ ] Documents conflict resolution rules for multiple matches
+- [ ] Includes Playbook Index section (empty with guidance)
+- [ ] Includes Creating New Playbooks section
+- [ ] Includes Validation section
+- [ ] Includes Troubleshooting section
+- [ ] Includes complete example template with good/bad examples
 
 ### Task 2: Validation
 
@@ -102,3 +130,29 @@ Create `docs/playbooks/README.md` documenting:
 - File links to created/modified files
 - Lint output showing clean build
 - Review comments linked in issue thread
+
+## Review Feedback Addressed (Rev 2)
+
+### Documentation Specialist Feedback
+
+| Issue                                  | Resolution                                                     |
+| -------------------------------------- | -------------------------------------------------------------- |
+| C1: description vs summary unclear     | Added clear distinction: context vs actionable steps           |
+| C2: Missing field ordering             | Added canonical order: name → description → summary → triggers |
+| I1: Missing validation section         | Added to required sections                                     |
+| I2: No troubleshooting guidance        | Added to required sections                                     |
+| I3: Agent workflow underspecified      | Added 5-step progressive disclosure workflow                   |
+| I4: Missing index section              | Added Playbook Index requirement                               |
+| I5: No creating new playbooks guidance | Added Creating New Playbooks section requirement               |
+
+### Agent Skill Engineer Feedback
+
+| Issue                                | Resolution                                             |
+| ------------------------------------ | ------------------------------------------------------ |
+| C1: Missing trigger pattern matching | Added matching rule: case-insensitive substring        |
+| C2: No conflict resolution           | Added 3-rule conflict resolution                       |
+| C3: Summary actionability unclear    | Clarified: must contain all critical steps, executable |
+| I1: No integration with roles        | Deferred to future (optional field)                    |
+| I2: No status field                  | Deferred to future (optional field)                    |
+| I3: Progressive disclosure unclear   | Added explicit 5-step workflow                         |
+| I4: No trigger granularity guidance  | Added present tense, anti-patterns guidance            |
