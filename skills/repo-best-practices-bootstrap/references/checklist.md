@@ -908,6 +908,89 @@ glab label create "type::feature" --color "#0075ca" --description "New feature r
 glab label create "priority::high" --color "#b60205" --description "High priority"
 ```
 
+### 7.4 Link Repository Issues to Project
+
+**Description:** Add existing repository issues to the project board for tracking.
+
+**Cost:** Free
+
+**Opt-out:** `project-management` (category) or `issue-linking` (feature)
+
+**GitHub:**
+
+```bash
+# Add all open issues to project
+for issue in $(gh issue list --state open --json number --jq '.[].number'); do
+  gh project item-add {project-number} --owner {owner} \
+    --url "https://github.com/{owner}/{repo}/issues/$issue"
+done
+
+# Add specific issue to project
+gh project item-add {project-number} --owner {owner} \
+  --url "https://github.com/{owner}/{repo}/issues/{issue-number}"
+```
+
+**Azure DevOps:**
+
+```bash
+# Azure DevOps issues (work items) are automatically part of the project
+# No linking needed - configure board to show correct work item types
+```
+
+**GitLab:**
+
+```bash
+# GitLab issues are automatically shown on project boards based on labels
+# Ensure issues have appropriate labels for board visibility
+```
+
+### 7.5 Status Sync with issue-driven-delivery
+
+**Description:** Align project board statuses with issue-driven-delivery workflow states.
+
+**Cost:** Free
+
+**Opt-out:** `project-management` (category) or `status-sync` (feature)
+
+**Recommended Status Mapping:**
+
+| issue-driven-delivery State | Project Board Column |
+| --------------------------- | -------------------- |
+| Unassigned                  | Backlog              |
+| Assigned (In Progress)      | In Progress          |
+| PR Created                  | In Review            |
+| Merged/Closed               | Done                 |
+| Blocked                     | Blocked              |
+
+**GitHub Projects Automation:**
+
+```bash
+# GitHub Projects v2 supports built-in automations:
+# - Auto-add items when issues created
+# - Auto-set status when PR merged
+# Configure via: Project Settings > Workflows
+
+# Example: Set status field value via GraphQL
+gh api graphql -f query='
+mutation {
+  updateProjectV2ItemFieldValue(
+    input: {
+      projectId: "{project-node-id}"
+      itemId: "{item-node-id}"
+      fieldId: "{status-field-id}"
+      value: { singleSelectOptionId: "{option-id}" }
+    }
+  ) { projectV2Item { id } }
+}'
+```
+
+**Sync Checklist:**
+
+- [ ] Project board columns match workflow states
+- [ ] Auto-add enabled for new issues
+- [ ] Auto-move on PR merge configured
+- [ ] Blocked column/label synchronised
+
 ## 8. Standard Tooling
 
 ### 8.1 Git Hooks Manager (husky)
