@@ -209,6 +209,8 @@ triggers:
 
 ## Playbook Index
 
+- [blocked-sync.md](blocked-sync.md) - Automatically unblocks dependent issues when blocking
+  issues are closed
 - [conducting-pr-reviews.md](conducting-pr-reviews.md) - GitHub-specific PR review process
   (customized from platform-agnostic skill reference)
 - [duplicate-detection.md](duplicate-detection.md) - Detects potentially duplicate issues
