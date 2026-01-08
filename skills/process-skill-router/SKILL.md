@@ -129,6 +129,57 @@ Example - Adding a P8 rule:
 | P8 | Documentation update needed | documentation-skill |
 ```
 
+## Precondition Guard Pattern
+
+Process skills should include precondition guards that verify the skill is appropriate
+before proceeding. Guards prevent workflow mistakes by redirecting to the correct skill.
+
+### Guard Structure
+
+Each process skill should have a "Precondition Check" section near the top:
+
+```markdown
+## Precondition Check
+
+**Before proceeding, verify this condition is met:**
+
+- [ ] [Condition that must be true for this skill to apply]
+
+**How to verify:**
+[Commands or steps to check the condition]
+
+**If condition not met:**
+
+> **STOP** - [Redirect guidance with skill recommendations]
+```
+
+### Guard Behavior
+
+| Condition Result  | Action                                        |
+| ----------------- | --------------------------------------------- |
+| Precondition met  | Proceed with skill's core workflow            |
+| Precondition fail | Redirect to appropriate skill via this router |
+| Unclear state     | Prompt user for clarification                 |
+
+### Example: requirements-gathering Guard
+
+The `requirements-gathering` skill includes a precondition guard that checks:
+
+- **Precondition:** No open ticket exists for this work
+- **If ticket exists (unclear reqs):** Redirect to `brainstorming`
+- **If ticket exists (clear reqs):** Redirect to `writing-plans`
+- **If closed ticket exists:** Proceed (create new ticket for new work)
+
+### Adding Guards to Existing Skills
+
+To add a precondition guard to an existing process skill:
+
+1. Identify what condition must be true for the skill to be the right choice
+2. Add "Precondition Check" section after "When to Use" section
+3. Include verification steps (commands, file checks, etc.)
+4. Provide redirect guidance using this router's recommendations
+5. Add BDD test scenarios in `[skill-name]-guards.test.md`
+
 ## Output Format
 
 When providing a recommendation:
