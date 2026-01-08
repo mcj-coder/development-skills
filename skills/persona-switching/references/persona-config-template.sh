@@ -5,10 +5,63 @@
 # IMPORTANT: Set file permissions to 600 (chmod 600 <this-file>)
 # This file contains account mappings but no secrets.
 #
+# Platform: Linux/macOS only (requires bash 4.0+, gpg, gh CLI)
+# Windows users: Use WSL2 or Git Bash with GPG4Win
+#
 # Usage:
 #   source ~/.config/{{REPO_NAME}}/persona-config.sh
 #   use_persona backend-engineer
 #   show_persona
+
+# =============================================================================
+# Guard Against Multiple Sourcing (DO-C5)
+# =============================================================================
+
+if [ -n "$PERSONA_CONFIG_LOADED_{{REPO_NAME}}" ]; then
+    return 0 2>/dev/null || exit 0
+fi
+export PERSONA_CONFIG_LOADED_{{REPO_NAME}}=1
+
+# =============================================================================
+# Runtime Dependency Verification (DO-C1)
+# =============================================================================
+
+_verify_dependencies() {
+    local missing=()
+
+    if ! command -v git &>/dev/null; then
+        missing+=("git")
+    fi
+
+    if ! command -v gpg &>/dev/null; then
+        missing+=("gpg")
+    fi
+
+    if ! command -v gh &>/dev/null; then
+        missing+=("gh (GitHub CLI)")
+    fi
+
+    # Check bash version for associative arrays
+    if [ "${BASH_VERSINFO[0]}" -lt 4 ]; then
+        echo "Error: bash 4.0+ required (current: $BASH_VERSION)"
+        echo "  macOS: brew install bash"
+        echo "  Linux: usually pre-installed"
+        return 1
+    fi
+
+    if [ ${#missing[@]} -gt 0 ]; then
+        echo "Error: Missing required dependencies: ${missing[*]}"
+        echo "  Install missing tools and re-source this file"
+        return 1
+    fi
+
+    return 0
+}
+
+if ! _verify_dependencies; then
+    unset PERSONA_CONFIG_LOADED_{{REPO_NAME}}
+    return 1 2>/dev/null || exit 1
+fi
 
 # =============================================================================
 # Security Profiles
@@ -49,6 +102,105 @@ declare -A PERSONA_PROFILES
 CURRENT_PERSONA=""
 PREVIOUS_PERSONA=""
 PERSONA_HISTORY=()
+PERSONA_CONFIG_DIR="${HOME}/.config/{{REPO_NAME}}"
+PERSONA_AUDIT_LOG="${PERSONA_CONFIG_DIR}/persona-audit.log"
+PERSONA_LOCK_FILE="${PERSONA_CONFIG_DIR}/.persona.lock"
+
+# Ensure config directory exists
+mkdir -p "$PERSONA_CONFIG_DIR" 2>/dev/null
+chmod 700 "$PERSONA_CONFIG_DIR" 2>/dev/null
+
+# =============================================================================
+# Input Validation Functions (SEC-C1, SEC-C2)
+# =============================================================================
+
+_validate_persona_name() {
+    local persona="$1"
+    # Only allow lowercase letters, numbers, and hyphens
+    if [[ ! "$persona" =~ ^[a-z0-9][a-z0-9-]*[a-z0-9]$|^[a-z0-9]$ ]]; then
+        echo "Error: Invalid persona name '$persona'"
+        echo "  Persona names must:"
+        echo "  - Contain only lowercase letters, numbers, and hyphens"
+        echo "  - Start and end with a letter or number"
+        return 1
+    fi
+    return 0
+}
+
+_validate_email_format() {
+    local email="$1"
+    # Basic email format validation
+    if [[ ! "$email" =~ ^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$ ]]; then
+        echo "Error: Invalid email format: $email"
+        return 1
+    fi
+    return 0
+}
+
+_validate_gpg_key_format() {
+    local key="$1"
+    if [ -z "$key" ]; then
+        return 0  # Empty is allowed (no signing)
+    fi
+    # GPG key IDs are hex strings (short: 8, long: 16, fingerprint: 40)
+    if [[ ! "$key" =~ ^[A-Fa-f0-9]{8,40}$ ]]; then
+        echo "Error: Invalid GPG key format: $key"
+        echo "  Expected hex string (8-40 characters)"
+        return 1
+    fi
+    return 0
+}
+
+# =============================================================================
+# Lock File Management (DO-C6)
+# =============================================================================
+
+_acquire_lock() {
+    local max_wait=10
+    local waited=0
+
+    while [ -f "$PERSONA_LOCK_FILE" ]; do
+        if [ $waited -ge $max_wait ]; then
+            echo "Error: Could not acquire persona lock (another switch in progress?)"
+            echo "  If stuck, remove: $PERSONA_LOCK_FILE"
+            return 1
+        fi
+        sleep 1
+        ((waited++))
+    done
+
+    echo $$ > "$PERSONA_LOCK_FILE"
+    return 0
+}
+
+_release_lock() {
+    rm -f "$PERSONA_LOCK_FILE" 2>/dev/null
+}
+
+# =============================================================================
+# Audit Logging (DO-C9)
+# =============================================================================
+
+_audit_log() {
+    local action="$1"
+    local details="$2"
+    local timestamp
+    timestamp=$(date '+%Y-%m-%d %H:%M:%S')
+
+    # Log to file (persistent)
+    echo "[$timestamp] $action: $details" >> "$PERSONA_AUDIT_LOG"
+
+    # Prune old entries (keep last 3 days per user request)
+    if [ -f "$PERSONA_AUDIT_LOG" ]; then
+        local cutoff
+        cutoff=$(date -d '3 days ago' '+%Y-%m-%d' 2>/dev/null || date -v-3d '+%Y-%m-%d' 2>/dev/null)
+        if [ -n "$cutoff" ]; then
+            local tmp_file="${PERSONA_AUDIT_LOG}.tmp"
+            awk -v cutoff="$cutoff" '$0 ~ /^\[/ && substr($0,2,10) >= cutoff' "$PERSONA_AUDIT_LOG" > "$tmp_file" 2>/dev/null
+            mv "$tmp_file" "$PERSONA_AUDIT_LOG" 2>/dev/null
+        fi
+    fi
+}
 
 # =============================================================================
 # Helper Functions
@@ -59,7 +211,12 @@ _log_persona_action() {
     local persona="$2"
     local timestamp
     timestamp=$(date '+%Y-%m-%d %H:%M:%S')
+
+    # Session history (in-memory)
     PERSONA_HISTORY+=("[$timestamp] $action: $persona")
+
+    # Persistent audit log (DO-C10)
+    _audit_log "$action" "$persona (profile: ${PERSONA_PROFILES[$persona]:-unknown})"
 }
 
 _get_gpg_key_email() {
@@ -146,6 +303,8 @@ _save_current_config() {
     SAVED_USER_NAME=$(git config --local user.name 2>/dev/null || git config --global user.name)
     SAVED_USER_EMAIL=$(git config --local user.email 2>/dev/null || git config --global user.email)
     SAVED_SIGNING_KEY=$(git config --local user.signingkey 2>/dev/null || git config --global user.signingkey)
+    # DO-C7: Save GitHub account for rollback
+    SAVED_GH_ACCOUNT=$(gh auth status 2>&1 | grep "Logged in to" | head -1 | awk '{print $NF}')
 }
 
 _restore_saved_config() {
@@ -155,8 +314,14 @@ _restore_saved_config() {
         if [ -n "$SAVED_SIGNING_KEY" ]; then
             git config --local user.signingkey "$SAVED_SIGNING_KEY"
         fi
+        # DO-C7: Restore GitHub account
+        if [ -n "$SAVED_GH_ACCOUNT" ]; then
+            gh auth switch --user "$SAVED_GH_ACCOUNT" 2>/dev/null
+        fi
+        _audit_log "ROLLBACK" "Restored to: $SAVED_USER_EMAIL"
         echo "Rolled back to previous configuration"
     fi
+    _release_lock
 }
 
 # =============================================================================
@@ -173,6 +338,11 @@ use_persona() {
         for p in "${!PERSONA_PROFILES[@]}"; do
             echo "  - $p (${PERSONA_PROFILES[$p]} profile)"
         done
+        return 1
+    fi
+
+    # SEC-C1: Validate persona name format
+    if ! _validate_persona_name "$persona"; then
         return 1
     fi
 
@@ -207,6 +377,14 @@ use_persona() {
         return 1
     fi
 
+    # SEC-C2: Validate profile data format
+    if ! _validate_email_format "$email"; then
+        return 1
+    fi
+    if ! _validate_gpg_key_format "$gpg_key"; then
+        return 1
+    fi
+
     # Validate GPG key availability
     if ! _validate_gpg_key_available "$gpg_key"; then
         return 1
@@ -214,6 +392,11 @@ use_persona() {
 
     # Validate email/key match BEFORE making any changes
     if ! _validate_email_key_match "$email" "$gpg_key"; then
+        return 1
+    fi
+
+    # DO-C6: Acquire lock to prevent concurrent switches
+    if ! _acquire_lock; then
         return 1
     fi
 
@@ -233,6 +416,7 @@ use_persona() {
             if ! gh auth switch --user "$account" 2>/dev/null; then
                 echo "  Warning: Could not switch GitHub account"
                 echo "  You may need to run: gh auth login"
+                _audit_log "WARNING" "gh auth switch failed for $account"
             fi
         fi
     fi
@@ -270,7 +454,8 @@ use_persona() {
         return 1
     fi
 
-    # Success
+    # Success - release lock
+    _release_lock
     CURRENT_PERSONA="$persona"
     _log_persona_action "SWITCH" "$persona"
 
@@ -317,11 +502,138 @@ show_persona() {
 persona_history() {
     echo "=== Persona History (this session) ==="
     if [ ${#PERSONA_HISTORY[@]} -eq 0 ]; then
-        echo "No persona switches recorded"
+        echo "No persona switches recorded this session"
     else
         for entry in "${PERSONA_HISTORY[@]}"; do
             echo "$entry"
         done
+    fi
+
+    echo ""
+    echo "=== Persistent Audit Log (last 3 days) ==="
+    if [ -f "$PERSONA_AUDIT_LOG" ]; then
+        cat "$PERSONA_AUDIT_LOG"
+    else
+        echo "No persistent log found"
+    fi
+}
+
+# DO-C4: Health check command for setup verification
+persona_health_check() {
+    echo "=== Persona Configuration Health Check ==="
+    local errors=0
+    local warnings=0
+
+    # Check 1: Dependencies
+    echo ""
+    echo "1. Dependencies:"
+    for cmd in git gpg gh; do
+        if command -v "$cmd" &>/dev/null; then
+            local ver
+            case "$cmd" in
+                git) ver=$(git --version | awk '{print $3}') ;;
+                gpg) ver=$(gpg --version | head -1 | awk '{print $3}') ;;
+                gh)  ver=$(gh --version | head -1 | awk '{print $3}') ;;
+            esac
+            echo "   ✓ $cmd ($ver)"
+        else
+            echo "   ✗ $cmd NOT FOUND"
+            ((errors++))
+        fi
+    done
+
+    # Check 2: Bash version
+    echo ""
+    echo "2. Bash version:"
+    if [ "${BASH_VERSINFO[0]}" -ge 4 ]; then
+        echo "   ✓ bash ${BASH_VERSION} (4.0+ required)"
+    else
+        echo "   ✗ bash ${BASH_VERSION} (4.0+ required)"
+        ((errors++))
+    fi
+
+    # Check 3: Config file permissions
+    echo ""
+    echo "3. Config file permissions:"
+    local config_file="${PERSONA_CONFIG_DIR}/persona-config.sh"
+    if [ -f "$config_file" ]; then
+        local perms
+        perms=$(stat -c '%a' "$config_file" 2>/dev/null || stat -f '%Lp' "$config_file" 2>/dev/null)
+        if [ "$perms" = "600" ]; then
+            echo "   ✓ $config_file (mode 600)"
+        else
+            echo "   ⚠ $config_file (mode $perms, should be 600)"
+            ((warnings++))
+        fi
+    else
+        echo "   - Config file not yet created"
+    fi
+
+    # Check 4: GPG agent
+    echo ""
+    echo "4. GPG agent:"
+    if gpg-connect-agent /bye &>/dev/null; then
+        echo "   ✓ GPG agent is running"
+    else
+        echo "   ⚠ GPG agent not responding (may need to start it)"
+        ((warnings++))
+    fi
+
+    # Check 5: GitHub authentication
+    echo ""
+    echo "5. GitHub CLI authentication:"
+    if gh auth status &>/dev/null; then
+        local gh_user
+        gh_user=$(gh auth status 2>&1 | grep "Logged in to" | head -1)
+        echo "   ✓ $gh_user"
+    else
+        echo "   ✗ Not authenticated (run: gh auth login)"
+        ((errors++))
+    fi
+
+    # Check 6: Current Git config
+    echo ""
+    echo "6. Current Git identity:"
+    local git_email git_key
+    git_email=$(git config user.email 2>/dev/null)
+    git_key=$(git config user.signingkey 2>/dev/null)
+    if [ -n "$git_email" ]; then
+        echo "   Email: $git_email"
+        if [ -n "$git_key" ]; then
+            echo "   Signing key: $git_key"
+            # Check email/key match
+            if _validate_email_key_match "$git_email" "$git_key" &>/dev/null; then
+                echo "   ✓ Email/key match valid"
+            else
+                echo "   ✗ Email/key MISMATCH (commits will be Unverified)"
+                ((errors++))
+            fi
+        else
+            echo "   ⚠ No signing key configured"
+            ((warnings++))
+        fi
+    else
+        echo "   ⚠ No email configured"
+        ((warnings++))
+    fi
+
+    # Check 7: Profile validation
+    echo ""
+    echo "7. Profile validation:"
+    validate_persona_config 2>/dev/null | grep -E '(Profile:|Status:)' | sed 's/^/   /'
+
+    # Summary
+    echo ""
+    echo "=== Summary ==="
+    if [ $errors -eq 0 ] && [ $warnings -eq 0 ]; then
+        echo "✓ All checks passed - configuration is healthy"
+        return 0
+    elif [ $errors -eq 0 ]; then
+        echo "⚠ $warnings warning(s) - configuration may work but review recommended"
+        return 0
+    else
+        echo "✗ $errors error(s), $warnings warning(s) - configuration needs attention"
+        return 1
     fi
 }
 

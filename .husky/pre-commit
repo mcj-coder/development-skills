@@ -35,7 +35,26 @@ GIT_EMAIL=$(git config --get user.email)
 
 if [ -n "$SIGNING_KEY" ] && [ -n "$GIT_EMAIL" ]; then
   # Get the email associated with the signing key
-  KEY_EMAIL=$(gpg --list-keys --with-colons "$SIGNING_KEY" 2>/dev/null | grep '^uid:' | head -1 | cut -d: -f10 | sed -n 's/.*<\([^>]*\)>.*/\1/p')
+  # DO-C3: Use timeout to prevent hanging if GPG agent is unresponsive
+  if command -v timeout &>/dev/null; then
+    KEY_EMAIL=$(timeout 10s gpg --list-keys --with-colons "$SIGNING_KEY" 2>/dev/null | grep '^uid:' | head -1 | cut -d: -f10 | sed -n 's/.*<\([^>]*\)>.*/\1/p')
+    GPG_EXIT=$?
+    if [ $GPG_EXIT -eq 124 ]; then
+      echo ""
+      echo "❌ ERROR: GPG operation timed out after 10 seconds"
+      echo "   The GPG agent may be unresponsive or locked."
+      echo ""
+      echo "   To fix:"
+      echo "   1. Restart GPG agent: gpgconf --kill gpg-agent"
+      echo "   2. Ensure GPG agent is running: gpg-connect-agent /bye"
+      echo ""
+      echo "ℹ️  To bypass (not recommended): git commit --no-verify"
+      exit 1
+    fi
+  else
+    # Fallback for systems without timeout command (macOS without coreutils)
+    KEY_EMAIL=$(gpg --list-keys --with-colons "$SIGNING_KEY" 2>/dev/null | grep '^uid:' | head -1 | cut -d: -f10 | sed -n 's/.*<\([^>]*\)>.*/\1/p')
+  fi
 
   if [ -n "$KEY_EMAIL" ] && [ "$KEY_EMAIL" != "$GIT_EMAIL" ]; then
     echo ""

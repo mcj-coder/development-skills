@@ -220,9 +220,26 @@ This prevents other users from reading account mappings.
 
 ## Limitations
 
-- **Windows**: Bash/Zsh required; PowerShell not currently supported
+### Platform Compatibility
+
+| Platform             | Status           | Notes                                    |
+| -------------------- | ---------------- | ---------------------------------------- |
+| Linux                | ✅ Supported     | Native bash environment                  |
+| macOS                | ✅ Supported     | Requires bash 4.0+ (`brew install bash`) |
+| Windows (WSL2)       | ✅ Supported     | Use WSL2 with GPG4Win bridge             |
+| Windows (Git Bash)   | ⚠️ Partial       | Works but GPG integration complex        |
+| Windows (PowerShell) | ❌ Not Supported | Bash/Zsh shell required                  |
+
+**Windows Users:** This skill requires a bash-compatible shell. Options:
+
+1. **WSL2 (Recommended)**: Install WSL2 with Ubuntu, configure GPG passthrough
+2. **Git Bash**: Install Git for Windows, use bundled bash with GPG4Win
+
+### Other Limitations
+
 - **SSH signing**: GPG-based signing only; SSH signing keys planned for future
 - **Platform scope**: GitHub-focused; Azure DevOps/GitLab integration planned
+- **Bash version**: Requires bash 4.0+ for associative arrays
 
 ## Common Mistakes
 
