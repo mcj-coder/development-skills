@@ -6,6 +6,10 @@
 # 2. Configure the variables below for your project
 # 3. Ensure the GitHub token has project permissions
 #
+# Permissions: Uses GITHUB_TOKEN which has project access for repo-scoped projects.
+# For organisation-level projects, you may need a PAT with 'project' scope stored
+# in secrets.
+#
 # Implements: skills/issue-driven-delivery SKILL.md (Work Item State Tracking)
 # Related: docs/playbooks/project-sync.md (setup instructions)
 
@@ -106,7 +110,11 @@ jobs:
               }
             }
           ' -f issueId="$ISSUE_NODE_ID" \
-            --jq ".data.node.projectItems.nodes[] | select(.project.number == ${{ env.PROJECT_NUMBER }}) | .id")
+            --jq ".data.node.projectItems.nodes[] | select(.project.number == ${{ env.PROJECT_NUMBER }}) | .id" 2>&1) || {
+            echo "::warning::GraphQL query failed: $ITEM_ID"
+            echo "found=false" >> $GITHUB_OUTPUT
+            exit 0
+          }
 
           if [ -z "$ITEM_ID" ]; then
             echo "Issue is not in project ${{ env.PROJECT_NUMBER }}"
@@ -127,7 +135,7 @@ jobs:
         run: |
           echo "Updating status to: $STATUS_NAME"
 
-          gh api graphql -f query='
+          RESULT=$(gh api graphql -f query='
             mutation($projectId: ID!, $itemId: ID!, $fieldId: ID!, $optionId: String!) {
               updateProjectV2ItemFieldValue(
                 input: {
@@ -148,6 +156,9 @@ jobs:
             -f projectId="${{ env.PROJECT_NODE_ID }}" \
             -f itemId="$ITEM_ID" \
             -f fieldId="${{ env.STATUS_FIELD_ID }}" \
-            -f optionId="$STATUS_ID"
+            -f optionId="$STATUS_ID" 2>&1) || {
+            echo "::error::Failed to update project status: $RESULT"
+            exit 1
+          }
 
           echo "Status updated to $STATUS_NAME"

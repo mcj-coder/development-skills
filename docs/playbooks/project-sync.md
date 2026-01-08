@@ -90,11 +90,13 @@ to `.github/workflows/sync-project-status.yml` and update these environment vari
 | `PROJECT_NODE_ID`    | Project's GraphQL node ID        | `gh project view` command |
 | `STATUS_FIELD_ID`    | Status field's node ID           | `gh project field-list`   |
 | `STATUS_BACKLOG`     | Option ID for Backlog status     | From field-list `options` |
-| `STATUS_READY`       | Option ID for Ready status       | From field-list `options` |
 | `STATUS_IN_PROGRESS` | Option ID for In Progress status | From field-list `options` |
 | `STATUS_IN_REVIEW`   | Option ID for In Review status   | From field-list `options` |
 | `STATUS_DONE`        | Option ID for Done status        | From field-list `options` |
 | `STATUS_BLOCKED`     | Option ID for Blocked status     | From field-list `options` |
+
+**Note:** The template includes `STATUS_READY` for projects that use a Ready column. Remove
+unused status variables from your installed workflow.
 
 ### Step 3: Ensure Permissions
 
