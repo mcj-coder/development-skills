@@ -18,9 +18,6 @@ triggers:
 
 # Conducting PR Reviews
 
-> **Note**: This playbook provides repo-specific guidance for GitHub. A platform-agnostic
-> skill for PR reviews with inline comments is planned - see #152 for status.
-
 ## Overview
 
 This playbook guides agents and humans through conducting effective PR reviews using
@@ -273,4 +270,3 @@ If a related issue exists:
 - `docs/roles/README.md` - Persona definitions and selection guide
 - `CLAUDE.md` - Retrospective requirements for persona reviews
 - `skills/issue-driven-delivery/SKILL.md` - PR workflow integration
-- #152 - Platform-agnostic PR review skill (planned)
