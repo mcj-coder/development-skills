@@ -318,40 +318,21 @@ When creating an epic with child tickets:
 
 **Platform-specific linking:**
 
-- **GitHub**: Use sub-issues for parent/child hierarchy (via GraphQL API `addSubIssue`),
-  `blocked` labels for dependencies
+- **GitHub**: Use sub-issues for parent/child hierarchy, `blocked` labels for dependencies
 - **Azure DevOps**: Use parent/child work item links
 - **Jira**: Use epic link field or parent issue
 
-**GitHub sub-issue creation:**
+**Sub-issues vs Task lists:**
 
-```bash
-# Get issue IDs
-gh api graphql -f query='{ repository(owner: "ORG", name: "REPO") {
-  issue(number: EPIC_NUM) { id }
-}}'
+| Concept        | Use For                           | Creates Separate Ticket? |
+| -------------- | --------------------------------- | ------------------------ |
+| **Sub-issues** | Decomposed work (epic → children) | Yes - independent items  |
+| **Task lists** | Steps within a single ticket      | No - checkboxes only     |
 
-gh api graphql -f query='{ repository(owner: "ORG", name: "REPO") {
-  issue(number: CHILD_NUM) { id }
-}}'
+For detailed CLI commands including GitHub sub-issue creation via GraphQL API,
+see `references/platform-cli-examples.md`.
 
-# Link child as sub-issue
-gh api graphql -f query='mutation {
-  addSubIssue(input: { issueId: "EPIC_ID", subIssueId: "CHILD_ID" }) {
-    subIssue { number title }
-  }
-}'
-```
-
-**Task lists vs Sub-issues:**
-
-| Concept        | Use For                                      | Example                                        |
-| -------------- | -------------------------------------------- | ---------------------------------------------- |
-| **Sub-issues** | Decomposed work items (epic → child tickets) | Epic #100 has sub-issues #101, #102, #103      |
-| **Task lists** | Steps within a single ticket                 | `- [ ] Write tests`, `- [ ] Implement feature` |
-
-- Sub-issues are **separate trackable work items** with their own lifecycle
-- Task lists are **checkboxes within a ticket body** for tracking progress on that ticket
+For platform organization options comparison, see `references/platform-organization-options.md`.
 
 ### 8. Stop - Do Not Proceed to Planning
 

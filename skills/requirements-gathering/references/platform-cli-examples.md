@@ -242,6 +242,96 @@ az boards work-item relation add \
 jira issue link [ISSUE_KEY] [BLOCKER_KEY] "is blocked by"
 ```
 
+## Linking Child Tickets as Sub-Issues (GitHub)
+
+GitHub sub-issues provide native parent/child hierarchy for epics and child tickets.
+This is the recommended approach for decomposed work.
+
+### Get Issue IDs for Sub-Issue Linking
+
+```bash
+# Get epic issue ID
+gh api graphql -f query='{ repository(owner: "ORG", name: "REPO") {
+  issue(number: EPIC_NUM) { id }
+}}'
+
+# Get child issue ID
+gh api graphql -f query='{ repository(owner: "ORG", name: "REPO") {
+  issue(number: CHILD_NUM) { id }
+}}'
+```
+
+### Link Child as Sub-Issue
+
+```bash
+# Link child ticket as sub-issue of epic
+gh api graphql -f query='mutation {
+  addSubIssue(input: { issueId: "EPIC_ID", subIssueId: "CHILD_ID" }) {
+    subIssue { number title }
+  }
+}'
+```
+
+### Complete Example: Link Multiple Children
+
+```bash
+#!/bin/bash
+# link-sub-issues.sh - Link child tickets to epic as sub-issues
+
+OWNER="mcj-coder"
+REPO="development-skills"
+EPIC_NUM=139
+CHILDREN=(140 141 142 143 144 145)
+
+# Get epic ID
+EPIC_ID=$(gh api graphql -f query="{ repository(owner: \"$OWNER\", name: \"$REPO\") {
+  issue(number: $EPIC_NUM) { id }
+}}" --jq '.data.repository.issue.id')
+
+echo "Epic ID: $EPIC_ID"
+
+# Link each child
+for CHILD_NUM in "${CHILDREN[@]}"; do
+  CHILD_ID=$(gh api graphql -f query="{ repository(owner: \"$OWNER\", name: \"$REPO\") {
+    issue(number: $CHILD_NUM) { id }
+  }}" --jq '.data.repository.issue.id')
+
+  gh api graphql -f query="mutation {
+    addSubIssue(input: { issueId: \"$EPIC_ID\", subIssueId: \"$CHILD_ID\" }) {
+      subIssue { number title }
+    }
+  }"
+
+  echo "Linked #$CHILD_NUM as sub-issue"
+done
+```
+
+### Sub-Issues vs Task Lists
+
+| Concept        | Use For                                      | Example                                        |
+| -------------- | -------------------------------------------- | ---------------------------------------------- |
+| **Sub-issues** | Decomposed work items (epic → child tickets) | Epic #100 has sub-issues #101, #102, #103      |
+| **Task lists** | Steps within a single ticket                 | `- [ ] Write tests`, `- [ ] Implement feature` |
+
+- **Sub-issues** are separate trackable work items with their own lifecycle, assignees, and state
+- **Task lists** are checkboxes within a ticket body for tracking progress on that single ticket
+
+### When to Use Each
+
+**Use sub-issues when:**
+
+- Work is decomposed into multiple tickets
+- Each piece needs independent tracking
+- Different people may work on different pieces
+- Each piece has its own acceptance criteria
+
+**Use task lists when:**
+
+- Tracking steps within a single ticket
+- All steps are done by one person
+- Steps don't need independent issue tracking
+- Showing progress on implementation checklist
+
 ## Updating Epic After Child Creation
 
 ### GitHub - Update Epic Body with Child Numbers

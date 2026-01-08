@@ -8,7 +8,41 @@ in an ADR.
 
 ## GitHub Options
 
-### Option A: GitHub Projects (Recommended)
+### Option A: Sub-Issues (Recommended)
+
+```text
+┌─────────────────────────────────────────────────────────────────┐
+│ Sub-Issues                                                      │
+├─────────────────────────────────────────────────────────────────┤
+│ Epic        = Parent issue with sub-issues linked               │
+│ Children    = Issues linked as sub-issues via GraphQL API       │
+│ Dependencies= "Blocked by #X" label + comments                  │
+│ Grouping    = Native hierarchy in GitHub Projects               │
+│ Advantage   = True parent/child relationships, progress tracking│
+└─────────────────────────────────────────────────────────────────┘
+```
+
+**CLI Commands:**
+
+```bash
+# Create epic issue
+gh issue create --title "Epic: [Title]" --body "[body with Mermaid graph]"
+
+# Create child issue
+gh issue create --title "[Child Title]" --body "[body content]"
+
+# Link child as sub-issue (see platform-cli-examples.md for full details)
+gh api graphql -f query='mutation {
+  addSubIssue(input: { issueId: "EPIC_ID", subIssueId: "CHILD_ID" }) {
+    subIssue { number title }
+  }
+}'
+```
+
+**When to use**: Decomposed work where each child ticket is an independent work item
+with its own lifecycle, assignees, and acceptance criteria.
+
+### Option B: GitHub Projects
 
 ```text
 ┌─────────────────────────────────────────────────────────────────┐
@@ -37,7 +71,7 @@ gh issue create --title "[Child Title]" --body "Blocked by #[epic]
 gh project item-add [PROJECT_NUMBER] --owner [OWNER] --url [ISSUE_URL]
 ```
 
-### Option B: Labels + Milestones
+### Option C: Labels + Milestones
 
 ```text
 ┌─────────────────────────────────────────────────────────────────┐
@@ -47,7 +81,7 @@ gh project item-add [PROJECT_NUMBER] --owner [OWNER] --url [ISSUE_URL]
 │ Children    = Issues assigned to milestone                      │
 │ Dependencies= "Blocked by #X" in issue body                     │
 │ Grouping    = Labels (e.g., "epic:auth-system")                 │
-│ Limitation  = Less visual than Projects                         │
+│ Limitation  = Less visual than Projects, no hierarchy           │
 └─────────────────────────────────────────────────────────────────┘
 ```
 
@@ -61,31 +95,40 @@ gh api repos/{owner}/{repo}/milestones -f title="[Epic Title]"
 gh issue create --title "[Title]" --milestone "[Epic Title]" --label "epic:[name]"
 ```
 
-### Option C: Tracking Issue
+### Option D: Task Lists (For Steps Within a Ticket)
 
 ```text
 ┌─────────────────────────────────────────────────────────────────┐
-│ Tracking Issue                                                  │
+│ Task Lists                                                      │
 ├─────────────────────────────────────────────────────────────────┤
-│ Epic        = Parent issue with task list checkboxes            │
-│ Children    = Issues linked in parent body                      │
-│ Dependencies= Checkbox order + "blocked by" references          │
-│ Grouping    = All child issues linked in parent body            │
-│ Limitation  = Manual checkbox maintenance                       │
+│ Purpose     = Track steps/checklist within a SINGLE ticket      │
+│ NOT for     = Decomposed work items (use sub-issues instead)    │
+│ Format      = Checkboxes in issue body                          │
+│ Limitation  = No independent tracking, single assignee          │
 └─────────────────────────────────────────────────────────────────┘
 ```
 
-**CLI Commands:**
+**When to use**: Track implementation steps within a single ticket, NOT for
+linking separate child tickets. For child tickets, use sub-issues (Option A).
 
-```bash
-# Create tracking issue with task list
-gh issue create --title "[Epic Title]" --body "## Tasks
+**Example: Steps within a ticket:**
 
-- [ ] #[child1] - [Title]
-- [ ] #[child2] - [Title]
-- [ ] #[child3] - [Title]
+```markdown
+## Implementation Steps
 
-[Mermaid graph]"
+- [ ] Write unit tests
+- [ ] Implement feature
+- [ ] Update documentation
+- [ ] Run integration tests
+```
+
+**Do NOT use task lists for:**
+
+```markdown
+## Child Tickets (WRONG - use sub-issues instead)
+
+- [ ] #101 - Database schema
+- [ ] #102 - API endpoints
 ```
 
 ## Azure DevOps Options
