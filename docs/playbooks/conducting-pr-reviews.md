@@ -18,23 +18,45 @@ triggers:
 
 # Conducting PR Reviews
 
+> **Note**: This playbook provides repo-specific guidance for GitHub. A platform-agnostic
+> skill for PR reviews with inline comments is planned - see #152 for status.
+
 ## Overview
 
 This playbook guides agents and humans through conducting effective PR reviews using
 persona-based perspectives and GitHub's inline comment capabilities.
 
+### Iterative Review Process
+
+PRs are often iterative. When reviewing:
+
+1. **Check all comments are addressed** - Don't approve until ALL previous review comments
+   have been resolved, not just the first iteration
+2. **Re-review after changes** - Each push requires re-validation to prevent regression
+   or new issues being introduced
+3. **Verify fixes** - Don't assume fixes are correct; verify they actually address the feedback
+
 ## Selecting Reviewers by Change Type
 
-| Change Type           | Primary Personas                               |
-| --------------------- | ---------------------------------------------- |
-| New feature           | Tech Lead, Senior Developer, QA Engineer       |
-| Bug fix               | Senior Developer, QA Engineer                  |
-| Security-related      | Security Reviewer, Security Architect          |
-| Performance           | Performance Engineer, Senior Developer         |
-| Documentation         | Documentation Specialist, Agent Skill Engineer |
-| Skill changes         | Agent Skill Engineer, Documentation Specialist |
-| Infrastructure/DevOps | DevOps Engineer, Cloud Architect               |
-| Architecture changes  | Tech Lead, Technical Architect                 |
+| Change Type           | Primary Personas                                                |
+| --------------------- | --------------------------------------------------------------- |
+| New feature           | Tech Lead, Senior Developer, QA Engineer                        |
+| Bug fix               | Senior Developer, QA Engineer                                   |
+| Security-related      | Security Reviewer, Security Architect                           |
+| Performance           | Performance Engineer, Senior Developer                          |
+| Documentation         | Documentation Specialist, Agent Skill Engineer                  |
+| Skill changes         | Agent Skill Engineer, Documentation Specialist, **QA Engineer** |
+| Infrastructure/DevOps | DevOps Engineer, Cloud Architect                                |
+| Architecture changes  | Tech Lead, Technical Architect                                  |
+
+### Skill Changes Require Concrete Validation
+
+For skill changes, hypothetical review alone is insufficient. Include **QA Engineer** to ensure:
+
+- **Concrete testing**: Behavior changes require actual test execution, not just review
+- **Dogfooding**: New skill behavior should be tested in real scenarios
+- **Script/prompt verification**: Changes to prompts or scripts need execution validation
+- **Regression prevention**: Verify existing behavior still works after changes
 
 ## Posting Reviews with Inline Comments
 
@@ -201,6 +223,22 @@ Per CLAUDE.md, after persona-delegated reviews:
 3. Document issues if 2+ Important or any Critical findings
 4. Create GitHub issues for corrective actions if needed
 
+### Before Creating Issues
+
+**Check for duplicates first**:
+
+```bash
+# Search for existing issues with similar scope
+gh issue list --state open --search "keyword from finding"
+gh issue list --state all --search "keyword from finding"
+```
+
+If a related issue exists:
+
+- **Link to existing issue** instead of creating a duplicate
+- Add a comment to the existing issue with the new finding
+- Reference the PR where the issue was discovered
+
 ## Best Practices
 
 1. **Be specific**: Reference exact line numbers and file paths
@@ -235,3 +273,4 @@ Per CLAUDE.md, after persona-delegated reviews:
 - `docs/roles/README.md` - Persona definitions and selection guide
 - `CLAUDE.md` - Retrospective requirements for persona reviews
 - `skills/issue-driven-delivery/SKILL.md` - PR workflow integration
+- #152 - Platform-agnostic PR review skill (planned)
