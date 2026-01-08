@@ -49,6 +49,8 @@ begins. Performs runtime verification and automatically fixes missing prerequisi
    - Greenfield: Create AGENTS.md and README.md
    - Brownfield: Create AGENTS.md on feature branch
 4. **Enforce process skills before implementation**:
+   - Use `process-skill-router` to select the correct skill based on context
+   - Process skills have precondition guards - check these before proceeding
    - Brainstorming (for unclear requirements/new features)
    - Planning (for multi-step tasks)
    - TDD (for code changes)
@@ -112,6 +114,17 @@ See `references/AGENTS-TEMPLATE.md` for AGENTS.md content.
 **Only then can implementation begin.**
 
 ### Process Skills Required
+
+**Use `process-skill-router` when uncertain which skill applies.** The router evaluates
+context and recommends the correct skill based on priority order.
+
+**Precondition guards:** Process skills have precondition checks that must pass before
+proceeding. If a precondition fails, the skill will redirect to the correct alternative.
+For example, `requirements-gathering` checks that no ticket exists before proceeding.
+
+**For no ticket exists (new work):**
+
+- Load and apply `requirements-gathering` first to create a ticket
 
 **For unclear requirements or new features:**
 
@@ -235,3 +248,5 @@ See `references/AGENTS-TEMPLATE.md` for AGENTS.md content.
 
 - `references/AGENTS-TEMPLATE.md` - Template for creating AGENTS.md
 - `references/AUTOFIX.md` - Detailed AutoFix behaviour for each verification check
+- `process-skill-router` - Route to correct process skill based on context
+- `requirements-gathering` - Example of precondition guard pattern
