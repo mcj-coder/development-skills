@@ -1,0 +1,152 @@
+# Duplicate Detection Workflow
+#
+# Detects potentially duplicate issues when new issues are created.
+# Based on template: skills/issue-driven-delivery/templates/detect-duplicates.yml
+#
+# Permissions: Requires issues:write for commenting.
+
+name: Detect Duplicates
+
+on:
+  issues:
+    types: [opened]
+
+env:
+  MIN_KEYWORDS: "2"
+  MAX_MATCHES: "5"
+  # Stop words customized for this repository
+  STOP_WORDS: "a an the is are was were be been being have has had do does did will would could should may might must shall can for to of in on at by with from as or and but not this that these those it its add new create implement fix update bug feature issue skill skills automation script workflow"
+
+jobs:
+  detect:
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write
+    steps:
+      - name: Extract Keywords from Title
+        id: keywords
+        run: |
+          TITLE="${{ github.event.issue.title }}"
+          echo "Original title: $TITLE"
+
+          TITLE_LOWER=$(echo "$TITLE" | tr '[:upper:]' '[:lower:]')
+          TITLE_CLEAN=$(echo "$TITLE_LOWER" | sed 's/[^a-z0-9 ]/ /g' | tr -s ' ')
+
+          STOP_WORDS_ARRAY=($STOP_WORDS)
+
+          KEYWORDS=""
+          for word in $TITLE_CLEAN; do
+            if [ ${#word} -lt 3 ]; then
+              continue
+            fi
+
+            IS_STOP=false
+            for stop in "${STOP_WORDS_ARRAY[@]}"; do
+              if [ "$word" = "$stop" ]; then
+                IS_STOP=true
+                break
+              fi
+            done
+
+            if [ "$IS_STOP" = false ]; then
+              if [ -z "$KEYWORDS" ]; then
+                KEYWORDS="$word"
+              else
+                KEYWORDS="$KEYWORDS $word"
+              fi
+            fi
+          done
+
+          echo "Extracted keywords: $KEYWORDS"
+
+          KEYWORD_COUNT=$(echo "$KEYWORDS" | wc -w)
+          echo "Keyword count: $KEYWORD_COUNT"
+
+          echo "keywords=$KEYWORDS" >> $GITHUB_OUTPUT
+          echo "count=$KEYWORD_COUNT" >> $GITHUB_OUTPUT
+
+      - name: Check Minimum Keywords
+        id: check
+        run: |
+          KEYWORD_COUNT="${{ steps.keywords.outputs.count }}"
+          MIN_KEYWORDS="${{ env.MIN_KEYWORDS }}"
+
+          if [ "$KEYWORD_COUNT" -lt "$MIN_KEYWORDS" ]; then
+            echo "Title too short for reliable detection"
+            echo "skip=true" >> $GITHUB_OUTPUT
+          else
+            echo "skip=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Search for Duplicates
+        id: search
+        if: steps.check.outputs.skip != 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          KEYWORDS="${{ steps.keywords.outputs.keywords }}"
+          CURRENT_ISSUE="${{ github.event.issue.number }}"
+          CURRENT_TITLE="${{ github.event.issue.title }}"
+
+          RESULTS=$(gh issue list --search "$KEYWORDS in:title is:open" --json number,title,url --limit 20 2>&1) || {
+            echo "::warning title=Search Failed::Could not search for duplicates"
+            echo "matches=" >> $GITHUB_OUTPUT
+            echo "count=0" >> $GITHUB_OUTPUT
+            exit 0
+          }
+
+          MATCHES=$(echo "$RESULTS" | jq -r --arg num "$CURRENT_ISSUE" '[.[] | select(.number != ($num | tonumber))] | .[:'"$MAX_MATCHES"']')
+          MATCH_COUNT=$(echo "$MATCHES" | jq 'length')
+          TOTAL_COUNT=$(echo "$RESULTS" | jq --arg num "$CURRENT_ISSUE" '[.[] | select(.number != ($num | tonumber))] | length')
+
+          echo "Found $MATCH_COUNT potential matches"
+
+          EXACT_MATCH=$(echo "$RESULTS" | jq -r --arg title "$CURRENT_TITLE" --arg num "$CURRENT_ISSUE" \
+            '[.[] | select(.title == $title and .number != ($num | tonumber))] | .[0].number // ""')
+
+          echo "matches<<EOF" >> $GITHUB_OUTPUT
+          echo "$MATCHES" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+          echo "count=$MATCH_COUNT" >> $GITHUB_OUTPUT
+          echo "total=$TOTAL_COUNT" >> $GITHUB_OUTPUT
+          echo "exact=$EXACT_MATCH" >> $GITHUB_OUTPUT
+
+      - name: Post Comment
+        if: steps.check.outputs.skip != 'true' && steps.search.outputs.count != '0'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          MATCHES='${{ steps.search.outputs.matches }}'
+          COUNT="${{ steps.search.outputs.count }}"
+          TOTAL="${{ steps.search.outputs.total }}"
+          EXACT="${{ steps.search.outputs.exact }}"
+          ISSUE_NUMBER="${{ github.event.issue.number }}"
+
+          COMMENT="## Potential Duplicates Detected\n\n"
+
+          if [ -n "$EXACT" ]; then
+            COMMENT="${COMMENT}**Exact title match found with #$EXACT**\n\n"
+          fi
+
+          COMMENT="${COMMENT}The following open issues may be related to this one:\n\n"
+          COMMENT="${COMMENT}| Issue | Title |\n"
+          COMMENT="${COMMENT}|-------|-------|\n"
+
+          # Build table rows (avoid subshell by using command substitution)
+          TABLE_ROWS=$(echo "$MATCHES" | jq -r '.[] | "| #\(.number) | \(.title) |"')
+          while IFS= read -r line; do
+            COMMENT="${COMMENT}${line}\n"
+          done <<< "$TABLE_ROWS"
+
+          if [ "$TOTAL" -gt "$COUNT" ]; then
+            COMMENT="${COMMENT}\n*Showing $COUNT of $TOTAL potential matches.*\n"
+          fi
+
+          COMMENT="${COMMENT}\nPlease review these issues. If this is a duplicate, consider:\n"
+          COMMENT="${COMMENT}- Closing this issue as duplicate of the original\n"
+          COMMENT="${COMMENT}- Linking issues if they are related but distinct\n"
+          COMMENT="${COMMENT}\n---\n*This comment was automatically generated by the duplicate detection workflow.*"
+
+          echo -e "$COMMENT" | gh issue comment "$ISSUE_NUMBER" --body-file -
+
+          echo "Posted duplicate detection comment"
