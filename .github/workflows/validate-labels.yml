@@ -1,0 +1,149 @@
+# Label Validation Workflow
+#
+# Validates that issues have required labels before state transitions.
+# Based on template: skills/issue-driven-delivery/templates/validate-labels.yml
+#
+# Validation Rules (this repository):
+#   - state:implementation requires component:* or 'skill' label
+#   - state:verification requires work-type:* label
+#   - Issue close requires priority:* label
+#
+# Permissions: Requires issues:read permission (default GITHUB_TOKEN).
+
+name: Validate Labels
+
+on:
+  issues:
+    types: [labeled, unlabeled, closed]
+
+env:
+  # Label patterns for this repository
+  # Note: 'skill' is accepted as component equivalent for this repository
+  LABEL_COMPONENT_PATTERN: "^(component:|skill$)"
+  LABEL_WORKTYPE_PATTERN: "^work-type:"
+  LABEL_PRIORITY_PATTERN: "^priority:"
+
+  # State labels
+  STATE_IMPLEMENTATION: "state:implementation"
+  STATE_VERIFICATION: "state:verification"
+  STATE_NEW_FEATURE: "state:new-feature"
+  STATE_GROOMING: "state:grooming"
+  STATE_REFINEMENT: "state:refinement"
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    permissions:
+      issues: read
+    steps:
+      - name: Get Issue Labels
+        id: labels
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          LABELS=$(gh api repos/${{ github.repository }}/issues/${{ github.event.issue.number }} \
+            --jq '.labels[].name' 2>&1) || {
+            echo "::warning title=API Error::Failed to fetch issue labels: $LABELS"
+            echo "labels=" >> $GITHUB_OUTPUT
+            exit 0
+          }
+          echo "Current labels:"
+          echo "$LABELS"
+          echo "labels<<EOF" >> $GITHUB_OUTPUT
+          echo "$LABELS" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+
+      - name: Determine Validation Requirements
+        id: requirements
+        run: |
+          LABELS="${{ steps.labels.outputs.labels }}"
+          EVENT_ACTION="${{ github.event.action }}"
+          IS_CLOSED="${{ github.event.issue.state == 'closed' }}"
+
+          echo "Event action: $EVENT_ACTION"
+          echo "Issue closed: $IS_CLOSED"
+
+          VALIDATE_COMPONENT=false
+          VALIDATE_WORKTYPE=false
+          VALIDATE_PRIORITY=false
+
+          # Check if in implementation state
+          if echo "$LABELS" | grep -qF "$STATE_IMPLEMENTATION"; then
+            VALIDATE_COMPONENT=true
+          fi
+
+          # Check if in verification state
+          if echo "$LABELS" | grep -qF "$STATE_VERIFICATION"; then
+            VALIDATE_COMPONENT=true
+            VALIDATE_WORKTYPE=true
+          fi
+
+          # Check if issue is being closed
+          if [ "$IS_CLOSED" = "true" ]; then
+            VALIDATE_COMPONENT=true
+            VALIDATE_WORKTYPE=true
+            VALIDATE_PRIORITY=true
+          fi
+
+          # Skip validation for early lifecycle states (unless closing)
+          if echo "$LABELS" | grep -qE "^($STATE_NEW_FEATURE|$STATE_GROOMING|$STATE_REFINEMENT)$"; then
+            if [ "$IS_CLOSED" != "true" ]; then
+              echo "Early lifecycle state detected, skipping validation"
+              VALIDATE_COMPONENT=false
+              VALIDATE_WORKTYPE=false
+              VALIDATE_PRIORITY=false
+            fi
+          fi
+
+          echo "validate_component=$VALIDATE_COMPONENT" >> $GITHUB_OUTPUT
+          echo "validate_worktype=$VALIDATE_WORKTYPE" >> $GITHUB_OUTPUT
+          echo "validate_priority=$VALIDATE_PRIORITY" >> $GITHUB_OUTPUT
+
+      - name: Validate Labels
+        run: |
+          LABELS="${{ steps.labels.outputs.labels }}"
+          VALIDATE_COMPONENT="${{ steps.requirements.outputs.validate_component }}"
+          VALIDATE_WORKTYPE="${{ steps.requirements.outputs.validate_worktype }}"
+          VALIDATE_PRIORITY="${{ steps.requirements.outputs.validate_priority }}"
+
+          ERRORS=0
+          WARNINGS=0
+
+          # Validate component label
+          if [ "$VALIDATE_COMPONENT" = "true" ]; then
+            if echo "$LABELS" | grep -qE "$LABEL_COMPONENT_PATTERN"; then
+              echo "Component label present"
+            else
+              echo "::warning title=Missing Component Label::Issue requires a 'component:*' or 'skill' label. Add one before proceeding."
+              WARNINGS=$((WARNINGS + 1))
+            fi
+          fi
+
+          # Validate work-type label
+          if [ "$VALIDATE_WORKTYPE" = "true" ]; then
+            if echo "$LABELS" | grep -qE "$LABEL_WORKTYPE_PATTERN"; then
+              echo "Work-type label present"
+            else
+              echo "::warning title=Missing Work-Type Label::Issue requires a 'work-type:*' label (e.g., work-type:new-feature, work-type:bug)."
+              WARNINGS=$((WARNINGS + 1))
+            fi
+          fi
+
+          # Validate priority label
+          if [ "$VALIDATE_PRIORITY" = "true" ]; then
+            if echo "$LABELS" | grep -qE "$LABEL_PRIORITY_PATTERN"; then
+              echo "Priority label present"
+            else
+              echo "::error title=Missing Priority Label::Issue requires a 'priority:*' label (e.g., priority:p0, priority:p2) before closing."
+              ERRORS=$((ERRORS + 1))
+            fi
+          fi
+
+          # Summary
+          if [ $ERRORS -gt 0 ] || [ $WARNINGS -gt 0 ]; then
+            echo "Validation completed: $ERRORS errors, $WARNINGS warnings"
+          else
+            echo "All required labels present"
+          fi
+
+          exit 0

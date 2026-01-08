@@ -241,9 +241,10 @@ This repository follows standard InnerSource/OpenSource documentation practices:
 
 GitHub Actions workflows that automate repository processes:
 
-| Workflow                                                             | Trigger                   | Description                                      |
-| -------------------------------------------------------------------- | ------------------------- | ------------------------------------------------ |
-| [auto-unblock.yml](.github/workflows/auto-unblock.yml)               | Issue closed              | Removes `blocked` label from dependent issues    |
-| [sync-project-status.yml](.github/workflows/sync-project-status.yml) | Issue label/state changes | Syncs issue state labels to Project board status |
+| Workflow                                                             | Trigger                   | Description                                        |
+| -------------------------------------------------------------------- | ------------------------- | -------------------------------------------------- |
+| [auto-unblock.yml](.github/workflows/auto-unblock.yml)               | Issue closed              | Removes `blocked` label from dependent issues      |
+| [sync-project-status.yml](.github/workflows/sync-project-status.yml) | Issue label/state changes | Syncs issue state labels to Project board status   |
+| [validate-labels.yml](.github/workflows/validate-labels.yml)         | Issue label/state changes | Validates required labels before state transitions |
 
 See [docs/playbooks/](docs/playbooks/) for detailed setup and usage instructions.
