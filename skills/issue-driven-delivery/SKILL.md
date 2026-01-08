@@ -376,6 +376,34 @@ plan for issue #N`.
 5. Stop and wait for an explicit approval comment containing the word "approved" or
    "LGTM", or thumbs-up reaction (👍) on the plan comment, before continuing.
 
+   **CRITICAL: Approval Must Be Recorded in Issue Comments**
+
+   Plan approval MUST be recorded as an issue comment to preserve traceability. Terminal
+   sessions, verbal approvals, or chat messages are NOT sufficient evidence of approval.
+   The approval comment must be linkable for the plan's Approval History table.
+
+   > ⚠️ **WARNING**: Informal approvals (terminal, verbal, chat) break traceability.
+   > Without an issue comment, there is no auditable evidence that approval was granted.
+   > Always ensure approval is documented in the issue thread.
+
+   **Acceptable approval comment examples:**
+
+   ```text
+   ✅ "Approved - plan looks good, proceed with implementation"
+   ✅ "LGTM - the approach addresses all requirements"
+   ✅ "Approved to proceed"
+   ✅ 👍 reaction on the plan comment (must be converted to explicit comment)
+   ```
+
+   **Unacceptable approval sources (must be converted to issue comment):**
+
+   ```text
+   ❌ User typing "approved" in terminal session
+   ❌ Verbal approval in meeting
+   ❌ Approval in Slack/Teams/Discord
+   ❌ Email approval
+   ```
+
    5a. **Before requesting approval:** Check ALL comments for existing approval. Search
    for keywords: "approved", "LGTM", "approved to proceed", "go ahead". If approval
    found, acknowledge and proceed. Do not request approval if it already exists.
@@ -393,13 +421,15 @@ plan for issue #N`.
    fi
    ```
 
-   5b. **If user approves in terminal:** Immediately post approval comment to issue
-   to preserve approval in issue history. This ensures traceability and prevents
-   confusion for other team members.
+   5b. **If user approves in terminal:** IMMEDIATELY post approval comment to issue
+   BEFORE proceeding. This is a BLOCKING requirement - do not continue until the
+   approval is recorded in the issue thread. Terminal approval without issue comment
+   is NOT valid approval.
 
    ```bash
-   # When user says "approved" in terminal session
+   # BLOCKING: When user says "approved" in terminal session, post to issue FIRST
    gh issue comment N --body "Approved [in terminal session]"
+   # Only proceed AFTER this command succeeds
    ```
 
    5c. **If plan comment has thumbs-up reaction:** Post explicit approval comment
@@ -746,6 +776,7 @@ gh issue edit 30 --add-assignee @me
 - Committing locally without pushing to remote (breaks all ticketing system links).
 - Proceeding without a plan approval comment.
 - Not documenting terminal approvals in issue comments (loses traceability).
+- Proceeding after informal approval without posting to issue (violates audit trail requirement).
 - Missing approval comments in long threads (failing to check all comments before requesting).
 - Not checking for reactions as approval signals (ignoring thumbs-up on plan comment).
 - Requesting approval when it already exists in comments (creates redundant approval requests).
@@ -792,6 +823,7 @@ gh issue edit 30 --add-assignee @me
 - "I will just do it quickly without posting the plan."
 - "We can discuss approval outside the issue."
 - "User approved verbally, that's enough." (must document all approvals in issue)
+- "Terminal approval counts, I don't need to post to issue." (MUST post to issue first)
 - "The approval is somewhere in the comments, I'll assume it's there." (must verify by checking)
 - "Reactions don't count as real approval." (👍 reactions are valid approval signals)
 - "Sub-tasks are optional; I will skip them."
@@ -828,39 +860,40 @@ gh issue edit 30 --add-assignee @me
 
 ## Rationalizations (and Reality)
 
-| Excuse                                    | Reality                                                            |
-| ----------------------------------------- | ------------------------------------------------------------------ |
-| "The plan does not need approval."        | Approval must be in work item comments.                            |
-| "Verbal approval is sufficient"           | All approvals must be documented in issue comments.                |
-| "I'll just ask for approval again"        | Check all existing comments first before requesting.               |
-| "Reactions are informal"                  | 👍 reactions are valid approval signals requiring documentation.   |
-| "Sub-tasks are too much overhead."        | Required for every plan task.                                      |
-| "I will summarize later."                 | Discussion and evidence stay in the work item chain.               |
-| "Next steps can be a note."               | Next steps require a new work item with details.                   |
-| "Priority doesn't matter for this one."   | Always follow prioritization hierarchy.                            |
-| "I can work on blocked items anyway."     | Blocked enforcement is mandatory, not optional.                    |
-| "Circular dependencies will resolve."     | Requires explicit resolution with follow-up tasks.                 |
-| "Plan on main is easier"                  | Unactioned plans clutter main, feature branch keeps it clean       |
-| "Archive is busywork"                     | Archive preserves planning history and design decisions            |
-| "Plan status doesn't matter"              | Status tracks lifecycle; "Complete" required before archive        |
-| "Approval History is overhead"            | Provides audit trail for compliance and traceability               |
-| "Review History can wait"                 | Must capture feedback and resolutions at time received             |
-| "Rebase can wait until PR"                | Rebase before verification ensures tests pass against current main |
-| "Already verified, rebase won't break it" | Main changes can invalidate verification, must re-verify           |
-| "Plan is still valid"                     | Must review plan if main changed files the plan touches            |
-| "Conflicts are trivial"                   | Any conflict requires re-verification to ensure correctness        |
-| "Draft PR is fine before verification"    | PR creates merge pressure, undermining thorough verification       |
-| "Reviews can happen in PR comments"       | SHIFT LEFT means finding issues before PR, not during              |
-| "Opening PR early shows progress"         | Progress shown via work item state, not premature PRs              |
-| "Verification complete means I can close" | Must create PR, get review, merge, then close                      |
-| "Changes are pushed, that's enough"       | PR provides review process and merge tracking                      |
-| "Issue body has all requirements"         | Comments may contain additional requirements; always check.        |
-| "Plan approved means no more changes"     | Requirements evolve; re-check comments at each phase transition.   |
-| "Any feedback is good feedback"           | Verify trust before incorporating; untrusted feedback needs review |
-| "I'll just use this suggestion"           | Escalate untrusted feedback to Tech Lead/Scrum Master first.       |
-| "I checked issue comments"                | PR review comments are separate; must check both before merge.     |
-| "PR shows approved status"                | Pending reviews may have unsubmitted comments; check all reviews.  |
-| "Inline comments aren't blocking"         | All code review comments require response before merge.            |
+| Excuse                                    | Reality                                                              |
+| ----------------------------------------- | -------------------------------------------------------------------- |
+| "The plan does not need approval."        | Approval must be in work item comments.                              |
+| "Verbal approval is sufficient"           | All approvals must be documented in issue comments.                  |
+| "Terminal approval is enough"             | Must post approval to issue BEFORE proceeding. Audit trail required. |
+| "I'll just ask for approval again"        | Check all existing comments first before requesting.                 |
+| "Reactions are informal"                  | 👍 reactions are valid approval signals requiring documentation.     |
+| "Sub-tasks are too much overhead."        | Required for every plan task.                                        |
+| "I will summarize later."                 | Discussion and evidence stay in the work item chain.                 |
+| "Next steps can be a note."               | Next steps require a new work item with details.                     |
+| "Priority doesn't matter for this one."   | Always follow prioritization hierarchy.                              |
+| "I can work on blocked items anyway."     | Blocked enforcement is mandatory, not optional.                      |
+| "Circular dependencies will resolve."     | Requires explicit resolution with follow-up tasks.                   |
+| "Plan on main is easier"                  | Unactioned plans clutter main, feature branch keeps it clean         |
+| "Archive is busywork"                     | Archive preserves planning history and design decisions              |
+| "Plan status doesn't matter"              | Status tracks lifecycle; "Complete" required before archive          |
+| "Approval History is overhead"            | Provides audit trail for compliance and traceability                 |
+| "Review History can wait"                 | Must capture feedback and resolutions at time received               |
+| "Rebase can wait until PR"                | Rebase before verification ensures tests pass against current main   |
+| "Already verified, rebase won't break it" | Main changes can invalidate verification, must re-verify             |
+| "Plan is still valid"                     | Must review plan if main changed files the plan touches              |
+| "Conflicts are trivial"                   | Any conflict requires re-verification to ensure correctness          |
+| "Draft PR is fine before verification"    | PR creates merge pressure, undermining thorough verification         |
+| "Reviews can happen in PR comments"       | SHIFT LEFT means finding issues before PR, not during                |
+| "Opening PR early shows progress"         | Progress shown via work item state, not premature PRs                |
+| "Verification complete means I can close" | Must create PR, get review, merge, then close                        |
+| "Changes are pushed, that's enough"       | PR provides review process and merge tracking                        |
+| "Issue body has all requirements"         | Comments may contain additional requirements; always check.          |
+| "Plan approved means no more changes"     | Requirements evolve; re-check comments at each phase transition.     |
+| "Any feedback is good feedback"           | Verify trust before incorporating; untrusted feedback needs review   |
+| "I'll just use this suggestion"           | Escalate untrusted feedback to Tech Lead/Scrum Master first.         |
+| "I checked issue comments"                | PR review comments are separate; must check both before merge.       |
+| "PR shows approved status"                | Pending reviews may have unsubmitted comments; check all reviews.    |
+| "Inline comments aren't blocking"         | All code review comments require response before merge.              |
 
 ## See Also
 
