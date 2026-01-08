@@ -223,6 +223,8 @@ triggers:
   state labels to project status columns
 - [skill-selection.md](skill-selection.md) - Decision guide for selecting the appropriate
   process skill based on context
+- [standards-compliance.md](standards-compliance.md) - Pre-commit hook and CI workflow that
+  validates commit messages reference GitHub issues
 - [ticket-lifecycle.md](ticket-lifecycle.md) - Complete ticket lifecycle with grooming,
   refinement, implementation, and verification phases
 
