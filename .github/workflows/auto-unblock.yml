@@ -20,7 +20,7 @@ jobs:
 
       - name: Run unblock script
         run: |
-          chmod +x ./skills/issue-driven-delivery/scripts/unblock-dependents.sh
-          ./skills/issue-driven-delivery/scripts/unblock-dependents.sh ${{ github.event.issue.number }} --apply
+          chmod +x ./scripts/issue-driven-delivery/unblock-dependents.sh
+          ./scripts/issue-driven-delivery/unblock-dependents.sh ${{ github.event.issue.number }} --apply
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
