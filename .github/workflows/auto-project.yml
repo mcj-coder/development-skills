@@ -1,0 +1,24 @@
+# Auto-add Issues to Project Workflow
+# Automatically adds new issues to the Development Skills Kanban project
+#
+# Project: Development Skills Kanban (ID: 1, Node ID: PVT_kwHODwOqvM4BMHg5)
+
+name: Auto-add to Project
+
+on:
+  issues:
+    types: [opened]
+
+jobs:
+  add-to-project:
+    name: Add issue to project board
+    runs-on: ubuntu-latest
+    permissions:
+      issues: read
+      repository-projects: write
+    steps:
+      - name: Add issue to project
+        uses: actions/add-to-project@v1.0.2
+        with:
+          project-url: https://github.com/users/mcj-coder/projects/1
+          github-token: ${{ secrets.PROJECT_TOKEN }}
