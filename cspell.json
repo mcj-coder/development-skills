@@ -109,6 +109,7 @@
     "sqlalchemy",
     "Taskboard",
     "teardown",
+    "teamlead",
     "Testcontainers",
     "testcontainers",
     "testpaths",
