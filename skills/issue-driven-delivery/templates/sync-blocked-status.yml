@@ -1,0 +1,47 @@
+# Blocked Status Sync Workflow Template
+#
+# This workflow automatically unblocks dependent issues when blocking issues are closed.
+# Copy to .github/workflows/sync-blocked-status.yml (or auto-unblock.yml) and customize.
+#
+# Sync Logic:
+#   1. Trigger on issue close
+#   2. Search for issues with "Blocked by #N" in body/comments
+#   3. Verify each candidate has "blocked" label
+#   4. If sole blocker: Remove label, post "Auto-unblocked" comment
+#   5. If multiple blockers: Post update comment, keep label
+#
+# Requirements:
+#   - `scripts/issue-driven-delivery/unblock-dependents.sh` must exist in repo
+#   - Permissions: issues:write for label changes and commenting
+#
+# The script supports:
+#   - Multi-blocker tracking (comma-separated lists)
+#   - Manual block detection (skips external/approval blockers)
+#   - Circular dependency detection with resolution suggestions
+#   - Dependency graph visualization (--graph flag)
+#   - Dry-run mode (default, use --apply for real changes)
+#
+# See: docs/playbooks/blocked-sync.md for usage details.
+
+name: Auto-unblock Dependents
+
+on:
+  issues:
+    types: [closed]
+
+jobs:
+  unblock:
+    name: Unblock dependent issues
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Run unblock script
+        run: |
+          chmod +x ./scripts/issue-driven-delivery/unblock-dependents.sh
+          ./scripts/issue-driven-delivery/unblock-dependents.sh ${{ github.event.issue.number }} --apply
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
