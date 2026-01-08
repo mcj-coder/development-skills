@@ -209,7 +209,10 @@ triggers:
 
 ## Playbook Index
 
-_No playbooks exist yet. This section will list available playbooks as they are created._
+- [conducting-pr-reviews.md](conducting-pr-reviews.md) - GitHub-specific PR review process
+  (customized from platform-agnostic skill reference)
+- [enable-signed-commits.md](enable-signed-commits.md) - Process for enabling GPG-signed
+  commits with verification
 
 When adding playbooks, update this index with format:
 

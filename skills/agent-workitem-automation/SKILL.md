@@ -245,13 +245,13 @@ Before opening a PR, confirm evidence using appropriate verification type:
 
 - Must show applied evidence with commit SHAs and file links
 - Example: "TDD applied: failing test [SHA1], implementation [SHA2]"
-- Use concrete changes checklist: [BDD Templates](../../docs/references/bdd-checklist-templates.md)
+- See [Verification Types](references/verification-types.md) for checklist
 
 **Process-Only** (planning, reviews, requirements):
 
 - Analytical verification acceptable with issue comment links
 - Must state: "This is analytical verification (process-only)"
-- Use process-only checklist: [BDD Templates](../../docs/references/bdd-checklist-templates.md)
+- See [Verification Types](references/verification-types.md) for checklist
 
 Determine type: Did work modify repository files? Yes=Concrete, No=Process-only
 

@@ -387,6 +387,75 @@ These define **concrete requirements** for this repository's workflow.
 - BDD Checklist Templates: [docs/references/bdd-checklist-templates.md](docs/references/bdd-checklist-templates.md)
 - Superpowers Repository: <https://github.com/obra/superpowers>
 
+## Skill Authoring Standards
+
+### Self-Containment Principle
+
+**A skill folder is a self-contained deployable unit.** Skills must not reference
+artifacts outside their folder.
+
+**Required:**
+
+- All references must be to files within `skills/<skill-name>/`
+- Use `references/` subfolder for supporting documentation
+- Describe external concepts generically (e.g., "team roles in your repository's
+  `docs/roles/` directory") rather than linking outside the skill
+
+**Prohibited:**
+
+- References to `../../docs/` or other paths outside the skill folder
+- Links to repository-specific artifacts that may not exist when skill is deployed elsewhere
+- Assumptions about repository structure beyond the skill folder
+
+### Platform-Agnostic vs Repo-Specific
+
+Skills should be **platform-agnostic** (supporting GitHub, Azure DevOps, Jira, etc.).
+Repository-specific artifacts are generated during bootstrap or deployment:
+
+| Artifact Type        | Location                    | Platform-Specific? |
+| -------------------- | --------------------------- | ------------------ |
+| Skill reference docs | `skills/<name>/references/` | Platform-agnostic  |
+| Repo playbooks       | `docs/playbooks/`           | Platform-specific  |
+| Repo configuration   | `docs/` or root             | Repo-specific      |
+
+**When deploying a skill to a repository:**
+
+1. Skill's `references/` content is platform-agnostic (covers all platforms)
+2. Repo's `docs/playbooks/` should be platform-specific (only the platform used by the repo)
+3. Choose between:
+   - **Symlink**: If skill reference requires no customization for the repo's platform
+   - **Customized copy**: If repo needs platform-specific content only (recommended)
+
+**Customized playbook guidelines:**
+
+- Include ONLY the platform used by the repo (e.g., GitHub-only for GitHub repos)
+- Remove all other platform examples (no Azure DevOps/Jira in a GitHub repo playbook)
+- Reference the skill's platform-agnostic version for complete coverage
+- Keep playbook concise - it's a quick reference, not comprehensive docs
+
+### Skill Folder Structure
+
+```text
+skills/<skill-name>/
+├── SKILL.md                    # Main skill documentation
+├── <skill-name>.test.md        # BDD tests for skill behavior
+├── references/                 # Supporting documentation
+│   ├── <topic>.md             # Reference docs (self-contained)
+│   └── ...
+└── scripts/                    # Reference scripts (if applicable)
+    └── ...
+```
+
+### Checklist for Skill Authors
+
+Before publishing or committing a skill:
+
+- [ ] No `../../` references in SKILL.md or reference docs
+- [ ] All links point to files within skill folder
+- [ ] External concepts described generically, not linked
+- [ ] Platform-specific examples cover GitHub, Azure DevOps, and Jira where applicable
+- [ ] BDD tests exist for skill behavior
+
 ## Canonical Skill Priority Model
 
 Skills can be classified into the following priorities:

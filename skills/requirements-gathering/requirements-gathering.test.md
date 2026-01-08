@@ -332,3 +332,49 @@ When all GREEN scenarios pass:
 **Then**: [ ] Agent proceeds with single ticket creation
 **And**: [ ] Agent does NOT force decomposition
 **Result**: ✅ PASS - User choice respected
+
+### DECOMPOSITION-11: GitHub Sub-Issues for Epic/Child Hierarchy
+
+**Given**: Agent has created epic and child tickets on GitHub
+**When**: Agent links children to epic
+**Then**: [ ] Agent uses GitHub GraphQL API `addSubIssue` mutation
+**And**: [ ] Each child ticket is linked as sub-issue of epic
+**And**: [ ] Agent does NOT use task lists for child ticket references
+**And**: [ ] Task lists reserved for steps within individual tickets only
+**Result**: ✅ PASS - Correct hierarchy mechanism used
+
+**Verification**:
+
+- [ ] Epic shows sub-issues in GitHub UI
+- [ ] Child tickets show parent epic link
+- [ ] No task list checkboxes referencing child ticket numbers in epic body
+
+**Anti-pattern to avoid**: Using `- [ ] #101 - Child ticket` in epic body for child tickets
+
+### DECOMPOSITION-12: Task Lists Only for Implementation Steps
+
+**Given**: Agent creates or updates a ticket
+**When**: Agent needs to track progress
+**Then**: [ ] Task lists used ONLY for steps within that single ticket
+**And**: [ ] Task lists NOT used to reference other tickets
+**And**: [ ] Sub-issues used for any decomposed work items
+**Result**: ✅ PASS - Correct use of task lists vs sub-issues
+
+**Correct usage**:
+
+```markdown
+## Implementation Steps
+
+- [ ] Write unit tests
+- [ ] Implement feature
+- [ ] Update documentation
+```
+
+**Incorrect usage** (should use sub-issues instead):
+
+```markdown
+## Child Tickets
+
+- [ ] #101 - Database schema
+- [ ] #102 - API endpoints
+```

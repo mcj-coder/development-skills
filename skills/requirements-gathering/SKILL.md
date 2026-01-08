@@ -311,15 +311,28 @@ Store in `docs/adr/NNNN-decomposition-thresholds.md` for future use.
 When creating an epic with child tickets:
 
 1. Create the epic ticket first (parent)
-2. Create each child ticket, linking to parent
-3. Set up blocking relationships between children
-4. Include dependency graph (Mermaid) in epic description
+2. Create each child ticket
+3. Link child tickets as sub-issues of the epic (parent/child relationship)
+4. Set up blocking relationships between children (via `blocked` label + comment)
+5. Include dependency graph (Mermaid) in epic description
 
 **Platform-specific linking:**
 
-- **GitHub**: Use task lists in epic body, labels for tracking
+- **GitHub**: Use sub-issues for parent/child hierarchy, `blocked` labels for dependencies
 - **Azure DevOps**: Use parent/child work item links
 - **Jira**: Use epic link field or parent issue
+
+**Sub-issues vs Task lists:**
+
+| Concept        | Use For                           | Creates Separate Ticket? |
+| -------------- | --------------------------------- | ------------------------ |
+| **Sub-issues** | Decomposed work (epic → children) | Yes - independent items  |
+| **Task lists** | Steps within a single ticket      | No - checkboxes only     |
+
+For detailed CLI commands including GitHub sub-issue creation via GraphQL API,
+see `references/platform-cli-examples.md`.
+
+For platform organization options comparison, see `references/platform-organization-options.md`.
 
 ### 8. Stop - Do Not Proceed to Planning
 

@@ -526,8 +526,8 @@ plan for issue #N`.
     - [ ] Plan NOT in active: file removed from `docs/plans/`
 
 11. Require each role to post a separate review comment in the work item thread using
-    superpowers:receiving-code-review. See [Team Roles](../../docs/roles/README.md) for role
-    definitions.
+    superpowers:receiving-code-review. Team roles are defined in your repository's
+    `docs/roles/` directory (e.g., Tech Lead, Senior Developer, QA Engineer).
 12. Summarize role recommendations in the plan and link to the individual review comments.
 13. Add follow-up fixes as new tasks in the same work item.
 14. Create a new work item for next steps with implementation, test detail, and acceptance criteria.
@@ -542,14 +542,14 @@ plan for issue #N`.
     - Require applied evidence showing skill was used in THIS repository
     - Include commit SHAs and file links
     - Example: "TDD skill applied: failing test at [SHA1], implementation at [SHA2]"
-    - Use concrete changes checklist from [BDD Templates](../../docs/references/bdd-checklist-templates.md)
+    - See [Verification Types](references/verification-types.md) for checklist
 
     **Process-Only** (planning, reviews, requirements gathering):
     - Analytical verification is acceptable
     - Include issue comment links and decision records
     - Must state: "This is analytical verification (process-only)"
     - Example: "Brainstorming skill applied: requirements clarified in issue #123"
-    - Use process-only checklist from [BDD Templates](../../docs/references/bdd-checklist-templates.md)
+    - See [Verification Types](references/verification-types.md) for checklist
 
     **How to determine:** Ask "Did this work modify files in the repository?"
     - Yes → Concrete changes verification
@@ -559,6 +559,9 @@ plan for issue #N`.
     17.0. **MANDATORY CHECKPOINT - Before merging PR: Check all PR review comments.**
 
     **BLOCKING REQUIREMENT:** Step 17.0 must complete before PR can be merged.
+
+    For detailed guidance on conducting PR reviews with inline comments and persona-based
+    perspectives, see [PR Reviews](references/pr-reviews.md).
 
     PR review comments are stored separately from issue comments and require different API calls:
 
@@ -618,7 +621,7 @@ must be posted as clickable links in work item comments.
 
 - Each sub-task comment includes links to exact commits and files
 - Role reviews are separate work item comments using
-  superpowers:receiving-code-review (see [Team Roles](../../docs/roles/README.md))
+  superpowers:receiving-code-review (team roles defined in repository's `docs/roles/`)
 - Plan separates Original Scope Evidence from Additional Work
 - Keep only latest verification evidence in plan
 
@@ -791,7 +794,8 @@ gh issue edit 30 --add-assignee @me
 
 ## See Also
 
-- `docs/references/plan-template.md` - Plan template with Approval History and Review History
+- `references/pr-reviews.md` - PR review process with inline comments
+- `references/verification-types.md` - Concrete vs process-only verification
 - `requirements-gathering` - Create work items when none exist (creates ticket then stops)
 - `superpowers:brainstorming` - Explore design for existing tickets
 - `superpowers:writing-plans` - Create implementation plans for existing tickets
