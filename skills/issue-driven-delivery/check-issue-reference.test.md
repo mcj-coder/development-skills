@@ -62,11 +62,19 @@ Without issue reference validation, typical problems include:
 ### Issue Reference Pattern Assertions
 
 - [ ] `Refs: #123` is accepted (single reference)
+- [ ] `Ref: #123` is accepted (singular form)
 - [ ] `Refs: #123, #456` is accepted (multiple references)
 - [ ] `Fixes: #123` is accepted (closing reference)
+- [ ] `Fix: #123` is accepted (singular form)
+- [ ] `Closes: #123` is accepted (GitHub closing keyword)
+- [ ] `Close: #123` is accepted (singular form)
+- [ ] `Resolves: #123` is accepted (alternative closing keyword)
+- [ ] `Resolve: #123` is accepted (singular form)
 - [ ] `(#123)` in subject is accepted (PR convention)
+- [ ] Bare `#123` anywhere in message is accepted (fallback pattern)
 - [ ] Reference anywhere in message body is accepted
 - [ ] Reference must use `#` followed by digits
+- [ ] Patterns are case-insensitive (`refs:`, `REFS:`, `Refs:` all valid)
 
 ### Exception Assertions
 
@@ -74,6 +82,8 @@ Without issue reference validation, typical problems include:
 - [ ] Revert commits are exempt (start with "Revert")
 - [ ] Initial commits are exempt (message is "Initial commit")
 - [ ] Dependabot commits are exempt (author contains "dependabot")
+- [ ] Renovate commits are exempt (author contains "renovate")
+- [ ] GitHub Actions commits are exempt (author contains "github-actions")
 - [ ] Release/version commits are exempt (contains "release" or "version")
 
 ### CI Workflow Assertions
@@ -126,6 +136,51 @@ And the issue #456 will be closed on merge
 fix(auth): resolve token expiry race condition
 
 Fixes: #456
+```
+
+### Scenario 2b: Valid Reference - Closes Format
+
+Given a developer writes a commit message
+When the message contains "Closes: #789"
+Then the commit-msg hook passes
+And the issue #789 will be closed on merge
+
+**Example:**
+
+```text
+fix(data): correct calculation logic
+
+Closes: #789
+```
+
+### Scenario 2c: Valid Reference - Resolves Format
+
+Given a developer writes a commit message
+When the message contains "Resolves: #101"
+Then the commit-msg hook passes
+And the issue #101 will be closed on merge
+
+**Example:**
+
+```text
+fix(api): handle edge case in validation
+
+Resolves: #101
+```
+
+### Scenario 2d: Valid Reference - Bare Issue Number
+
+Given a developer writes a commit message
+When the message contains "#200" anywhere in the body
+Then the commit-msg hook passes (fallback pattern)
+And the issue reference is recognised
+
+**Example:**
+
+```text
+feat(core): improve performance
+
+Related to discussion in #200 about optimisation strategies.
 ```
 
 ### Scenario 3: Valid Reference - PR Convention
@@ -208,14 +263,25 @@ Revert "feat(api): add broken endpoint"
 This reverts commit abc123.
 ```
 
-### Scenario 8: Exception - Dependabot
+### Scenario 8: Exception - Automated Authors
 
-Given a Dependabot creates a commit
-When the commit author contains "dependabot"
+Given an automated tool creates a commit
+When the commit author contains one of:
+
+- "dependabot" (GitHub Dependabot)
+- "renovate" (Renovate Bot)
+- "github-actions" (GitHub Actions bot)
+
 Then issue reference validation is skipped
-And automated dependency updates proceed
+And automated updates proceed
 
-**Note:** CI workflow checks author; local hook cannot verify this.
+**Note:** CI workflow checks author; local hook cannot verify author-based exemptions.
+
+**Examples (all allowed):**
+
+- Author: `dependabot[bot]` - Dependency updates
+- Author: `renovate[bot]` - Dependency updates
+- Author: `github-actions[bot]` - Automated releases
 
 ### Scenario 9: Multiple References
 
@@ -292,14 +358,22 @@ For each test scenario, record:
 Use this checklist when modifying the validation:
 
 - [ ] Hook triggers on commit attempt
-- [ ] `Refs: #N` format accepted
-- [ ] `Fixes: #N` format accepted
+- [ ] `Refs: #N` format accepted (and singular `Ref:`)
+- [ ] `Fixes: #N` format accepted (and singular `Fix:`)
+- [ ] `Closes: #N` format accepted (and singular `Close:`)
+- [ ] `Resolves: #N` format accepted (and singular `Resolve:`)
 - [ ] `(#N)` in subject accepted
+- [ ] Bare `#N` anywhere in message accepted (fallback)
+- [ ] Patterns are case-insensitive
 - [ ] Missing reference is rejected
 - [ ] Wrong format (no #) is rejected
 - [ ] Merge commits are exempt
 - [ ] Revert commits are exempt
+- [ ] Initial commits are exempt
+- [ ] Release/version commits are exempt
 - [ ] Dependabot commits are exempt (CI only)
+- [ ] Renovate commits are exempt (CI only)
+- [ ] GitHub Actions commits are exempt (CI only)
 - [ ] CI workflow validates all PR commits
 - [ ] Error messages are clear
 - [ ] `--no-verify` bypass works
