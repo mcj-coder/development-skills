@@ -492,46 +492,50 @@ as-is. Apply TDD sequencing recommendation to future implementations.
 
 ### Action 1: PR Completion Checklist
 
-- [ ] **Status**: PENDING - Tracked in #162
+- [x] **Status**: COMPLETE - Resolved in commit `276b913`, closes #162
 
 **Issue**: Review threads not resolved, test plan not updated before merge
 **Action**: Add PR completion checklist to CONTRIBUTING.md
 **Owner**: Scrum Master
-**Timeline**: Before next PR
 **Acceptance**: Updated CONTRIBUTING.md with pre-merge checklist including:
 
 - All review comment threads resolved
 - Test plan checkboxes updated with evidence
 - Final lint verification passed
 
+**Evidence**: CONTRIBUTING.md lines 165-194 (Pre-Merge Checklist section)
+
 ### Action 2: TDD Commit Sequencing
 
-- [ ] **Status**: PENDING - Tracked in #163
+- [x] **Status**: COMPLETE - Resolved in commit `276b913`, closes #163
 
 **Issue**: Test file and implementation created in same commit
 **Action**: Document best practice for future skills
 **Owner**: Agent Skill Engineer
-**Timeline**: Add to CONTRIBUTING.md guidelines before next skill work
 **Acceptance**: Updated CONTRIBUTING.md with commit sequencing guidance
+
+**Evidence**: CONTRIBUTING.md lines 217-249 (TDD Commit Sequencing section)
 
 ### Action 3: Retrospective Workflow Enforcement
 
-- [ ] **Status**: PENDING - Tracked in #164
+- [x] **Status**: COMPLETE - Resolved in commit `276b913`, closes #164
 
 **Issue**: Retrospectives committed directly to main bypassing PR workflow
 **Action**: Document requirement for retrospectives to use feature branch + PR
 **Owner**: Tech Lead
-**Timeline**: Before next retrospective
 **Acceptance**: CONTRIBUTING.md updated with retrospective workflow requirements
+
+**Evidence**: CONTRIBUTING.md lines 303-355 (Retrospective Workflow section)
 
 ### Action 4: Test Execution Evidence
 
-- [ ] **Status**: PENDING - Tracked in #165
+- [x] **Status**: COMPLETE - Resolved in commit `276b913`, closes #165
 
 **Issue**: Tests exist but no evidence of execution shown
 **Action**: Add test execution evidence requirements to workflow
-**Timeline**: Consider for test-driven-development skill enhancement
 **Acceptance**: Test evidence requirements documented
+
+**Evidence**: CONTRIBUTING.md lines 262-301 (Test Execution Evidence section)
 
 ---
 
@@ -545,6 +549,6 @@ as-is. Apply TDD sequencing recommendation to future implementations.
 
 **Date Completed**: 2026-01-08
 
-**Retrospective Status**: Document complete. 4 corrective actions pending.
+**Retrospective Status**: Document complete. All 4 corrective actions resolved in PR #TBD.
 
 **Next Steps**: Track corrective actions in future tickets or PRs with evidence links.
