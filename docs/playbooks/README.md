@@ -209,10 +209,11 @@ triggers:
 
 ## Playbook Index
 
-- [conducting-pr-reviews.md](conducting-pr-reviews.md) - Process for conducting PR reviews
-  with persona-based perspectives and inline code comments
 - [enable-signed-commits.md](enable-signed-commits.md) - Process for enabling GPG-signed
   commits with verification
+
+**Note:** PR review guidance is in the `issue-driven-delivery` skill
+(`skills/issue-driven-delivery/references/pr-reviews.md`) to maintain skill self-containment.
 
 When adding playbooks, update this index with format:
 

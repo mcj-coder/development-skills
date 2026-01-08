@@ -27,6 +27,7 @@ model: balanced # General development → Sonnet 4.5, GPT-5.1
 - Are there edge cases agents might struggle with?
 - Is this composable with other skills?
 - Does this follow skill standards?
+- Is the skill self-contained (no external references)?
 
 ## When to Use
 
@@ -50,3 +51,5 @@ model: balanced # General development → Sonnet 4.5, GPT-5.1
 - Skill file exceeds progressive disclosure limit (>500 lines)
 - Circular dependencies between skills
 - Instructions that contradict other skills in the workflow
+- External references (`../../`) to artifacts outside skill folder
+- Skill not self-contained as a deployable unit
