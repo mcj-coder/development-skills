@@ -248,6 +248,39 @@ jira project list-roles --project {project-key} | grep -q "{username}" && echo "
 and Jira examples.
 
 1. Announce the skill and why it applies; confirm ticketing CLI availability.
+   1a. **Post skill loading evidence to issue** (REQUIRED for traceability):
+
+   After confirming the work item exists, post a comment documenting which skills
+   were loaded for this task. This provides evidence that the skills-first workflow
+   was followed and enables retrospective analysis.
+
+   **Template comment:**
+
+   ```markdown
+   ## Skills Loaded
+
+   - **issue-driven-delivery** - Work item tracking and approval workflow
+   - **[other-skill]** - [reason for loading]
+
+   Skills loaded at: YYYY-MM-DD HH:MM
+   ```
+
+   **Example:**
+
+   ```bash
+   gh issue comment N --body "## Skills Loaded
+
+   - **issue-driven-delivery** - Work item tracking and approval workflow
+   - **superpowers:writing-plans** - Implementation planning
+   - **superpowers:test-driven-development** - TDD for implementation
+
+   Skills loaded at: $(date '+%Y-%m-%d %H:%M')"
+   ```
+
+   **When to post:** Post this comment as the first action after confirming the
+   work item exists (step 2). If additional skills are loaded later, update the
+   comment or add a follow-up comment noting the additional skills.
+
 2. Confirm a Taskboard work item exists for the work. If none exists, use the
    `requirements-gathering` skill to create the work item before making any changes.
    Read-only work and reviews are allowed without a ticket.
@@ -777,6 +810,7 @@ gh issue edit 30 --add-assignee @me
 - Proceeding without a plan approval comment.
 - Not documenting terminal approvals in issue comments (loses traceability).
 - Proceeding after informal approval without posting to issue (violates audit trail requirement).
+- Not posting skill loading evidence to issue (breaks skills-first traceability).
 - Missing approval comments in long threads (failing to check all comments before requesting).
 - Not checking for reactions as approval signals (ignoring thumbs-up on plan comment).
 - Requesting approval when it already exists in comments (creates redundant approval requests).
@@ -824,6 +858,7 @@ gh issue edit 30 --add-assignee @me
 - "We can discuss approval outside the issue."
 - "User approved verbally, that's enough." (must document all approvals in issue)
 - "Terminal approval counts, I don't need to post to issue." (MUST post to issue first)
+- "I don't need to document which skills I loaded." (skill evidence is required for traceability)
 - "The approval is somewhere in the comments, I'll assume it's there." (must verify by checking)
 - "Reactions don't count as real approval." (👍 reactions are valid approval signals)
 - "Sub-tasks are optional; I will skip them."
@@ -865,6 +900,7 @@ gh issue edit 30 --add-assignee @me
 | "The plan does not need approval."        | Approval must be in work item comments.                              |
 | "Verbal approval is sufficient"           | All approvals must be documented in issue comments.                  |
 | "Terminal approval is enough"             | Must post approval to issue BEFORE proceeding. Audit trail required. |
+| "Skill loading doesn't need documenting"  | Post skill evidence to issue for retrospective traceability.         |
 | "I'll just ask for approval again"        | Check all existing comments first before requesting.                 |
 | "Reactions are informal"                  | 👍 reactions are valid approval signals requiring documentation.     |
 | "Sub-tasks are too much overhead."        | Required for every plan task.                                        |
