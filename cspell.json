@@ -129,6 +129,8 @@
     "unaddressed",
     "unlabeled",
     "unassignment",
+    "uncategorized",
+    "Uncategorized",
     "unconfigured",
     "unsubmitted",
     "Unassignment",
@@ -144,6 +146,7 @@
     "workitems",
     "worktree",
     "worktrees",
+    "WORKTYPE",
     "xdist",
     "Xunit",
     "xunit"
