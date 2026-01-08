@@ -211,6 +211,8 @@ triggers:
 
 - [conducting-pr-reviews.md](conducting-pr-reviews.md) - GitHub-specific PR review process
   (customized from platform-agnostic skill reference)
+- [duplicate-detection.md](duplicate-detection.md) - Detects potentially duplicate issues
+  when new issues are created
 - [enable-signed-commits.md](enable-signed-commits.md) - Process for enabling GPG-signed
   commits with verification
 - [label-validation.md](label-validation.md) - Validates issues have required labels before

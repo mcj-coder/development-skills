@@ -244,6 +244,7 @@ GitHub Actions workflows that automate repository processes:
 | Workflow                                                             | Trigger                   | Description                                        |
 | -------------------------------------------------------------------- | ------------------------- | -------------------------------------------------- |
 | [auto-unblock.yml](.github/workflows/auto-unblock.yml)               | Issue closed              | Removes `blocked` label from dependent issues      |
+| [detect-duplicates.yml](.github/workflows/detect-duplicates.yml)     | Issue opened              | Detects potentially duplicate issues on creation   |
 | [sync-project-status.yml](.github/workflows/sync-project-status.yml) | Issue label/state changes | Syncs issue state labels to Project board status   |
 | [validate-labels.yml](.github/workflows/validate-labels.yml)         | Issue label/state changes | Validates required labels before state transitions |
 
