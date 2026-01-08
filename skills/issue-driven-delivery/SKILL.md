@@ -560,6 +560,9 @@ plan for issue #N`.
 
     **BLOCKING REQUIREMENT:** Step 17.0 must complete before PR can be merged.
 
+    For detailed guidance on conducting PR reviews with inline comments and persona-based
+    perspectives, see [Conducting PR Reviews](../../docs/playbooks/conducting-pr-reviews.md).
+
     PR review comments are stored separately from issue comments and require different API calls:
 
     **GitHub:**
@@ -792,6 +795,7 @@ gh issue edit 30 --add-assignee @me
 ## See Also
 
 - `docs/references/plan-template.md` - Plan template with Approval History and Review History
+- `docs/playbooks/conducting-pr-reviews.md` - PR review process with inline comments and persona-based reviews
 - `requirements-gathering` - Create work items when none exist (creates ticket then stops)
 - `superpowers:brainstorming` - Explore design for existing tickets
 - `superpowers:writing-plans` - Create implementation plans for existing tickets
