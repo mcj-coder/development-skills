@@ -165,10 +165,11 @@ jobs:
           COMMENT="${COMMENT}| Issue | Title |\n"
           COMMENT="${COMMENT}|-------|-------|\n"
 
-          # Add each match to table
-          echo "$MATCHES" | jq -r '.[] | "| #\(.number) | \(.title) |"' | while read line; do
+          # Build table rows (avoid subshell by using here-string)
+          TABLE_ROWS=$(echo "$MATCHES" | jq -r '.[] | "| #\(.number) | \(.title) |"')
+          while IFS= read -r line; do
             COMMENT="${COMMENT}${line}\n"
-          done
+          done <<< "$TABLE_ROWS"
 
           if [ "$TOTAL" -gt "$COUNT" ]; then
             COMMENT="${COMMENT}\n*Showing $COUNT of $TOTAL potential matches.*\n"

@@ -111,15 +111,26 @@ And workflow searches open issues
 And workflow finds no matches
 And NO comment is posted
 
-### Scenario 3: Title Too Short
+### Scenario 3: Title Too Short - Stop Words Filtered
 
-Given new issue #N is created with title "Fix bug"
+Given new issue #N is created with title "Add new feature"
 When workflow triggers
-Then workflow extracts keywords: "fix", "bug"
-And both words are too common/short for reliable matching
+Then "add", "new", "feature" are all filtered as stop words
+And 0 keywords remain after filtering
+And workflow has fewer than MIN_KEYWORDS (2)
 And workflow skips duplicate detection
 And NO comment is posted
 And workflow logs "Title too short for reliable detection"
+
+### Scenario 3b: Single Keyword After Filtering
+
+Given new issue #N is created with title "Fix authentication"
+When workflow triggers
+Then "fix" is filtered as stop word
+And only "authentication" remains (1 keyword)
+And workflow has fewer than MIN_KEYWORDS (2)
+And workflow skips duplicate detection
+And NO comment is posted
 
 ### Scenario 4: Many Matches Found
 
