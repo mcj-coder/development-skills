@@ -231,6 +231,30 @@ Both `process-skill-router.test.md` and `SKILL.md` created in commit `5ba7d41`.
 - For future implementations, create test file in separate commit before SKILL.md
 - Consider pre-committing test checklist to establish failing baseline
 
+#### ⚠️ Issue 4: Retrospectives Committed Directly to Main
+
+**Severity**: Important
+**Category**: Process Compliance
+**Description**: Previous retrospective (#139) was committed directly to main branch
+using `--admin` flag to bypass branch protection. All changes should go through PR workflow.
+
+**Evidence**:
+
+- Retrospective for #139 merged directly to main
+- Current retrospective (#140) correctly uses feature branch and PR
+
+**Impact**:
+
+- Bypasses code review process
+- Sets precedent for skipping PR workflow
+- Inconsistent with issue-driven-delivery requirements
+
+**Recommendation**:
+
+- Always use feature branch + PR for retrospectives
+- Add retrospective commits to pre-merge checklist verification
+- Never use `--admin` flag except for true emergencies
+
 ---
 
 ### Minor Issues
@@ -486,7 +510,15 @@ as-is. Apply TDD sequencing recommendation to future implementations.
 **Timeline**: Add to CONTRIBUTING.md guidelines before next skill work
 **Acceptance**: Updated CONTRIBUTING.md with commit sequencing guidance
 
-### Action 3: Test Execution Evidence
+### Action 3: Retrospective Workflow Enforcement
+
+**Issue**: Retrospectives committed directly to main bypassing PR workflow
+**Action**: Document requirement for retrospectives to use feature branch + PR
+**Owner**: Tech Lead
+**Timeline**: Before next retrospective
+**Acceptance**: CONTRIBUTING.md updated with retrospective workflow requirements
+
+### Action 4: Test Execution Evidence
 
 **Issue**: Tests exist but no evidence of execution shown
 **Action**: Create GitHub issue for test automation
