@@ -492,17 +492,21 @@ as-is. Apply TDD sequencing recommendation to future implementations.
 
 ### Action 1: PR Completion Checklist
 
+- [ ] **Status**: PENDING - Tracked in #162
+
 **Issue**: Review threads not resolved, test plan not updated before merge
 **Action**: Add PR completion checklist to CONTRIBUTING.md
 **Owner**: Scrum Master
 **Timeline**: Before next PR
 **Acceptance**: Updated CONTRIBUTING.md with pre-merge checklist including:
 
-- [ ] All review comment threads resolved
-- [ ] Test plan checkboxes updated with evidence
-- [ ] Final lint verification passed
+- All review comment threads resolved
+- Test plan checkboxes updated with evidence
+- Final lint verification passed
 
 ### Action 2: TDD Commit Sequencing
+
+- [ ] **Status**: PENDING - Tracked in #163
 
 **Issue**: Test file and implementation created in same commit
 **Action**: Document best practice for future skills
@@ -512,6 +516,8 @@ as-is. Apply TDD sequencing recommendation to future implementations.
 
 ### Action 3: Retrospective Workflow Enforcement
 
+- [ ] **Status**: PENDING - Tracked in #164
+
 **Issue**: Retrospectives committed directly to main bypassing PR workflow
 **Action**: Document requirement for retrospectives to use feature branch + PR
 **Owner**: Tech Lead
@@ -520,11 +526,12 @@ as-is. Apply TDD sequencing recommendation to future implementations.
 
 ### Action 4: Test Execution Evidence
 
+- [ ] **Status**: PENDING - Tracked in #165
+
 **Issue**: Tests exist but no evidence of execution shown
-**Action**: Create GitHub issue for test automation
-**Reference**: Document as enhancement opportunity (#TBD - CREATE)
+**Action**: Add test execution evidence requirements to workflow
 **Timeline**: Consider for test-driven-development skill enhancement
-**Acceptance**: Issue created and tagged for future sprint
+**Acceptance**: Test evidence requirements documented
 
 ---
 
@@ -532,10 +539,12 @@ as-is. Apply TDD sequencing recommendation to future implementations.
 
 **Reviewed By**:
 
-- Tech Lead: Strategic alignment verified ✓
-- Scrum Master: Process compliance verified ✓
-- Agent Skill Engineer: Skill design quality verified ✓
+- Tech Lead: Strategic alignment verified
+- Scrum Master: Process compliance verified
+- Agent Skill Engineer: Skill design quality verified
 
 **Date Completed**: 2026-01-08
 
-**Status**: COMPLETE - Ready for reference in future skill implementations
+**Retrospective Status**: Document complete. 4 corrective actions pending.
+
+**Next Steps**: Track corrective actions in future tickets or PRs with evidence links.
