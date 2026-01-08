@@ -311,15 +311,47 @@ Store in `docs/adr/NNNN-decomposition-thresholds.md` for future use.
 When creating an epic with child tickets:
 
 1. Create the epic ticket first (parent)
-2. Create each child ticket, linking to parent
-3. Set up blocking relationships between children
-4. Include dependency graph (Mermaid) in epic description
+2. Create each child ticket
+3. Link child tickets as sub-issues of the epic (parent/child relationship)
+4. Set up blocking relationships between children (via `blocked` label + comment)
+5. Include dependency graph (Mermaid) in epic description
 
 **Platform-specific linking:**
 
-- **GitHub**: Use task lists in epic body, labels for tracking
+- **GitHub**: Use sub-issues for parent/child hierarchy (via GraphQL API `addSubIssue`),
+  `blocked` labels for dependencies
 - **Azure DevOps**: Use parent/child work item links
 - **Jira**: Use epic link field or parent issue
+
+**GitHub sub-issue creation:**
+
+```bash
+# Get issue IDs
+gh api graphql -f query='{ repository(owner: "ORG", name: "REPO") {
+  issue(number: EPIC_NUM) { id }
+}}'
+
+gh api graphql -f query='{ repository(owner: "ORG", name: "REPO") {
+  issue(number: CHILD_NUM) { id }
+}}'
+
+# Link child as sub-issue
+gh api graphql -f query='mutation {
+  addSubIssue(input: { issueId: "EPIC_ID", subIssueId: "CHILD_ID" }) {
+    subIssue { number title }
+  }
+}'
+```
+
+**Task lists vs Sub-issues:**
+
+| Concept        | Use For                                      | Example                                        |
+| -------------- | -------------------------------------------- | ---------------------------------------------- |
+| **Sub-issues** | Decomposed work items (epic → child tickets) | Epic #100 has sub-issues #101, #102, #103      |
+| **Task lists** | Steps within a single ticket                 | `- [ ] Write tests`, `- [ ] Implement feature` |
+
+- Sub-issues are **separate trackable work items** with their own lifecycle
+- Task lists are **checkboxes within a ticket body** for tracking progress on that ticket
 
 ### 8. Stop - Do Not Proceed to Planning
 
