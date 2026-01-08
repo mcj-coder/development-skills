@@ -205,6 +205,55 @@ if [ "$(git config --get commit.gpgsign)" != "true" ]; then
 fi
 ```
 
+### Email/Key Mismatch Validation
+
+A common cause of "Unverified" commits on GitHub is when the Git `user.email` doesn't
+match the email associated with the GPG signing key. Add this check to `.husky/pre-commit`
+to catch mismatches before committing:
+
+```bash
+# Validate signing key email matches Git user.email
+# This prevents "Unverified" commits on GitHub due to email/key mismatch
+SIGNING_KEY=$(git config --get user.signingkey)
+GIT_EMAIL=$(git config --get user.email)
+
+if [ -n "$SIGNING_KEY" ] && [ -n "$GIT_EMAIL" ]; then
+  # Get the email associated with the signing key
+  KEY_EMAIL=$(gpg --list-keys --with-colons "$SIGNING_KEY" 2>/dev/null \
+    | grep '^uid:' | head -1 | cut -d: -f10 \
+    | sed -n 's/.*<\([^>]*\)>.*/\1/p')
+
+  if [ -n "$KEY_EMAIL" ] && [ "$KEY_EMAIL" != "$GIT_EMAIL" ]; then
+    echo ""
+    echo "❌ ERROR: Git email does not match GPG signing key email"
+    echo ""
+    echo "   Git user.email:     $GIT_EMAIL"
+    echo "   Signing key email:  $KEY_EMAIL"
+    echo ""
+    echo "   This would cause 'Unverified' commits on GitHub."
+    echo ""
+    echo "   To fix, either:"
+    echo "   1. Update Git email: git config user.email '$KEY_EMAIL'"
+    echo "   2. Use a different signing key that matches your email"
+    echo "   3. Add $GIT_EMAIL as a UID to your GPG key"
+    echo ""
+    echo "   See: docs/playbooks/enable-signed-commits.md"
+    echo ""
+    echo "ℹ️  To bypass (not recommended): git commit --no-verify"
+    exit 1
+  fi
+fi
+```
+
+**Why this matters:** GitHub verifies commits by checking that:
+
+1. The GPG signature is valid
+2. The signing key's email matches a verified email on your GitHub account
+3. The commit author email matches the signing key's email
+
+If these don't align, commits show "Unverified" even though they're cryptographically
+signed correctly.
+
 ## Pre-push Hook Verification
 
 While the pre-commit hook ensures GPG signing is **configured**, it cannot detect commits

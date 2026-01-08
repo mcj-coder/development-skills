@@ -208,6 +208,7 @@ Requirements for all skills:
 - `automated-standards-enforcement` - P0 foundational for automated quality (linting, spelling, SAST)
 - `issue-driven-delivery` (requires ticketing CLI: gh/ado/jira)
 - `agent-workitem-automation` (requires work item system CLI)
+- `persona-switching` - P2 multi-identity Git/GitHub workflows with role-based personas
 - `requirements-gathering` - For creating work items with requirements (no design docs)
 - `skills-first-workflow` (requires Superpowers)
 - `markdown-author` - Proactive markdown linting and spelling validation during writing
