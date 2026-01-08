@@ -420,9 +420,18 @@ Repository-specific artifacts are generated during bootstrap or deployment:
 
 **When deploying a skill to a repository:**
 
-1. Skill's `references/` content is platform-agnostic
-2. Repo's `docs/playbooks/` can be customized for the platform
-3. If no customization needed, symlink to skill version (avoid duplication)
+1. Skill's `references/` content is platform-agnostic (covers all platforms)
+2. Repo's `docs/playbooks/` should be platform-specific (only the platform used by the repo)
+3. Choose between:
+   - **Symlink**: If skill reference requires no customization for the repo's platform
+   - **Customized copy**: If repo needs platform-specific content only (recommended)
+
+**Customized playbook guidelines:**
+
+- Include ONLY the platform used by the repo (e.g., GitHub-only for GitHub repos)
+- Remove all other platform examples (no Azure DevOps/Jira in a GitHub repo playbook)
+- Reference the skill's platform-agnostic version for complete coverage
+- Keep playbook concise - it's a quick reference, not comprehensive docs
 
 ### Skill Folder Structure
 
