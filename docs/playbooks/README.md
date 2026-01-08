@@ -215,6 +215,8 @@ triggers:
   commits with verification
 - [skill-selection.md](skill-selection.md) - Decision guide for selecting the appropriate
   process skill based on context
+- [ticket-lifecycle.md](ticket-lifecycle.md) - Complete ticket lifecycle with grooming,
+  refinement, implementation, and verification phases
 
 When adding playbooks, update this index with format:
 
