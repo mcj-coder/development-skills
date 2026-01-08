@@ -8,6 +8,7 @@
     }
   ],
   "words": [
+    "adduid",
     "ADR",
     "ADRs",
     "addopts",
@@ -73,6 +74,7 @@
     "multimarkdown",
     "mygroup",
     "myproject",
+    "nonexistent",
     "mypy",
     "myrepo",
     "myworkspace",
@@ -101,6 +103,8 @@
     "setq",
     "setext",
     "Sigstore",
+    "sign-offs",
+    "signoffs",
     "signingkey",
     "SLSA",
     "SonarQube",
