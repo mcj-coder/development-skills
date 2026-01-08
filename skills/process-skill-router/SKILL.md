@@ -199,3 +199,9 @@ Router is working correctly when:
 - `docs/playbooks/skill-selection.md` - Visual decision tree
 - `skills/requirements-gathering/SKILL.md` - Creating tickets
 - `skills/issue-driven-delivery/SKILL.md` - Work item lifecycle
+- `superpowers:receiving-code-review` - Address code review feedback
+- `superpowers:systematic-debugging` - Investigate bugs
+- `superpowers:brainstorming` - Clarify requirements
+- `superpowers:writing-plans` - Create implementation plans
+- `superpowers:test-driven-development` - Implement changes
+- `superpowers:verification-before-completion` - Verify before claiming done
