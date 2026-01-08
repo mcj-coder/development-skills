@@ -2,13 +2,15 @@
 
 **Issue:** #148
 **Date:** 2026-01-08
-**Status:** Draft
+**Status:** Draft (Rev 2)
 
 ## Approval History
 
-| Phase         | Reviewer  | Decision | Date | Plan Commit | Comment Link |
-| ------------- | --------- | -------- | ---- | ----------- | ------------ |
-| Plan Approval | Tech Lead | PENDING  | -    | -           | -            |
+| Phase           | Reviewer                 | Decision | Date       | Plan Commit | Comment Link                                                               |
+| --------------- | ------------------------ | -------- | ---------- | ----------- | -------------------------------------------------------------------------- |
+| Plan Refinement | DevOps Engineer          | Feedback | 2026-01-08 | 3977339     | [#148 comment](https://github.com/mcj-coder/development-skills/issues/148) |
+| Plan Refinement | Documentation Specialist | Feedback | 2026-01-08 | 3977339     | [#148 comment](https://github.com/mcj-coder/development-skills/issues/148) |
+| Plan Approval   | Tech Lead                | PENDING  | -          | -           | -                                                                          |
 
 ## Overview
 
@@ -100,6 +102,15 @@ Create `skills/issue-driven-delivery/templates/backlog-health.yml` with:
 - Trigger on: `workflow_dispatch` (manual) + `schedule` (weekly)
 - Runs health script and posts as issue comment or artifact
 - Configurable report destination
+- **Explicit permissions specification:**
+
+  ```yaml
+  permissions:
+    issues: read # Read issue data
+    contents: read # Read repository content
+  ```
+
+- **Timeout specification:** `timeout-minutes: 10`
 
 **Deliverable:** `skills/issue-driven-delivery/templates/backlog-health.yml`
 
@@ -114,7 +125,11 @@ Create `scripts/backlog-health.sh` customized for this repository:
 
 ### Task 5: Install Workflow in Repository
 
-Create `.github/workflows/backlog-health.yml` configured for this repository.
+Create `.github/workflows/backlog-health.yml` configured for this repository:
+
+- Explicit permissions (`issues: read`, `contents: read`)
+- Timeout specification (`timeout-minutes: 10`)
+- Repository-specific thresholds configured
 
 **Deliverable:** `.github/workflows/backlog-health.yml`
 
@@ -122,19 +137,57 @@ Create `.github/workflows/backlog-health.yml` configured for this repository.
 
 Create `docs/playbooks/backlog-health.md` with:
 
+**Required YAML frontmatter** (per `docs/playbooks/README.md`):
+
+```yaml
+---
+name: backlog-health
+description: |
+  Analyzes issue backlog to identify items needing attention including
+  missing labels, stale issues, extended blocks, and potential duplicates.
+summary: |
+  1. Run script manually or via scheduled workflow
+  2. Review generated markdown report
+  3. Address findings by category priority
+triggers:
+  - backlog health check
+  - backlog health report
+  - issue backlog analysis
+  - grooming preparation
+---
+```
+
+**Content sections:**
+
 - Overview and purpose
-- Configuration instructions
-- Output interpretation guide
-- Recommended actions per category
-- Integration with grooming process
+- How It Works (workflow diagram)
+- Health Check Categories (table with detection logic and recommended actions)
+- Configuration (environment variables, customization)
+- Output interpretation guide with **example report output**
+- **Recommended actions per category:**
+  - Missing Labels → Add appropriate labels before state transition
+  - Stale State → Move to grooming or close as won't-fix
+  - Unanswered Questions → Review and respond or close
+  - Extended Blocks → Re-evaluate blockers or escalate
+  - Potential Duplicates → Review and merge/link issues
+  - Stale Issues → Close or re-activate with update
+- **When to Use:** Sprint planning, monthly grooming, backlog exceeds threshold
+- Troubleshooting (common issues)
+- See Also (links to ticket-lifecycle.md, label-validation.md, duplicate-detection.md)
 
 **Deliverable:** `docs/playbooks/backlog-health.md`
 
 ### Task 7: Update README.md
 
-Add quick reference in Automation section.
+Add entry to Automation section table:
 
-**Deliverable:** Updated README.md
+```markdown
+| [backlog-health.yml](.github/workflows/backlog-health.yml) | Scheduled (weekly) + Manual | Generates health report identifying issues needing attention |
+```
+
+Also update `docs/playbooks/README.md` index with playbook entry.
+
+**Deliverable:** Updated README.md and docs/playbooks/README.md
 
 ### Task 8: Run Linting Validation
 
@@ -181,6 +234,8 @@ Add quick reference in Automation section.
 - [ ] YAML is valid
 - [ ] Contains workflow_dispatch trigger
 - [ ] Contains schedule trigger
+- [ ] Contains explicit permissions (`issues: read`, `contents: read`)
+- [ ] Contains timeout specification (`timeout-minutes: 10`)
 
 ### Task 4: Installed Script
 
@@ -192,19 +247,26 @@ Add quick reference in Automation section.
 
 - [ ] File exists at `.github/workflows/backlog-health.yml`
 - [ ] Workflow validates successfully
+- [ ] Contains explicit permissions
+- [ ] Contains timeout specification
 - [ ] Manual trigger works
 
 ### Task 6: Playbook
 
 - [ ] File exists at `docs/playbooks/backlog-health.md`
+- [ ] Contains required YAML frontmatter (`name`, `description`, `summary`, `triggers`)
 - [ ] Documents all health categories
 - [ ] Contains configuration instructions
-- [ ] Contains recommended actions
+- [ ] Contains recommended actions for all 6 categories
+- [ ] Contains example report output
+- [ ] Contains "When to Use" section
+- [ ] Contains "See Also" links to related playbooks
 
 ### Task 7: README Update
 
-- [ ] README.md references backlog-health script
-- [ ] Quick reference is in Automation section
+- [ ] README.md Automation section table has backlog-health entry
+- [ ] Entry includes workflow link, trigger description, and purpose
+- [ ] `docs/playbooks/README.md` index updated with playbook entry
 
 ### Task 8: Validation
 
@@ -306,4 +368,26 @@ gh issue list --json number,createdAt --jq '.[] | select(...)'
 
 ## Review History
 
-_No reviews yet._
+### Plan Refinement - 2026-01-08
+
+**DevOps Engineer Review** ([comment link](https://github.com/mcj-coder/development-skills/issues/148#issuecomment-3726168469))
+
+- C: Missing workflow permissions specification → Added to Task 3 and Task 5
+- I: Error handling incomplete (rate limiting, network failures) → Implementation note
+- I: No workflow timeout specified → Added to Task 3 and Task 5
+- M: No debug mode / observability → Implementation note
+
+**Documentation Specialist Review** ([comment link](https://github.com/mcj-coder/development-skills/issues/148#issuecomment-3726169439))
+
+- C: Missing playbook frontmatter specification → Added to Task 6
+- I: Incomplete playbook content (recommended actions, user journey) → Expanded Task 6
+- I: README update lacks specificity → Updated Task 7
+- M: No example output in playbook → Added to Task 6 checklist
+
+**Resolutions:**
+
+- Task 3: Added permissions and timeout specification
+- Task 5: Added permissions and timeout requirements
+- Task 6: Expanded with frontmatter, recommended actions, "When to Use", example output
+- Task 7: Specified README table format and playbook index update
+- BDD checklists: Updated to match expanded requirements
