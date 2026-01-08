@@ -2,7 +2,7 @@
 
 **Issue:** #140
 **Date:** 2026-01-08
-**Status:** Draft (Rev 2)
+**Status:** Draft (Rev 3)
 
 ## Approval History
 
@@ -10,6 +10,8 @@
 | ----- | -------------------- | --------------- | ---------- | ----------- | ------------ |
 | Rev 1 | Senior Developer     | Request Changes | 2026-01-08 | c44ac56     | In-session   |
 | Rev 1 | Agent Skill Engineer | Request Changes | 2026-01-08 | c44ac56     | In-session   |
+| Rev 2 | Senior Developer     | Approve w/minor | 2026-01-08 | 59d2d6b     | In-session   |
+| Rev 2 | Agent Skill Engineer | Approve w/minor | 2026-01-08 | 59d2d6b     | In-session   |
 
 ## Overview
 
@@ -103,6 +105,18 @@ Create BDD test file with RED, GREEN, and PRESSURE scenarios.
 - PRESSURE-2: User requests direct skill - router defers to explicit choice
 - PRESSURE-3: No preconditions match - router prompts for clarification
 
+**Example BDD Scenario Format:**
+
+```markdown
+### GREEN-1: Router Directs to Requirements-Gathering When No Ticket Exists
+
+**Given:** User requests new feature work
+**And:** No GitHub issue or work item exists for the work
+**When:** Agent evaluates routing rules
+**Then:** Router recommends `requirements-gathering` skill
+**And:** Router provides rationale: "No ticket exists for this work"
+```
+
 **Deliverable:** `skills/process-skill-router/process-skill-router.test.md`
 
 ### Task 3: Create Skill Selection Playbook
@@ -124,25 +138,43 @@ summary: |
   6. Check if code ready → Yes: test-driven-development
   7. Check if claiming done → verification-before-completion
 triggers:
-  - which skill should I use
-  - what process skill
-  - skill selection
-  - which workflow
+  - no ticket exists for this work
+  - ticket exists but requirements unclear
+  - ready to plan implementation
+  - encountered unexpected behavior or bug
+  - received feedback on pr or code review
+  - claiming work is complete
+  - which process skill should i use
   - requirements or brainstorming
 ---
 ```
 
-**Mermaid Decision Tree Structure:**
+**Mermaid Decision Tree (Concrete Syntax):**
 
-```text
-Start → PR feedback? → Yes → receiving-code-review
-                     → No → Bug? → Yes → systematic-debugging
-                                 → No → Ticket exists? → No → requirements-gathering
-                                                       → Yes → Reqs clear? → No → brainstorming
-                                                                           → Yes → Plan exists? → No → writing-plans
-                                                                                               → Yes → Code ready? → Yes → TDD
-                                                                                                                   → Claiming done? → verification
+```mermaid
+flowchart TD
+    Start[Evaluate Context] --> PR{PR feedback<br>received?}
+    PR -->|Yes| RCR[receiving-code-review]
+    PR -->|No| Bug{Bug or unexpected<br>behavior?}
+    Bug -->|Yes| SD[systematic-debugging]
+    Bug -->|No| Ticket{Ticket<br>exists?}
+    Ticket -->|No| RG[requirements-gathering]
+    Ticket -->|Yes| Reqs{Requirements<br>clear?}
+    Reqs -->|No| BS[brainstorming]
+    Reqs -->|Yes| Plan{Plan<br>exists?}
+    Plan -->|No| WP[writing-plans]
+    Plan -->|Yes| Code{Code<br>ready?}
+    Code -->|Yes| TDD[test-driven-development]
+    Code -->|No/Done| Done{Claiming<br>done?}
+    Done -->|Yes| VBC[verification-before-completion]
+    Done -->|No| Clarify[Prompt for clarification]
 ```
+
+**Edge Case Handling:**
+
+- If multiple conditions match simultaneously, follow P1-P7 priority order
+- If user explicitly requests a specific skill, defer to their choice
+- If no conditions match and user hasn't specified, prompt for clarification
 
 **Deliverable:** `docs/playbooks/skill-selection.md`
 
@@ -154,9 +186,17 @@ Add skill-selection.md to the playbook index.
 
 ### Task 5: Run Linting Validation
 
-Verify all files pass linting.
+Verify all files pass linting with `npm run lint`.
 
-**Deliverable:** Clean lint output
+**Success Criteria:**
+
+- 0 errors
+- 0 warnings
+- All YAML frontmatter valid
+- Markdown formatting compliant
+- No spelling errors (cspell)
+
+**Deliverable:** Clean lint output showing all checks pass
 
 ## Acceptance Criteria Mapping
 
