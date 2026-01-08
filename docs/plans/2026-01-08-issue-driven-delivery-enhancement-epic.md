@@ -299,10 +299,15 @@ Identify playbooks needed (from AC) and map ownership.
 
 ### Epic Orchestration Verification
 
+Phase definitions: Phase 1 = #140-#141, Phase 2 = #142, Phase 3 = #143-#148, Phase 4 = #149
+
 - [ ] All Phase 1 tickets complete before Phase 2 starts
 - [ ] All Phase 2 tickets complete before Phase 3 starts
-- [ ] Phase 3 respects WIP limit (max 3 concurrent)
+- [ ] Phase 3 respects WIP limit (max 3 concurrent) - verify via GitHub project board filter
 - [ ] Phase 4 triggered only after all Phase 3 complete
+
+**WIP Verification Method:** Count tickets with `state:implementation` label in Phase 3 group;
+must not exceed 3. Document in epic status comment when starting each Phase 3 ticket.
 
 ## WIP Limits
 
@@ -326,6 +331,7 @@ Identify playbooks needed (from AC) and map ownership.
 
 - If ticket blocked >2 days, escalate to Tech Lead
 - Document blocker reason in issue comment
+- Tech Lead must within 24 hours: unblock, create ticket for blocking work, or declare dependency external
 - Consider parallel work on unblocked tickets
 
 **Plan Revision Triggers:**
@@ -402,6 +408,20 @@ Identify playbooks needed (from AC) and map ownership.
 - **I2:** No WIP limits → Added WIP Limits section
 - **I4:** BDD doesn't cover orchestration → Added Epic Orchestration Verification
 - **I6:** Missing ceremony documentation → Added Coordination Ceremonies section
+
+### Rev 2 → Rev 3 (PR Review)
+
+**Documentation Specialist Review (2026-01-08):**
+
+- **C1:** Approval history unclear → Noted; inline feedback reflects iterative refinement
+- **C2:** Technical terminology → Accepted; skill names required for precision in this context
+- **C3:** BDD lacks RED/GREEN → Noted for future plan templates; this is refinement plan not code
+
+**Scrum Master Review (2026-01-08):**
+
+- **C1:** Phases defined after reference → Added phase definitions inline in BDD checklist
+- **C2:** WIP lacks verification → Added WIP verification method
+- **C3:** Escalation lacks authority → Added Tech Lead decision criteria with 24h timeline
 
 ---
 
