@@ -241,12 +241,13 @@ This repository follows standard InnerSource/OpenSource documentation practices:
 
 GitHub Actions workflows that automate repository processes:
 
-| Workflow                                                                 | Trigger                   | Description                                        |
-| ------------------------------------------------------------------------ | ------------------------- | -------------------------------------------------- |
-| [auto-unblock.yml](.github/workflows/auto-unblock.yml)                   | Issue closed              | Removes `blocked` label from dependent issues      |
-| [check-issue-reference.yml](.github/workflows/check-issue-reference.yml) | Pull request              | Validates PR commits reference GitHub issues       |
-| [detect-duplicates.yml](.github/workflows/detect-duplicates.yml)         | Issue opened              | Detects potentially duplicate issues on creation   |
-| [sync-project-status.yml](.github/workflows/sync-project-status.yml)     | Issue label/state changes | Syncs issue state labels to Project board status   |
-| [validate-labels.yml](.github/workflows/validate-labels.yml)             | Issue label/state changes | Validates required labels before state transitions |
+| Workflow                                                                 | Trigger                     | Description                                                  |
+| ------------------------------------------------------------------------ | --------------------------- | ------------------------------------------------------------ |
+| [auto-unblock.yml](.github/workflows/auto-unblock.yml)                   | Issue closed                | Removes `blocked` label from dependent issues                |
+| [backlog-health.yml](.github/workflows/backlog-health.yml)               | Scheduled (weekly) + Manual | Generates health report identifying issues needing attention |
+| [check-issue-reference.yml](.github/workflows/check-issue-reference.yml) | Pull request                | Validates PR commits reference GitHub issues                 |
+| [detect-duplicates.yml](.github/workflows/detect-duplicates.yml)         | Issue opened                | Detects potentially duplicate issues on creation             |
+| [sync-project-status.yml](.github/workflows/sync-project-status.yml)     | Issue label/state changes   | Syncs issue state labels to Project board status             |
+| [validate-labels.yml](.github/workflows/validate-labels.yml)             | Issue label/state changes   | Validates required labels before state transitions           |
 
 See [docs/playbooks/](docs/playbooks/) for detailed setup and usage instructions.

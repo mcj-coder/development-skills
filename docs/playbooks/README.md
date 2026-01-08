@@ -209,6 +209,8 @@ triggers:
 
 ## Playbook Index
 
+- [backlog-health.md](backlog-health.md) - Generates health report identifying issues needing
+  attention in the backlog
 - [blocked-sync.md](blocked-sync.md) - Automatically unblocks dependent issues when blocking
   issues are closed
 - [conducting-pr-reviews.md](conducting-pr-reviews.md) - GitHub-specific PR review process
