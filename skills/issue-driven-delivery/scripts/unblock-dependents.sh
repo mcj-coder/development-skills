@@ -91,26 +91,66 @@ detect_closed_issues() {
 
 # Find issues blocked by a specific issue (excludes the blocker itself)
 # Uses tab delimiter to avoid issues with pipe characters in titles
+# Verifies each result actually contains "Blocked by.*#N" pattern to avoid false positives
 find_blocked_by() {
     local blocker="$1"
-    gh issue list --state open --search "Blocked by #$blocker" \
+    local candidates
+    local verified=""
+
+    # First pass: find candidates via GitHub search
+    candidates=$(gh issue list --state open --search "Blocked by #$blocker" \
         --json number,title \
         --jq ".[] | select(.number != $blocker) | \"\(.number)\t\(.title | gsub(\"\t\"; \" \"))\"" \
-        2>/dev/null || echo ""
+        2>/dev/null || echo "")
+
+    # Second pass: verify each candidate:
+    # 1. Has the "blocked" label (is actually blocked)
+    # 2. Has "Blocked by: #N" or "Blocked by #N, #M, ..." in body/comments
+    while IFS=$'\t' read -r num title; do
+        [[ -z "$num" ]] && continue
+
+        # Check if issue has 'blocked' label
+        local has_blocked_label
+        has_blocked_label=$(gh issue view "$num" --json labels \
+            --jq '.labels | any(.name == "blocked")' \
+            2>/dev/null || echo "false")
+
+        if [[ "$has_blocked_label" != "true" ]]; then
+            continue
+        fi
+
+        # Check if issue body/comments contain "Blocked by: #N" or "Blocked by #N, #M, ..."
+        # Pattern matches: "Blocked by: #142" or "Blocked by #100, #142, #200"
+        local has_blocker
+        has_blocker=$(gh issue view "$num" --json body,comments \
+            --jq "([.body // \"\"] + [.comments[].body]) | any(. != null and test(\"(?i)blocked by:?\\\\s*(#\\\\d+[\\\\s,]*)*#$blocker\\\\b\"))" \
+            2>/dev/null || echo "false")
+
+        if [[ "$has_blocker" == "true" ]]; then
+            if [[ -n "$verified" ]]; then
+                verified+=$'\n'
+            fi
+            verified+="${num}"$'\t'"${title}"
+        fi
+    done <<< "$candidates"
+
+    echo "$verified"
 }
 
-# Get all comments and body that mention blocking
+# Get the line that mentions blocking (extracts the specific line, not whole body)
 get_blocking_info() {
     local issue="$1"
+    # Split body/comments into lines and find the one containing "blocked by"
     gh issue view "$issue" --json body,comments \
-        --jq '([.body // ""] + [.comments[].body]) | .[] | select(. != null) | select(test("(?i)blocked by"))' \
+        --jq '([.body // ""] + [.comments[].body]) | .[] | select(. != null) | split("\n")[] | select(test("(?i)blocked by"))' \
         2>/dev/null | head -1 || echo ""
 }
 
 # Parse blockers from comment (e.g., "Blocked by #100, #101, #102")
 parse_blockers() {
     local comment="$1"
-    echo "$comment" | grep -oE '#[0-9]+' | tr -d '#' | sort -u
+    # Use || true to avoid failing when no matches found (set -e)
+    echo "$comment" | grep -oE '#[0-9]+' | tr -d '#' | sort -u || true
 }
 
 # Check if block is manual (external) vs dependency
