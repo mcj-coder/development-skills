@@ -1,0 +1,26 @@
+# Auto-unblock Dependents Workflow
+# Automatically removes 'blocked' label from issues when their blockers are closed
+#
+# Implements: skills/issue-driven-delivery/scripts/README.md (Option 2)
+
+name: Auto-unblock Dependents
+
+on:
+  issues:
+    types: [closed]
+
+jobs:
+  unblock:
+    name: Unblock dependent issues
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Run unblock script
+        run: |
+          chmod +x ./scripts/issue-driven-delivery/unblock-dependents.sh
+          ./scripts/issue-driven-delivery/unblock-dependents.sh ${{ github.event.issue.number }} --apply
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

@@ -1,7 +1,15 @@
-# Issue-Driven Delivery Scripts
+# Issue-Driven Delivery Scripts (Templates)
 
-Reference scripts implementing prioritization and unblocking logic from the issue-driven-delivery
-skill.
+Reference/template scripts implementing prioritization and unblocking logic from the
+issue-driven-delivery skill.
+
+**Important:** These are templates. To use in your repository:
+
+1. Copy scripts to `scripts/issue-driven-delivery/` in your repo
+2. Configure GitHub Actions workflow to trigger the scripts
+3. Customize label names and patterns as needed for your setup
+
+See "Installation in Your Repository" section below for detailed instructions.
 
 ## Scripts
 
