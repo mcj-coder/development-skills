@@ -1,0 +1,125 @@
+# Issue Reference Check Workflow Template
+#
+# This workflow validates that all PR commits reference a GitHub issue.
+# Copy to .github/workflows/check-issue-reference.yml and customize as needed.
+#
+# Validation Logic:
+#   1. Get all commits in the PR
+#   2. For each commit, check for issue reference patterns
+#   3. Skip exempt commit types (merge, revert, dependabot)
+#   4. Report validation results
+#
+# Requires:
+#   - commitlint installed as dev dependency
+#   - scripts/commitlint-issue-reference.cjs plugin
+#   - commitlint.config.cjs configured with issue-reference rule
+#
+# See: docs/playbooks/standards-compliance.md
+
+name: Check Issue References
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+jobs:
+  validate-commits:
+    name: Validate commit references
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          # Fetch all commits in the PR
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: ".nvmrc"
+          cache: "npm"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Get PR commits
+        id: commits
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          BASE_SHA="${{ github.event.pull_request.base.sha }}"
+          HEAD_SHA="${{ github.event.pull_request.head.sha }}"
+
+          echo "Checking commits from $BASE_SHA to $HEAD_SHA"
+
+          # Get commit messages
+          COMMITS=$(git log --format="%H|%s|%an" "$BASE_SHA..$HEAD_SHA")
+          COMMIT_COUNT=$(echo "$COMMITS" | grep -c . || echo 0)
+
+          echo "Found $COMMIT_COUNT commit(s) to validate"
+          echo "commit_count=$COMMIT_COUNT" >> $GITHUB_OUTPUT
+
+          # Store commits for processing
+          echo "commits<<EOF" >> $GITHUB_OUTPUT
+          echo "$COMMITS" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+
+      - name: Validate each commit
+        id: validate
+        run: |
+          COMMITS='${{ steps.commits.outputs.commits }}'
+          FAILED=0
+          PASSED=0
+          SKIPPED=0
+          FAILURES=""
+
+          echo "## Commit Validation Results" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "| Status | Commit | Message |" >> $GITHUB_STEP_SUMMARY
+          echo "|--------|--------|---------|" >> $GITHUB_STEP_SUMMARY
+
+          while IFS='|' read -r sha subject author; do
+            [ -z "$sha" ] && continue
+
+            SHORT_SHA="${sha:0:7}"
+
+            # Check for exempt authors (dependabot, renovate)
+            if echo "$author" | grep -qiE 'dependabot|renovate|github-actions'; then
+              echo "| ⏭️ Skipped | \`$SHORT_SHA\` | $subject (automated) |" >> $GITHUB_STEP_SUMMARY
+              ((SKIPPED++))
+              continue
+            fi
+
+            # Get full commit message for validation
+            FULL_MSG=$(git log -1 --format="%B" "$sha")
+
+            # Run commitlint on the commit message
+            if echo "$FULL_MSG" | npx commitlint 2>/dev/null; then
+              echo "| ✅ Pass | \`$SHORT_SHA\` | $subject |" >> $GITHUB_STEP_SUMMARY
+              ((PASSED++))
+            else
+              echo "| ❌ Fail | \`$SHORT_SHA\` | $subject |" >> $GITHUB_STEP_SUMMARY
+              FAILURES="${FAILURES}${SHORT_SHA}: $subject\n"
+              ((FAILED++))
+            fi
+
+          done <<< "$COMMITS"
+
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Summary:** $PASSED passed, $FAILED failed, $SKIPPED skipped" >> $GITHUB_STEP_SUMMARY
+
+          if [ "$FAILED" -gt 0 ]; then
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "### Failed Commits" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "The following commits are missing issue references:" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo -e "$FAILURES" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "**Expected format:** Include \`Refs: #123\`, \`Fixes: #456\`, or \`(#123)\` in the commit message." >> $GITHUB_STEP_SUMMARY
+
+            echo "failed=$FAILED" >> $GITHUB_OUTPUT
+            exit 1
+          fi
+
+          echo "failed=0" >> $GITHUB_OUTPUT
