@@ -28,6 +28,50 @@ Do NOT use requirements-gathering when:
 - **Doing actual implementation** - Work on existing ticket
 - **Requirements are already documented** - Load ticket and proceed to planning
 
+## Precondition Check
+
+**Before proceeding, verify this condition is met:**
+
+- [ ] No open ticket exists for this work
+
+**How to verify:**
+
+```bash
+# Search for existing tickets related to this work
+gh issue list --search "[keywords from user request]" --state open
+```
+
+**If a ticket already exists:**
+
+> **STOP** - This skill is for creating NEW tickets only.
+>
+> Use `process-skill-router` to find the correct skill:
+>
+> - Ticket exists, requirements unclear → `brainstorming`
+> - Ticket exists, ready to plan → `writing-plans`
+> - Ticket exists, ready to implement → `test-driven-development`
+
+**Ticket state considerations:**
+
+| Ticket State         | Action                                        |
+| -------------------- | --------------------------------------------- |
+| No ticket exists     | ✅ Proceed with requirements-gathering        |
+| Open ticket exists   | ❌ Redirect to brainstorming or writing-plans |
+| Closed ticket exists | ✅ Proceed (create new ticket for new work)   |
+| Draft ticket exists  | ❌ Redirect to brainstorming to refine draft  |
+
+**If multiple tickets might match:**
+
+Do not assume. Ask the user:
+
+```text
+I found existing tickets that might relate to this work:
+- #123: [Title]
+- #456: [Title]
+
+Does this work relate to any of these existing tickets, or should I create a new one?
+```
+
 ## Skill Comparison
 
 | Activity                   | requirements-gathering   | brainstorming | writing-plans              |
@@ -587,6 +631,7 @@ You've successfully used requirements-gathering when:
 
 ## See Also
 
+- `skills/process-skill-router/SKILL.md` - Route to correct skill based on context
 - `skills/issue-driven-delivery/SKILL.md` - Work item lifecycle management
 - `superpowers:brainstorming` - Creating designs for existing tickets (requires Superpowers)
 - `superpowers:writing-plans` - Creating implementation plans (requires Superpowers)
