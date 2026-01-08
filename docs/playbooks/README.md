@@ -213,6 +213,8 @@ triggers:
   (customized from platform-agnostic skill reference)
 - [enable-signed-commits.md](enable-signed-commits.md) - Process for enabling GPG-signed
   commits with verification
+- [project-sync.md](project-sync.md) - GitHub Project board automation that syncs issue
+  state labels to project status columns
 - [skill-selection.md](skill-selection.md) - Decision guide for selecting the appropriate
   process skill based on context
 - [ticket-lifecycle.md](ticket-lifecycle.md) - Complete ticket lifecycle with grooming,

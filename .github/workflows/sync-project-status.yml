@@ -1,0 +1,143 @@
+# Project Status Sync Workflow
+# Syncs GitHub Project board status with issue state labels
+#
+# Implements: skills/issue-driven-delivery SKILL.md (Work Item State Tracking)
+# Related: docs/playbooks/project-sync.md (setup instructions)
+# Template: skills/issue-driven-delivery/templates/sync-project-status.yml
+
+name: Sync Project Status
+
+on:
+  issues:
+    types: [labeled, unlabeled, closed, reopened]
+
+env:
+  # Development Skills Kanban project
+  PROJECT_NUMBER: "1"
+  PROJECT_NODE_ID: "PVT_kwHODwOqvM4BMHg5"
+  STATUS_FIELD_ID: "PVTSSF_lAHODwOqvM4BMHg5zg7ffAs"
+
+  # Status option IDs
+  STATUS_BACKLOG: "f75ad846"
+  STATUS_READY: "66ca5d38"
+  STATUS_IN_PROGRESS: "47fc9ee4"
+  STATUS_IN_REVIEW: "27598e5f"
+  STATUS_DONE: "98236657"
+  STATUS_BLOCKED: "f78f6bd3"
+
+jobs:
+  sync-status:
+    name: Update project status
+    runs-on: ubuntu-latest
+    permissions:
+      issues: read
+      repository-projects: write
+
+    steps:
+      - name: Determine target status
+        id: status
+        env:
+          ISSUE_LABELS: ${{ toJson(github.event.issue.labels.*.name) }}
+          ISSUE_STATE: ${{ github.event.issue.state }}
+          EVENT_ACTION: ${{ github.event.action }}
+        run: |
+          echo "Labels: $ISSUE_LABELS"
+          echo "State: $ISSUE_STATE"
+          echo "Action: $EVENT_ACTION"
+
+          # Priority: closed > blocked > state labels
+          if [ "$ISSUE_STATE" = "closed" ]; then
+            echo "status_id=${{ env.STATUS_DONE }}" >> $GITHUB_OUTPUT
+            echo "status_name=Done" >> $GITHUB_OUTPUT
+          elif echo "$ISSUE_LABELS" | grep -q '"blocked"'; then
+            echo "status_id=${{ env.STATUS_BLOCKED }}" >> $GITHUB_OUTPUT
+            echo "status_name=Blocked" >> $GITHUB_OUTPUT
+          elif echo "$ISSUE_LABELS" | grep -q '"state:verification"'; then
+            echo "status_id=${{ env.STATUS_IN_REVIEW }}" >> $GITHUB_OUTPUT
+            echo "status_name=In Review" >> $GITHUB_OUTPUT
+          elif echo "$ISSUE_LABELS" | grep -q '"state:implementation"'; then
+            echo "status_id=${{ env.STATUS_IN_PROGRESS }}" >> $GITHUB_OUTPUT
+            echo "status_name=In Progress" >> $GITHUB_OUTPUT
+          elif echo "$ISSUE_LABELS" | grep -q '"state:refinement"'; then
+            echo "status_id=${{ env.STATUS_IN_PROGRESS }}" >> $GITHUB_OUTPUT
+            echo "status_name=In Progress" >> $GITHUB_OUTPUT
+          elif echo "$ISSUE_LABELS" | grep -q '"state:grooming"'; then
+            echo "status_id=${{ env.STATUS_BACKLOG }}" >> $GITHUB_OUTPUT
+            echo "status_name=Backlog" >> $GITHUB_OUTPUT
+          elif echo "$ISSUE_LABELS" | grep -q '"state:new-feature"'; then
+            echo "status_id=${{ env.STATUS_BACKLOG }}" >> $GITHUB_OUTPUT
+            echo "status_name=Backlog" >> $GITHUB_OUTPUT
+          else
+            # Default: Backlog for issues without state labels
+            echo "status_id=${{ env.STATUS_BACKLOG }}" >> $GITHUB_OUTPUT
+            echo "status_name=Backlog" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Get project item ID
+        id: project-item
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          ISSUE_NODE_ID: ${{ github.event.issue.node_id }}
+        run: |
+          # Query for the project item containing this issue
+          ITEM_ID=$(gh api graphql -f query='
+            query($issueId: ID!) {
+              node(id: $issueId) {
+                ... on Issue {
+                  projectItems(first: 10) {
+                    nodes {
+                      id
+                      project {
+                        number
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          ' -f issueId="$ISSUE_NODE_ID" \
+            --jq ".data.node.projectItems.nodes[] | select(.project.number == ${{ env.PROJECT_NUMBER }}) | .id")
+
+          if [ -z "$ITEM_ID" ]; then
+            echo "Issue is not in project ${{ env.PROJECT_NUMBER }}"
+            echo "found=false" >> $GITHUB_OUTPUT
+          else
+            echo "Project item ID: $ITEM_ID"
+            echo "item_id=$ITEM_ID" >> $GITHUB_OUTPUT
+            echo "found=true" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Update project item status
+        if: steps.project-item.outputs.found == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          ITEM_ID: ${{ steps.project-item.outputs.item_id }}
+          STATUS_ID: ${{ steps.status.outputs.status_id }}
+          STATUS_NAME: ${{ steps.status.outputs.status_name }}
+        run: |
+          echo "Updating status to: $STATUS_NAME"
+
+          gh api graphql -f query='
+            mutation($projectId: ID!, $itemId: ID!, $fieldId: ID!, $optionId: String!) {
+              updateProjectV2ItemFieldValue(
+                input: {
+                  projectId: $projectId
+                  itemId: $itemId
+                  fieldId: $fieldId
+                  value: {
+                    singleSelectOptionId: $optionId
+                  }
+                }
+              ) {
+                projectV2Item {
+                  id
+                }
+              }
+            }
+          ' \
+            -f projectId="${{ env.PROJECT_NODE_ID }}" \
+            -f itemId="$ITEM_ID" \
+            -f fieldId="${{ env.STATUS_FIELD_ID }}" \
+            -f optionId="$STATUS_ID"
+
+          echo "Status updated to $STATUS_NAME"

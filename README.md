@@ -236,3 +236,14 @@ This repository follows standard InnerSource/OpenSource documentation practices:
 - **Document using human terminology** - When applying skills, update human-readable docs
   (architecture-overview.md, coding-standards.md, etc.) not skill-specific files
 - **See [AGENTS.md](AGENTS.md)** for agent-specific execution rules and documentation standards
+
+## Automation
+
+GitHub Actions workflows that automate repository processes:
+
+| Workflow                                                             | Trigger                   | Description                                      |
+| -------------------------------------------------------------------- | ------------------------- | ------------------------------------------------ |
+| [auto-unblock.yml](.github/workflows/auto-unblock.yml)               | Issue closed              | Removes `blocked` label from dependent issues    |
+| [sync-project-status.yml](.github/workflows/sync-project-status.yml) | Issue label/state changes | Syncs issue state labels to Project board status |
+
+See [docs/playbooks/](docs/playbooks/) for detailed setup and usage instructions.
