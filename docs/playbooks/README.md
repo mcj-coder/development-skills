@@ -213,6 +213,8 @@ triggers:
   (customized from platform-agnostic skill reference)
 - [enable-signed-commits.md](enable-signed-commits.md) - Process for enabling GPG-signed
   commits with verification
+- [skill-selection.md](skill-selection.md) - Decision guide for selecting the appropriate
+  process skill based on context
 
 When adding playbooks, update this index with format:
 
