@@ -432,3 +432,22 @@ Each GREEN test should verify:
 - [ ] Test data isolation required
 - [ ] Review heuristics applied consistently
 - [ ] Rationalizations closed (cannot be bypassed)
+
+---
+
+## Evidence
+
+**Verification checklist:**
+
+- [ ] SKILL.md contains valid frontmatter with `name` and `description` fields
+- [ ] SKILL.md defines test tier characteristics (Unit, Integration, System, E2E)
+- [ ] Architecture testing guidance is documented
+- [ ] Contract versioning discipline is documented
+- [ ] Observability requirements are specified
+- [ ] Test data isolation principles are documented
+- [ ] Review heuristics table is present
+
+**Skill structure verified:**
+
+- [ ] `SKILL.md` exists with platform-agnostic testing guidance
+- [ ] No platform-specific dependencies (defers to `testing-strategy-dotnet` for .NET)

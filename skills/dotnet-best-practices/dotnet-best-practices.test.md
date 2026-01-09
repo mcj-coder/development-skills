@@ -147,13 +147,42 @@ review, version-specific guidance, upgrade planning, and security posture review
 - [ ] Code review lens criteria are documented
 - [ ] Outputs section defines expected deliverables
 
-**Reference files verified:**
+**Reference files verified (20 total):**
 
-- [ ] `references/dotnet-6.md` (with sub-references: runtime, SDK, ASP.NET Core, data)
+.NET 6 (LTS):
+
+- [ ] `references/dotnet-6.md`
+- [ ] `references/dotnet-6-runtime.md`
+- [ ] `references/dotnet-6-sdk-tooling.md`
+- [ ] `references/dotnet-6-aspnetcore.md`
+- [ ] `references/dotnet-6-data.md`
+
+.NET 7 (STS):
+
 - [ ] `references/dotnet-7.md`
-- [ ] `references/dotnet-8.md` (with sub-references: runtime, SDK, ASP.NET Core, data)
+
+.NET 8 (LTS):
+
+- [ ] `references/dotnet-8.md`
+- [ ] `references/dotnet-8-runtime.md`
+- [ ] `references/dotnet-8-sdk-tooling.md`
+- [ ] `references/dotnet-8-aspnetcore.md`
+- [ ] `references/dotnet-8-data.md`
+
+.NET 9 (STS):
+
 - [ ] `references/dotnet-9.md`
-- [ ] `references/dotnet-10.md` (with sub-references: runtime, SDK, ASP.NET Core, data-desktop)
+
+.NET 10 (LTS):
+
+- [ ] `references/dotnet-10.md`
+- [ ] `references/dotnet-10-runtime.md`
+- [ ] `references/dotnet-10-sdk-tooling.md`
+- [ ] `references/dotnet-10-aspnetcore.md`
+- [ ] `references/dotnet-10-data-desktop.md`
+
+Cross-Version:
+
 - [ ] `references/dotnet-security-tooling.md`
 - [ ] `references/upgrade-cumulative.md`
 - [ ] `references/lts-upgrade-playbook.md`
