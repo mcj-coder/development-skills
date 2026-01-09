@@ -1,0 +1,61 @@
+---
+name: dotnet-mapping-standard
+description: Standardise mapping (DTOs/contracts/persistence models) using source-generated mappers and explicit boundary conversions.
+---
+
+## Core
+
+### When to use
+
+- Any service that maps between API contracts, domain models, persistence models, or integration events.
+
+### Defaults
+
+- Prefer **open-source, source-generated mapping** tools.
+- Mappings live **at boundaries** (API project, Infrastructure project), not scattered across the domain.
+- Typed IDs and value objects must be mapped explicitly (see `dotnet-domain-primitives`).
+
+### Anti-patterns to avoid
+
+- Reflection-based "magic mapping" that fails at runtime.
+- Mapping logic embedded inside domain entities.
+- Implicit conversions that obscure boundary crossings.
+
+### Review rules
+
+- New DTO/domain/persistence types must have deterministic, testable mapping paths.
+- Mapping must be side-effect free.
+
+## Load: examples
+
+- API: map request DTO -> command with explicit typed ID parsing/creation.
+- Persistence: map EF entity -> domain aggregate using explicit value object construction.
+- Integration: map external event contract -> internal event with boundary validations.
+
+## Load: advanced
+
+### Projections / query scenarios
+
+- Prefer projection mappings that avoid materialising large object graphs when not needed.
+- Keep read models separate where pragmatic.
+
+### Error strategy
+
+- Invalid boundary inputs fail fast at the boundary (validation).
+- Domain invariants enforced by constructors/factories.
+
+## Load: enforcement
+
+### Review heuristic: mapper DI gating
+
+- If a mapper is injected into a constructor (controller/handler/service), reviewers must
+  check whether the mapper implementation itself has injected dependencies.
+- If the mapper has **no** injected dependencies (pure/stateless mapping), require refactor
+  to a **static mapper** and remove DI registration.
+- Injection is permitted only when mapping depends on external collaborators and those
+  collaborators are injected into the mapper.
+- "Inject for testability" is not sufficient when mapping is deterministic; test the mapper
+  directly.
+
+- Reject PRs introducing runtime reflection mapping unless justified per `dotnet-source-generation-first`.
+- Require mapping tests for critical boundary conversions (typed IDs and value objects).
