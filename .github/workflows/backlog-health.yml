@@ -1,0 +1,98 @@
+# Backlog Health Report Workflow
+#
+# Generates a health report identifying issues needing attention.
+# Based on template: skills/issue-driven-delivery/templates/backlog-health.yml
+#
+# Health checks (this repository):
+#   - Missing labels for current state (component, work-type)
+#   - Issues in state:new-feature longer than 7 days
+#   - Issues with needs-info label awaiting response
+#   - Issues blocked for more than 14 days
+#   - Stale issues with no activity for 30 days
+#
+# Triggers:
+#   - Manual: Run from Actions tab with optional threshold overrides
+#   - Scheduled: Weekly on Monday at 9 AM UTC
+#
+# Output: Report uploaded as workflow artifact and shown in summary
+
+name: Backlog Health Report
+
+on:
+  workflow_dispatch:
+    inputs:
+      stale_days:
+        description: "Days without activity to flag as stale"
+        required: false
+        default: "30"
+        type: string
+      blocked_days:
+        description: "Days blocked to flag as extended block"
+        required: false
+        default: "14"
+        type: string
+      new_feature_days:
+        description: "Days in new-feature state to flag as stale state"
+        required: false
+        default: "7"
+        type: string
+
+  schedule:
+    # Weekly on Monday at 9 AM UTC
+    - cron: "0 9 * * MON"
+
+env:
+  STALE_DAYS: ${{ inputs.stale_days || '30' }}
+  BLOCKED_DAYS: ${{ inputs.blocked_days || '14' }}
+  NEW_FEATURE_DAYS: ${{ inputs.new_feature_days || '7' }}
+
+jobs:
+  health-check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    permissions:
+      issues: read
+      contents: read
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Run Health Check
+        env:
+          GH_TOKEN: ${{ github.token }}
+          STALE_DAYS: ${{ env.STALE_DAYS }}
+          BLOCKED_DAYS: ${{ env.BLOCKED_DAYS }}
+          NEW_FEATURE_DAYS: ${{ env.NEW_FEATURE_DAYS }}
+        run: |
+          if [ -f scripts/backlog-health.sh ]; then
+            chmod +x scripts/backlog-health.sh
+            ./scripts/backlog-health.sh --output backlog-health-report.md
+          else
+            echo "::error title=Script Not Found::scripts/backlog-health.sh not found"
+            exit 1
+          fi
+        continue-on-error: true
+
+      - name: Upload Report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: backlog-health-report
+          path: backlog-health-report.md
+          retention-days: 90
+          if-no-files-found: warn
+
+      - name: Add Report to Summary
+        if: always()
+        run: |
+          if [ -f backlog-health-report.md ]; then
+            echo "## Backlog Health Report" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            cat backlog-health-report.md >> $GITHUB_STEP_SUMMARY
+          else
+            echo "## Backlog Health Report" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "Report generation failed. Check workflow logs for details." >> $GITHUB_STEP_SUMMARY
+          fi

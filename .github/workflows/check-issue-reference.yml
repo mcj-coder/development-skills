@@ -72,7 +72,7 @@ jobs:
             # Skip automated commits
             if echo "$author" | grep -qiE 'dependabot|renovate|github-actions'; then
               echo "| ⏭️ Skipped | \`$SHORT_SHA\` | $subject (automated) |" >> $GITHUB_STEP_SUMMARY
-              ((SKIPPED++))
+              SKIPPED=$((SKIPPED + 1))
               continue
             fi
 
@@ -80,11 +80,11 @@ jobs:
 
             if echo "$FULL_MSG" | npx commitlint 2>/dev/null; then
               echo "| ✅ Pass | \`$SHORT_SHA\` | $subject |" >> $GITHUB_STEP_SUMMARY
-              ((PASSED++))
+              PASSED=$((PASSED + 1))
             else
               echo "| ❌ Fail | \`$SHORT_SHA\` | $subject |" >> $GITHUB_STEP_SUMMARY
               FAILURES="${FAILURES}${SHORT_SHA}: $subject\n"
-              ((FAILED++))
+              FAILED=$((FAILED + 1))
             fi
 
           done <<< "$COMMITS"
