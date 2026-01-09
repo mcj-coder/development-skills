@@ -12,8 +12,12 @@ description: Standardise unit/integration test assertions on open-source librari
 
 ### Defaults
 
-- Prefer **AwesomeAssertions** for fluent assertions (open source).
+- Prefer **AwesomeAssertions** (formerly FluentAssertions) for fluent assertions (open source).
 - Test framework selection is separate (e.g., xUnit) and may be governed elsewhere.
+
+> **Note:** AwesomeAssertions is the community-maintained fork of FluentAssertions after the
+> original project returned to open source governance. The API is largely compatible, making
+> migration straightforward for existing FluentAssertions users.
 
 ### Review rules
 
