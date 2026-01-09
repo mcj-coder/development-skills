@@ -328,3 +328,20 @@ Each GREEN test should verify:
 - [ ] DbContext is orchestration-only (applies configs, doesn't define them)
 - [ ] PR review rejects violations of these rules
 - [ ] Evidence checklist provided
+
+---
+
+## Evidence
+
+**Verification checklist:**
+
+- [ ] SKILL.md contains valid frontmatter with `name` and `description` fields
+- [ ] SKILL.md documents migration isolation requirements
+- [ ] SKILL.md documents configuration type standards
+- [ ] Attribute-linked configuration pattern is documented
+- [ ] DbContext orchestration-only role is documented
+- [ ] PR review criteria are specified
+
+**Reference files verified:**
+
+- [ ] `references/efcore-migrations-and-configurations.md`

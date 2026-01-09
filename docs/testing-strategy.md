@@ -174,6 +174,29 @@ Evidence:
 
 **Success criteria:** Agent finds and correctly applies reference information.
 
+## Test Scenario Naming Convention
+
+Test scenarios should use phase-prefixed naming to clearly indicate their purpose:
+
+| Prefix       | Phase/Type                         | Example                           |
+| ------------ | ---------------------------------- | --------------------------------- |
+| `Test R<N>`  | RED phase (baseline without skill) | `Test R1: C# Version Detection`   |
+| `Test G<N>`  | GREEN phase (with skill)           | `Test G1: C# Version Detection`   |
+| `Test P<N>`  | Pressure scenarios                 | `Test P1: Resist Time Pressure`   |
+| `Test RV<N>` | Review scenarios                   | `Test RV1: PR Review - Migration` |
+| `Test RC<N>` | Rationalization closure            | `Test RC1: "Too simple to test"`  |
+| `Test I<N>`  | Integration scenarios              | `Test I1: Integration with TDD`   |
+
+**Why phase prefixes?**
+
+- Clearly indicates which phase the test belongs to
+- Makes it easy to correlate RED and GREEN scenarios
+- Distinguishes pressure testing from functional testing
+- Enables quick navigation in large test files
+
+**Alternative (legacy):** Some older test files use simple `Scenario N:` numbering. This is acceptable
+but phase-prefixed naming is preferred for new test files.
+
 ## BDD Checklist Format
 
 For documentation testing, use BDD checklists:
