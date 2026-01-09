@@ -66,8 +66,13 @@ jobs:
           BLOCKED_DAYS: ${{ env.BLOCKED_DAYS }}
           NEW_FEATURE_DAYS: ${{ env.NEW_FEATURE_DAYS }}
         run: |
-          chmod +x scripts/backlog-health.sh
-          ./scripts/backlog-health.sh --output backlog-health-report.md
+          if [ -f scripts/backlog-health.sh ]; then
+            chmod +x scripts/backlog-health.sh
+            ./scripts/backlog-health.sh --output backlog-health-report.md
+          else
+            echo "::error title=Script Not Found::scripts/backlog-health.sh not found"
+            exit 1
+          fi
         continue-on-error: true
 
       - name: Upload Report
