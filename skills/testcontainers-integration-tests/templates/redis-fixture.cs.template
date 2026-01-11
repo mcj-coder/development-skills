@@ -1,0 +1,88 @@
+using Testcontainers.Redis;
+using StackExchange.Redis;
+using Xunit;
+
+namespace YourProject.Tests.Fixtures;
+
+/// <summary>
+/// Shared Redis container fixture for integration tests.
+/// Uses xUnit IAsyncLifetime for proper container lifecycle management.
+/// </summary>
+public class RedisFixture : IAsyncLifetime
+{
+    private readonly RedisContainer _container = new RedisBuilder()
+        .WithImage("redis:7-alpine")
+        .Build();
+
+    private ConnectionMultiplexer? _connection;
+
+    public string ConnectionString => _container.GetConnectionString();
+
+    public IDatabase Database => _connection!.GetDatabase();
+
+    public async Task InitializeAsync()
+    {
+        await _container.StartAsync();
+        _connection = await ConnectionMultiplexer.ConnectAsync(ConnectionString);
+    }
+
+    public async Task DisposeAsync()
+    {
+        if (_connection != null)
+        {
+            await _connection.CloseAsync();
+        }
+        await _container.DisposeAsync();
+    }
+
+    /// <summary>
+    /// Flush all keys for test isolation.
+    /// Call this in test cleanup if needed.
+    /// </summary>
+    public async Task FlushDatabaseAsync()
+    {
+        var server = _connection!.GetServer(_container.Hostname, _container.GetMappedPublicPort(6379));
+        await server.FlushDatabaseAsync();
+    }
+}
+
+/// <summary>
+/// Collection definition for sharing Redis container across tests.
+/// </summary>
+[CollectionDefinition("Redis")]
+public class RedisCollection : ICollectionFixture<RedisFixture>
+{
+}
+
+/// <summary>
+/// Example test using the shared Redis fixture.
+/// </summary>
+[Collection("Redis")]
+public class CacheServiceTests
+{
+    private readonly RedisFixture _fixture;
+
+    public CacheServiceTests(RedisFixture fixture)
+    {
+        _fixture = fixture;
+    }
+
+    [Fact]
+    public async Task SetAndGet_WithValidKey_ReturnsValue()
+    {
+        // Arrange
+        var db = _fixture.Database;
+        var key = "test:key";
+        var value = "test-value";
+
+        // Act
+        await db.StringSetAsync(key, value);
+        var result = await db.StringGetAsync(key);
+
+        // Assert
+        Assert.Equal(value, result.ToString());
+
+        // Cleanup
+        await _fixture.FlushDatabaseAsync();
+    }
+}

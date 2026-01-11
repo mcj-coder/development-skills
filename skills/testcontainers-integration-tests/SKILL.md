@@ -21,6 +21,60 @@ production-equivalent infrastructure.
 - Tests are flaky due to shared test database state
 - Repository uses or should use Testcontainers
 
+## Detection and Deference
+
+Before creating new Testcontainers setup, check for existing patterns:
+
+```bash
+# Check for existing Testcontainers packages (.NET)
+grep -r "Testcontainers" **/*.csproj 2>/dev/null
+
+# Check for existing test fixtures
+find . -name "*Fixture*.cs" -path "*/Tests/*" 2>/dev/null
+
+# Check for existing container configurations
+grep -r "PostgreSqlBuilder\|RedisBuilder\|RabbitMqBuilder" **/*.cs 2>/dev/null
+```
+
+**If existing setup found:**
+
+- Use the existing fixture patterns and naming conventions
+- Add new containers to existing collection definitions
+- Follow established test isolation approach
+
+**If no setup found:**
+
+- Create shared fixtures using templates
+- Document testing approach in `docs/testing-strategy.md`
+
+## Decision Capture
+
+Document your integration testing approach:
+
+```markdown
+<!-- docs/testing-strategy.md or docs/adr/NNNN-integration-testing.md -->
+
+## Integration Testing Approach
+
+**Decision:** Use Testcontainers for integration tests
+
+**Containers Used:**
+
+- PostgreSQL 15 - Primary database
+- Redis 7 - Caching layer
+
+**Rationale:**
+
+- Real database catches SQL-specific issues
+- Container isolation prevents test pollution
+- CI/CD compatible with Docker support
+
+**Lifecycle:**
+
+- Shared fixtures per test collection (performance)
+- Transaction rollback for test isolation
+```
+
 ## Core Workflow
 
 1. **Identify infrastructure** (database type, version, queue, cache)
@@ -56,3 +110,45 @@ See `references/ci-cd-integration.md` for CI/CD patterns.
 **All mean: Apply testcontainers-integration-tests with optimizations.**
 
 See `references/performance-optimization.md` for rationalizations table.
+
+## Reference Templates
+
+Test fixtures and project templates for quick setup:
+
+| Template                                                      | Purpose                                   |
+| ------------------------------------------------------------- | ----------------------------------------- |
+| [postgres-fixture.cs](templates/postgres-fixture.cs.template) | PostgreSQL shared fixture with xUnit      |
+| [redis-fixture.cs](templates/redis-fixture.cs.template)       | Redis shared fixture with xUnit           |
+| [test-project.csproj](templates/test-project.csproj.template) | Test project with Testcontainers packages |
+
+### Quick Setup
+
+```bash
+# Copy test project template
+cp templates/test-project.csproj.template tests/YourProject.Tests/YourProject.Tests.csproj
+
+# Copy fixture templates
+cp templates/postgres-fixture.cs.template tests/YourProject.Tests/Fixtures/PostgresFixture.cs
+cp templates/redis-fixture.cs.template tests/YourProject.Tests/Fixtures/RedisFixture.cs
+
+# Restore packages
+dotnet restore tests/YourProject.Tests/
+```
+
+### Container Packages
+
+Install the appropriate Testcontainers package for your infrastructure:
+
+```bash
+# PostgreSQL
+dotnet add package Testcontainers.PostgreSql
+
+# Redis
+dotnet add package Testcontainers.Redis
+
+# RabbitMQ
+dotnet add package Testcontainers.RabbitMq
+
+# MongoDB
+dotnet add package Testcontainers.MongoDb
+```

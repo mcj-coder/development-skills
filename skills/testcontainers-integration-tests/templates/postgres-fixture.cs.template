@@ -1,0 +1,107 @@
+using Testcontainers.PostgreSql;
+using Npgsql;
+using Xunit;
+
+namespace YourProject.Tests.Fixtures;
+
+/// <summary>
+/// Shared PostgreSQL container fixture for integration tests.
+/// Uses xUnit IAsyncLifetime for proper container lifecycle management.
+/// </summary>
+public class PostgresFixture : IAsyncLifetime
+{
+    private readonly PostgreSqlContainer _container = new PostgreSqlBuilder()
+        .WithImage("postgres:15-alpine")
+        .WithDatabase("testdb")
+        .WithUsername("test")
+        .WithPassword("test")
+        .Build();
+
+    public string ConnectionString => _container.GetConnectionString();
+
+    public async Task InitializeAsync()
+    {
+        await _container.StartAsync();
+        await ApplyMigrationsAsync();
+    }
+
+    public async Task DisposeAsync()
+    {
+        await _container.DisposeAsync();
+    }
+
+    private async Task ApplyMigrationsAsync()
+    {
+        // Apply your database migrations here
+        // Example using raw SQL:
+        await using var connection = new NpgsqlConnection(ConnectionString);
+        await connection.OpenAsync();
+
+        await using var command = connection.CreateCommand();
+        command.CommandText = """
+            CREATE TABLE IF NOT EXISTS users (
+                id SERIAL PRIMARY KEY,
+                email VARCHAR(255) NOT NULL UNIQUE,
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            );
+            """;
+        await command.ExecuteNonQueryAsync();
+    }
+
+    /// <summary>
+    /// Reset database state between tests for isolation.
+    /// Call this in test cleanup if not using transactions.
+    /// </summary>
+    public async Task ResetDatabaseAsync()
+    {
+        await using var connection = new NpgsqlConnection(ConnectionString);
+        await connection.OpenAsync();
+
+        await using var command = connection.CreateCommand();
+        command.CommandText = "TRUNCATE TABLE users RESTART IDENTITY CASCADE;";
+        await command.ExecuteNonQueryAsync();
+    }
+}
+
+/// <summary>
+/// Collection definition for sharing PostgreSQL container across tests.
+/// </summary>
+[CollectionDefinition("Postgres")]
+public class PostgresCollection : ICollectionFixture<PostgresFixture>
+{
+}
+
+/// <summary>
+/// Example test using the shared PostgreSQL fixture.
+/// </summary>
+[Collection("Postgres")]
+public class UserRepositoryTests
+{
+    private readonly PostgresFixture _fixture;
+
+    public UserRepositoryTests(PostgresFixture fixture)
+    {
+        _fixture = fixture;
+    }
+
+    [Fact]
+    public async Task CreateUser_WithValidEmail_ReturnsUserId()
+    {
+        // Arrange
+        await using var connection = new NpgsqlConnection(_fixture.ConnectionString);
+        await connection.OpenAsync();
+
+        // Act
+        await using var command = connection.CreateCommand();
+        command.CommandText = "INSERT INTO users (email) VALUES (@email) RETURNING id";
+        command.Parameters.AddWithValue("email", "test@example.com");
+        var userId = await command.ExecuteScalarAsync();
+
+        // Assert
+        Assert.NotNull(userId);
+        Assert.True((int)userId! > 0);
+
+        // Cleanup for test isolation
+        await _fixture.ResetDatabaseAsync();
+    }
+}
