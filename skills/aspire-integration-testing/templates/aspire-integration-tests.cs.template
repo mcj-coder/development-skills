@@ -1,0 +1,91 @@
+// Aspire Integration Tests Template
+// Usage: Copy to tests/{Project}.AppHost.Tests/IntegrationTests.cs
+// Replace {NAMESPACE} with your root namespace
+// Replace {AppHostProject} with your AppHost project reference
+
+using System.Net;
+using Aspire.Hosting.Testing;
+using Microsoft.Extensions.DependencyInjection;
+using Xunit;
+
+namespace {NAMESPACE}.AppHost.Tests;
+
+public class IntegrationTests : IAsyncLifetime
+{
+    private DistributedApplication? _app;
+    private HttpClient? _httpClient;
+
+    public async Task InitializeAsync()
+    {
+        var appHost = await DistributedApplicationTestingBuilder
+            .CreateAsync<Projects.{AppHostProject}>();
+
+        _app = await appHost.BuildAsync();
+        await _app.StartAsync();
+
+        _httpClient = _app.CreateHttpClient("apiservice");
+    }
+
+    public async Task DisposeAsync()
+    {
+        if (_app is not null)
+        {
+            await _app.DisposeAsync();
+        }
+    }
+
+    /// <summary>
+    /// Verifies all services start successfully without errors.
+    /// </summary>
+    [Fact]
+    public async Task Application_Should_Start_Successfully()
+    {
+        Assert.NotNull(_app);
+
+        // Verify no startup exceptions occurred
+        var resources = _app.Services.GetRequiredService<ResourceNotificationService>();
+        // Application started if we reach this point
+    }
+
+    /// <summary>
+    /// Verifies /health endpoint returns 200 OK.
+    /// </summary>
+    [Fact]
+    public async Task HealthEndpoint_Should_Return_Healthy()
+    {
+        Assert.NotNull(_httpClient);
+
+        var response = await _httpClient.GetAsync("/health");
+
+        Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+    }
+
+    /// <summary>
+    /// Verifies /alive endpoint returns 200 OK.
+    /// </summary>
+    [Fact]
+    public async Task AliveEndpoint_Should_Return_Ok()
+    {
+        Assert.NotNull(_httpClient);
+
+        var response = await _httpClient.GetAsync("/alive");
+
+        Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+    }
+
+    /// <summary>
+    /// Verifies API can be reached and returns expected response.
+    /// Customize this test for your specific API endpoints.
+    /// </summary>
+    [Fact]
+    public async Task Api_Should_Respond_To_Requests()
+    {
+        Assert.NotNull(_httpClient);
+
+        var response = await _httpClient.GetAsync("/");
+
+        Assert.True(
+            response.IsSuccessStatusCode,
+            $"Expected success but got {response.StatusCode}");
+    }
+}
