@@ -188,3 +188,53 @@
 - [ ] Azure DevOps commands documented (CLI limitations noted)
 - [ ] GitLab commands documented (API requirements noted)
 - [ ] Bitbucket documented as manual-only
+
+## Persona-Switching Integration
+
+### Scenario: User enables persona-switching during bootstrap
+
+**Context:** User runs bootstrap on a new repository and chooses to enable
+multi-identity workflow.
+
+**Expected behaviour:**
+
+- [ ] Skill prompts "Enable multi-identity workflow?" during bootstrap
+- [ ] Prompt defaults to No (persona-switching is optional)
+- [ ] If user selects Yes, skill chains to persona-switching setup flow
+- [ ] Persona-switching skill generates playbook in `docs/playbooks/persona-switching.md`
+- [ ] Persona-switching skill generates shell config in `~/.config/<repo-name>/persona-config.sh`
+- [ ] Bootstrap continues with remaining items after persona-switching setup completes
+- [ ] Opt-out decision recorded in `.repo-bootstrap.yml` if user declines
+
+### Scenario: User declines persona-switching during bootstrap
+
+**Context:** User runs bootstrap and chooses not to enable multi-identity workflow.
+
+**Expected behaviour:**
+
+- [ ] Skill accepts No answer without requiring justification (optional feature)
+- [ ] Skill records opt-out in `.repo-bootstrap.yml` with reason "optional - user declined"
+- [ ] Skill continues with remaining bootstrap items
+- [ ] No persona-switching playbook or shell config created
+
+### Scenario: Bootstrap re-run with existing persona-switching
+
+**Context:** User re-runs bootstrap on repository that already has persona-switching configured.
+
+**Expected behaviour:**
+
+- [ ] Skill detects existing `docs/playbooks/persona-switching.md`
+- [ ] Skill skips persona-switching prompt (already configured)
+- [ ] Skill reports persona-switching as "already configured" in summary
+- [ ] No duplicate artifacts created
+
+### Scenario: Persona-switching prerequisite check
+
+**Context:** User enables persona-switching but lacks bash/GPG/gh prerequisites.
+
+**Expected behaviour:**
+
+- [ ] Persona-switching skill checks prerequisites before setup
+- [ ] Missing prerequisites reported with installation instructions
+- [ ] User can choose to continue without persona-switching
+- [ ] Bootstrap continues with remaining items if user declines

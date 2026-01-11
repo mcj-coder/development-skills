@@ -1,7 +1,8 @@
 # Repository Best Practices Checklist
 
-This checklist covers 6 categories of repository best practices. Each item includes
-platform-specific CLI commands for GitHub (primary), Azure DevOps, and GitLab.
+This checklist covers 8 mandatory categories plus 1 optional category of repository
+best practices. Each item includes platform-specific CLI commands for GitHub
+(primary), Azure DevOps, and GitLab.
 
 **Legend:**
 
@@ -1292,3 +1293,66 @@ pre-commit install
 # Run on all files
 pre-commit run --all-files
 ```
+
+## 9. Multi-Identity Workflow (Optional)
+
+### 9.1 Persona-Switching
+
+**Description:** Enable multi-identity Git/GitHub workflows with role-specific personas.
+
+**Cost:** Free
+
+**Opt-out:** `multi-identity` (category) or `persona-switching` (feature)
+
+**Detection:**
+
+```bash
+# Check if already configured
+test -f docs/playbooks/persona-switching.md && echo "CONFIGURED" || echo "NOT CONFIGURED"
+```
+
+**Prerequisites:**
+
+```bash
+# Check required tools
+command -v bash &>/dev/null && echo "bash: OK" || echo "bash: MISSING"
+command -v gpg &>/dev/null && echo "gpg: OK" || echo "gpg: MISSING"
+command -v gh &>/dev/null && echo "gh: OK" || echo "gh: MISSING"
+
+# Check bash version (requires 4.0+)
+if [ "${BASH_VERSINFO[0]}" -ge 4 ]; then
+  echo "bash version: OK (${BASH_VERSION})"
+else
+  echo "bash version: NEEDS UPGRADE (${BASH_VERSION})"
+fi
+```
+
+**Prompt:**
+
+Ask user: **"Enable multi-identity workflow?"** (Y/n)
+
+- Default: No (optional feature)
+- If Yes: Chain to persona-switching skill setup flow
+- If No: Record opt-out and continue
+
+**Setup (if enabled):**
+
+The persona-switching skill handles the full setup flow:
+
+1. Role Discovery - Parse existing `docs/roles/*.md` or use defaults
+2. Security Profile Configuration - Map personas to GitHub accounts
+3. Generate Artifacts:
+   - `docs/playbooks/persona-switching.md` - Repository playbook
+   - `~/.config/<repo-name>/persona-config.sh` - User's shell config
+4. Verify Setup - Test commands
+
+**Opt-out Recording:**
+
+```yaml
+# .repo-bootstrap.yml
+opt_out:
+  features:
+    - persona-switching # optional - user declined
+```
+
+See [persona-switching skill](../../persona-switching/SKILL.md) for full setup flow.

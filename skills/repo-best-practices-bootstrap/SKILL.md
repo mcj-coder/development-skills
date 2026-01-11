@@ -25,6 +25,7 @@ Applicable to both greenfield (new repository) and brownfield (existing reposito
 6. Development Standards - .editorconfig, .gitignore, .gitattributes, pre-commit config
 7. Project Management - Project board linking, kanban/sprint workflow configuration
 8. Standard Tooling - husky, prettier, markdownlint, lint-staged, local secret scanning
+9. Multi-Identity Workflow (Optional) - Persona-switching for role-based commits and GPG signing
 
 ## When to Use
 
@@ -293,6 +294,61 @@ gh api repos/OWNER/REPO/branches/main/protection/required_signatures -X POST
 Generate `docs/playbooks/enable-signed-commits.md` from template for future reference.
 
 See [Signed Commits Playbook Template](templates/playbooks/enable-signed-commits.md).
+
+### Step 4a: Persona-Switching Integration (Optional)
+
+After core configuration, offer multi-identity workflow setup:
+
+#### Detection
+
+Check if persona-switching is already configured:
+
+```bash
+# Check for existing playbook
+if [ -f "docs/playbooks/persona-switching.md" ]; then
+  echo "Persona-switching already configured - skipping"
+  # Report as "already configured" in summary
+else
+  # Proceed to prompt
+fi
+```
+
+#### Prompt
+
+Ask user: **"Enable multi-identity workflow?"** (Y/n)
+
+- **Default:** No (persona-switching is optional)
+- **If Yes:** Chain to persona-switching skill setup flow
+- **If No:** Record opt-out and continue
+
+#### If Enabled
+
+Chain to `persona-switching` skill setup flow:
+
+1. **Role Discovery** - Parse existing `docs/roles/*.md` or use defaults
+2. **Security Profile Configuration** - Map personas to GitHub accounts
+3. **Generate Artifacts:**
+   - `docs/playbooks/persona-switching.md` - Repository playbook
+   - `~/.config/<repo-name>/persona-config.sh` - User's shell config
+4. **Verify Setup** - Test `use_persona` and `show_persona` commands
+
+See [persona-switching skill](../persona-switching/SKILL.md) for full setup flow.
+
+#### If Declined
+
+Record opt-out in `.repo-bootstrap.yml`:
+
+```yaml
+opt_out:
+  features:
+    - persona-switching # optional - user declined
+```
+
+No justification required (optional feature).
+
+#### Continue Bootstrap
+
+After persona-switching setup completes (or is declined), continue with Step 5.
 
 ### Step 5: Generate CI/CD Workflow
 
