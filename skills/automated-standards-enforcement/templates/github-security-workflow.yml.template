@@ -1,0 +1,60 @@
+# GitHub Actions Security Scanning Workflow Template
+# Copy to: .github/workflows/security.yml
+# Adjust tools based on your language and dependencies
+
+name: Security Scan
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  schedule:
+    - cron: "0 0 * * 1" # Weekly on Monday
+
+jobs:
+  dependency-review:
+    name: Dependency Review
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/dependency-review-action@v4
+        with:
+          fail-on-severity: high
+
+  # Node.js security (uncomment for JS/TS projects)
+  # npm-audit:
+  #   name: NPM Audit
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: actions/checkout@v4
+  #     - uses: actions/setup-node@v4
+  #       with:
+  #         node-version: "20"
+  #     - run: npm ci
+  #     - run: npm audit --audit-level=high
+
+  # .NET security (uncomment for C# projects)
+  # dotnet-security:
+  #   name: .NET Security
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: actions/checkout@v4
+  #     - uses: actions/setup-dotnet@v4
+  #       with:
+  #         dotnet-version: "9.0.x"
+  #     - run: dotnet list package --vulnerable
+
+  # CodeQL for SAST
+  codeql:
+    name: CodeQL Analysis
+    runs-on: ubuntu-latest
+    permissions:
+      security-events: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: github/codeql-action/init@v3
+        with:
+          languages: javascript # Change to: javascript, csharp, python, etc.
+      - uses: github/codeql-action/analyze@v3

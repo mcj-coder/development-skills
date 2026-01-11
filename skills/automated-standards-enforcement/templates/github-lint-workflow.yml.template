@@ -1,0 +1,52 @@
+# GitHub Actions Lint and Format Workflow Template
+# Copy to: .github/workflows/lint.yml
+# Replace {LANGUAGE} with: node, dotnet, or python
+
+name: Lint & Format Check
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  lint:
+    name: Lint & Format
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      # Node.js setup (for JavaScript/TypeScript projects)
+      # Uncomment and adjust for your language
+      # - uses: actions/setup-node@v4
+      #   with:
+      #     node-version: "20"
+      #     cache: "npm"
+      # - run: npm ci
+      # - run: npm run lint
+
+      # .NET setup
+      # - uses: actions/setup-dotnet@v4
+      #   with:
+      #     dotnet-version: "9.0.x"
+      # - run: dotnet format --verify-no-changes
+
+      # Python setup
+      # - uses: actions/setup-python@v5
+      #   with:
+      #     python-version: "3.12"
+      # - run: pip install ruff
+      # - run: ruff check .
+      # - run: ruff format --check .
+
+      # Spelling check (language-agnostic)
+      - name: Spell Check
+        uses: streetsidesoftware/cspell-action@v6
+        with:
+          incremental_files_only: false
+
+      # Format check with Prettier (for repos using Prettier)
+      # - name: Check formatting
+      #   run: npx prettier --check .
