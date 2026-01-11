@@ -83,3 +83,35 @@ Before starting implementation:
 **All mean: Apply 2x rule. Fix or create tech-debt issue. No ignoring.**
 
 See `references/rationalizations.md` for complete excuse table and brownfield strategies.
+
+## Quick-Fix Scripts
+
+Common broken window scenarios with immediate fixes:
+
+| Scenario             | Fix Command                          | Description                  |
+| -------------------- | ------------------------------------ | ---------------------------- |
+| Format violations    | `npm run lint:fix` / `dotnet format` | Auto-fix formatting issues   |
+| Spelling errors      | Update `cspell.json` words list      | Add valid technical terms    |
+| Missing dependencies | `npm ci` / `dotnet restore`          | Restore package dependencies |
+| Outdated lockfile    | `npm install`                        | Regenerate package-lock.json |
+
+### Quick-Fix Script Template
+
+For projects with multiple fix commands, create `scripts/fix-all.sh`:
+
+```bash
+#!/usr/bin/env bash
+# fix-all.sh - Fix common broken window issues
+set -euo pipefail
+
+echo "=== Restoring dependencies ==="
+npm ci 2>/dev/null || dotnet restore 2>/dev/null || echo "No package manager detected"
+
+echo "=== Fixing formatting ==="
+npm run lint:fix 2>/dev/null || dotnet format 2>/dev/null || echo "No formatter configured"
+
+echo "=== Done ==="
+echo "Run 'npm run lint' or equivalent to verify all issues resolved"
+```
+
+Use this script to quickly address multiple broken windows before commits.
