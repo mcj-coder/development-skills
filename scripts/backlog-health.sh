@@ -28,7 +28,10 @@ OUTPUT_FILE="backlog-health-report.md"
 # Severity tracking
 WARNING_COUNT=0
 ALERT_COUNT=0
-TOTAL_ISSUES=0
+
+# Constants
+TITLE_MAX_LENGTH=60
+ISSUE_LIMIT=500
 
 # Parse arguments
 while [[ $# -gt 0 ]]; do
@@ -106,10 +109,20 @@ days_since() {
     now=$(date +%s)
     then=$(date -d "$date_str" +%s 2>/dev/null || date -j -f "%Y-%m-%dT%H:%M:%SZ" "$date_str" +%s 2>/dev/null || echo "0")
     if [[ "$then" == "0" ]]; then
+        debug "Date parsing failed for: $date_str (falling back to 0 days)"
         echo "0"
         return
     fi
     echo $(( (now - then) / 86400 ))
+}
+
+# Check if issue count indicates possible truncation
+check_truncation_warning() {
+    local count="$1"
+    local context="$2"
+    if [[ "$count" -eq "$ISSUE_LIMIT" ]]; then
+        echo "::warning title=Possible Truncation::$context returned exactly $ISSUE_LIMIT issues - results may be truncated"
+    fi
 }
 
 # Retry wrapper for gh commands
@@ -137,14 +150,18 @@ check_missing_labels() {
     debug "Checking for missing labels..."
     local issues
     local missing_labels=()
+    local issue_count
 
     # Get all open issues with their labels and state
-    issues=$(retry_gh issue list --state open --limit 500 \
+    issues=$(retry_gh issue list --state open --limit "$ISSUE_LIMIT" \
         --json number,title,labels \
-        --jq '.[] | "\(.number)\t\(.title | gsub("\t"; " ") | .[0:60])\t\([.labels[].name] | join(","))"') || {
+        --jq '.[] | "\(.number)\t\(.title | gsub("\t"; " ") | .[0:'"$TITLE_MAX_LENGTH"'])\t\([.labels[].name] | join(","))"') || {
         echo "::warning title=Check Failed::Could not fetch issues for label check"
         return 0
     }
+
+    issue_count=$(echo "$issues" | grep -c . || echo "0")
+    check_truncation_warning "$issue_count" "Missing labels check"
 
     while IFS=$'\t' read -r number title labels; do
         [[ -z "$number" ]] && continue
@@ -192,13 +209,17 @@ check_stale_state() {
     debug "Checking for stale state..."
     local issues
     local stale_state=()
+    local issue_count
 
-    issues=$(retry_gh issue list --state open --label "state:new-feature" --limit 500 \
+    issues=$(retry_gh issue list --state open --label "state:new-feature" --limit "$ISSUE_LIMIT" \
         --json number,title,createdAt \
-        --jq '.[] | "\(.number)\t\(.title | gsub("\t"; " ") | .[0:60])\t\(.createdAt)"') || {
+        --jq '.[] | "\(.number)\t\(.title | gsub("\t"; " ") | .[0:'"$TITLE_MAX_LENGTH"'])\t\(.createdAt)"') || {
         echo "::warning title=Check Failed::Could not fetch new-feature issues"
         return 0
     }
+
+    issue_count=$(echo "$issues" | grep -c . || echo "0")
+    check_truncation_warning "$issue_count" "Stale state check"
 
     while IFS=$'\t' read -r number title created; do
         [[ -z "$number" ]] && continue
@@ -232,13 +253,17 @@ check_unanswered_questions() {
     debug "Checking for unanswered questions..."
     local issues
     local unanswered=()
+    local issue_count
 
-    issues=$(retry_gh issue list --state open --label "needs-info" --limit 500 \
+    issues=$(retry_gh issue list --state open --label "needs-info" --limit "$ISSUE_LIMIT" \
         --json number,title,updatedAt \
-        --jq '.[] | "\(.number)\t\(.title | gsub("\t"; " ") | .[0:60])\t\(.updatedAt)"') || {
+        --jq '.[] | "\(.number)\t\(.title | gsub("\t"; " ") | .[0:'"$TITLE_MAX_LENGTH"'])\t\(.updatedAt)"') || {
         echo "::warning title=Check Failed::Could not fetch needs-info issues"
         return 0
     }
+
+    issue_count=$(echo "$issues" | grep -c . || echo "0")
+    check_truncation_warning "$issue_count" "Unanswered questions check"
 
     while IFS=$'\t' read -r number title updated; do
         [[ -z "$number" ]] && continue
@@ -270,15 +295,19 @@ check_extended_blocks() {
     debug "Checking for extended blocks..."
     local issues
     local extended_blocks=()
+    local issue_count
 
     # Get blocked issues - need to find when blocked label was added
     # For simplicity, use updatedAt as proxy (label addition updates issue)
-    issues=$(retry_gh issue list --state open --label "blocked" --limit 500 \
+    issues=$(retry_gh issue list --state open --label "blocked" --limit "$ISSUE_LIMIT" \
         --json number,title,updatedAt \
-        --jq '.[] | "\(.number)\t\(.title | gsub("\t"; " ") | .[0:60])\t\(.updatedAt)"') || {
+        --jq '.[] | "\(.number)\t\(.title | gsub("\t"; " ") | .[0:'"$TITLE_MAX_LENGTH"'])\t\(.updatedAt)"') || {
         echo "::warning title=Check Failed::Could not fetch blocked issues"
         return 0
     }
+
+    issue_count=$(echo "$issues" | grep -c . || echo "0")
+    check_truncation_warning "$issue_count" "Extended blocks check"
 
     while IFS=$'\t' read -r number title updated; do
         [[ -z "$number" ]] && continue
@@ -331,13 +360,17 @@ check_stale_issues() {
     debug "Checking for stale issues..."
     local issues
     local stale_issues=()
+    local issue_count
 
-    issues=$(retry_gh issue list --state open --limit 500 \
+    issues=$(retry_gh issue list --state open --limit "$ISSUE_LIMIT" \
         --json number,title,updatedAt \
-        --jq '.[] | "\(.number)\t\(.title | gsub("\t"; " ") | .[0:60])\t\(.updatedAt)"') || {
+        --jq '.[] | "\(.number)\t\(.title | gsub("\t"; " ") | .[0:'"$TITLE_MAX_LENGTH"'])\t\(.updatedAt)"') || {
         echo "::warning title=Check Failed::Could not fetch issues for staleness check"
         return 0
     }
+
+    issue_count=$(echo "$issues" | grep -c . || echo "0")
+    check_truncation_warning "$issue_count" "Stale issues check"
 
     while IFS=$'\t' read -r number title updated; do
         [[ -z "$number" ]] && continue
@@ -435,6 +468,7 @@ main() {
     # Generate report to temp file, then move (atomic)
     local temp_file
     temp_file=$(mktemp)
+    trap 'rm -f "$temp_file"' EXIT
 
     {
         generate_summary
