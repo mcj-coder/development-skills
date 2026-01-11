@@ -152,6 +152,27 @@ Use when:
 
 **Verification checkpoint passed** ✅ - You may now create PR.
 
+##### PR Preview (Dry-Run)
+
+Before creating the PR, preview what will be included:
+
+```bash
+# Preview commits that will be in PR
+git log main..HEAD --oneline
+
+# Preview files changed
+git diff main...HEAD --stat
+
+# Preview PR body (dry-run - shows what would be created)
+echo "Title: [Your PR Title]"
+echo "Base: main"
+echo "Head: $(git branch --show-current)"
+echo "Commits: $(git rev-list main..HEAD --count)"
+echo "Files changed: $(git diff main...HEAD --name-only | wc -l)"
+```
+
+##### Create PR
+
 ```bash
 # Ensure branch is pushed
 git push -u origin feat/branch-name
