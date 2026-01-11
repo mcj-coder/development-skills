@@ -1,0 +1,43 @@
+---
+name: Epic
+about: Large work item that will be decomposed into child tickets
+title: "epic: "
+labels: epic
+assignees: ""
+---
+
+## Goal
+
+<!-- One sentence: [Action] [target] to [benefit] -->
+
+## Child Tickets
+
+<!-- Will be populated after decomposition -->
+
+- [ ] #
+- [ ] #
+- [ ] #
+
+## Dependency Graph
+
+<!-- Mermaid diagram showing relationships -->
+
+```mermaid
+graph TD
+    A[Foundation] --> B[Feature 1]
+    A --> C[Feature 2]
+    B --> D[Cleanup]
+    C --> D
+```
+
+## Requirements Summary
+
+<!-- High-level requirements that span child tickets -->
+
+1.
+2.
+3.
+
+## Context
+
+<!-- Why this epic? Business value? Timeline? -->

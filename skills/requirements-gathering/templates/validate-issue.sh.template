@@ -1,0 +1,38 @@
+#!/usr/bin/env bash
+# validate-issue.sh - Validate GitHub issue has required sections
+# Usage: ./validate-issue.sh <issue-number>
+set -euo pipefail
+
+ISSUE_NUM="${1:?Usage: $0 <issue-number>}"
+
+echo "=== Validating Issue #${ISSUE_NUM} ==="
+
+# Fetch issue body
+BODY=$(gh issue view "$ISSUE_NUM" --json body --jq '.body')
+
+# Required sections for feature/bug issues
+REQUIRED_SECTIONS=("Goal" "Acceptance Criteria")
+MISSING=()
+
+for section in "${REQUIRED_SECTIONS[@]}"; do
+    if ! echo "$BODY" | grep -qi "## $section"; then
+        MISSING+=("$section")
+    fi
+done
+
+# Check for at least one acceptance criterion
+if ! echo "$BODY" | grep -qE "^\s*-\s*\[.\]"; then
+    MISSING+=("Acceptance criteria checkboxes")
+fi
+
+# Report results
+if [[ ${#MISSING[@]} -eq 0 ]]; then
+    echo "✓ Issue #${ISSUE_NUM} has all required sections"
+    exit 0
+else
+    echo "✗ Issue #${ISSUE_NUM} is missing:"
+    for item in "${MISSING[@]}"; do
+        echo "  - $item"
+    done
+    exit 1
+fi
