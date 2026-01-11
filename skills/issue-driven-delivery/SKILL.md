@@ -10,6 +10,19 @@ description: Use when work is tied to a ticketing system work item and requires 
 Use work items as the source of truth for planning, approvals, execution evidence, and reviews. Team members self-assign
 work items when taking ownership and unassign at state transitions to enable pull-based coordination.
 
+## Process Model
+
+This skill supports **Kanban** (default) and **Scrum** (optional) process models.
+
+**Kanban (recommended):** Continuous flow with pull-based work assignment. Work items flow through
+states without time-boxed iterations. See [Process Models](references/process-models.md) for details.
+
+**Scrum mode:** Optional time-boxed iterations with ceremony integration. Enable when your team
+uses Scrum and needs sprint boundary handling. Document your choice in ways-of-working or an ADR.
+
+See [Process Models](references/process-models.md) for sprint boundary handling, carryover guidance,
+and ceremony integration points (standup, planning, review, retrospective).
+
 ## Prerequisites
 
 - Ticketing system CLI installed and authenticated (gh for GitHub, ado for Azure DevOps, jira for Jira).
