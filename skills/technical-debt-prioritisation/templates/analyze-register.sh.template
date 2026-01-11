@@ -1,0 +1,41 @@
+#!/usr/bin/env bash
+# analyze-register.sh - Analyze debt register and generate summary
+# Usage: ./analyze-register.sh [debt-register.md]
+set -euo pipefail
+
+REGISTER="${1:-docs/debt-register.md}"
+
+if [[ ! -f "$REGISTER" ]]; then
+    echo "Error: Debt register not found at $REGISTER" >&2
+    echo "Create one using: cp templates/debt-register.md.template docs/debt-register.md" >&2
+    exit 1
+fi
+
+echo "=== Debt Register Analysis ==="
+echo "File: $REGISTER"
+echo ""
+
+# Count items by status (look for table rows with status column)
+PENDING=$(grep -cE "\|\s*Pending\s*\|" "$REGISTER" 2>/dev/null || echo "0")
+SCHEDULED=$(grep -cE "\|\s*Scheduled\s*\|" "$REGISTER" 2>/dev/null || echo "0")
+IN_PROGRESS=$(grep -cE "\|\s*In Progress\s*\|" "$REGISTER" 2>/dev/null || echo "0")
+COMPLETE=$(grep -cE "\|\s*Complete\s*\|" "$REGISTER" 2>/dev/null || echo "0")
+DEFERRED=$(grep -cE "\|\s*Deferred\s*\|" "$REGISTER" 2>/dev/null || echo "0")
+
+TOTAL=$((PENDING + SCHEDULED + IN_PROGRESS + COMPLETE + DEFERRED))
+
+echo "Status Summary:"
+echo "  Pending:     $PENDING"
+echo "  Scheduled:   $SCHEDULED"
+echo "  In Progress: $IN_PROGRESS"
+echo "  Complete:    $COMPLETE"
+echo "  Deferred:    $DEFERRED"
+echo "  Total:       $TOTAL"
+echo ""
+
+# Identify quick wins (Score > 4.0 in pending status)
+echo "Quick Wins (Score > 4.0, Pending):"
+grep -E "\|\s*[4-9]\.[0-9]+\s*\|\s*Pending\s*\|" "$REGISTER" 2>/dev/null || echo "  None found"
+echo ""
+
+echo "Last updated: $(grep -E "^Last updated:" "$REGISTER" 2>/dev/null | cut -d: -f2- | xargs || echo "Unknown")"

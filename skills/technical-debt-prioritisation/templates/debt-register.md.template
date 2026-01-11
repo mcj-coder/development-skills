@@ -1,0 +1,76 @@
+# Technical Debt Register
+
+Last updated: YYYY-MM-DD
+
+## Summary
+
+| Category       | Items | Avg Score | Quick Wins |
+| -------------- | ----- | --------- | ---------- |
+| Code Quality   | 0     | -         | 0          |
+| Architecture   | 0     | -         | 0          |
+| Testing        | 0     | -         | 0          |
+| Documentation  | 0     | -         | 0          |
+| Infrastructure | 0     | -         | 0          |
+| Dependencies   | 0     | -         | 0          |
+| Security       | 0     | -         | 0          |
+| **Total**      | **0** | **-**     | **0**      |
+
+## Debt Items
+
+### Code Quality
+
+| ID  | Description | Impact | Risk | Effort | Score | Status  |
+| --- | ----------- | ------ | ---- | ------ | ----- | ------- |
+| CQ1 | [Example]   | 3      | 2    | 2      | 2.50  | Pending |
+
+### Architecture
+
+| ID  | Description | Impact | Risk | Effort | Score | Status |
+| --- | ----------- | ------ | ---- | ------ | ----- | ------ |
+
+### Testing
+
+| ID  | Description | Impact | Risk | Effort | Score | Status |
+| --- | ----------- | ------ | ---- | ------ | ----- | ------ |
+
+### Documentation
+
+| ID  | Description | Impact | Risk | Effort | Score | Status |
+| --- | ----------- | ------ | ---- | ------ | ----- | ------ |
+
+### Infrastructure
+
+| ID  | Description | Impact | Risk | Effort | Score | Status |
+| --- | ----------- | ------ | ---- | ------ | ----- | ------ |
+
+### Dependencies
+
+| ID  | Description | Impact | Risk | Effort | Score | Status |
+| --- | ----------- | ------ | ---- | ------ | ----- | ------ |
+
+### Security
+
+| ID  | Description | Impact | Risk | Effort | Score | Status |
+| --- | ----------- | ------ | ---- | ------ | ----- | ------ |
+
+## Scoring Guide
+
+- **Impact (1-5)**: Business/developer cost if not addressed
+- **Risk (1-5)**: Probability of harm occurring
+- **Effort (1-5)**: Work required to address (1=hours, 5=weeks)
+- **Score**: (Impact + Risk) / Effort
+- **Quick Win**: Score > 4.0 AND Effort <= 2
+
+## Status Legend
+
+- **Pending**: Not yet addressed
+- **Scheduled**: In sprint/quarter plan
+- **In Progress**: Currently being addressed
+- **Complete**: Resolved
+- **Deferred**: Consciously postponed (document reason)
+
+## Change Log
+
+| Date       | Change                | By  |
+| ---------- | --------------------- | --- |
+| YYYY-MM-DD | Register created      | -   |
