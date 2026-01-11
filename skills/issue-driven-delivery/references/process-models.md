@@ -250,14 +250,42 @@ gh issue edit N --add-label "sprint:current"
    - Review velocity (closed vs committed)
    - Identify carryover patterns
    - Note any blocked work duration
+   - **Aggregate retro items from sprint period:**
+
+   ```bash
+   # Get retro-flagged items from sprint date range
+   SPRINT_START="2026-01-06"
+   SPRINT_END="2026-01-17"
+   gh issue list --label "retro" --state all \
+     --search "closed:$SPRINT_START..$SPRINT_END" \
+     --json number,title,closedAt
+
+   # Get linked retro-item issues
+   gh issue list --label "work-type:retro-item" --state open
+
+   # Search for retro comments in sprint issues
+   gh api search/issues --method GET \
+     -f q="repo:{owner}/{repo} \"Retrospective Item\" in:comments closed:$SPRINT_START..$SPRINT_END"
+   ```
+
 2. **During retrospective:**
    - Discuss workflow bottlenecks
    - Review WIP limit effectiveness
    - Identify grooming/refinement improvements
+   - **Review aggregated retro items** with source context
 3. **After retrospective:**
    - Create improvement issues with `work-type:enhancement`
    - Update ways-of-working if process changes agreed
    - Document in `docs/retrospectives/YYYY-MM-DD-sprint-N.md`
+   - **Mark retro items as addressed:**
+
+   ```bash
+   # Remove retro label from discussed items
+   gh issue edit N --remove-label "retro"
+
+   # Close linked retro-item issues
+   gh issue close N --comment "Addressed in Sprint N retrospective"
+   ```
 
 ## Ceremony Timing Reference
 
