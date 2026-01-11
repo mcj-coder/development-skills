@@ -1,0 +1,86 @@
+// Clean Architecture Test Template
+// Usage: Copy to tests/{Project}.ArchitectureTests/ArchitectureTests.cs
+// Replace {NAMESPACE} with your root namespace
+
+using NetArchTest.Rules;
+using Xunit;
+
+namespace {NAMESPACE}.ArchitectureTests;
+
+public class CleanArchitectureTests
+{
+    private const string DomainNamespace = "{NAMESPACE}.Domain";
+    private const string ApplicationNamespace = "{NAMESPACE}.Application";
+    private const string InfrastructureNamespace = "{NAMESPACE}.Infrastructure";
+    private const string WebNamespace = "{NAMESPACE}.Web";
+
+    /// <summary>
+    /// Domain layer should have no dependencies on other layers.
+    /// Domain contains entities, value objects, and domain services.
+    /// </summary>
+    [Fact]
+    public void Domain_Should_Not_Depend_On_Other_Layers()
+    {
+        var result = Types.InNamespace(DomainNamespace)
+            .Should()
+            .NotHaveDependencyOnAny(
+                ApplicationNamespace,
+                InfrastructureNamespace,
+                WebNamespace)
+            .GetResult();
+
+        Assert.True(result.IsSuccessful,
+            $"Domain layer has forbidden dependencies: {string.Join(", ", result.FailingTypeNames ?? [])}");
+    }
+
+    /// <summary>
+    /// Application layer should only depend on Domain.
+    /// Application contains use cases, commands, queries, and handlers.
+    /// </summary>
+    [Fact]
+    public void Application_Should_Only_Depend_On_Domain()
+    {
+        var result = Types.InNamespace(ApplicationNamespace)
+            .Should()
+            .NotHaveDependencyOnAny(
+                InfrastructureNamespace,
+                WebNamespace)
+            .GetResult();
+
+        Assert.True(result.IsSuccessful,
+            $"Application layer has forbidden dependencies: {string.Join(", ", result.FailingTypeNames ?? [])}");
+    }
+
+    /// <summary>
+    /// Infrastructure should not depend on Web layer.
+    /// Infrastructure contains data access, external services, etc.
+    /// </summary>
+    [Fact]
+    public void Infrastructure_Should_Not_Depend_On_Web()
+    {
+        var result = Types.InNamespace(InfrastructureNamespace)
+            .Should()
+            .NotHaveDependencyOn(WebNamespace)
+            .GetResult();
+
+        Assert.True(result.IsSuccessful,
+            $"Infrastructure layer has forbidden dependencies: {string.Join(", ", result.FailingTypeNames ?? [])}");
+    }
+
+    /// <summary>
+    /// Controllers should be in Web layer only.
+    /// </summary>
+    [Fact]
+    public void Controllers_Should_Be_In_Web_Layer()
+    {
+        var result = Types.InCurrentDomain()
+            .That()
+            .HaveNameEndingWith("Controller")
+            .Should()
+            .ResideInNamespace(WebNamespace)
+            .GetResult();
+
+        Assert.True(result.IsSuccessful,
+            $"Controllers outside Web layer: {string.Join(", ", result.FailingTypeNames ?? [])}");
+    }
+}
