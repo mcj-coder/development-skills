@@ -5,8 +5,8 @@
 # IMPORTANT: Set file permissions to 600 (chmod 600 <this-file>)
 # This file contains account mappings but no secrets.
 #
-# Platform: Linux/macOS only (requires bash 4.0+, gpg, gh CLI)
-# Windows users: Use WSL2 or Git Bash with GPG4Win
+# Platform: Linux, macOS, WSL2, Git Bash (requires bash 4.0+, gpg, gh CLI)
+# Windows users: Requires WSL2 or Git Bash with GPG4Win
 #
 # Usage:
 #   source ~/.config/{{REPO_NAME}}/persona-config.sh
