@@ -1,0 +1,86 @@
+# ADR-NNNN: Walking Skeleton Architecture
+
+## Status
+
+Proposed | Accepted | Superseded
+
+## Context
+
+<!-- What is the situation that requires a walking skeleton? -->
+
+We are building [system name] and need to validate the architecture before
+full implementation. Key uncertainties include:
+
+- [Technology choice]
+- [Integration pattern]
+- [Deployment approach]
+
+## Decision
+
+We will build a walking skeleton that proves:
+
+1. [Key architectural concern 1]
+2. [Key architectural concern 2]
+3. [End-to-end deployment works]
+
+### Skeleton Scope
+
+**IN SCOPE (minimal viable slice):**
+
+- [ ] Single HTTP endpoint (GET /health or POST /api/resource)
+- [ ] Basic persistence (one table/collection)
+- [ ] Health check endpoint
+- [ ] Deployment pipeline to [target environment]
+- [ ] One BDD acceptance test
+
+**OUT OF SCOPE (deferred to feature work):**
+
+- [ ] Business logic beyond trivial
+- [ ] Authentication/authorization
+- [ ] Comprehensive error handling
+- [ ] Multiple entity relationships
+- [ ] Performance optimization
+
+### Technology Choices
+
+| Component    | Choice     | Rationale                 |
+| ------------ | ---------- | ------------------------- |
+| API          | [Framework] | [Why this choice]         |
+| Persistence  | [Database]  | [Why this choice]         |
+| Deployment   | [Platform]  | [Why this choice]         |
+| Testing      | [Framework] | [Why this choice]         |
+
+## Consequences
+
+### Positive
+
+- Architecture validated before significant investment
+- Deployment pipeline established early
+- Team gains confidence in technical decisions
+
+### Negative
+
+- Requires discipline to maintain minimal scope
+- May feel slow initially before feature work
+
+### Risks
+
+- Scope creep into feature work
+- Skeleton becomes throwaway code (should be production quality)
+
+## Validation Criteria
+
+Skeleton is complete when:
+
+- [ ] BDD acceptance test passes in deployed environment
+- [ ] Health check returns 200 OK
+- [ ] Data persists across restarts
+- [ ] Deployment is repeatable (run pipeline twice)
+
+## Next Steps
+
+After skeleton validation:
+
+1. Document learnings and update this ADR
+2. Create feature backlog based on skeleton foundation
+3. Begin incremental feature delivery

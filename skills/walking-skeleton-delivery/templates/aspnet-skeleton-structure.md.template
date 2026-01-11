@@ -1,0 +1,96 @@
+# ASP.NET Walking Skeleton Structure
+
+## Recommended Project Layout
+
+```text
+src/
+├── YourApp.Api/
+│   ├── Program.cs              # Minimal API setup
+│   ├── Endpoints/
+│   │   └── HealthEndpoints.cs  # Health check
+│   └── YourApp.Api.csproj
+├── YourApp.Domain/
+│   └── Entities/
+│       └── Resource.cs         # Single entity
+├── YourApp.Infrastructure/
+│   ├── Persistence/
+│   │   └── AppDbContext.cs     # EF Core context
+│   └── YourApp.Infrastructure.csproj
+tests/
+├── YourApp.Tests.Acceptance/
+│   ├── Features/
+│   │   └── HealthCheck.feature # BDD scenario
+│   └── Steps/
+│       └── HealthCheckSteps.cs
+└── YourApp.Tests.Acceptance.csproj
+```
+
+## Minimal Program.cs
+
+```csharp
+var builder = WebApplication.CreateBuilder(args);
+
+// Minimal services for skeleton
+builder.Services.AddDbContext<AppDbContext>(options =>
+    options.UseNpgsql(builder.Configuration.GetConnectionString("Default")));
+
+var app = builder.Build();
+
+// Health check
+app.MapGet("/health", () => Results.Ok(new { status = "healthy" }));
+
+// Single resource endpoint
+app.MapPost("/api/resources", async (Resource resource, AppDbContext db) =>
+{
+    db.Resources.Add(resource);
+    await db.SaveChangesAsync();
+    return Results.Created($"/api/resources/{resource.Id}", resource);
+});
+
+app.Run();
+```
+
+## Minimal Entity
+
+```csharp
+public class Resource
+{
+    public int Id { get; set; }
+    public string Name { get; set; } = string.Empty;
+    public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+}
+```
+
+## BDD Scenario
+
+```gherkin
+Feature: Health Check
+
+Scenario: API is healthy
+  When I request GET /health
+  Then the response status should be 200
+  And the response should contain "healthy"
+```
+
+## Commands
+
+```bash
+# Create solution
+dotnet new sln -n YourApp
+
+# Create projects
+dotnet new webapi -n YourApp.Api -o src/YourApp.Api
+dotnet new classlib -n YourApp.Domain -o src/YourApp.Domain
+dotnet new classlib -n YourApp.Infrastructure -o src/YourApp.Infrastructure
+dotnet new xunit -n YourApp.Tests.Acceptance -o tests/YourApp.Tests.Acceptance
+
+# Add to solution
+dotnet sln add src/YourApp.Api
+dotnet sln add src/YourApp.Domain
+dotnet sln add src/YourApp.Infrastructure
+dotnet sln add tests/YourApp.Tests.Acceptance
+
+# Add packages
+dotnet add src/YourApp.Infrastructure package Microsoft.EntityFrameworkCore
+dotnet add src/YourApp.Infrastructure package Npgsql.EntityFrameworkCore.PostgreSQL
+```

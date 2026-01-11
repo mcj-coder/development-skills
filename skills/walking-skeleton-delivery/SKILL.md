@@ -21,6 +21,48 @@ that validates your technical decisions in days, not weeks.
 - Building distributed system (multi-service)
 - User asks to "prove the architecture" or "validate approach"
 
+## Detection and Deference
+
+Before creating new skeleton structure, check for existing work:
+
+```bash
+# Check for existing solution/project structure
+ls *.sln src/ 2>/dev/null
+
+# Check for existing deployment pipeline
+ls .github/workflows/*.yml azure-pipelines.yml 2>/dev/null
+
+# Check for existing architecture ADRs
+ls docs/adr/*skeleton* docs/adr/*architecture* 2>/dev/null
+```
+
+**If existing structure found:**
+
+- Build skeleton within existing project layout
+- Use existing deployment pipeline patterns
+- Reference existing architecture decisions
+
+**If no structure found:**
+
+- Create minimal project structure using templates
+- Document decisions in architecture ADR
+
+## Decision Capture
+
+Document skeleton architecture decisions:
+
+```bash
+# Create architecture ADR for skeleton
+cp templates/skeleton-adr.md.template docs/adr/0001-walking-skeleton-architecture.md
+```
+
+Key decisions to capture:
+
+- Technology choices with rationale
+- Explicit scope (in/out)
+- Validation criteria
+- Learnings after validation
+
 ## Core Workflow
 
 1. **Define skeleton goal** (what are we proving?)
@@ -52,3 +94,43 @@ See `references/examples-by-pattern.md` for concrete examples.
 
 See `references/pitfalls-and-scope-creep.md` for rationalizations table.
 See `references/technology-spike-distinction.md` for spike vs skeleton guidance.
+
+## Reference Templates
+
+Templates for skeleton implementation:
+
+| Template                                                                        | Purpose                        |
+| ------------------------------------------------------------------------------- | ------------------------------ |
+| [skeleton-adr.md](templates/skeleton-adr.md.template)                           | Architecture decision template |
+| [aspnet-skeleton-structure.md](templates/aspnet-skeleton-structure.md.template) | ASP.NET project structure      |
+| [skeleton-scope-checklist.md](templates/skeleton-scope-checklist.md.template)   | Scope control checklist        |
+
+### Quick Setup
+
+```bash
+# Create architecture ADR
+mkdir -p docs/adr
+cp templates/skeleton-adr.md.template docs/adr/0001-walking-skeleton-architecture.md
+
+# Follow ASP.NET skeleton structure
+cat templates/aspnet-skeleton-structure.md.template
+
+# Use scope checklist during implementation
+cat templates/skeleton-scope-checklist.md.template
+```
+
+### Scaffolding Commands
+
+```bash
+# .NET solution
+dotnet new sln -n YourApp
+dotnet new webapi -n YourApp.Api -o src/YourApp.Api
+
+# Node.js
+npm init -y
+npm install express
+
+# Python
+python -m venv .venv
+pip install fastapi uvicorn
+```
