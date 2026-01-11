@@ -1,0 +1,17 @@
+{
+  "$schema": "https://raw.githubusercontent.com/DavidAnson/markdownlint/main/schema/markdownlint-config-schema.json",
+  "comment": "Strict configuration - all rules enabled for documentation-heavy projects",
+  "default": true,
+  "MD013": {
+    "line_length": 80,
+    "code_blocks": false,
+    "tables": false,
+    "stern": true
+  },
+  "MD024": { "siblings_only": true },
+  "MD033": { "allowed_elements": ["br", "details", "summary"] },
+  "MD041": true,
+  "MD043": {
+    "headers": ["# *", "## Overview", "## *"]
+  }
+}

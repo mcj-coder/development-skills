@@ -1,0 +1,17 @@
+{
+  "$schema": "https://raw.githubusercontent.com/DavidAnson/markdownlint/main/schema/markdownlint-config-schema.json",
+  "comment": "Minimal configuration - essential rules only for simple projects",
+  "default": false,
+  "MD001": true,
+  "MD003": { "style": "atx" },
+  "MD009": true,
+  "MD010": true,
+  "MD012": true,
+  "MD018": true,
+  "MD019": true,
+  "MD022": true,
+  "MD023": true,
+  "MD025": true,
+  "MD040": true,
+  "MD047": true
+}

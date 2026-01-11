@@ -1,0 +1,14 @@
+{
+  "$schema": "https://raw.githubusercontent.com/streetsidesoftware/cspell/main/cspell.schema.json",
+  "version": "0.2",
+  "language": "en-US",
+  "words": [],
+  "ignorePaths": [
+    "node_modules/**",
+    "package-lock.json",
+    ".git/**",
+    "dist/**",
+    "build/**"
+  ],
+  "dictionaries": ["typescript", "node", "npm", "softwareTerms"]
+}
