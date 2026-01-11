@@ -1,0 +1,65 @@
+// Layered Architecture Test Template
+// Usage: Copy to tests/{Project}.ArchitectureTests/LayeredArchitectureTests.cs
+// Replace {NAMESPACE} with your root namespace
+
+using NetArchTest.Rules;
+using Xunit;
+
+namespace {NAMESPACE}.ArchitectureTests;
+
+public class LayeredArchitectureTests
+{
+    private const string DataAccessNamespace = "{NAMESPACE}.DataAccess";
+    private const string BusinessNamespace = "{NAMESPACE}.Business";
+    private const string PresentationNamespace = "{NAMESPACE}.Presentation";
+
+    /// <summary>
+    /// Data Access layer should not depend on Business or Presentation.
+    /// Data Access contains repositories, DbContext, migrations.
+    /// </summary>
+    [Fact]
+    public void DataAccess_Should_Not_Depend_On_Upper_Layers()
+    {
+        var result = Types.InNamespace(DataAccessNamespace)
+            .Should()
+            .NotHaveDependencyOnAny(
+                BusinessNamespace,
+                PresentationNamespace)
+            .GetResult();
+
+        Assert.True(result.IsSuccessful,
+            $"DataAccess has forbidden dependencies: {string.Join(", ", result.FailingTypeNames ?? [])}");
+    }
+
+    /// <summary>
+    /// Business layer should not depend on Presentation.
+    /// Business contains services, domain logic, DTOs.
+    /// </summary>
+    [Fact]
+    public void Business_Should_Not_Depend_On_Presentation()
+    {
+        var result = Types.InNamespace(BusinessNamespace)
+            .Should()
+            .NotHaveDependencyOn(PresentationNamespace)
+            .GetResult();
+
+        Assert.True(result.IsSuccessful,
+            $"Business layer has forbidden dependencies: {string.Join(", ", result.FailingTypeNames ?? [])}");
+    }
+
+    /// <summary>
+    /// Presentation layer can depend on Business.
+    /// Presentation contains controllers, views, view models.
+    /// </summary>
+    [Fact]
+    public void Presentation_Should_Only_Depend_On_Business()
+    {
+        var result = Types.InNamespace(PresentationNamespace)
+            .Should()
+            .NotHaveDependencyOn(DataAccessNamespace)
+            .GetResult();
+
+        Assert.True(result.IsSuccessful,
+            $"Presentation should not directly access DataAccess: {string.Join(", ", result.FailingTypeNames ?? [])}");
+    }
+}
