@@ -1,0 +1,37 @@
+---
+name: Bug Report
+about: Report a bug or defect
+title: "fix: "
+labels: bug
+assignees: ""
+---
+
+## Goal
+
+<!-- One sentence: Fix [problem] to [restore expected behavior] -->
+
+## Steps to Reproduce
+
+1.
+2.
+3.
+
+## Expected Behavior
+
+<!-- What should happen -->
+
+## Actual Behavior
+
+<!-- What happens instead -->
+
+## Acceptance Criteria
+
+<!-- Testable conditions confirming the fix -->
+
+- [ ] Bug no longer reproducible following steps above
+- [ ]
+- [ ]
+
+## Context
+
+<!-- Environment, version, when it started, impact -->

@@ -1,0 +1,26 @@
+#!/usr/bin/env bash
+# install-issue-templates.sh - Install GitHub issue templates in repository
+# Usage: ./install-issue-templates.sh [target-repo-path]
+set -euo pipefail
+
+TARGET_DIR="${1:-.}"
+TEMPLATE_DIR="$TARGET_DIR/.github/ISSUE_TEMPLATE"
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
+echo "=== Installing GitHub Issue Templates ==="
+
+# Create directory structure
+mkdir -p "$TEMPLATE_DIR"
+
+# Copy templates (removing .template suffix)
+for template in "$SCRIPT_DIR"/github-*-issue.md.template; do
+    if [[ -f "$template" ]]; then
+        filename=$(basename "$template" .template)
+        cp "$template" "$TEMPLATE_DIR/$filename"
+        echo "✓ Installed $filename"
+    fi
+done
+
+echo ""
+echo "Templates installed to: $TEMPLATE_DIR"
+echo "Commit these files to enable issue templates in your repository."
