@@ -83,6 +83,8 @@ model: reasoning # Complex analysis → Opus 4.5, GPT-5.2
 
 - **[Tech Lead](tech-lead.md)** - Technical architecture and design oversight
 - **[Senior Developer](senior-developer.md)** - Code quality and implementation excellence
+- **[Backend Developer](backend-developer.md)** - Stack-specific backend implementation and scalability
+- **[Frontend Developer](frontend-developer.md)** - Frontend implementation and browser security
 - **[QA Engineer](qa-engineer.md)** - Quality assurance and testing strategy
 
 ### Security and Performance
@@ -94,6 +96,7 @@ model: reasoning # Complex analysis → Opus 4.5, GPT-5.2
 ### Operations and Infrastructure
 
 - **[DevOps Engineer](devops-engineer.md)** - Deployment, operations, and infrastructure
+- **[Automation Engineer](automation-engineer.md)** - Build-time automation and developer enablement
 - **[Cloud Architect](cloud-architect.md)** - Cloud infrastructure and platform design
 
 ### Product and Design
@@ -160,10 +163,13 @@ Use these exact names when referencing roles:
 
 - `Tech Lead` (not: "Technical Lead", "Architect", "Tech Arch")
 - `Senior Developer` (not: "Developer", "Sr Dev", "Engineer")
+- `Backend Developer` (not: "Backend", "Backend Eng", "Server Dev")
+- `Frontend Developer` (not: "Frontend", "Frontend Eng", "UI Dev")
 - `QA Engineer` (not: "QA", "Tester", "Quality Assurance")
 - `Security Reviewer` (not: "Security", "Sec Engineer", "AppSec")
 - `Performance Engineer` (not: "Performance", "Perf Engineer")
 - `DevOps Engineer` (not: "DevOps", "SRE", "Ops")
+- `Automation Engineer` (not: "Automation", "Build Engineer", "CI/CD Engineer")
 - `Product Owner` (not: "PO", "Product", "Product Manager")
 - `Scrum Master` (not: "SM", "Scrum", "Process Manager", "Agile Coach")
 - `Documentation Specialist` (not: "Docs", "Tech Writer")
@@ -190,19 +196,20 @@ When multiple roles seem applicable, use these criteria:
 
 ### By Scope
 
-| Scope            | Use These Roles                                |
-| ---------------- | ---------------------------------------------- |
-| Single component | Senior Developer, Security Reviewer, QA        |
-| Cross-cutting    | Tech Lead, Performance Engineer, DevOps        |
-| Enterprise-wide  | Technical Architect, Security Architect, Cloud |
+| Scope            | Use These Roles                                          |
+| ---------------- | -------------------------------------------------------- |
+| Single component | Senior Developer, Backend/Frontend Developer, QA         |
+| Cross-cutting    | Tech Lead, Performance Engineer, DevOps, Automation      |
+| Enterprise-wide  | Technical Architect, Security Architect, Cloud Architect |
 
 ### By Phase
 
-| Phase          | Use These Roles                                 |
-| -------------- | ----------------------------------------------- |
-| Design         | Tech Lead, Technical Architect, Cloud Architect |
-| Implementation | Senior Developer, Security Reviewer             |
-| Review         | QA Engineer, Documentation Specialist           |
+| Phase          | Use These Roles                                          |
+| -------------- | -------------------------------------------------------- |
+| Design         | Tech Lead, Technical Architect, Cloud Architect          |
+| Implementation | Senior Developer, Backend Developer, Frontend Developer  |
+| Review         | QA Engineer, Security Reviewer, Documentation Specialist |
+| Automation     | Automation Engineer, DevOps Engineer                     |
 
 ### Overlapping Domains
 
@@ -212,6 +219,10 @@ When multiple roles seem applicable, use these criteria:
   Security Architect for compliance, threat modelling, or system-level security
 - **Senior Developer vs QA Engineer**: Senior Developer for code quality; QA Engineer
   for test strategy and coverage
+- **Senior Developer vs Backend/Frontend Developer**: Senior Developer for cross-cutting
+  patterns and quality; Backend/Frontend Developer for stack-specific implementation
+- **DevOps Engineer vs Automation Engineer**: DevOps for run-time operations and
+  production; Automation Engineer for build-time automation and developer enablement
 
 ## Validation
 
