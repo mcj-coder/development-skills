@@ -45,6 +45,17 @@ These rules tighten the workflow for autonomous execution.
   - See [BDD Checklist Templates](docs/references/bdd-checklist-templates.md) for
     concrete vs process-only verification patterns. TDD applies equally to documentation
     as it does to code - no "verify after" changes allowed.
+  - **Bug Fix TDD Workflow:** When a bug is discovered during implementation, follow this
+    strict sequence:
+    1. **STOP** - Do not fix immediately, even if the fix seems obvious
+    2. **Write failing test** - Create a test that reproduces the bug
+    3. **Verify test fails** - Confirm the test fails with the current code
+    4. **Commit failing test** - Record the RED phase with evidence
+    5. **Implement fix** - Make the minimum change to fix the bug
+    6. **Verify test passes** - Confirm the fix resolves the issue
+    7. **Commit fix** - Record the GREEN phase with evidence
+       This applies even when the fix is trivial - the test documents the bug and prevents
+       regression.
 - **Fallback stays compliant.** If handing off to a human, the same skills-first
   workflow still applies.
 - **PR close policy.** Follow the README merge policy (rebase, then choose
