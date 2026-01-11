@@ -21,6 +21,29 @@ and 6-month horizons.
 - Quarterly planning for debt remediation
 - Justifying debt work to management
 
+## Detection and Deference
+
+Before creating new debt tracking, check for existing systems:
+
+```bash
+# Check for existing debt register
+ls docs/debt-register.md docs/technical-debt.md docs/tech-debt/ 2>/dev/null
+
+# Check for debt tracking in issues
+gh issue list --label "tech-debt" --state open --json number,title --jq 'length'
+```
+
+**If existing tracking found:**
+
+- Use the existing format and location
+- Don't create duplicate tracking systems
+- Add to existing register rather than creating new
+
+**If no tracking found:**
+
+- Create `docs/debt-register.md` from template
+- Establish scoring convention with team
+
 ## Core Workflow
 
 1. **Inventory debt items** (collect from backlog, code analysis, team input)
@@ -58,3 +81,43 @@ Dependencies, Security.
 - "There's too much to prioritise"
 
 **All mean: Apply scoring framework before deciding.**
+
+## Reference Templates
+
+Templates and scripts for debt tracking automation:
+
+| Template                                                      | Purpose                              |
+| ------------------------------------------------------------- | ------------------------------------ |
+| [debt-register.md](templates/debt-register.md.template)       | Debt register with scoring tables    |
+| [calculate-score.sh](templates/calculate-score.sh.template)   | Calculate priority score for item    |
+| [analyze-register.sh](templates/analyze-register.sh.template) | Analyze register and find quick wins |
+
+### Quick Setup
+
+```bash
+# Create debt register from template
+cp templates/debt-register.md.template docs/debt-register.md
+
+# Calculate score for a debt item (impact=4, risk=3, effort=2)
+./calculate-score.sh 4 3 2
+# Output: Score: 3.50, Quick Win: No
+
+# Analyze existing register
+./analyze-register.sh docs/debt-register.md
+```
+
+### CI Integration
+
+Add to your CI pipeline to track debt over time:
+
+```yaml
+# .github/workflows/debt-check.yml
+- name: Check debt register
+  run: |
+    ./scripts/analyze-register.sh docs/debt-register.md
+    # Fail if quick wins exceed threshold
+    QUICK_WINS=$(grep -c "Quick Win" docs/debt-register.md || echo 0)
+    if [ "$QUICK_WINS" -gt 5 ]; then
+      echo "::warning::$QUICK_WINS quick wins pending - consider addressing"
+    fi
+```

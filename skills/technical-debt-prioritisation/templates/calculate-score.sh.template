@@ -1,0 +1,40 @@
+#!/usr/bin/env bash
+# calculate-score.sh - Calculate technical debt priority scores
+# Usage: ./calculate-score.sh <impact> <risk> <effort>
+# Returns: Priority score and quick-win status
+set -euo pipefail
+
+IMPACT="${1:?Usage: $0 <impact 1-5> <risk 1-5> <effort 1-5>}"
+RISK="${2:?Usage: $0 <impact 1-5> <risk 1-5> <effort 1-5>}"
+EFFORT="${3:?Usage: $0 <impact 1-5> <risk 1-5> <effort 1-5>}"
+
+# Validate inputs
+for val in "$IMPACT" "$RISK" "$EFFORT"; do
+    if ! [[ "$val" =~ ^[1-5]$ ]]; then
+        echo "Error: All values must be integers 1-5" >&2
+        exit 1
+    fi
+done
+
+# Calculate score: (Impact + Risk) / Effort
+SCORE=$(echo "scale=2; ($IMPACT + $RISK) / $EFFORT" | bc)
+
+# Determine if quick win
+QUICK_WIN="No"
+if (( $(echo "$SCORE > 4.0" | bc -l) )) && (( EFFORT <= 2 )); then
+    QUICK_WIN="Yes"
+fi
+
+echo "=== Debt Item Score ==="
+echo "Impact:    $IMPACT/5"
+echo "Risk:      $RISK/5"
+echo "Effort:    $EFFORT/5"
+echo "Score:     $SCORE"
+echo "Quick Win: $QUICK_WIN"
+
+# Exit with quick-win status for scripting
+if [[ "$QUICK_WIN" == "Yes" ]]; then
+    exit 0
+else
+    exit 1
+fi
