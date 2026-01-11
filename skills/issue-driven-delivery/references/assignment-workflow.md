@@ -164,14 +164,129 @@ jira issue assign <issue-key> --default
 jira issue list --jql "assignee is EMPTY AND status = 'In Progress'"
 ```
 
+## WIP Limit Enforcement
+
+Work-In-Progress (WIP) limits prevent bottlenecks and context switching by capping how many
+tickets one person can have assigned simultaneously.
+
+### Default WIP Limit
+
+**Default: 2 tickets per person** in any in-progress state (refinement, implementation, verification).
+
+This default balances productivity (allows for blocked ticket + active work) with focus (prevents
+over-commitment).
+
+### Validation Before Self-Assignment
+
+Before self-assigning a new ticket, check your current assignment count:
+
+**GitHub:**
+
+```bash
+# Check how many tickets you currently have assigned
+MY_ASSIGNED=$(gh issue list --assignee @me --state open --label "state:refinement,state:implementation,state:verification" --json number --jq 'length')
+echo "Currently assigned: $MY_ASSIGNED tickets"
+
+# Only proceed if under WIP limit
+if [ "$MY_ASSIGNED" -ge 2 ]; then
+  echo "⚠️ WIP limit reached ($MY_ASSIGNED/2). Complete existing work before taking new tickets."
+  exit 1
+fi
+```
+
+**Azure DevOps:**
+
+```bash
+# Count assigned in-progress items
+az boards work-item query --wiql "SELECT [System.Id] FROM WorkItems WHERE [System.AssignedTo] = @Me AND [System.State] IN ('Active', 'In Progress')" --query "workItems | length(@)"
+```
+
+**Jira:**
+
+```bash
+# Count assigned in-progress issues
+jira issue list --jql "assignee = currentUser() AND status IN ('In Progress', 'In Review')" --plain --columns key | wc -l
+```
+
+### When WIP Limit Exceeded
+
+If your current assignment count equals or exceeds the WIP limit:
+
+1. **STOP** - Do not self-assign new work
+2. **Review** - Check your assigned tickets for blockers or handoff opportunities
+3. **Complete or hand off** - Either finish current work or unassign if blocked
+4. **Then proceed** - Only take new work after creating capacity
+
+**Error message pattern:**
+
+```text
+⚠️ WIP limit exceeded (2/2 tickets assigned)
+Cannot self-assign issue #N.
+
+Current assignments:
+- #123: feat: implement user auth (state:implementation)
+- #456: fix: resolve login timeout (state:implementation)
+
+Actions:
+1. Complete one of your current tickets, or
+2. Unassign a blocked ticket (post blocker comment first), or
+3. Request WIP limit increase from Tech Lead
+```
+
+### Configuring WIP Limits
+
+WIP limits can be customized per team or repository. Document the decision in one of these locations:
+
+**Option 1: ADR** (recommended for significant deviation from default)
+
+```yaml
+# docs/adr/0003-wip-limits.md
+---
+name: wip-limits
+decision: WIP limit of 3 tickets per developer, 1 for Tech Lead during planning sprints
+status: accepted
+---
+```
+
+**Option 2: Ways of Working** (simpler)
+
+```markdown
+# docs/ways-of-working/team-agreements.md
+
+## WIP Limits
+
+- Developers: 3 tickets
+- Tech Lead: 1 ticket during sprint planning, 2 otherwise
+- QA: 4 tickets (verification is typically faster)
+```
+
+**Option 3: AGENTS.md** (for agent-specific enforcement)
+
+```markdown
+## WIP Limits
+
+Agents must respect WIP limits: maximum 2 tickets assigned at any time.
+```
+
+### WIP Limit Exceptions
+
+Temporary exceptions are allowed with explicit approval:
+
+1. **Urgent P0/P1 work** - May exceed limit for critical fixes (document reason)
+2. **Handoff coordination** - Brief overlap during transitions is acceptable
+3. **Team capacity** - Tech Lead may approve temporary increase
+
+Document any exception in the ticket comment thread.
+
 ## Common Patterns
 
 ### Starting Work
 
-1. Find next unassigned ticket in appropriate state
-2. Verify ticket has all needed context
-3. Self-assign ticket
-4. Begin work
+1. **Check WIP limit** - Verify you have capacity for new work
+2. Find next unassigned ticket in appropriate state
+3. Verify ticket has all needed context
+4. Self-assign ticket
+5. Begin work
 
 ### Completing Your Phase
 
