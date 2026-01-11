@@ -53,6 +53,51 @@ Autonomous delivery follows four explicit phases:
 4. Close the work item when verified complete.
 5. If any criteria are unclear or evidence incomplete, hand off to human.
 
+## Detection and Deference
+
+Before applying any configuration or prompting for setup, check for existing state.
+This prevents re-prompting for already-configured repositories and respects prior decisions.
+
+### Existing Configuration Detection
+
+Check these patterns before prompting:
+
+| Item               | Detection Pattern                    | If Found                |
+| ------------------ | ------------------------------------ | ----------------------- |
+| Work Items section | `grep -q "^## Work Items" README.md` | Skip section creation   |
+| Taskboard URL      | `grep -q "Taskboard:" README.md`     | Use existing URL        |
+| Platform CLI       | `command -v gh/ado/jira`             | Skip CLI install prompt |
+| CLI authentication | `gh auth status` / `ado auth status` | Skip auth prompt        |
+
+### Deference Rules
+
+When existing configuration is detected:
+
+1. **Taskboard URL exists:** Use it directly, do not prompt for platform choice.
+2. **CLI installed:** Proceed to authentication check without install prompt.
+3. **CLI authenticated:** Proceed directly to ticket operations.
+4. **Work Items section exists:** Do not offer to add one.
+
+Only prompt when detection fails or configuration is incomplete.
+
+### Validation Script
+
+Use the validation script to check configuration state:
+
+```bash
+# Check all prerequisites at once
+./scripts/validate-setup.sh
+
+# Example output:
+# README Work Items: CONFIGURED (github.com/org/repo)
+# Platform: GitHub
+# CLI (gh): INSTALLED
+# Auth: AUTHENTICATED
+# Status: READY
+```
+
+See [scripts/validate-setup.sh](scripts/validate-setup.sh) for the full validation script.
+
 ## Invocation Signals
 
 Start when a comment mentions the agent and includes a task verb (for example,
@@ -76,6 +121,50 @@ Before making changes, use brainstorming to confirm:
 - Agent CLIs to configure and which is primary
 
 Do not proceed until these are explicit.
+
+### Decision Capture
+
+After confirming platform and tooling choices, capture them as discoverable records:
+
+1. **README Work Items section:** Add `Taskboard: <url>` for immediate discoverability.
+2. **ADR (Architecture Decision Record):** Create `docs/decisions/NNNN-taskboard-platform.md`
+   documenting the platform choice, rationale, and alternatives considered.
+
+Example ADR structure:
+
+```markdown
+# ADR-NNNN: Taskboard Platform Selection
+
+## Status
+
+Accepted
+
+## Context
+
+Project needs work item tracking for agent automation.
+
+## Decision
+
+Use GitHub Issues as the taskboard platform.
+
+## Rationale
+
+- Repository already on GitHub
+- gh CLI provides full API access
+- Team familiar with GitHub workflow
+
+## Alternatives Considered
+
+- Azure DevOps: Would require separate authentication
+- Jira: Additional licensing cost
+
+## Consequences
+
+- Agents use `gh` CLI for all work item operations
+- Work Items section in README points to GitHub repo
+```
+
+This ensures future agents and team members understand the decision context.
 
 ## Work Item Discovery
 
