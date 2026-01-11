@@ -396,6 +396,125 @@ When sub-agent work conflicts:
 - Architectural conflicts: Escalate to human supervisor
 - Security-related conflicts: Always escalate
 
+## Git Worktree Isolation
+
+Sub-agents work in isolated git worktrees to enable true parallel development
+without file conflicts. This section documents worktree lifecycle and integration
+with the `superpowers:using-git-worktrees` skill.
+
+### When to Use Worktrees
+
+| Scenario                          | Use Worktree | Reason                        |
+| --------------------------------- | ------------ | ----------------------------- |
+| Multiple sub-agents same issue    | Yes          | Prevents file conflicts       |
+| Sequential tasks same issue       | No           | Single worktree sufficient    |
+| Parallel feature development      | Yes          | Isolation enables concurrency |
+| Quick fix while other work paused | Yes          | Don't disturb paused work     |
+| Single sub-agent task             | Optional     | Overhead may not be justified |
+
+### Worktree Lifecycle
+
+```text
+CREATE → WORK → INTEGRATE → CLEANUP
+```
+
+#### 1. Create Worktree
+
+When dispatching a sub-agent to an independent task:
+
+```bash
+# Create worktree for sub-agent task
+git worktree add ../.worktrees/wt-backend-123 -b feat/123-backend-work main
+
+# Sub-agent works in isolated directory
+cd ../.worktrees/wt-backend-123
+```
+
+**Naming convention:** `wt-<domain>-<issue>`
+
+- `wt-backend-123` - Backend work for issue #123
+- `wt-frontend-123` - Frontend work for issue #123
+- `wt-qa-123` - QA work for issue #123
+
+#### 2. Work in Worktree
+
+Sub-agent operates normally within worktree:
+
+- Make changes and commits
+- Run tests
+- Push to feature branch
+
+```bash
+# In worktree directory
+git add .
+git commit -m "feat: implement backend endpoint (#123)"
+git push -u origin feat/123-backend-work
+```
+
+#### 3. Integrate Back
+
+After sub-agent completes, primary agent integrates:
+
+```bash
+# From main worktree
+git fetch origin
+git merge origin/feat/123-backend-work --no-ff
+
+# Or rebase if preferred
+git rebase origin/feat/123-backend-work
+```
+
+**Integration order matters:**
+
+1. Integrate in dependency order (backend before frontend)
+2. Run tests after each integration
+3. Resolve conflicts as they arise
+
+#### 4. Cleanup
+
+After successful integration:
+
+```bash
+# Remove worktree
+git worktree remove ../.worktrees/wt-backend-123
+
+# Delete remote branch if merged
+git push origin --delete feat/123-backend-work
+```
+
+### Worktree CLI Commands
+
+```bash
+# List all worktrees
+git worktree list
+
+# Add worktree from main
+git worktree add <path> -b <branch> main
+
+# Add worktree from existing branch
+git worktree add <path> <existing-branch>
+
+# Remove worktree (must be clean)
+git worktree remove <path>
+
+# Force remove (discards changes)
+git worktree remove <path> --force
+
+# Prune stale worktree references
+git worktree prune
+```
+
+### Integration with using-git-worktrees Skill
+
+This skill delegates worktree operations to `superpowers:using-git-worktrees`:
+
+1. **Automatic creation**: Worktrees created when dispatching sub-agents
+2. **Path management**: Standard `.worktrees/` directory for isolation
+3. **Cleanup tracking**: Worktrees tracked for cleanup after task completion
+
+For full worktree patterns and edge cases, see the `superpowers:using-git-worktrees`
+skill documentation.
+
 ## Persona Integration
 
 Pair programming uses `persona-switching` to manage identity and attribution across
@@ -509,6 +628,296 @@ Default: **Async notifications**
 - No blocking waits for human response
 
 Configure in ways-of-working if different preference needed.
+
+## Blocked State Handling
+
+When the agent encounters a blocker, it switches to parallel work rather than
+waiting idle. This section documents blocked detection, response, and resumption.
+
+### Blocked Detection Triggers
+
+| Trigger                   | Example                  | Auto-Detect |
+| ------------------------- | ------------------------ | ----------- |
+| External dependency       | Waiting for API access   | No          |
+| Human input required      | Ambiguous requirement    | Yes         |
+| Review pending            | Waiting for PR approval  | Yes         |
+| Resource unavailable      | CI runner queue full     | Yes         |
+| Technical blocker         | Test environment down    | No          |
+| Upstream issue unresolved | Depends on blocked issue | Yes         |
+
+**Auto-detection:** Agent recognises these blockers automatically
+**Manual detection:** Agent flags when explicitly identified
+
+### Blocked Response Protocol
+
+When blocked, the agent follows this protocol:
+
+```text
+DETECT → DOCUMENT → NOTIFY → SWITCH → MONITOR → RESUME
+```
+
+#### 1. Document Blocker
+
+Post blocker details to issue:
+
+```markdown
+## Blocked
+
+**Issue:** #123
+**Blocker:** Waiting for database credentials from ops team
+**Blocked since:** 2024-01-15 10:30 UTC
+**Impact:** Cannot complete integration tests
+
+### What's needed
+
+- Database connection string for staging environment
+- Read-only credentials acceptable
+
+### Parallel work
+
+Switching to #124 (frontend validation) while blocked.
+```
+
+#### 2. Update Status
+
+```bash
+# Add blocked label
+gh issue edit 123 --add-label "pair-programming:blocked"
+
+# Remove active label
+gh issue edit 123 --remove-label "pair-programming:active"
+```
+
+#### 3. Notify Human
+
+Per notification preferences:
+
+- Post blocker comment (always)
+- Direct notification if `notify:blocked` configured
+- Auto-escalate after timeout (default: 4 hours)
+
+#### 4. Switch to Parallel Work
+
+Select next task from backlog:
+
+```bash
+# Find next ready issue by priority
+gh issue list \
+  --label "ready" \
+  --state open \
+  --json number,title,labels \
+  --jq 'sort_by(.labels | map(select(.name | startswith("priority:"))) | .[0].name) | .[0]'
+```
+
+**Selection criteria:**
+
+1. Not blocked
+2. Highest priority
+3. No dependencies on blocked work
+4. Within agent capability
+
+#### 5. Monitor for Unblock
+
+While working on parallel task:
+
+- Periodically check blocker status
+- Watch for human comments on blocked issue
+- Listen for dependency resolution
+
+### Resumption Protocol
+
+When blocker resolved:
+
+1. **Acknowledge unblock** - Comment on issue
+
+   ```markdown
+   Blocker resolved. Resuming work on #123.
+   Current parallel work (#124) will be paused.
+   ```
+
+2. **Update labels**
+
+   ```bash
+   gh issue edit 123 --remove-label "pair-programming:blocked"
+   gh issue edit 123 --add-label "pair-programming:active"
+   ```
+
+3. **Resume from saved state** - Continue from last known good state
+
+4. **Handle parallel work** - Either complete quickly or pause for later
+
+### Escalation Configuration
+
+| Setting              | Description                   | Default  |
+| -------------------- | ----------------------------- | -------- |
+| `escalate_after`     | Hours before auto-escalation  | `4`      |
+| `escalate_to`        | Who receives escalation       | `@human` |
+| `max_blocked_issues` | Max concurrent blocked issues | `3`      |
+| `auto_close_stale`   | Close blocked issues after    | `7 days` |
+
+### Integration with issue-driven-delivery
+
+Blocked handling integrates with the `issue-driven-delivery` skill's blocked
+workflow:
+
+- Blocked issues tracked in WIP limits
+- Escalation follows defined paths
+- Retrospective includes blocked time analysis
+
+## Automated Review Loop
+
+Before requesting human review, the agent runs automated self-review using
+persona-based reviewers. This section documents the review loop process.
+
+### Review Loop Steps
+
+```text
+TESTS → TECH LEAD → QA → SECURITY (if needed) → ITERATE → HUMAN CHECKPOINT
+```
+
+#### Step 1: Run All Tests
+
+```bash
+# Run full test suite
+npm test
+
+# Check coverage meets threshold
+npm run test:coverage -- --coverageThreshold='{"global":{"lines":80}}'
+
+# Run linting
+npm run lint
+```
+
+**Gate:** All tests must pass before proceeding to reviews.
+
+#### Step 2: Tech Lead Review
+
+Switch to Tech Lead persona and review for:
+
+- Architecture alignment with project patterns
+- Code organization and structure
+- Naming conventions
+- Performance implications
+- Technical debt introduction
+
+```bash
+# Switch persona for review
+source ~/.claude/persona-config.sh
+use_persona teamlead
+```
+
+**Review checklist:**
+
+- [ ] Follows established patterns
+- [ ] No unnecessary complexity
+- [ ] Appropriate abstraction level
+- [ ] Error handling complete
+- [ ] Logging adequate
+
+#### Step 3: QA Review
+
+Switch to QA persona and review for:
+
+- Test coverage completeness
+- Edge case handling
+- Error scenarios tested
+- Integration test coverage
+- Acceptance criteria verified
+
+```bash
+use_persona qa
+```
+
+**Review checklist:**
+
+- [ ] All acceptance criteria have tests
+- [ ] Edge cases identified and tested
+- [ ] Error paths tested
+- [ ] No flaky tests introduced
+- [ ] Test naming clear and descriptive
+
+#### Step 4: Security Review (Conditional)
+
+Invoke Security review when changes include:
+
+- Authentication/authorization
+- User input handling
+- External API calls
+- Data storage/retrieval
+- Cryptographic operations
+
+```bash
+use_persona security
+```
+
+**Review checklist:**
+
+- [ ] Input validation complete
+- [ ] No injection vulnerabilities
+- [ ] Secrets not exposed
+- [ ] OWASP top 10 considered
+- [ ] Audit logging adequate
+
+### Review Personas and Triggers
+
+| Persona     | Trigger                   | Focus                    |
+| ----------- | ------------------------- | ------------------------ |
+| Tech Lead   | Always                    | Architecture, patterns   |
+| QA Engineer | Always                    | Test coverage, quality   |
+| Security    | Security-relevant changes | Vulnerabilities, secrets |
+| Docs        | Public API changes        | Documentation accuracy   |
+| DevOps      | Infrastructure changes    | Deployment, monitoring   |
+
+### Feedback Iteration
+
+When review identifies issues:
+
+1. **Categorise severity**
+   - Critical: Must fix before proceeding
+   - Important: Should fix, may proceed with plan
+   - Minor: Fix if time permits
+
+2. **Auto-fix where possible**
+   - Formatting issues: Run prettier
+   - Simple type errors: Apply obvious fix
+   - Missing tests: Generate test stubs
+
+3. **Escalate when uncertain**
+   - Architectural concerns to human
+   - Security issues to human
+   - Trade-off decisions to human
+
+4. **Re-run affected reviews**
+   - Only re-run reviews impacted by changes
+   - Track iteration count (max 3 before escalation)
+
+### Human Checkpoint Criteria
+
+Only proceed to human review when ALL conditions met:
+
+- [ ] All automated tests passing
+- [ ] Tech Lead review passed
+- [ ] QA review passed
+- [ ] Security review passed (if applicable)
+- [ ] No unresolved critical issues
+- [ ] Iteration count < 3 (or human approved continuation)
+
+**If criteria not met:**
+
+```markdown
+## Review Loop Status
+
+Unable to proceed to human checkpoint.
+
+**Blocking issues:**
+
+- [ ] QA review: 2 edge cases not tested
+- [ ] Security review: Input validation incomplete
+
+**Action needed:**
+
+Fixing identified issues and re-running review loop.
+```
 
 ## Human Supervisor Interface
 
