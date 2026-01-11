@@ -337,6 +337,31 @@ Implementation details follow...
 | "Configuration is too strict"               | Rules exist for consistency, modify config if needed     |
 | "Pre-commit hooks will catch it"            | Hooks are safety net, skill prevents issues proactively  |
 
+## Reference Templates
+
+Choose a template based on project needs:
+
+| Template                                                          | Use Case                     | Line Length | HTML      |
+| ----------------------------------------------------------------- | ---------------------------- | ----------- | --------- |
+| [markdownlint-default.json](templates/markdownlint-default.json)  | Most projects                | 120         | Allowed   |
+| [markdownlint-strict.json](templates/markdownlint-strict.json)    | Documentation-heavy projects | 80          | Limited   |
+| [markdownlint-minimal.json](templates/markdownlint-minimal.json)  | Simple projects              | Unlimited   | Allowed   |
+| [cspell-default.json](templates/cspell-default.json)              | All projects                 | N/A         | N/A       |
+
+### Quick Setup
+
+```bash
+# Default configuration (recommended)
+cp templates/markdownlint-default.json.template .markdownlint.json
+cp templates/cspell-default.json.template cspell.json
+
+# Strict configuration for docs-heavy projects
+cp templates/markdownlint-strict.json.template .markdownlint.json
+
+# Minimal configuration for simple projects
+cp templates/markdownlint-minimal.json.template .markdownlint.json
+```
+
 ## See Also
 
 - [Validation Rules Reference](references/validation-rules.md) - Complete markdownlint rule list
