@@ -66,3 +66,20 @@ and [CI Configuration](references/ci-configuration.md) for enforcement.
 **All mean: Apply brownfield approach or document explicit opt-out.**
 
 See [Tool Comparison](references/tool-comparison.md) for selection guidance.
+
+## Reference CI Workflow Templates
+
+Use pre-built CI workflow templates for common platforms:
+
+| Platform       | Template                                                                                           | Description           |
+| -------------- | -------------------------------------------------------------------------------------------------- | --------------------- |
+| GitHub Actions | [templates/github-lint-workflow.yml.template](templates/github-lint-workflow.yml.template)         | Lint and format check |
+| GitHub Actions | [templates/github-security-workflow.yml.template](templates/github-security-workflow.yml.template) | Security scanning     |
+| Azure DevOps   | [templates/azure-pipelines-lint.yml.template](templates/azure-pipelines-lint.yml.template)         | Lint pipeline         |
+
+### Using Templates
+
+1. Copy template to `.github/workflows/` or pipeline directory
+2. Replace `{LANGUAGE}` with your primary language (node, dotnet, python)
+3. Adjust tool commands to match your `package.json` / `Makefile` scripts
+4. Commit and verify workflow runs

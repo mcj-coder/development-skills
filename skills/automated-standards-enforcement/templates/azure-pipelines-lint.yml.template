@@ -1,0 +1,55 @@
+# Azure DevOps Lint Pipeline Template
+# Copy to: azure-pipelines.yml or azure-pipelines/lint.yml
+# Adjust for your language and tool stack
+
+trigger:
+  - main
+
+pr:
+  - main
+
+pool:
+  vmImage: "ubuntu-latest"
+
+stages:
+  - stage: Lint
+    displayName: "Lint & Format Check"
+    jobs:
+      - job: LintJob
+        displayName: "Run Linters"
+        steps:
+          # Node.js setup (uncomment for JS/TS projects)
+          # - task: NodeTool@0
+          #   inputs:
+          #     versionSpec: "20.x"
+          #   displayName: "Install Node.js"
+          # - script: npm ci
+          #   displayName: "npm install"
+          # - script: npm run lint
+          #   displayName: "Run ESLint"
+          # - script: npx prettier --check .
+          #   displayName: "Check Prettier formatting"
+
+          # .NET setup (uncomment for C# projects)
+          # - task: UseDotNet@2
+          #   inputs:
+          #     version: "9.0.x"
+          #   displayName: "Install .NET"
+          # - script: dotnet format --verify-no-changes
+          #   displayName: "Check .NET formatting"
+
+          # Python setup (uncomment for Python projects)
+          # - task: UsePythonVersion@0
+          #   inputs:
+          #     versionSpec: "3.12"
+          #   displayName: "Install Python"
+          # - script: pip install ruff
+          #   displayName: "Install Ruff"
+          # - script: ruff check .
+          #   displayName: "Run Ruff linter"
+
+          # Spell check (language-agnostic)
+          - script: |
+              npm install -g cspell
+              cspell "**/*"
+            displayName: "Spell Check"
