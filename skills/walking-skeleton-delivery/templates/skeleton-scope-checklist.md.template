@@ -1,0 +1,69 @@
+# Walking Skeleton Scope Checklist
+
+Use this checklist to maintain minimal scope during skeleton implementation.
+
+## Before Starting
+
+- [ ] Goal defined: What architecture question are we answering?
+- [ ] Success criteria defined: How do we know the skeleton works?
+- [ ] Out of scope documented: What are we explicitly deferring?
+
+## Minimal Components (Include)
+
+### API Layer
+
+- [ ] One health check endpoint (GET /health)
+- [ ] One resource endpoint (GET or POST)
+- [ ] Basic request/response model
+
+### Persistence
+
+- [ ] Single database connection
+- [ ] One table/collection
+- [ ] Basic CRUD for one entity
+
+### Observability
+
+- [ ] Health check endpoint
+- [ ] Basic logging (structured preferred)
+
+### Deployment
+
+- [ ] Single deployment target (dev/staging)
+- [ ] Basic CI/CD pipeline
+- [ ] Container or serverless packaging
+
+### Testing
+
+- [ ] One BDD acceptance test
+- [ ] Covers end-to-end flow
+
+## Scope Creep Warning Signs
+
+Stop and defer if you're adding:
+
+- [ ] ❌ Authentication/authorization
+- [ ] ❌ Multiple entity relationships
+- [ ] ❌ Complex validation rules
+- [ ] ❌ Error handling beyond basics
+- [ ] ❌ Performance optimization
+- [ ] ❌ Multiple environments
+- [ ] ❌ Additional endpoints beyond one
+- [ ] ❌ UI/frontend (unless specifically validating)
+
+## Completion Criteria
+
+Skeleton is complete when:
+
+- [ ] BDD test passes in deployed environment
+- [ ] Health check returns 200
+- [ ] Data persists (POST then GET works)
+- [ ] Deployment pipeline runs successfully twice
+- [ ] Architecture decisions documented in ADR
+
+## Next Steps After Skeleton
+
+1. [ ] Document learnings from skeleton validation
+2. [ ] Update architecture ADR with findings
+3. [ ] Create feature backlog building on skeleton
+4. [ ] Begin incremental feature delivery
