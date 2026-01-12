@@ -1213,6 +1213,12 @@ Before merging any PR, verify all checklist items are complete with evidence.
    - All conversations resolved
    - Re-review requested if significant changes made
 
+5. **CI checks pass**
+   - All required status checks green
+   - Use `gh pr checks N` to verify
+   - Never use `--admin` to bypass failing checks
+   - See [Merge Policy](#merge-policy) for proper merge commands
+
 ### Pre-Merge Validation Commands
 
 **GitHub:**
@@ -1290,6 +1296,67 @@ If pre-merge validation fails:
 - Merge with unchecked acceptance criteria
 - Check boxes on behalf of others
 - Accept "will fix later" for evidence
+- Use `--admin` to bypass branch protection without explicit user approval
+
+### Merge Policy
+
+Branch protection exists to ensure quality. Never bypass it without explicit approval.
+
+**Merge command precedence:**
+
+1. **Preferred: Auto-merge** (waits for all checks)
+
+   ```bash
+   gh pr merge N --squash --auto --delete-branch
+   ```
+
+   Auto-merge queues the PR to merge when all required checks pass.
+
+2. **Fallback: Wait then merge** (if auto-merge unavailable)
+
+   ```bash
+   # Wait for checks to complete
+   gh pr checks N --watch
+
+   # Merge after all checks pass
+   gh pr merge N --squash --delete-branch
+   ```
+
+3. **NEVER: Admin bypass** (requires explicit user approval)
+
+   ```bash
+   # DANGEROUS: Bypasses all branch protection
+   gh pr merge N --admin  # ONLY with user's explicit written permission
+   ```
+
+**Why auto-merge?**
+
+| Approach     | CI Checks  | Code Owner  | Branch Rules | Risk Level |
+| ------------ | ---------- | ----------- | ------------ | ---------- |
+| `--auto`     | ✅ Waits   | ✅ Required | ✅ Enforced  | Low        |
+| Manual merge | ✅ Waits   | ✅ Required | ✅ Enforced  | Low        |
+| `--admin`    | ❌ Skipped | ❌ Skipped  | ❌ Bypassed  | **High**   |
+
+**When is `--admin` acceptable?**
+
+Only with ALL of these conditions:
+
+1. User explicitly requests bypass in writing
+2. Emergency situation documented
+3. Fallback plan if merge causes issues
+4. Post-merge verification planned
+
+**Merge checklist:**
+
+```bash
+# Before merging, verify:
+gh pr checks N  # All checks should show "pass"
+gh pr view N --json reviewDecision  # Should show "APPROVED"
+gh pr view N --json mergeable  # Should show "MERGEABLE"
+
+# Then merge properly:
+gh pr merge N --squash --delete-branch
+```
 
 ## Blocked Work Escalation
 
@@ -1958,6 +2025,9 @@ gh issue edit 30 --add-assignee @me
 - "This requirement isn't needed, I'll just skip it." (descope requires approval with link)
 - "The plan can stay in docs/plans/ after merge." (must archive to docs/plans/archive/)
 - "Inline comments are just suggestions." (code review comments require response before merge)
+- "I'll just use --admin to speed things up." (bypasses ALL branch protection - never without explicit approval)
+- "CI is taking too long, I'll bypass with --admin." (wait for checks or fix the issue)
+- "The checks will pass eventually, I'll merge now with --admin." (checks exist to catch problems)
 
 ## Rationalizations (and Reality)
 
@@ -1996,6 +2066,8 @@ gh issue edit 30 --add-assignee @me
 | "I checked issue comments"                | PR review comments are separate; must check both before merge.       |
 | "PR shows approved status"                | Pending reviews may have unsubmitted comments; check all reviews.    |
 | "Inline comments aren't blocking"         | All code review comments require response before merge.              |
+| "--admin saves time"                      | Bypasses ALL protection; wait for checks or get explicit approval.   |
+| "Checks are slow, I'll bypass"            | Slow checks indicate issues worth investigating, not bypassing.      |
 
 ## See Also
 
