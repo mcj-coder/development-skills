@@ -1365,7 +1365,7 @@ gh issue create --title "improvement: [action from retro]" --label "work-type:en
 ## Evidence Requirements
 
 **Critical**: All commits must be pushed to remote before posting links. Evidence
-must be posted as clickable links in work item comments.
+must be posted as clickable links in work item comments AND in checkbox updates.
 
 **Key requirements**:
 
@@ -1374,9 +1374,231 @@ must be posted as clickable links in work item comments.
   superpowers:receiving-code-review (team roles defined in repository's `docs/roles/`)
 - Plan separates Original Scope Evidence from Additional Work
 - Keep only latest verification evidence in plan
+- **All checkboxes updated with evidence links before PR creation**
 
 See [Evidence Requirements](references/evidence-requirements.md) for complete
 requirements and evidence checklist.
+
+### Checkbox Evidence Format
+
+**Every checked checkbox MUST include an evidence link.** This applies to:
+
+- Issue acceptance criteria
+- PR test plan items
+- Plan task items
+- Sub-task checklists
+
+**Standard format:**
+
+```markdown
+- [x] Acceptance item ([evidence](https://github.com/org/repo/commit/abc123))
+- [x] Multiple evidence sources ([commit](link1), [test output](link2))
+- [x] File change ([diff](https://github.com/org/repo/pull/1/files#diff-abc123))
+```
+
+**Scope change format:**
+
+```markdown
+- [x] Added during implementation (added: [approval](comment-link), [evidence](link))
+- [ ] ~~Removed from scope~~ (descoped: [approval](comment-link))
+```
+
+**Evidence link types:**
+
+| Change Type | Evidence Format                                     |
+| ----------- | --------------------------------------------------- |
+| Code        | Commit SHA URL: `repo/commit/abc123`                |
+| File        | Permalink with line: `repo/blob/sha/path#L10-L20`   |
+| PR          | PR URL or files tab: `repo/pull/1/files`            |
+| Test        | CI run URL or test output in comment                |
+| Config      | Before/after screenshot or diff link                |
+| Approval    | Issue comment URL: `repo/issues/1#issuecomment-123` |
+
+### Pre-PR Evidence Requirements
+
+**Before creating a PR, the implementer MUST:**
+
+1. **Update all acceptance criteria checkboxes** in issue body:
+   - Check each completed item: `- [ ]` → `- [x]`
+   - Add evidence link to each checked item
+   - Strike through descoped items with approval link
+
+2. **Update all plan task checkboxes**:
+   - Check each completed task with evidence
+   - Update plan status to "Implementation Complete"
+   - Ensure plan is ready for archive
+
+3. **Prepare PR test plan**:
+   - All items should be checkable by reviewer
+   - Implementer does NOT check PR test plan items
+   - Reviewer checks items after verification
+
+**Evidence separation (Critical):**
+
+- **Implementer**: Gathers and links ALL evidence before PR
+- **Reviewer**: Verifies evidence is valid and sufficient
+- **Reviewer does NOT gather evidence for implementer**
+
+If reviewer finds missing evidence, PR is sent back to implementer to add it.
+
+### Scope Change Tracking
+
+All scope changes during implementation MUST be tracked in acceptance criteria:
+
+**Adding scope:**
+
+1. Get approval in issue comment
+2. Add new checkbox with approval link
+3. Complete work and add evidence
+
+Format for added scope:
+
+```markdown
+- [ ] New requirement (added: [approval](#issuecomment-123))
+- [x] New requirement (added: [approval](#issuecomment-123), [evidence](commit-link))
+```
+
+**Removing scope (descoping):**
+
+1. Get approval in issue comment
+2. Strike through item and add approval link
+3. Item remains unchecked but struck through
+
+Format for descoped items:
+
+```markdown
+- [ ] ~~Original requirement~~ (descoped: [approval](#issuecomment-123))
+```
+
+**Scope change without approval is a violation.** All added or removed work
+requires explicit approval captured in issue comments.
+
+### Plan Lifecycle Evidence
+
+Plans must be updated throughout implementation:
+
+**During implementation:**
+
+- Update task checkboxes as work completes
+- Add evidence links to each task
+- Note any scope changes with approval links
+
+**Before PR creation:**
+
+- All tasks checked with evidence
+- Status updated: "Implementation Complete"
+- Scope changes documented
+
+**Before PR merge:**
+
+- Status updated: "Verification Complete" (if verification phase used)
+- Archive plan: `git mv docs/plans/plan.md docs/plans/archive/`
+- Commit archive with issue reference
+
+**Plan archive validation:**
+
+```bash
+# Verify plan archived before merge
+test -f docs/plans/archive/*issue-N*.md && echo "PASS" || echo "FAIL: Plan not archived"
+```
+
+## DangerJS Enforcement (Recommended)
+
+**Strongly recommended**: Configure DangerJS to validate evidence requirements
+automatically on PRs. This catches violations before human review.
+
+### Example Dangerfile Rules
+
+```javascript
+// dangerfile.js - Evidence validation rules
+
+const { danger, warn, fail } = require("danger");
+
+// Rule 1: All acceptance criteria must be checked
+const issueBody = danger.github.issue?.body || "";
+const uncheckedAcceptance = (issueBody.match(/- \[ \] (?!~~)/g) || []).length;
+const struckItems = (issueBody.match(/- \[ \] ~~/g) || []).length;
+
+if (uncheckedAcceptance > struckItems) {
+  fail(
+    `${uncheckedAcceptance - struckItems} acceptance criteria not checked. ` +
+      `Complete all items or mark as descoped before PR.`,
+  );
+}
+
+// Rule 2: Checked items must have evidence links
+const checkedWithoutEvidence = issueBody.match(/- \[x\] [^(\n]+(?!\()/g) || [];
+if (checkedWithoutEvidence.length > 0) {
+  fail(
+    `${checkedWithoutEvidence.length} checked items missing evidence links. ` +
+      `Format: - [x] Item ([evidence](link))`,
+  );
+}
+
+// Rule 3: Descoped items must have approval links
+const descopedWithoutApproval =
+  issueBody.match(/- \[ \] ~~[^(]+(?!\(descoped:)/g) || [];
+if (descopedWithoutApproval.length > 0) {
+  fail(
+    `Descoped items missing approval links. ` +
+      `Format: - [ ] ~~Item~~ (descoped: [approval](link))`,
+  );
+}
+
+// Rule 4: Plan must be archived (check for plan file in archive)
+const planArchived = danger.git.created_files.some((f) =>
+  f.includes("docs/plans/archive/"),
+);
+const planInProgress = danger.git.modified_files.some(
+  (f) => f.includes("docs/plans/") && !f.includes("archive"),
+);
+
+if (planInProgress && !planArchived) {
+  warn("Plan file modified but not archived. Archive plan before merge.");
+}
+
+// Rule 5: PR test plan should not be pre-checked by author
+const prBody = danger.github.pr.body || "";
+const preCheckedTestPlan = (
+  prBody.match(/## Test [Pp]lan[\s\S]*?- \[x\]/g) || []
+).length;
+if (preCheckedTestPlan > 0) {
+  warn("PR test plan items should be checked by reviewer, not author.");
+}
+```
+
+### DangerJS Setup
+
+1. Install: `npm install --save-dev danger`
+2. Create `dangerfile.js` with rules above
+3. Add to CI pipeline (example below)
+
+**GitHub Actions example:**
+
+```yaml
+- name: Danger
+  run: npx danger ci
+  env:
+    GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+```
+
+### Validation Without DangerJS
+
+If DangerJS is not available, validate manually before merge:
+
+```bash
+# Check for unchecked acceptance criteria (excluding descoped)
+gh issue view N --json body --jq '.body' | grep -c '- \[ \] [^~]'
+# Should be 0
+
+# Check for checked items without evidence
+gh issue view N --json body --jq '.body' | grep -E '- \[x\] [^(]+$'
+# Should return nothing
+
+# Check plan archived
+ls docs/plans/archive/*N* 2>/dev/null
+# Should find archived plan
+```
 
 ## Implementation Notes
 
@@ -1468,6 +1690,16 @@ gh issue edit 30 --add-assignee @me
 - Only checking issue comments, not PR review comments (PR reviews are stored separately).
 - Merging PR without checking for pending reviews (draft comments may contain critical feedback).
 - Ignoring inline code review comments (these are separate from issue comments).
+- **Leaving acceptance criteria unchecked** despite work being complete (no visual completion signal).
+- **Checking boxes without evidence links** (checkbox without proof is meaningless).
+- **Adding scope without approval link** (untracked scope creep).
+- **Removing scope without descope approval** (silent requirement removal).
+- **Pre-checking PR test plan items** (reviewer should check, not author).
+- **Reviewer gathering evidence for implementer** (implementer responsibility, not reviewer).
+- **Creating PR before all acceptance criteria checked** (incomplete work entering review).
+- **Merging PR with unchecked items** (incomplete work merged to main).
+- **Not archiving plan before merge** (planning history lost).
+- **Plan tasks unchecked at merge time** (plan/implementation mismatch).
 
 ## Red Flags - STOP
 
@@ -1508,6 +1740,13 @@ gh issue edit 30 --add-assignee @me
 - "This random person's suggestion seems good, I'll add it." (untrusted feedback requires review)
 - "I checked the issue comments, that's enough." (PR review comments are stored separately)
 - "The PR is approved, so I can merge." (check for pending reviews with unsubmitted comments)
+- "Checkboxes are just for show, the work is done." (checkboxes ARE the evidence trail)
+- "I'll check the boxes after the PR is merged." (evidence must exist BEFORE PR)
+- "The reviewer can verify and check the boxes." (implementer checks, reviewer validates)
+- "I don't need to link evidence, it's obvious." (evidence links are mandatory)
+- "I'll add this scope without asking." (scope changes require approval with link)
+- "This requirement isn't needed, I'll just skip it." (descope requires approval with link)
+- "The plan can stay in docs/plans/ after merge." (must archive to docs/plans/archive/)
 - "Inline comments are just suggestions." (code review comments require response before merge)
 
 ## Rationalizations (and Reality)
