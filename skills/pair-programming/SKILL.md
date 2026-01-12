@@ -43,6 +43,17 @@ Do not use when:
 TRIGGER → PLANNING → IMPLEMENTATION → REVIEW LOOP → HUMAN CHECKPOINT → MERGE
 ```
 
+```mermaid
+flowchart LR
+    T[Trigger] --> P[Planning]
+    P --> I[Implementation]
+    I --> R[Review Loop]
+    R --> H[Human Checkpoint]
+    H --> M[Merge]
+    H -->|Changes Requested| I
+    R -->|Issues Found| I
+```
+
 ### Phase 1: Trigger
 
 Work begins through one of three mechanisms:
@@ -251,6 +262,35 @@ Dispatch multiple sub-agents simultaneously for independent tasks:
     +----v----+
     | Results |
     +---------+
+```
+
+```mermaid
+sequenceDiagram
+    participant P as Primary Agent
+    participant B as Backend Sub-Agent
+    participant F as Frontend Sub-Agent
+    participant Q as QA Sub-Agent
+    participant D as Docs Sub-Agent
+
+    P->>B: Dispatch (worktree: wt-backend)
+    P->>F: Dispatch (worktree: wt-frontend)
+    P->>Q: Dispatch (worktree: wt-qa)
+    P->>D: Dispatch (worktree: wt-docs)
+
+    par Parallel Execution
+        B->>B: Implement backend
+        F->>F: Implement frontend
+        Q->>Q: Write tests
+        D->>D: Update docs
+    end
+
+    B-->>P: Complete + commits
+    F-->>P: Complete + commits
+    Q-->>P: Complete + commits
+    D-->>P: Complete + commits
+
+    P->>P: Aggregate & merge worktrees
+    P->>P: Run integration tests
 ```
 
 **Prerequisites for parallel dispatch:**
@@ -656,6 +696,23 @@ When blocked, the agent follows this protocol:
 DETECT → DOCUMENT → NOTIFY → SWITCH → MONITOR → RESUME
 ```
 
+```mermaid
+flowchart TB
+    D[Detect Blocker] --> Doc[Document in Issue]
+    Doc --> N[Notify Human]
+    N --> U{Update Labels}
+    U --> S[Switch to Parallel Task]
+    S --> M{Monitor Blocker}
+    M -->|Still Blocked| S
+    M -->|Resolved| R[Resume Original Task]
+    R --> C[Continue Workflow]
+
+    subgraph Parallel Work
+        S --> W[Work on Next Priority Issue]
+        W --> M
+    end
+```
+
 #### 1. Document Blocker
 
 Post blocker details to issue:
@@ -773,6 +830,29 @@ persona-based reviewers. This section documents the review loop process.
 
 ```text
 TESTS → TECH LEAD → QA → SECURITY (if needed) → ITERATE → HUMAN CHECKPOINT
+```
+
+```mermaid
+flowchart TB
+    T[Run All Tests] --> TPass{Tests Pass?}
+    TPass -->|No| Fix1[Fix Issues]
+    Fix1 --> T
+    TPass -->|Yes| TL[Tech Lead Review]
+    TL --> TLPass{Approved?}
+    TLPass -->|No| Fix2[Address Feedback]
+    Fix2 --> T
+    TLPass -->|Yes| QA[QA Review]
+    QA --> QAPass{Approved?}
+    QAPass -->|No| Fix3[Address Feedback]
+    Fix3 --> T
+    QAPass -->|Yes| Sec{Security Relevant?}
+    Sec -->|Yes| SR[Security Review]
+    SR --> SRPass{Approved?}
+    SRPass -->|No| Fix4[Address Feedback]
+    Fix4 --> T
+    SRPass -->|Yes| HC[Human Checkpoint]
+    Sec -->|No| HC
+    HC --> Done[Ready for Human Review]
 ```
 
 #### Step 1: Run All Tests
