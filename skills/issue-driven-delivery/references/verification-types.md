@@ -86,6 +86,61 @@ Some work involves both types:
 
 Use appropriate verification for each phase.
 
+## Verification Checklists by Type
+
+### Code Changes
+
+```markdown
+## Verification Checklist (Code)
+
+- [ ] All tests pass locally
+- [ ] CI pipeline passes
+- [ ] Linting clean (no warnings)
+- [ ] Code review complete
+- [ ] Commit messages reference issue
+- [ ] No debug code or console logs
+- [ ] Security considerations addressed
+```
+
+### Configuration Changes
+
+```markdown
+## Verification Checklist (Configuration)
+
+- [ ] Validation command runs successfully
+- [ ] No breaking changes to existing behaviour
+- [ ] Documentation updated if user-facing
+- [ ] Deployment verified (if applicable)
+- [ ] Rollback plan documented (if critical)
+```
+
+### Documentation Changes
+
+```markdown
+## Verification Checklist (Documentation)
+
+- [ ] Spelling and grammar check passes
+- [ ] All links valid and resolve
+- [ ] Markdown renders correctly
+- [ ] Code examples are syntactically correct
+- [ ] Screenshots are clear and relevant
+- [ ] Table of contents updated (if applicable)
+```
+
+## Verification by Skill Type
+
+| Skill Category | Typical Type | Common Evidence                |
+| -------------- | ------------ | ------------------------------ |
+| TDD            | Concrete     | Test commits, implementation   |
+| Debugging      | Concrete     | Fix commits, test output       |
+| Brainstorming  | Process-only | Issue comments, decisions      |
+| Code review    | Process-only | Review comments, approvals     |
+| Planning       | Mixed        | Plan commits + discussion      |
+| Requirements   | Process-only | Issue comments, clarifications |
+| Implementation | Concrete     | Code commits, CI runs          |
+| Documentation  | Concrete     | Doc commits, permalinks        |
+| Architecture   | Process-only | ADRs, decision comments        |
+
 ## Evidence Quality
 
 ### Good Evidence
@@ -101,3 +156,16 @@ Use appropriate verification for each phase.
 - "Fixed it" (no specifics)
 - Branch name links (mutable)
 - "Everything works" (not verifiable)
+
+## Quick Reference
+
+| Scenario         | Evidence Required                      |
+| ---------------- | -------------------------------------- |
+| Code implemented | Commit SHA + test/CI link              |
+| Bug fixed        | Commit SHA + test proving fix          |
+| Docs updated     | File permalink with lines              |
+| Config changed   | Commit + validation output             |
+| Feature tested   | CI run or test output screenshot       |
+| Scope added      | Approval comment link + implementation |
+| Scope removed    | Approval comment link                  |
+| Process decision | Discussion/approval comment link       |
