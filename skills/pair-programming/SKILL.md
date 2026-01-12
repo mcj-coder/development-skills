@@ -1346,3 +1346,9 @@ gh issue comment N --body "@agent I'm taking over this task"
 # Resume agent work
 gh issue comment N --body "@agent please continue"
 ```
+
+## See Also
+
+- `docs/references/subagent-coordination-patterns.md` - Patterns for parallel subagent work
+- `skills/persona-switching/SKILL.md` - Two-account workflow for PR reviews
+- `skills/issue-driven-delivery/SKILL.md` - Issue workflow integration

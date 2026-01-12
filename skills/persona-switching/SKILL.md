@@ -185,6 +185,102 @@ Persona switching preserves GPG validity because:
 - Each security profile has consistent email + GPG key pairing
 - Author name changes ("Claude (Backend Engineer)") don't break signatures
 
+## Two-Account Review Workflow
+
+When branch protection rules require different accounts for PR creation and approval,
+use the two-account workflow.
+
+### Rationale
+
+Branch protection often requires:
+
+- PR cannot be merged by the author
+- Code owner approval required
+- Commits must be signed
+
+This creates a natural separation:
+
+| Account     | Profile       | Operations                             |
+| ----------- | ------------- | -------------------------------------- |
+| Contributor | `contributor` | Create branches, push commits, open PR |
+| Maintainer  | `maintainer`  | Review PR, approve, merge              |
+
+### Workflow Steps
+
+```text
+Implementation Phase (contributor account)
+    ↓
+1. use_persona backend-engineer  # contributor profile
+2. Implement changes
+3. Commit and push
+4. Create PR (gh pr create)
+    ↓
+Review Phase (maintainer account)
+    ↓
+5. use_persona tech-lead  # maintainer profile
+6. Review PR (gh pr view, gh pr diff)
+7. Approve PR (gh pr review --approve)
+8. Merge PR (gh pr merge --squash)
+    ↓
+Resume (contributor account)
+    ↓
+9. use_persona backend-engineer  # back to contributor
+10. Continue with next task
+```
+
+### Account Switching Commands
+
+```bash
+# Switch to contributor for implementation
+use_persona backend-engineer
+gh auth status  # Verify: contributor account
+
+# Create PR
+gh pr create --title "feat: description" --body "..."
+
+# Switch to maintainer for review
+use_persona tech-lead
+gh auth status  # Verify: maintainer account
+
+# Review and merge
+gh pr review <number> --approve --body "LGTM"
+gh pr merge <number> --squash --delete-branch
+
+# Switch back for next work
+use_persona backend-engineer
+```
+
+### Why Not Single Account?
+
+Single-account workflows bypass important controls:
+
+| Control               | Two-Account              | Single-Account         |
+| --------------------- | ------------------------ | ---------------------- |
+| Self-merge prevention | ✅ Enforced by GitHub    | ❌ Requires discipline |
+| Audit trail           | ✅ Clear author/approver | ⚠️ Same identity       |
+| Permission isolation  | ✅ Least privilege       | ❌ Elevated always     |
+| Code owner approval   | ✅ Different code owner  | ❌ Same person         |
+
+### Integration with Pair Programming
+
+The `pair-programming` skill uses two-account workflow automatically:
+
+1. Agent works as contributor during implementation
+2. Agent switches to maintainer for self-review (automated review loop)
+3. Human reviewer uses their account for final approval
+4. Agent (as maintainer) can merge after human approval
+
+See `skills/pair-programming/SKILL.md` for complete workflow.
+
+### Common Mistakes
+
+| Mistake                      | Impact                         | Prevention                       |
+| ---------------------------- | ------------------------------ | -------------------------------- |
+| Creating PR as maintainer    | Can't approve own PR           | Always create PR as contributor  |
+| Approving as contributor     | Approval rejected              | Switch to maintainer for reviews |
+| Merging without switching    | Merge fails or bypasses checks | Verify `gh auth status` first    |
+| Staying elevated after merge | Over-privileged for next task  | Switch back to contributor       |
+
 ## Security Considerations
 
 ### Credential Storage
