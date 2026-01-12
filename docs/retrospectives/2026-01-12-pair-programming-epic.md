@@ -37,6 +37,15 @@ This followed the issue decomposition order but deviated from strict TDD.
 - [x] Epic decomposed into 10 child issues
 - [x] Each PR referenced parent issue
 - [x] Issues auto-closed by PR merges
+- [ ] **Acceptance criteria checkboxes updated with evidence** - ALL 10 ISSUES FAILED
+- [ ] **PR test plan checkboxes completed** - ALL 7 PRs FAILED
+- [ ] **Closure comments with evidence links** - Only #231 had closure comment
+
+### Plan File Management
+
+- [ ] **Plan file created for epic** - NO PLAN FILE CREATED
+- [ ] **Plan updated during implementation** - N/A (no plan existed)
+- [ ] **Plan archived after completion** - N/A (no plan to archive)
 
 ### Skills-First Execution
 
@@ -71,6 +80,27 @@ This followed the issue decomposition order but deviated from strict TDD.
    from mermaid diagrams
 
 ## Issues Identified
+
+### Issue 0: Evidence and Plan File Gaps (Critical)
+
+**Description**: Post-implementation audit revealed significant process compliance gaps:
+
+1. **Acceptance Criteria**: All 10 issues have unchecked acceptance criteria boxes
+2. **PR Test Plans**: All 7 PRs have unchecked test plan items
+3. **Closure Evidence**: Only issue #231 has a closure comment with PR reference
+4. **Plan Files**: No plan file was created for epic #154 or any child issues
+5. **Archive**: No plan archived (nothing to archive)
+
+**Impact**: Violates issue-driven-delivery requirements for traceability and evidence.
+
+**Root Cause**: Focus on implementation velocity over process compliance. Agent
+prioritised completing work over documenting completion evidence.
+
+**Recommendation**:
+
+- Add checklist completion to PR merge checklist
+- Require plan file creation before implementation starts
+- Add automation to validate acceptance criteria are checked before issue close
 
 ### Issue 1: Subagent Coordination Challenges (Important)
 
@@ -139,13 +169,37 @@ maintainer account due to branch protection rules.
 
 ## Action Items
 
-- [ ] Create issue: Document subagent coordination patterns for same-file work
-- [ ] Create issue: Add mermaid diagrams to pair-programming workflow phases
-- [ ] Update: persona-switching skill to document two-account review workflow
+### Critical (Process Compliance)
+
+- [ ] Backfill: Update all 10 issues with checked acceptance criteria and evidence
+- [ ] Backfill: Update all 7 PRs with checked test plan items
+- [ ] Create issue: Add pre-merge checklist enforcement to issue-driven-delivery
+- [ ] Create issue: Add plan file requirement to epic workflow
+
+### Important (Documentation)
+
+- [x] Create issue #249: Document subagent coordination patterns for same-file work
+- [x] Create issue #251: Document two-account review workflow in persona-switching
+
+### Minor (Enhancements)
+
+- [x] Create issue #250: Add mermaid diagrams to pair-programming workflow phases
 
 ## Conclusion
 
-The pair-programming epic was completed successfully with comprehensive documentation.
-The main learning is around subagent coordination when working on shared files.
-Future documentation epics should consider the outline-first approach and explicit
-section ownership for parallel work.
+The pair-programming epic delivered comprehensive documentation but with significant
+process compliance gaps. While the skill content is complete and high-quality, the
+implementation failed to maintain proper evidence trails:
+
+- No plan files created or archived
+- Acceptance criteria not checked off with evidence
+- PR test plans not validated
+
+**Priority for remediation**: The backfill of evidence and creation of enforcement
+mechanisms should be completed before the next epic to prevent recurrence.
+
+**Key learnings**:
+
+1. Process compliance requires explicit checkpoints, not just good intentions
+2. Subagent parallelism on shared files creates coordination overhead
+3. Velocity without traceability undermines the issue-driven workflow
