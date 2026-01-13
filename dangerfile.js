@@ -120,15 +120,40 @@ async function validate() {
     warn("Plan file modified but not archived. Archive plan before merge.");
   }
 
-  // Rule 5: PR test plan should not be pre-checked by author
+  // Rule 5: PR test plan validation
   const testPlanSection = prBody.match(/## Test [Pp]lan[\s\S]*?(?=##|$)/);
   if (testPlanSection) {
-    const preCheckedInTestPlan = (testPlanSection[0].match(/- \[x\]/g) || [])
-      .length;
-    if (preCheckedInTestPlan > 0) {
+    const testPlanContent = testPlanSection[0];
+
+    // Rule 5a: All test plan items must be checked before merge
+    const uncheckedTestPlan = (testPlanContent.match(/- \[ \] /g) || []).length;
+    if (uncheckedTestPlan > 0) {
+      fail(
+        `${uncheckedTestPlan} test plan items not verified. ` +
+          `All test plan items must be checked before merge.`,
+      );
+    }
+
+    // Rule 5b: Checked test plan items should have evidence
+    const checkedTestPlanRegex = /- \[x\] (.+)/g;
+    const testPlanWithoutEvidence = [];
+    let testMatch;
+
+    while ((testMatch = checkedTestPlanRegex.exec(testPlanContent)) !== null) {
+      const itemText = testMatch[1];
+      // Check if item has a link in parentheses or markdown link
+      if (
+        !/\([^)]*https?:\/\/[^)]+\)/.test(itemText) &&
+        !/\[[^\]]+\]\([^)]+\)/.test(itemText)
+      ) {
+        testPlanWithoutEvidence.push(itemText.substring(0, 50));
+      }
+    }
+
+    if (testPlanWithoutEvidence.length > 0) {
       warn(
-        "PR test plan items should be checked by reviewer, not author. " +
-          `Found ${preCheckedInTestPlan} pre-checked items.`,
+        `${testPlanWithoutEvidence.length} test plan items missing evidence links. ` +
+          `Recommended format: - [x] Item ([evidence](link))`,
       );
     }
   }
