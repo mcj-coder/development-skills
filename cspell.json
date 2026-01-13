@@ -220,7 +220,19 @@
     "WORKTYPE",
     "xabaril",
     "xdist",
-    "Xunit"
+    "Xunit",
+    "anchore",
+    "aquasecurity",
+    "govulncheck",
+    "isoformat",
+    "logissue",
+    "pypi",
+    "returntocorp",
+    "sonarcloud",
+    "trufflesecurity",
+    "zaproxy",
+    "cutoff",
+    "vars"
   ],
   "ignorePaths": ["node_modules/**", "package-lock.json"]
 }
