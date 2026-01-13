@@ -9,3 +9,15 @@
 **Failure Notes:**
 
 - Plan file does not exist yet.
+
+## GREEN: Passing Checklist (After Implementation)
+
+- [x] File `docs/plans/2026-01-13-skills-review-report.md` exists
+- [x] Plan includes required header with goal, architecture, and tech stack
+- [x] Plan outlines RED/GREEN steps for creating `skills-review.md`
+- [x] Plan specifies how to review every `skills/*` folder (including tests and references)
+- [x] Plan calls out the "do not commit report" constraint and how to comply
+
+**Applied Evidence:**
+
+- Plan created in commit `03566ba`
