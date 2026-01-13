@@ -120,6 +120,7 @@
     "orgname",
     "passthrough",
     "pipefail",
+    "Polyrepo",
     "PVTSSF",
     "pycodestyle",
     "Pyflakes",
