@@ -32,6 +32,7 @@ These are non-negotiable. Full details in AGENTS.md.
 - Never commit directly to `main` - use feature branches
 - Baseline failure blocks work: on baseline verification failure, create or
   reference a blocking issue and pause the current task until baseline passes
+- Use `.worktrees/` as the preferred worktree directory unless instructed otherwise
 
 ### Skills-First Execution
 
