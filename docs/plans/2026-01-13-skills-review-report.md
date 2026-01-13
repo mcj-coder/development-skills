@@ -31,19 +31,18 @@ resolve the commit-constraint conflict up front via an issue comment.
 
 ## GREEN: Passing Checklist (After Implementation)
 
-- [ ] File `skills-review.md` exists in repo root
-- [ ] Report summarizes purpose for every `skills/*` folder
-- [ ] Report provides a qualitative effectiveness review per skill
+- [x] File `skills-review.md` exists in repo root
+- [x] Report summarizes purpose for every `skills/*` folder
+- [x] Report provides a qualitative effectiveness review per skill
       (agent/platform agnostic, opinionated, conversation-driving)
-- [ ] Report evaluates whether `*.test.md` validates skill intent and notes gaps
-- [ ] Report includes actionable, prioritized next steps and cross-cutting themes
-- [ ] Report states constraints and intent (draft skills, greenfield/brownfield focus, agent/platform agnostic)
+- [x] Report evaluates whether `*.test.md` validates skill intent and notes gaps
+- [x] Report includes actionable, prioritized next steps and cross-cutting themes
+- [x] Report states constraints and intent (draft skills, greenfield/brownfield focus, agent/platform agnostic)
 
 **Applied Evidence:**
 
-- Report created/updated: [link to commit SHA if allowed]
-- BDD checklist updated: [link to commit SHA]
-- If report remains uncommitted: document approved exception in issue #296
+- Report created/updated: <https://github.com/mcj-coder/development-skills/commit/9c59dbc>
+- BDD checklist updated: pending
 
 ---
 
