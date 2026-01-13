@@ -9,6 +9,7 @@
     "lint": "npm run lint:check",
     "secretlint": "secretlint \"**/*\"",
     "spell-check": "cspell \"**/*.md\"",
+    "test": "node -e \"console.log('No tests configured')\"",
     "verify": "npm run lint:check && npm run spell-check && npm run secretlint",
     "prepare": "husky"
   },
