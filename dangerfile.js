@@ -4,6 +4,50 @@
 
 const { danger, warn, fail, message } = require("danger");
 
+// Constants
+const MAX_ITEM_PREVIEW_LENGTH = 80;
+
+/**
+ * Check if text contains an evidence link (URL in parentheses or markdown link)
+ * Handles formats like:
+ * - ([link](https://...))
+ * - (https://...)
+ * - (see [link](https://...))
+ * - [link](https://...)
+ */
+function hasEvidenceLink(text) {
+  // Markdown link with URL: [text](https://...)
+  if (/\[[^\]]+\]\(https?:\/\/[^)]+\)/.test(text)) {
+    return true;
+  }
+  // URL anywhere in parentheses: (... https://... ...)
+  if (/\([^)]*https?:\/\/[^)]+\)/.test(text)) {
+    return true;
+  }
+  // Bare URL at end of line
+  if (/https?:\/\/\S+\s*$/.test(text)) {
+    return true;
+  }
+  return false;
+}
+
+/**
+ * Find checked items missing evidence links in given text
+ */
+function findCheckedItemsWithoutEvidence(text) {
+  const checkedItemsRegex = /- \[x\] (.+)/gi;
+  const itemsWithoutEvidence = [];
+
+  for (const match of text.matchAll(checkedItemsRegex)) {
+    const itemText = match[1];
+    if (!hasEvidenceLink(itemText)) {
+      itemsWithoutEvidence.push(itemText.substring(0, MAX_ITEM_PREVIEW_LENGTH));
+    }
+  }
+
+  return itemsWithoutEvidence;
+}
+
 // Helper to safely get issue body (linked issue from PR)
 async function getLinkedIssueBody() {
   const prBody = danger.github.pr.body || "";
@@ -22,7 +66,16 @@ async function getLinkedIssueBody() {
       issue_number: parseInt(issueNumber),
     });
     return issue.data.body || "";
-  } catch {
+  } catch (error) {
+    // Log error details for debugging (visible in CI logs)
+    console.error(
+      `Failed to fetch issue #${issueNumber}: ${error.message || error}`,
+    );
+    if (error.status === 404) {
+      console.error(`Issue #${issueNumber} not found or inaccessible`);
+    } else if (error.status === 403) {
+      console.error(`Rate limited or insufficient permissions`);
+    }
     return null;
   }
 }
@@ -45,10 +98,10 @@ async function validate() {
   }
 
   // Rule 1: All acceptance criteria must be checked
-  // Count unchecked items that are NOT struck through (descoped)
-  const uncheckedRegex = /- \[ \] (?!~~)/g;
-  const uncheckedMatches = issueBody.match(uncheckedRegex) || [];
-  const uncheckedCount = uncheckedMatches.length;
+  // Count all unchecked items, then subtract descoped ones
+  const allUncheckedMatches = issueBody.match(/- \[ \] /g) || [];
+  const descopedMatches = issueBody.match(/- \[ \] ~~[^~]+~~/g) || [];
+  const uncheckedCount = allUncheckedMatches.length - descopedMatches.length;
 
   if (uncheckedCount > 0) {
     fail(
@@ -58,21 +111,7 @@ async function validate() {
   }
 
   // Rule 2: Checked items should have evidence links
-  // Look for checked items without parentheses containing links
-  const checkedItemsRegex = /- \[x\] (.+)/g;
-  let match;
-  const checkedWithoutEvidence = [];
-
-  while ((match = checkedItemsRegex.exec(issueBody)) !== null) {
-    const itemText = match[1];
-    // Check if item has a link in parentheses or markdown link
-    if (
-      !/\([^)]*https?:\/\/[^)]+\)/.test(itemText) &&
-      !/\[[^\]]+\]\([^)]+\)/.test(itemText)
-    ) {
-      checkedWithoutEvidence.push(itemText.substring(0, 50));
-    }
-  }
+  const checkedWithoutEvidence = findCheckedItemsWithoutEvidence(issueBody);
 
   if (checkedWithoutEvidence.length > 0) {
     warn(
@@ -85,16 +124,17 @@ async function validate() {
   const descopedRegex = /- \[ \] ~~([^~]+)~~/g;
   const descopedWithoutApproval = [];
 
-  while ((match = descopedRegex.exec(issueBody)) !== null) {
+  for (const match of issueBody.matchAll(descopedRegex)) {
+    const lineEnd = issueBody.indexOf("\n", match.index);
     const fullLine = issueBody.substring(
       match.index,
-      issueBody.indexOf("\n", match.index),
+      lineEnd > 0 ? lineEnd : issueBody.length,
     );
-    if (
-      !/\(descoped:/.test(fullLine) &&
-      !/\[[^\]]+\]\([^)]+\)/.test(fullLine)
-    ) {
-      descopedWithoutApproval.push(match[1].substring(0, 50));
+    // Case-insensitive check for descoped approval
+    if (!/\(descoped:/i.test(fullLine) && !hasEvidenceLink(fullLine)) {
+      descopedWithoutApproval.push(
+        match[1].substring(0, MAX_ITEM_PREVIEW_LENGTH),
+      );
     }
   }
 
@@ -135,20 +175,8 @@ async function validate() {
     }
 
     // Rule 5b: Checked test plan items should have evidence
-    const checkedTestPlanRegex = /- \[x\] (.+)/g;
-    const testPlanWithoutEvidence = [];
-    let testMatch;
-
-    while ((testMatch = checkedTestPlanRegex.exec(testPlanContent)) !== null) {
-      const itemText = testMatch[1];
-      // Check if item has a link in parentheses or markdown link
-      if (
-        !/\([^)]*https?:\/\/[^)]+\)/.test(itemText) &&
-        !/\[[^\]]+\]\([^)]+\)/.test(itemText)
-      ) {
-        testPlanWithoutEvidence.push(itemText.substring(0, 50));
-      }
-    }
+    const testPlanWithoutEvidence =
+      findCheckedItemsWithoutEvidence(testPlanContent);
 
     if (testPlanWithoutEvidence.length > 0) {
       warn(
