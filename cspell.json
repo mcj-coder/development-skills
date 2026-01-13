@@ -235,7 +235,17 @@
     "trufflesecurity",
     "zaproxy",
     "cutoff",
-    "vars"
+    "vars",
+    "autobuild",
+    "Autobuild",
+    "choco",
+    "Checkmarx",
+    "gosec",
+    "misconfigures",
+    "misconfiguring",
+    "nosec",
+    "nosemgrep",
+    "vulns"
   ],
   "ignorePaths": ["node_modules/**", "package-lock.json"]
 }
