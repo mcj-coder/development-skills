@@ -23,8 +23,14 @@ when no tests are configured.
 
 ## GREEN: Passing Checklist (After Implementation)
 
-- [ ] `package.json` defines a `test` script
-- [ ] `npm test` exits with code 0 and prints a clear "no tests configured" message
+- [x] `package.json` defines a `test` script
+- [x] `npm test` exits with code 0 and prints a clear "no tests configured" message
+
+**Applied Evidence:**
+
+- RED checklist: <https://github.com/mcj-coder/development-skills/commit/45baac8>
+- Implementation: <https://github.com/mcj-coder/development-skills/commit/2a16772>
+- GREEN checklist: <https://github.com/mcj-coder/development-skills/commit/3175a57>
 
 ---
 
