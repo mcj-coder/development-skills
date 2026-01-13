@@ -105,7 +105,7 @@ async function validate() {
 
   if (uncheckedCount > 0) {
     fail(
-      `${uncheckedCount} acceptance criteria not checked. ` +
+      `[Issue] ${uncheckedCount} acceptance criteria not checked. ` +
         `Complete all items or mark as descoped (~~strikethrough~~) before PR.`,
     );
   }
@@ -115,7 +115,7 @@ async function validate() {
 
   if (checkedWithoutEvidence.length > 0) {
     warn(
-      `${checkedWithoutEvidence.length} checked items may be missing evidence links. ` +
+      `[Issue] ${checkedWithoutEvidence.length} checked acceptance criteria may be missing evidence links. ` +
         `Recommended format: - [x] Item ([evidence](link))`,
     );
   }
@@ -140,7 +140,7 @@ async function validate() {
 
   if (descopedWithoutApproval.length > 0) {
     fail(
-      `${descopedWithoutApproval.length} descoped items missing approval links. ` +
+      `[Issue] ${descopedWithoutApproval.length} descoped items missing approval links. ` +
         `Format: - [ ] ~~Item~~ (descoped: [approval](link))`,
     );
   }
@@ -169,7 +169,7 @@ async function validate() {
     const uncheckedTestPlan = (testPlanContent.match(/- \[ \] /g) || []).length;
     if (uncheckedTestPlan > 0) {
       fail(
-        `${uncheckedTestPlan} test plan items not verified. ` +
+        `[PR] ${uncheckedTestPlan} test plan items not verified. ` +
           `All test plan items must be checked before merge.`,
       );
     }
@@ -180,7 +180,7 @@ async function validate() {
 
     if (testPlanWithoutEvidence.length > 0) {
       warn(
-        `${testPlanWithoutEvidence.length} test plan items missing evidence links. ` +
+        `[PR] ${testPlanWithoutEvidence.length} test plan items missing evidence links. ` +
           `Recommended format: - [x] Item ([evidence](link))`,
       );
     }
