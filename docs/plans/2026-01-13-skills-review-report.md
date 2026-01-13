@@ -125,13 +125,13 @@ Confirm every `skills/*` folder is included with the required fields.
 
 Mark GREEN checklist items as passing with evidence or approved exception notes.
 
-### Task 6: Deliver report without commit (per constraint)
+### Task 6: Deliver report with commit (per approval)
 
 **Files:**
 
-- None (if report remains uncommitted)
+- `skills-review.md`
 
 #### Step 1: Provide handoff instructions
 
-Explain how to keep the report uncommitted and how to share it (local file only),
-with the issue comment noting the exception.
+Confirm the report is committed per issue #296 approval and provide the report link
+in the work item comment.
