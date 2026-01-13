@@ -4,7 +4,7 @@
 
 **Goal:** Produce `skills-review.md` in the repo root with per-skill purpose
 summaries, effectiveness reviews, and actionable next steps, while respecting
-the "do not commit report" constraint.
+the report delivery constraint (committed per approval).
 
 **Architecture:** Inventory all skills under `skills/`, review each skill folder
 (SKILL.md, references, tests), record structured notes per skill, then author a
@@ -43,6 +43,7 @@ resolve the commit-constraint conflict up front via an issue comment.
 
 - Report created/updated: <https://github.com/mcj-coder/development-skills/commit/9c59dbc>
 - BDD checklist updated: <https://github.com/mcj-coder/development-skills/commit/b4adaef>
+- Delivery plan updated after approval: <https://github.com/mcj-coder/development-skills/commit/fa93651>
 
 ---
 
