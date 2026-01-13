@@ -205,16 +205,95 @@ Requirements for all skills:
 
 ## Skills
 
-- `automated-standards-enforcement` - P0 foundational for automated quality (linting, spelling, SAST)
-- `issue-driven-delivery` (requires ticketing CLI: gh/ado/jira)
-- `agent-workitem-automation` (requires work item system CLI)
-- `persona-switching` - P2 multi-identity Git/GitHub workflows with role-based personas
-- `requirements-gathering` - For creating work items with requirements (no design docs)
-- `skills-first-workflow` (requires Superpowers)
-- `markdown-author` - Proactive markdown linting and spelling validation during writing
-- `walking-skeleton-delivery` - P3 delivery skill for minimal E2E architecture validation
-- `testcontainers-integration-tests` - P1 integration testing with real infrastructure via Testcontainers
-- `technical-debt-prioritisation` - P3 delivery skill for evidence-based debt prioritisation
+### Foundation & Process
+
+| Skill                             | Description                                                     |
+| --------------------------------- | --------------------------------------------------------------- |
+| `agents-onboarding`               | Creating AGENTS.md for fresh agent context enablement           |
+| `automated-standards-enforcement` | P0 foundational for automated quality (linting, spelling, SAST) |
+| `best-practice-introduction`      | Introducing best practices to teams and codebases               |
+| `issue-driven-delivery`           | Issue-driven workflow (requires ticketing CLI: gh/ado/jira)     |
+| `pair-programming`                | Human-agent pair programming with review loops                  |
+| `persona-switching`               | P2 multi-identity Git/GitHub workflows with role-based personas |
+| `process-skill-router`            | Routing to appropriate process skills based on context          |
+| `requirements-gathering`          | Creating work items with requirements (no design docs)          |
+| `skills-first-workflow`           | Skills-first execution workflow (requires Superpowers)          |
+
+### Architecture & Design
+
+| Skill                             | Description                                               |
+| --------------------------------- | --------------------------------------------------------- |
+| `architecture-testing`            | Validating architecture constraints with tests            |
+| `component-boundary-ownership`    | Defining and enforcing component boundaries               |
+| `contract-consistency-validation` | Validating API contracts and breaking changes             |
+| `greenfield-baseline`             | Setting up new projects with proper foundations           |
+| `safe-brownfield-refactor`        | Safely refactoring legacy codebases                       |
+| `scoped-colocation`               | Organising code with scoped colocation patterns           |
+| `walking-skeleton-delivery`       | P3 delivery skill for minimal E2E architecture validation |
+
+### Code Quality
+
+| Skill                       | Description                                                  |
+| --------------------------- | ------------------------------------------------------------ |
+| `broken-window`             | Preventing broken window syndrome in codebases               |
+| `ci-cd-conformance`         | Ensuring CI/CD pipeline compliance                           |
+| `documentation-as-code`     | Treating documentation with same rigour as code              |
+| `incremental-change-impact` | Understanding and managing change impact                     |
+| `markdown-author`           | Proactive markdown linting and spelling validation           |
+| `quality-gate-enforcement`  | Enforcing quality gates in CI/CD pipelines                   |
+| `static-analysis-security`  | Static analysis for security (SAST, vulnerability detection) |
+
+### Delivery & DevOps
+
+| Skill                                | Description                                           |
+| ------------------------------------ | ----------------------------------------------------- |
+| `agent-workitem-automation`          | Automating work items (requires work item system CLI) |
+| `branching-strategy-and-conventions` | Git branching strategies and conventions              |
+| `change-risk-rollback`               | Managing change risk with rollback strategies         |
+| `deployment-provenance`              | Tracking deployment provenance and audit trails       |
+| `finishing-a-development-branch`     | Completing and integrating development work           |
+| `impacted-scope-enforcement`         | Enforcing that changes only affect intended scope     |
+| `local-dev-experience`               | Optimising local development experience               |
+| `monorepo-orchestration-setup`       | Setting up and orchestrating monorepos                |
+| `observability-logging-baseline`     | Establishing observability and logging baselines      |
+| `release-tagging-plan`               | Release tagging strategies and versioning plans       |
+| `runtime-tooling-validation`         | Validating runtime dependencies and environment setup |
+
+### Governance
+
+| Skill                              | Description                                              |
+| ---------------------------------- | -------------------------------------------------------- |
+| `innersource-governance-bootstrap` | Setting up innersource governance practices              |
+| `library-extraction-stabilisation` | Extracting and stabilising reusable libraries            |
+| `repo-best-practices-bootstrap`    | Bootstrapping repository best practices                  |
+| `security-processes`               | Security processes and compliance                        |
+| `technical-debt-prioritisation`    | P3 delivery skill for evidence-based debt prioritisation |
+
+### .NET Specific
+
+| Skill                                 | Description                                 |
+| ------------------------------------- | ------------------------------------------- |
+| `aspire-integration-testing`          | Integration testing with .NET Aspire        |
+| `csharp-best-practices`               | C# language best practices                  |
+| `dotnet-bespoke-code-minimisation`    | Minimising custom code in .NET projects     |
+| `dotnet-best-practices`               | .NET platform best practices                |
+| `dotnet-domain-primitives`            | Domain primitives and value objects in .NET |
+| `dotnet-efcore-practices`             | Entity Framework Core best practices        |
+| `dotnet-healthchecks`                 | Health checks implementation in .NET        |
+| `dotnet-logging-serilog`              | Structured logging with Serilog             |
+| `dotnet-mapping-standard`             | Object mapping standards in .NET            |
+| `dotnet-open-source-first-governance` | Open source first approach for .NET         |
+| `dotnet-source-generation-first`      | Source generation patterns in .NET          |
+| `dotnet-specification-pattern`        | Specification pattern implementation        |
+| `dotnet-testing-assertions`           | Testing assertions and patterns in .NET     |
+| `testcontainers-integration-tests`    | P1 integration testing with Testcontainers  |
+| `testing-strategy-dotnet`             | .NET-specific testing strategy              |
+
+### Testing
+
+| Skill                       | Description                        |
+| --------------------------- | ---------------------------------- |
+| `testing-strategy-agnostic` | Language-agnostic testing strategy |
 
 ## Documentation
 
