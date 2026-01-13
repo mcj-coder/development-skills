@@ -42,7 +42,7 @@ resolve the commit-constraint conflict up front via an issue comment.
 **Applied Evidence:**
 
 - Report created/updated: <https://github.com/mcj-coder/development-skills/commit/9c59dbc>
-- BDD checklist updated: pending
+- BDD checklist updated: <https://github.com/mcj-coder/development-skills/commit/b4adaef>
 
 ---
 
