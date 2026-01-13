@@ -42,11 +42,11 @@ preferred worktree directory, keeping language consistent and unambiguous.
 
 - Modify: `CLAUDE.md`
 
-#### Step 1: Add preferred worktree directory\*\*
+#### Step 1: Add preferred worktree directory
 
 Add a concise line stating `.worktrees/` is the preferred worktree location.
 
-#### Step 2: Verify content\*\*
+#### Step 2: Verify content
 
 Run: `rg -n "\\.worktrees/" CLAUDE.md`
 Expected: matches showing the preference text.
@@ -57,11 +57,11 @@ Expected: matches showing the preference text.
 
 - Modify: `AGENTS.md`
 
-#### Step 1: Add preferred worktree directory\*\*
+#### Step 1: Add preferred worktree directory
 
 Add a concise line stating `.worktrees/` is the preferred worktree location.
 
-#### Step 2: Verify content\*\*
+#### Step 2: Verify content
 
 Run: `rg -n "\\.worktrees/" AGENTS.md`
 Expected: matches showing the preference text.
@@ -72,6 +72,6 @@ Expected: matches showing the preference text.
 
 - Modify: `docs/plans/2026-01-13-worktrees-preference.md`
 
-#### Step 1: Mark GREEN checklist\*\*
+#### Step 1: Mark GREEN checklist
 
 Check all GREEN items and add commit evidence links.

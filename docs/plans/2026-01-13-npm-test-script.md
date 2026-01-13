@@ -40,11 +40,11 @@ when no tests are configured.
 
 - Modify: `package.json`
 
-#### Step 1: Write the test script\*\*
+#### Step 1: Write the test script
 
 Add a `test` script that prints a clear message and exits 0.
 
-#### Step 2: Verify test script runs\*\*
+#### Step 2: Verify test script runs
 
 Run: `npm test`
 Expected: exit 0, output includes "No tests configured".
@@ -55,6 +55,6 @@ Expected: exit 0, output includes "No tests configured".
 
 - Modify: `docs/plans/2026-01-13-npm-test-script.md`
 
-#### Step 1: Mark GREEN checklist\*\*
+#### Step 1: Mark GREEN checklist
 
 Check all GREEN items and add commit evidence links.
