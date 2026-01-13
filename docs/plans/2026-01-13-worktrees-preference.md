@@ -24,9 +24,15 @@ preferred worktree directory, keeping language consistent and unambiguous.
 
 ## GREEN: Passing Checklist (After Implementation)
 
-- [ ] `CLAUDE.md` mentions `.worktrees/` as the preferred worktree directory
-- [ ] `AGENTS.md` mentions `.worktrees/` as the preferred worktree directory
-- [ ] Guidance is consistent across both files
+- [x] `CLAUDE.md` mentions `.worktrees/` as the preferred worktree directory
+- [x] `AGENTS.md` mentions `.worktrees/` as the preferred worktree directory
+- [x] Guidance is consistent across both files
+
+**Applied Evidence:**
+
+- RED checklist: <https://github.com/mcj-coder/development-skills/commit/9910c32>
+- Implementation: <https://github.com/mcj-coder/development-skills/commit/3e0303a>
+- GREEN checklist: <https://github.com/mcj-coder/development-skills/commit/b69233c>
 
 ---
 
