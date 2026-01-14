@@ -168,6 +168,11 @@ No breaking changes.
 - Follow TDD/BDD documentation process.
 - Update AGENTS.md and CLAUDE.md in the same commit batch.
 
+### For Reviewers
+
+Review Roles: Documentation Specialist, Scrum Master, Tech Lead, QA Engineer.
+Run `C:\Users\mcj\.claude\persona-config.sh` before starting line-level reviews.
+
 ---
 
 ## Follow-up Issues
