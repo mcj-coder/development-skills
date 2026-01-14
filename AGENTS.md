@@ -63,6 +63,32 @@ These rules tighten the workflow for autonomous execution.
 - **PR close policy.** Follow the README merge policy (rebase, then choose
   squash or fast-forward only) and use a Conventional Commit squash message
   with ticket footer when appropriate.
+- **Autonomous PR checklist.** Post the checklist comment below on every
+  autonomous PR and enable auto-merge once required approvals and checks pass.
+
+```markdown
+## Summary
+
+- <what changed and why>
+
+## Issues
+
+- Refs: #<issue-number>
+- Closes #<issue-number>
+
+## Test plan
+
+- [ ] `<command>` ([evidence](link))
+
+## Verification
+
+- <verification evidence or link>
+
+## Auto-merge
+
+- [ ] Enable auto-merge after required approvals and checks pass
+```
+
 - **Issue closure after scope complete.** When all in-scope work for an issue is
   delivered (all required PRs merged), post final evidence comment and close the
   issue. If issue requires multiple PRs, keep open until all scope delivered or
