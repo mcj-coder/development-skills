@@ -12,6 +12,37 @@ fi
 
 refs_checked=0
 
+resolve_github_repo() {
+  remote_url=$(git remote get-url origin 2>/dev/null)
+  if [ -z "$remote_url" ]; then
+    return 1
+  fi
+
+  repo=$(echo "$remote_url" | sed -E 's#(git@|https?://)github.com[:/]##' | sed -E 's#\.git$##')
+  if echo "$repo" | grep -q '/'; then
+    echo "$repo"
+    return 0
+  fi
+
+  return 1
+}
+
+is_github_verified() {
+  repo="$1"
+  commit_sha="$2"
+
+  if ! command -v gh >/dev/null 2>&1; then
+    return 1
+  fi
+
+  verified=$(gh api "repos/$repo/commits/$commit_sha" --jq '.commit.verification.verified' 2>/dev/null)
+  if [ "$verified" = "true" ]; then
+    return 0
+  fi
+
+  return 1
+}
+
 # Get the range of commits being pushed
 while read local_ref local_sha remote_ref remote_sha; do
   if [ "$local_sha" = "0000000000000000000000000000000000000000" ]; then
@@ -45,11 +76,39 @@ while read local_ref local_sha remote_ref remote_sha; do
   invalid_commits=$(git log --format="%H %G?" "$range" 2>/dev/null | grep -vE " [GU]$" | cut -d' ' -f1)
 
   if [ -n "$invalid_commits" ]; then
+    github_repo=""
+    github_verified_commits=""
+    remaining_invalid_commits=""
+
+    if command -v gh >/dev/null 2>&1; then
+      github_repo=$(resolve_github_repo)
+    fi
+
+    for commit in $invalid_commits; do
+      if [ -n "$github_repo" ] && is_github_verified "$github_repo" "$commit"; then
+        github_verified_commits="$github_verified_commits $commit"
+      else
+        remaining_invalid_commits="$remaining_invalid_commits $commit"
+      fi
+    done
+
+    if [ -n "$github_verified_commits" ]; then
+      echo ""
+      echo "?? Commits verified by GitHub (local verification failed):"
+      for commit in $github_verified_commits; do
+        echo "  - $(git log -1 --format='%h %s' "$commit")"
+      done
+    fi
+
+    if [ -z "$remaining_invalid_commits" ]; then
+      continue
+    fi
+
     echo ""
-    echo "❌ ERROR: Found commits with invalid or missing signatures"
+    echo "? ERROR: Found commits with invalid or missing signatures"
     echo ""
     echo "Problematic commits:"
-    for commit in $invalid_commits; do
+    for commit in $remaining_invalid_commits; do
       sig_status=$(git log -1 --format="%G?" "$commit" 2>/dev/null)
       case "$sig_status" in
         N) sig_desc="unsigned" ;;
@@ -63,6 +122,10 @@ while read local_ref local_sha remote_ref remote_sha; do
       echo "  - $(git log -1 --format='%h %s' "$commit") [$sig_desc]"
     done
     echo ""
+    if [ -z "$github_repo" ]; then
+      echo "GitHub verification was unavailable (missing gh CLI or non-GitHub origin)."
+      echo ""
+    fi
     echo "To fix, rebase and re-sign your commits:"
     echo ""
     echo "  git rebase origin/$DEFAULT_BRANCH --exec 'git commit --amend --no-edit -S'"
@@ -73,7 +136,7 @@ while read local_ref local_sha remote_ref remote_sha; do
     echo ""
     echo "See: docs/playbooks/enable-signed-commits.md"
     echo ""
-    echo "ℹ️  To bypass (not recommended): git push --no-verify"
+    echo "??  To bypass (not recommended): git push --no-verify"
     exit 1
   fi
 done

@@ -184,6 +184,22 @@ git config --global user.email "your.gpg.email@example.com"
 2. Ensure the GPG key email matches your GitHub verified email
 3. Re-upload your public key if recently regenerated
 
+### GitHub-verified commits with missing local keys
+
+If the pre-push hook reports `cannot verify (missing key)` but GitHub marks the
+commit as verified, the hook will accept the commit when the GitHub CLI can
+confirm verification.
+
+Verify a commit with the GitHub API:
+
+```bash
+gh api repos/OWNER/REPO/commits/SHA --jq '.commit.verification'
+```
+
+If `verified` is `true`, the hook treats the commit as acceptable. If `gh` is
+missing or the origin is not GitHub, the hook still blocks and you must re-sign
+locally.
+
 ## Pre-commit Hook Verification
 
 Add this to `.husky/pre-commit` to block commits if signing isn't configured:
