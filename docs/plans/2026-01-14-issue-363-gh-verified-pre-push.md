@@ -17,13 +17,13 @@ unverified.
 ## RED: Failing Checklist (Before Implementation)
 
 - [ ] `.husky/pre-push` checks GitHub verification when local signature status is
-  invalid
+      invalid
 - [ ] `.husky/pre-push` allows commits with `verification.verified == true` to
-  pass
+      pass
 - [ ] `.husky/pre-push` still blocks commits that are unsigned or invalid and
-  not GitHub verified
+      not GitHub verified
 - [ ] `docs/playbooks/enable-signed-commits.md` documents GitHub-verified commit
-  acceptance in the pre-push hook
+      acceptance in the pre-push hook
 
 **Failure Notes:**
 
