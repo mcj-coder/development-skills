@@ -12,6 +12,11 @@
 
 ## GREEN: Passing Checklist (After Implementation)
 
-- [ ] Approval section uses specific persona handles (no @username placeholders)
-- [ ] Approval section uses concrete approval links (no #approval-link placeholders)
-- [ ] Non-required approvals are explicitly marked as not required
+- [x] Approval section uses specific persona handles (no @username placeholders)
+- [x] Approval section uses concrete approval links (no #approval-link placeholders)
+- [x] Non-required approvals are explicitly marked as not required
+
+**Evidence:**
+
+- Implementation: <https://github.com/mcj-coder/development-skills/commit/efc8060>
+- Verification: `rg -n "@username|#approval-link" docs/plans/2026-01-14-baseline-failure-blocking.md`

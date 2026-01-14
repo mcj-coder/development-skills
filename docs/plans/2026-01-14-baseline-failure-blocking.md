@@ -20,11 +20,11 @@ last_updated: 2026-01-14
 
 **Design Approved By:**
 
-- [ ] Product Owner: @username (2026-01-14) #approval-link
-- [ ] Tech Lead: @username (2026-01-14) #approval-link
-- [ ] Security Reviewer: @username (2026-01-14) [if required] #approval-link
-- [ ] Architecture Reviewer: @username (2026-01-14) [if required] #approval-link
-- [ ] QA Reviewer: @username (2026-01-14) [if required] #approval-link
+- [ ] Product Owner: @mcj-coder (2026-01-14) #361
+- [ ] Tech Lead: @mcj-coder (2026-01-14) #361
+- [ ] Security Reviewer: Not required
+- [ ] Architecture Reviewer: Not required
+- [ ] QA Reviewer: @mcj-coder (2026-01-14) #361
 
 **Status:** `Draft` -> `Approved v1` (when all approvals received)
 **Approved Date:** YYYY-MM-DD
