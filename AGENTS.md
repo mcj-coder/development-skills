@@ -35,6 +35,8 @@ These rules tighten the workflow for autonomous execution.
     guidance on both verification types.
 - **Feature branch only.** If you are on `main`, stop and create a feature
   branch before any edits or commits. Do not commit on `main`.
+- **Baseline failure blocks work.** On baseline verification failure, create or
+  reference a blocking issue and pause the current task until baseline passes.
 - **Skills-first enforcement.** Bootstrap, load skills, and follow process
   skills before any implementation.
 - **TDD enforcement.** Apply the README TDD standard to ALL changes (code, configuration,
