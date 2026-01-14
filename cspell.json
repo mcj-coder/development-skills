@@ -245,7 +245,9 @@
     "misconfiguring",
     "nosec",
     "nosemgrep",
-    "vulns"
+    "vulns",
+    "skillsets",
+    "skillset"
   ],
   "ignorePaths": ["node_modules/**", "package-lock.json"]
 }
