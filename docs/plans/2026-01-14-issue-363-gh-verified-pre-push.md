@@ -14,22 +14,23 @@ unverified.
 
 ---
 
-## RED: Failing Checklist (Before Implementation)
+## GREEN: Passing Checklist (After Implementation)
 
-- [ ] `.husky/pre-push` checks GitHub verification when local signature status is
+- [x] `.husky/pre-push` checks GitHub verification when local signature status is
       invalid
-- [ ] `.husky/pre-push` allows commits with `verification.verified == true` to
+- [x] `.husky/pre-push` allows commits with `verification.verified == true` to
       pass
-- [ ] `.husky/pre-push` still blocks commits that are unsigned or invalid and
+- [x] `.husky/pre-push` still blocks commits that are unsigned or invalid and
       not GitHub verified
-- [ ] `docs/playbooks/enable-signed-commits.md` documents GitHub-verified commit
+- [x] `docs/playbooks/enable-signed-commits.md` documents GitHub-verified commit
       acceptance in the pre-push hook
 
-**Failure Notes:**
+**Applied Evidence:**
 
-- Pre-push only checks local GPG status and rejects `E` (missing key)
-- No GitHub API verification exists in the hook
-- The playbook does not mention GitHub-verified commits in pre-push enforcement
+- Updated `.husky/pre-push`: [commit 872e2ae](https://github.com/mcj-coder/development-skills/commit/872e2ae2a31d44b3a1218d73c7d59536048f319b)
+- Updated `docs/playbooks/enable-signed-commits.md`: [commit 872e2ae](https://github.com/mcj-coder/development-skills/commit/872e2ae2a31d44b3a1218d73c7d59536048f319b)
+- Verification command: `gh api repos/mcj-coder/development-skills/commits/825db2c --jq '.commit.verification'`
+- Verification command: `git log --show-signature -1 825db2c`
 
 ---
 
