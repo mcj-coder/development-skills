@@ -43,6 +43,16 @@ is_github_verified() {
   return 1
 }
 
+is_on_default_branch() {
+  commit_sha="$1"
+
+  if ! git show-ref --verify --quiet "refs/remotes/origin/$DEFAULT_BRANCH"; then
+    return 1
+  fi
+
+  git merge-base --is-ancestor "$commit_sha" "origin/$DEFAULT_BRANCH" 2>/dev/null
+}
+
 # Get the range of commits being pushed
 while read local_ref local_sha remote_ref remote_sha; do
   if [ "$local_sha" = "0000000000000000000000000000000000000000" ]; then
@@ -74,8 +84,16 @@ while read local_ref local_sha remote_ref remote_sha; do
   # Check for invalid signatures: N=None, B=Bad, E=Error, R=Revoked, X/Y=Expired
   # Valid signatures are G (Good) and U (Good but untrusted)
   invalid_commits=$(git log --format="%H %G?" "$range" 2>/dev/null | grep -vE " [GU]$" | cut -d' ' -f1)
+  filtered_invalid_commits=""
 
-  if [ -n "$invalid_commits" ]; then
+  for commit in $invalid_commits; do
+    if is_on_default_branch "$commit"; then
+      continue
+    fi
+    filtered_invalid_commits="$filtered_invalid_commits $commit"
+  done
+
+  if [ -n "$filtered_invalid_commits" ]; then
     github_repo=""
     github_verified_commits=""
     remaining_invalid_commits=""
@@ -84,7 +102,7 @@ while read local_ref local_sha remote_ref remote_sha; do
       github_repo=$(resolve_github_repo)
     fi
 
-    for commit in $invalid_commits; do
+    for commit in $filtered_invalid_commits; do
       if [ -n "$github_repo" ] && is_github_verified "$github_repo" "$commit"; then
         github_verified_commits="$github_verified_commits $commit"
       else
