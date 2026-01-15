@@ -72,6 +72,128 @@ description: Standardise EF Core usage: isolate migrations in a dedicated projec
 - In AOT/trimming scenarios, ensure any reflection usage is compatible with trimming requirements
   (or provide a non-reflection fallback).
 
+## Load: coverage tooling
+
+### Coverlet configuration example
+
+**`.runsettings` (repository root):**
+
+```xml
+<?xml version="1.0" encoding="utf-8"?>
+<RunSettings>
+  <DataCollectionRunSettings>
+    <DataCollectors>
+      <DataCollector friendlyName="XPlat Code Coverage" assemblyQualifiedName="Coverlet.Collector.DataCollection.CoverletInstrumentationCollector, coverlet.collector">
+        <Configuration>
+          <ExcludeByAttribute>CompilerGeneratedAttribute,GeneratedCodeAttribute,ExcludeFromCodeCoverageAttribute</ExcludeByAttribute>
+          <ExcludeByFile>**/Migrations/**/*.cs</ExcludeByFile>
+        </Configuration>
+      </DataCollector>
+    </DataCollectors>
+  </DataCollectionRunSettings>
+</RunSettings>
+```
+
+**Alternative: `.csproj` exclusion (for Migrations project):**
+
+```xml
+<PropertyGroup>
+  <ExcludeFromCodeCoverage>true</ExcludeFromCodeCoverage>
+</PropertyGroup>
+```
+
+### xUnit repository pattern examples
+
+**Repository interface with xUnit tests:**
+
+```csharp
+// Domain: IOrderRepository.cs
+public interface IOrderRepository
+{
+    Task<Order?> GetByIdAsync(int id, CancellationToken cancellationToken = default);
+    Task AddAsync(Order order, CancellationToken cancellationToken = default);
+    Task UpdateAsync(Order order, CancellationToken cancellationToken = default);
+}
+
+// Persistence: OrderRepository.cs
+public class OrderRepository : IOrderRepository
+{
+    private readonly AppDbContext _context;
+
+    public OrderRepository(AppDbContext context) => _context = context;
+
+    public Task<Order?> GetByIdAsync(int id, CancellationToken ct) =>
+        _context.Orders.FirstOrDefaultAsync(o => o.Id == id, ct);
+
+    public Task AddAsync(Order order, CancellationToken ct)
+    {
+        _context.Orders.Add(order);
+        return _context.SaveChangesAsync(ct);
+    }
+
+    public Task UpdateAsync(Order order, CancellationToken ct)
+    {
+        _context.Orders.Update(order);
+        return _context.SaveChangesAsync(ct);
+    }
+}
+
+// Tests: OrderRepositoryTests.cs
+public class OrderRepositoryTests : IAsyncLifetime
+{
+    private DbContextOptions<AppDbContext> _options = null!;
+    private AppDbContext _context = null!;
+
+    public async Task InitializeAsync()
+    {
+        _options = new DbContextOptionsBuilder<AppDbContext>()
+            .UseInMemoryDatabase(Guid.NewGuid().ToString())
+            .Options;
+        _context = new AppDbContext(_options);
+        await _context.Database.EnsureCreatedAsync();
+    }
+
+    public async Task DisposeAsync()
+    {
+        await _context.DisposeAsync();
+    }
+
+    [Fact]
+    public async Task GetByIdAsync_WithValidId_ReturnsOrder()
+    {
+        // Arrange
+        var order = new Order { Id = 1, Status = OrderStatus.Pending };
+        _context.Orders.Add(order);
+        await _context.SaveChangesAsync();
+
+        var repository = new OrderRepository(_context);
+
+        // Act
+        var result = await repository.GetByIdAsync(1);
+
+        // Assert
+        Assert.NotNull(result);
+        Assert.Equal(1, result.Id);
+    }
+
+    [Fact]
+    public async Task AddAsync_WithNewOrder_PersistsSuccessfully()
+    {
+        // Arrange
+        var order = new Order { Status = OrderStatus.Pending };
+        var repository = new OrderRepository(_context);
+
+        // Act
+        await repository.AddAsync(order);
+        var retrieved = await _context.Orders.FindAsync(order.Id);
+
+        // Assert
+        Assert.NotNull(retrieved);
+        Assert.Equal(OrderStatus.Pending, retrieved.Status);
+    }
+}
+```
+
 ## Load: enforcement
 
 ### Coverage gate
@@ -87,3 +209,40 @@ description: Standardise EF Core usage: isolate migrations in a dedicated projec
   - a configuration type,
   - an attribute link,
   - and that discovery applies it.
+
+## Load: verification
+
+### Verification commands
+
+**1. Verify migrations project is excluded from coverage:**
+
+```bash
+dotnet test /p:CollectCoverage=true /p:CoverletOutputFormat=opencover
+```
+
+Expected output: Coverage report excludes `*.Persistence.Migrations` assembly.
+
+**2. Verify coverage threshold passes:**
+
+```bash
+dotnet test /p:CollectCoverage=true /p:Threshold=75
+```
+
+Expected: Build succeeds even if migrations project has low/zero coverage.
+
+**3. List excluded coverage paths:**
+
+```bash
+# Inspect .runsettings to confirm ExcludeByFile patterns
+cat .runsettings
+```
+
+Expected: File contains exclusion patterns for migrations path (e.g., `**/Migrations/**/*.cs`).
+
+### Verification checklist
+
+- [ ] Migrations project has `<ExcludeFromCodeCoverage>true</ExcludeFromCodeCoverage>` in `.csproj` OR excluded in `.runsettings`
+- [ ] Run `dotnet test /p:CollectCoverage=true` and verify migrations assembly does not appear in coverage report
+- [ ] xUnit repository tests use `IAsyncLifetime` for async setup/teardown
+- [ ] Configuration types exist in Persistence project (not in migrations)
+- [ ] Migration files are in dedicated `*.Persistence.Migrations` project only
