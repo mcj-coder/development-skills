@@ -300,6 +300,8 @@ Requirements for all skills:
 This repository follows standard InnerSource/OpenSource documentation practices:
 
 - **[CONTRIBUTING.md](CONTRIBUTING.md)** - How to contribute and create skills
+- **[CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md)** - Community standards and enforcement
+- **[GOVERNANCE.md](GOVERNANCE.md)** - Decision-making process and maintainer responsibilities
 - **[docs/getting-started.md](docs/getting-started.md)** - Developer onboarding and project setup
 - **[docs/architecture-overview.md](docs/architecture-overview.md)** - Architectural patterns, boundaries, and structure
 - **[docs/coding-standards.md](docs/coding-standards.md)** - Code style, naming conventions, and patterns
