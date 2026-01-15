@@ -161,9 +161,9 @@ status: accepted
    - **Non-idempotent scripts** - scripts should be safe to run multiple times
 
 9. **Links**
-   - [ADR-0001: Skill Design Philosophy](0001-skill-design-philosophy.md)
-   - [Issue-driven-delivery scripts](../../skills/issue-driven-delivery/scripts/)
-   - [Scripts README](../../skills/issue-driven-delivery/scripts/README.md)
+   - [ADR-0001: Skill Design Philosophy](../../adr/0001-skill-design-philosophy.md)
+   - [Issue-driven-delivery scripts](../../../skills/issue-driven-delivery/scripts/)
+   - [Scripts README](../../../skills/issue-driven-delivery/scripts/README.md)
 
 **Deliverable:** `docs/adr/0002-automation-first-principle.md`
 

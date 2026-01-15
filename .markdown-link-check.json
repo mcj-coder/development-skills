@@ -5,7 +5,12 @@
     { "pattern": "^https://github.com/.*/actions/runs/" },
     { "pattern": "^https://github.com/.*/commit/" },
     { "pattern": "^https://github.com/.*/files#" },
-    { "pattern": "^#" }
+    { "pattern": "^#" },
+    { "pattern": "^link$" },
+    { "pattern": "^url$" },
+    { "pattern": "link-to-" },
+    { "pattern": "XXXX-" },
+    { "pattern": "\\{.*\\}" }
   ],
   "timeout": "10s",
   "retryOn429": true,
