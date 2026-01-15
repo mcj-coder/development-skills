@@ -196,6 +196,24 @@ async function validate() {
     warn("PR should include a '## Test plan' section.");
   }
 
+  // Rule 8: Review depth - warn on brief/empty approvals
+  const reviews = danger.github.reviews || [];
+  const approvedReviews = reviews.filter((r) => r.state === "APPROVED");
+  const MIN_REVIEW_BODY_LENGTH = 50;
+
+  if (approvedReviews.length > 0) {
+    const briefApprovals = approvedReviews.filter(
+      (r) => !r.body || r.body.trim().length < MIN_REVIEW_BODY_LENGTH,
+    );
+
+    if (briefApprovals.length === approvedReviews.length) {
+      warn(
+        `[Review] All ${approvedReviews.length} approval(s) have brief or empty review bodies. ` +
+          `Substantive reviews should include: files reviewed, potential issues checked, or specific feedback.`,
+      );
+    }
+  }
+
   // Success message if all critical checks pass
   const failures = danger.fails || [];
   if (failures.length === 0) {
