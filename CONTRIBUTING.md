@@ -27,6 +27,30 @@ agent-facing documentation that helps AI agents apply proven techniques, pattern
    - See [README.md](README.md) for repository standards
    - See [AGENTS.md](AGENTS.md) for agent-specific rules
 
+## Plan Approval Workflow
+
+Before implementation begins on any issue, a plan must be posted and approved:
+
+1. **Post plan comment** on the issue with "## Plan" header summarizing approach
+2. **Wait for approval** - approval comment must contain "Approval acknowledged" or "Plan approved"
+3. **Begin implementation** - only after explicit approval exists
+
+**Enforcement:** DangerJS Rule 9 warns on PRs where the linked issue lacks plan approval.
+
+**Exemplar:** [Issue #177](https://github.com/mcj-coder/development-skills/issues/177) demonstrates
+the complete workflow with proper plan formatting and approval.
+
+**Plan comment format:**
+
+```markdown
+## Plan
+
+**Approach:** {Brief description}
+**Files to change:** {List}
+**Testing:** {How you'll verify}
+**Awaiting approval to proceed.**
+```
+
 ## Creating Skills
 
 ### Process Overview
