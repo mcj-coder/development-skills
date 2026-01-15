@@ -935,6 +935,24 @@ gh issue view N --json comments --jq '.comments[].body' | grep -qiE "approved|lg
 gh issue view N --json body,comments --jq '[.body, .comments[].body] | join(" ")' | grep -qiE "blocked by|depends on|no dependencies|dependencies: none" && echo "PASS: Dependencies documented" || echo "WARN: Dependencies not explicitly documented"
 ```
 
+### Automated Enforcement
+
+Plan approval is enforced automatically via DangerJS (Rule 9). When a PR references an issue:
+
+1. **Plan comment check** - DangerJS verifies the linked issue has a plan comment containing:
+   - "## Plan" or "## Implementation Plan" or "## Refinement" header
+   - Link to `docs/plans/` directory
+   - "Awaiting approval" or "Ready for approval" language
+
+2. **Approval check** - DangerJS verifies an approval comment exists containing:
+   - "Approval acknowledged" or "Plan approved"
+   - "Approved to proceed" or "Proceeding with"
+
+PRs will receive warnings if plan approval is missing. See `dangerfile.js` Rule 9 for implementation.
+
+**Exemplar:** [Issue #177](https://github.com/mcj-coder/development-skills/issues/177) demonstrates
+the complete plan approval workflow with proper comment formatting.
+
 ### DoR Failure Handling
 
 If DoR validation fails, do NOT transition to implementation. Instead:

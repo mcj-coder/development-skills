@@ -1,6 +1,6 @@
 // dangerfile.js - Evidence validation rules for PR enforcement
 // Implements automated checks from issue-driven-delivery skill
-// Issue: #300
+// Issues: #300, #290, #291, #292
 
 const { danger, warn, fail, message } = require("danger");
 
@@ -48,22 +48,25 @@ function findCheckedItemsWithoutEvidence(text) {
   return itemsWithoutEvidence;
 }
 
+// Helper to extract linked issue number from PR body
+function getLinkedIssueNumber() {
+  const prBody = danger.github.pr.body || "";
+  const issueMatch = prBody.match(/(?:closes|fixes|resolves)\s+#(\d+)/i);
+  return issueMatch ? parseInt(issueMatch[1]) : null;
+}
+
 // Helper to safely get issue body (linked issue from PR)
 async function getLinkedIssueBody() {
-  const prBody = danger.github.pr.body || "";
-
-  // Extract issue number from "Closes #N" or "Fixes #N" patterns
-  const issueMatch = prBody.match(/(?:closes|fixes|resolves)\s+#(\d+)/i);
-  if (!issueMatch) {
+  const issueNumber = getLinkedIssueNumber();
+  if (!issueNumber) {
     return null;
   }
 
-  const issueNumber = issueMatch[1];
   try {
     const issue = await danger.github.api.issues.get({
       owner: danger.github.thisPR.owner,
       repo: danger.github.thisPR.repo,
-      issue_number: parseInt(issueNumber),
+      issue_number: issueNumber,
     });
     return issue.data.body || "";
   } catch (error) {
@@ -78,6 +81,72 @@ async function getLinkedIssueBody() {
     }
     return null;
   }
+}
+
+// Helper to get comments on the linked issue
+async function getLinkedIssueComments() {
+  const issueNumber = getLinkedIssueNumber();
+  if (!issueNumber) {
+    return null;
+  }
+
+  try {
+    const comments = await danger.github.api.issues.listComments({
+      owner: danger.github.thisPR.owner,
+      repo: danger.github.thisPR.repo,
+      issue_number: issueNumber,
+    });
+    return comments.data || [];
+  } catch (error) {
+    console.error(
+      `Failed to fetch comments for issue #${issueNumber}: ${error.message || error}`,
+    );
+    return null;
+  }
+}
+
+/**
+ * Check if a comment contains a plan (implementation plan for approval)
+ * Plan indicators:
+ * - Contains "## Plan" or "## Implementation Plan" or "## Refinement"
+ * - Links to docs/plans/ directory
+ * - Contains "awaiting approval" or "ready for approval"
+ */
+function isPlanComment(commentBody) {
+  if (!commentBody) return false;
+  const lowerBody = commentBody.toLowerCase();
+
+  // Check for plan headers
+  if (/##\s*(implementation\s+)?plan/i.test(commentBody)) return true;
+  if (/##\s*refinement/i.test(commentBody)) return true;
+
+  // Check for plan file links
+  if (/docs\/plans\//.test(commentBody)) return true;
+
+  // Check for approval request language
+  if (
+    lowerBody.includes("awaiting approval") ||
+    lowerBody.includes("ready for approval") ||
+    lowerBody.includes("plan ready for approval")
+  )
+    return true;
+
+  return false;
+}
+
+/**
+ * Check if a comment indicates plan approval
+ */
+function isApprovalComment(commentBody) {
+  if (!commentBody) return false;
+  const lowerBody = commentBody.toLowerCase();
+
+  return (
+    lowerBody.includes("approval acknowledged") ||
+    lowerBody.includes("approved to proceed") ||
+    lowerBody.includes("plan approved") ||
+    /proceed(ing)?\s+with/.test(lowerBody)
+  );
 }
 
 // Main validation logic
@@ -210,6 +279,29 @@ async function validate() {
       warn(
         `[Review] All ${approvedReviews.length} approval(s) have brief or empty review bodies. ` +
           `Substantive reviews should include: files reviewed, potential issues checked, or specific feedback.`,
+      );
+    }
+  }
+
+  // Rule 9: Plan approval enforcement
+  // Issues must have a plan comment with approval before implementation
+  const issueComments = await getLinkedIssueComments();
+  if (issueComments) {
+    const hasPlanComment = issueComments.some((c) => isPlanComment(c.body));
+    const hasApprovalComment = issueComments.some((c) =>
+      isApprovalComment(c.body),
+    );
+
+    if (!hasPlanComment) {
+      warn(
+        `[Issue] No plan comment found on linked issue. ` +
+          `Post a plan comment with "## Plan" header or link to docs/plans/ before implementation. ` +
+          `See Issue #177 for exemplar.`,
+      );
+    } else if (!hasApprovalComment) {
+      warn(
+        `[Issue] Plan found but no approval comment detected. ` +
+          `Add approval comment (e.g., "Approval acknowledged" or "Plan approved") before implementation.`,
       );
     }
   }

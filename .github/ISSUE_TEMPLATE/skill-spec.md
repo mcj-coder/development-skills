@@ -12,6 +12,26 @@ assignees: ""
 
 {One sentence: what agents should do when this skill triggers}
 
+## Plan Approval
+
+<!--
+Before implementation begins, post a plan comment on this issue:
+1. Create plan file at docs/plans/YYYY-MM-DD-issue-N-description.md (if complex)
+2. Post comment with "## Plan" header summarizing implementation approach
+3. Wait for approval comment before starting implementation
+4. See Issue #177 for exemplar
+
+Plan comment template:
+## Plan
+**Approach:** {Brief description}
+**Files to change:** {List}
+**Testing:** {How you'll verify}
+**Awaiting approval to proceed.**
+-->
+
+- [ ] Plan comment posted
+- [ ] Approval received
+
 ## Skill Priority
 
 - Priority: P{0-4} ({Safety & Integrity | Quality & Correctness | Consistency & Governance |
