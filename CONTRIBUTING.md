@@ -51,6 +51,40 @@ the complete workflow with proper plan formatting and approval.
 **Awaiting approval to proceed.**
 ```
 
+## Scope Changes
+
+When scope changes during implementation (adding, removing, or modifying requirements):
+
+1. **Post scope change comment** on the issue using the template below
+2. **Wait for approval** before making the change
+3. **Update issue body** with the approved change
+
+**Scope change comment format:**
+
+```markdown
+## Scope Change
+
+**Type:** Addition / Removal / Modification
+**Reason:** [Why the change is needed]
+**Impact:** [What this affects]
+
+**Changes:**
+
+- ~~Removed: [item]~~
+- Added: [item]
+
+**Awaiting approval to proceed with scope change.**
+```
+
+**After approval, update issue body:**
+
+- Added items: `- [ ] New item (added: [approval](link))`
+- Removed items: `- [ ] ~~Removed item~~ (descoped: [approval](link))`
+
+**Enforcement:** DangerJS Rule 3 fails PRs with descoped items missing approval links.
+
+See `skills/issue-driven-delivery/SKILL.md` for complete scope change protocol.
+
 ## Creating Skills
 
 ### Process Overview

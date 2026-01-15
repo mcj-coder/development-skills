@@ -1742,9 +1742,42 @@ All scope changes during implementation MUST be tracked in acceptance criteria:
 
 **Adding scope:**
 
-1. Get approval in issue comment
-2. Add new checkbox with approval link
-3. Complete work and add evidence
+1. Post scope change comment (use template below)
+2. Get approval in issue comment thread
+3. Add new checkbox with approval link
+4. Complete work and add evidence
+
+**Removing scope (descoping):**
+
+1. Post scope change comment (use template below)
+2. Get approval in issue comment thread
+3. Strike through item and add approval link
+4. Item remains unchecked but struck through
+
+**Scope change without approval is a violation.** All added or removed work
+requires explicit approval captured in issue comments.
+
+#### Scope Change Comment Template
+
+When scope changes, post a comment using this format:
+
+```markdown
+## Scope Change
+
+**Type:** Addition / Removal / Modification
+**Reason:** [Why the change is needed]
+**Impact:** [What this affects - timeline, dependencies, etc.]
+
+**Changes:**
+
+- ~~Removed: [item being removed]~~
+- Added: [new item being added]
+- Modified: [item changed] → [new version]
+
+**Awaiting approval to proceed with scope change.**
+```
+
+After approval, update the issue body:
 
 Format for added scope:
 
@@ -1753,20 +1786,14 @@ Format for added scope:
 - [x] New requirement (added: [approval](#issuecomment-123), [evidence](commit-link))
 ```
 
-**Removing scope (descoping):**
-
-1. Get approval in issue comment
-2. Strike through item and add approval link
-3. Item remains unchecked but struck through
-
 Format for descoped items:
 
 ```markdown
 - [ ] ~~Original requirement~~ (descoped: [approval](#issuecomment-123))
 ```
 
-**Scope change without approval is a violation.** All added or removed work
-requires explicit approval captured in issue comments.
+**Exemplar:** [Issue #167](https://github.com/mcj-coder/development-skills/issues/167) demonstrates
+partial scope change compliance with documented scope reduction.
 
 ### Plan Lifecycle Evidence
 
