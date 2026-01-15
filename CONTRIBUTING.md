@@ -178,6 +178,37 @@ merge if not satisfied.
 - PR template: `.github/PULL_REQUEST_TEMPLATE.md`
 - Exemplar PR with proper evidence: [#263](https://github.com/mcj-coder/development-skills/pull/263)
 
+### Code Review Guidelines
+
+**Substantive reviews required.** Empty "LGTM" approvals are flagged by DangerJS. Reviews must
+include meaningful feedback (minimum 50 characters).
+
+**What to include in review comments:**
+
+- Files reviewed and verified
+- Potential issues checked (edge cases, security, performance)
+- Specific observations (positive or constructive)
+- Questions or concerns that were resolved
+
+**Exemplar review format:**
+
+```text
+Reviewed [files]. Verified:
+- [Specific check 1]
+- [Specific check 2]
+
+[Any observations or minor suggestions]
+
+Approved - no blocking issues found.
+```
+
+**Exemplar review:**
+
+> Reviewed dangerfile.js and CONTRIBUTING.md. Verified the review depth check
+> logic is correct and MIN_REVIEW_BODY_LENGTH of 50 chars is reasonable.
+> Checked regex patterns for potential edge cases - none found.
+> Documentation clearly explains the new requirement. Approved.
+
 ### Quality Gates
 
 Before submitting PR:

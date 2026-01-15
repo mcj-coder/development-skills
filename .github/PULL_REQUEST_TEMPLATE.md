@@ -32,3 +32,17 @@ Example:
 Exemplar PR with proper evidence: #263
 See CONTRIBUTING.md for complete checklist requirements
 -->
+
+## For Reviewers
+
+<!--
+When approving, include substantive feedback (>50 chars) such as:
+- Files reviewed and verified
+- Potential issues checked (edge cases, security, performance)
+- Specific positive or constructive feedback
+
+Example approval comment:
+"Reviewed dangerfile.js and CONTRIBUTING.md. Logic for review depth check
+looks correct. Verified MIN_REVIEW_BODY_LENGTH constant is reasonable.
+No security concerns with the new regex patterns."
+-->
