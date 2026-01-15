@@ -203,5 +203,7 @@ gh auth status
 
 ## See Also
 
-- [enable-signed-commits playbook](enable-signed-commits.md) - GPG setup guide
-- [conducting-pr-reviews playbook](conducting-pr-reviews.md) - Review process
+<!-- Future playbooks (not yet implemented):
+- enable-signed-commits.md - GPG setup guide
+- conducting-pr-reviews.md - Review process
+-->

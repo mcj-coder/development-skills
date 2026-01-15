@@ -37,6 +37,11 @@ jobs:
       - name: Spell check (cspell)
         run: npx cspell "**/*.md"
 
+      - name: Check links (markdown-link-check)
+        run: |
+          find . -name '*.md' -not -path './node_modules/*' -not -path './.git/*' -not -path './.worktrees/*' | \
+          xargs -n 1 npx markdown-link-check --config .markdown-link-check.json --quiet
+
   danger:
     name: DangerJS PR Validation
     runs-on: ubuntu-latest
