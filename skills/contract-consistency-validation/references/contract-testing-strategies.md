@@ -189,3 +189,241 @@ For existing projects without contract validation:
 | Buf                   | Schema          | Any      | Protobuf/gRPC      |
 | JSON Schema           | Schema          | Any      | JSON payloads      |
 | Dredd                 | Provider        | Any      | OpenAPI validation |
+
+## Contract Test Examples
+
+### OpenAPI Contract Test Example
+
+**Complete OpenAPI specification with breaking change validation:**
+
+```yaml
+openapi: 3.0.0
+info:
+  title: User API
+  version: 1.2.0
+paths:
+  /users/{id}:
+    get:
+      summary: Get user by ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: User found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+        "404":
+          description: User not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+components:
+  schemas:
+    User:
+      type: object
+      required:
+        - id
+        - name
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        email:
+          type: string
+          nullable: true
+        role:
+          type: string
+          enum:
+            - admin
+            - user
+          default: user
+    Error:
+      type: object
+      required:
+        - code
+        - message
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+```
+
+**Breaking change detection:**
+
+```bash
+# Detect incompatible changes
+openapi-diff old-spec.yaml new-spec.yaml --fail-on-incompatible
+
+# Examples that trigger failures:
+# - Removing 'email' field from User schema
+# - Changing 'name' from required to optional
+# - Adding 'phone' as required (without default)
+# - Changing response from 200/404 to 200 only
+# - Changing 'role' enum values (removing 'admin')
+```
+
+**Test-driven validation:**
+
+```javascript
+describe("User API contract", () => {
+  it("GET /users/{id} returns User with required fields", async () => {
+    const response = await api.get("/users/123");
+    expect(response.status).toBe(200);
+    expect(response.body).toHaveProperty("id");
+    expect(response.body).toHaveProperty("name");
+    if (response.body.email) {
+      expect(typeof response.body.email).toBe("string");
+    }
+    expect(["admin", "user"]).toContain(response.body.role);
+  });
+
+  it("returns 404 error with standard Error contract", async () => {
+    const response = await api.get("/users/nonexistent");
+    expect(response.status).toBe(404);
+    expect(response.body).toHaveProperty("code");
+    expect(response.body).toHaveProperty("message");
+  });
+
+  it("BREAKS if email field is removed", async () => {
+    const response = await api.get("/users/123");
+    expect(response.body).toHaveProperty("email");
+  });
+});
+```
+
+### JSON Schema Contract Validation Example
+
+**Schema validation at request/response boundary:**
+
+```json
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "User API Contracts",
+  "definitions": {
+    "UserRequest": {
+      "type": "object",
+      "required": ["name"],
+      "properties": {
+        "name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "email": {
+          "type": "string",
+          "format": "email"
+        }
+      },
+      "additionalProperties": false
+    },
+    "UserResponse": {
+      "type": "object",
+      "required": ["id", "name", "createdAt"],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{24}$"
+        },
+        "name": {
+          "type": "string"
+        },
+        "email": {
+          "type": ["string", "null"],
+          "format": "email"
+        },
+        "role": {
+          "type": "string",
+          "enum": ["admin", "user"],
+          "default": "user"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}
+```
+
+**Validation code:**
+
+```javascript
+const Ajv = require("ajv");
+const schema = require("./user-contracts.json");
+
+const ajv = new Ajv();
+const validateRequest = ajv.compile(schema.definitions.UserRequest);
+const validateResponse = ajv.compile(schema.definitions.UserResponse);
+
+// Request validation
+function createUser(data) {
+  if (!validateRequest(data)) {
+    throw new ValidationError(validateRequest.errors);
+  }
+}
+
+// Response validation
+function returnUser(user) {
+  if (!validateResponse(user)) {
+    throw new ContractViolation(validateResponse.errors);
+  }
+  return user;
+}
+```
+
+## Non-HTTP Contract Checklist
+
+For contracts outside HTTP REST (gRPC, message queues, databases), use this minimal checklist:
+
+### gRPC Contract Checklist
+
+- [ ] `.proto` file versioning strategy defined (separate files per version or field numbers)
+- [ ] Backward compatibility rules enforced (new fields must be optional, remove not rename)
+- [ ] Tool configured to detect incompatible changes: `buf breaking --against '.git#branch=main'`
+- [ ] Service interface changes blocked: removed methods, changed signatures
+- [ ] Message field removal flagged as breaking (field reuse tracking via field numbers)
+- [ ] Consumer verification: test clients against new proto to catch breaking changes
+
+### Message Queue / Event Contract Checklist
+
+- [ ] Event schema stored (JSON Schema, Avro, or Protobuf) with versioning
+- [ ] New optional fields allowed; removed/renamed fields flagged as breaking
+- [ ] Schema registry or validation library configured (e.g., Confluent Schema Registry, AWS Glue)
+- [ ] Consumer verification: consumers process old event versions (validate backward compatibility)
+- [ ] Topic versioning strategy: new topic for major changes vs. versioned events within topic
+- [ ] Migration path documented: how consumers upgrade to new event schema
+
+### Database / Storage Contract Checklist
+
+- [ ] Migration scripts maintain backward compatibility for 2+ versions
+- [ ] Read operations work with old and new schema versions during migration
+- [ ] Rollback procedure tested (can schema change be reversed without data loss?)
+- [ ] Consumer code updated simultaneously with schema (avoid read/write mismatches)
+- [ ] Optional fields added before removing old fields (support both during transition)
+
+### Command-Line Contract Validation Tools
+
+```bash
+# gRPC (Protobuf)
+buf breaking current.proto --against previous.proto
+
+# Avro (message queues)
+java -jar avro-tools.jar ipc compare old.avsc new.avsc
+
+# GraphQL
+graphql-inspector compare schema-old.graphql schema-new.graphql
+
+# OpenAPI/JSON Schema
+openapi-diff old.yaml new.yaml --fail-on-incompatible
+json-schema-diff old.json new.json
+```
