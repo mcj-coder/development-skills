@@ -152,6 +152,32 @@ Refs: #1
    - Otherwise → **Fast-forward only**
 3. **Squash commit messages** must be Conventional Commits with ticket reference
 
+### PR Evidence Requirements
+
+**All test plan items must include evidence links.** This is enforced by DangerJS and will block
+merge if not satisfied.
+
+**Required format:**
+
+```markdown
+- [x] Feature implemented ([file.ts:L15-L30](https://github.com/.../files#diff-...))
+- [x] Tests pass ([CI check](https://github.com/.../actions/runs/.../job/...))
+- [x] Linting passes ([CI run](https://github.com/.../actions/runs/...))
+```
+
+**Evidence link types:**
+
+| Type           | Format                | Example                          |
+| -------------- | --------------------- | -------------------------------- |
+| File reference | `([path:lines](url))` | `([src/api.ts:L10-L20](link))`   |
+| CI run         | `([CI check](url))`   | `([CI check](actions/runs/123))` |
+| Commit         | `([commit](url))`     | `([abc123](commit/abc123))`      |
+
+**Resources:**
+
+- PR template: `.github/PULL_REQUEST_TEMPLATE.md`
+- Exemplar PR with proper evidence: [#263](https://github.com/mcj-coder/development-skills/pull/263)
+
 ### Quality Gates
 
 Before submitting PR:

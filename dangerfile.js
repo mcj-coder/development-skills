@@ -179,9 +179,9 @@ async function validate() {
       findCheckedItemsWithoutEvidence(testPlanContent);
 
     if (testPlanWithoutEvidence.length > 0) {
-      warn(
+      fail(
         `[PR] ${testPlanWithoutEvidence.length} test plan items missing evidence links. ` +
-          `Recommended format: - [x] Item ([evidence](link))`,
+          `Required format: - [x] Item ([evidence](link))`,
       );
     }
   }
