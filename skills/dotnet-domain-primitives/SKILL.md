@@ -54,6 +54,139 @@ description: Prevent primitive obsession by enforcing StronglyTypedIds and value
 - Ensure typed ID types are stable for logging/telemetry (string representation).
 - Avoid implicit conversions that obscure boundary crossings.
 
+## API Boundary Mapping & Validation
+
+### Before: Primitive Obsession at Boundaries
+
+```csharp
+// API Controller - accepts primitives
+[ApiController]
+[Route("api/[controller]")]
+public class CustomersController
+{
+    private readonly ICustomerService _service;
+
+    [HttpPost]
+    public async Task<IActionResult> CreateCustomer(CreateCustomerRequest request)
+    {
+        // No type safety - primitives passed directly to service
+        var result = await _service.CreateCustomer(request.Id, request.Email);
+        return Ok(result);
+    }
+}
+
+// Service layer - accepts primitives, loses domain context
+public class CustomerService
+{
+    public async Task<CustomerDto> CreateCustomer(string id, string email)
+    {
+        // Validation scattered across layers
+        if (string.IsNullOrWhiteSpace(email))
+            throw new ArgumentException("Email required");
+
+        // No connection to domain types
+        var customer = new Customer { Id = Guid.Parse(id), Email = email };
+        await _repository.AddAsync(customer);
+        return new CustomerDto { Id = customer.Id.ToString(), Email = email };
+    }
+}
+
+// DTO - exposes internal structure
+public class CreateCustomerRequest
+{
+    public string Id { get; set; }
+    public string Email { get; set; }
+}
+```
+
+**Problems:**
+
+- No type safety between layers
+- Validation scattered across concerns
+- Easy to pass invalid primitives
+
+### After: Domain Primitives at Boundaries
+
+```csharp
+// Domain types
+public partial class CustomerId : IStronglyTypedId<Guid> { }
+public partial class EmailAddress : IValueObject<string> { }
+
+// API Controller - explicit boundary conversion
+[ApiController]
+[Route("api/[controller]")]
+public class CustomersController
+{
+    private readonly ICustomerService _service;
+    private readonly ICustomerMapper _mapper;
+
+    [HttpPost]
+    public async Task<IActionResult> CreateCustomer(CreateCustomerRequest request)
+    {
+        // Explicit conversion at boundary
+        var customerId = new CustomerId(Guid.Parse(request.Id));
+        var email = EmailAddress.Create(request.Email).ThrowIfFailure();
+
+        var result = await _service.CreateCustomer(customerId, email);
+        return Ok(_mapper.ToResponse(result));
+    }
+}
+
+// Service layer - type-safe, domain-focused
+public class CustomerService
+{
+    public async Task<Customer> CreateCustomer(CustomerId id, EmailAddress email)
+    {
+        // Domain types ensure validity before service runs
+        var customer = Customer.Create(id, email).ThrowIfFailure();
+        await _repository.AddAsync(customer);
+        return customer;
+    }
+}
+
+// Mapper - explicit conversion layer
+public class CustomerMapper
+{
+    public CustomerResponse ToResponse(Customer customer)
+    {
+        return new CustomerResponse
+        {
+            Id = customer.Id.Value.ToString(),  // Explicit back to primitive
+            Email = customer.Email.Value        // Explicit back to primitive
+        };
+    }
+}
+```
+
+**Benefits:**
+
+- Type safety enforced across layers
+- Validation centralized in domain types
+- Clear boundary crossing
+- Compiler prevents invalid combinations
+
+### Validation Steps for Domain Primitive Implementation
+
+1. **API Controllers:**
+   - [ ] DTO properties remain primitives
+   - [ ] Convert DTOs to domain types immediately upon entry
+   - [ ] Use mapper/converter class for boundary crossing
+
+2. **Service Layer:**
+   - [ ] Accept domain primitives, not raw types
+   - [ ] Never accept `Guid` when `CustomerId` exists
+   - [ ] Ensure validation runs before service logic
+
+3. **Mapping & Serialization:**
+   - [ ] JSON serialization handles conversion via custom converters
+   - [ ] EF Core value converters map domain types ↔ database columns
+   - [ ] No implicit conversions in constructors
+
+4. **Testing:**
+   - [ ] Unit test boundary conversion in mapper
+   - [ ] Integration test proves invalid primitives rejected at API
+   - [ ] Verify domain type validation runs before service
+
 ## Load: enforcement
 
 ### Acceptance criteria for PRs
