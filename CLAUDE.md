@@ -101,6 +101,24 @@ Use canonical names from `docs/roles/README.md` when referencing personas.
 3. **Codex available locally** - If installed, use for parallel tasks or local execution
 4. **Load the persona** - Read the relevant `docs/roles/<persona>.md` before executing the delegated task
 
+### PR Review Requirements
+
+Before approving or requesting changes on PRs, you MUST switch personas to ensure separation
+of duties between contributor (implementation) and maintainer (review/merge):
+
+1. **Switch to maintainer persona**: `source ~/.claude/persona-config.sh && use_persona teamlead`
+2. **Verify account**: `gh auth status` (should show `mcj-coder`)
+3. **Then perform review**: `gh pr review <N> --approve --body "..."`
+
+This two-account workflow ensures:
+
+- Contributors cannot approve their own PRs
+- Review accountability is maintained
+- Auto-merge works correctly after approval
+
+**Anti-pattern:** Reviewing as the same account that created the PR will fail with
+"Cannot approve your own pull request".
+
 ### Mandatory Retrospective
 
 After EVERY persona-delegated task completes:

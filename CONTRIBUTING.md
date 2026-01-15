@@ -233,6 +233,30 @@ Approved - no blocking issues found.
 > Checked regex patterns for potential edge cases - none found.
 > Documentation clearly explains the new requirement. Approved.
 
+### Two-Account Workflow
+
+This repository uses a two-account workflow for separation of duties:
+
+| Account         | Role        | Used For                             |
+| --------------- | ----------- | ------------------------------------ |
+| `martincjarvis` | Contributor | Implementation, commits, PR creation |
+| `mcj-coder`     | Maintainer  | Code review, PR approval, merge      |
+
+**Why two accounts?**
+
+- Contributors cannot approve their own PRs (GitHub restriction)
+- Separation ensures review accountability
+- Auto-merge works correctly after maintainer approval
+
+**Switching accounts:**
+
+```bash
+# For agents using persona-config.sh
+source ~/.claude/persona-config.sh
+use_persona teamlead    # Switch to mcj-coder for reviews
+use_persona qa          # Switch to martincjarvis for implementation
+```
+
 ### Quality Gates
 
 Before submitting PR:

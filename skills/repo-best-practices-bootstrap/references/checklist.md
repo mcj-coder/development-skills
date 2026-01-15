@@ -506,6 +506,34 @@ This is enforced via branch protection (see 1.1 Branch Protection Rules).
 #     - id: conventional-pre-commit
 ```
 
+### 3.6 Auto-merge Configuration
+
+**Description:** Enable auto-merge to allow PRs to merge automatically when all required
+checks pass and reviews are approved.
+
+**Cost:** Free
+
+**Opt-out:** `code-quality` (category) or `auto-merge` (feature)
+
+**GitHub:**
+
+```bash
+# Check if auto-merge is enabled
+gh api repos/{owner}/{repo} --jq '.allow_auto_merge'
+
+# Enable auto-merge
+gh api repos/{owner}/{repo} --method PATCH -f allow_auto_merge=true
+
+# Usage: Enable auto-merge on a PR
+gh pr merge <N> --auto --squash
+```
+
+**Benefits:**
+
+- Reduces manual merge steps after approval
+- PRs merge immediately when all gates pass
+- Works with required reviews and status checks
+
 ## 4. Documentation Baseline
 
 ### 4.1 README.md
