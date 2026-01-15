@@ -1,0 +1,14 @@
+{
+  "$schema": "https://json.schemastore.org/markdown-link-check",
+  "ignorePatterns": [
+    { "pattern": "^https://github.com/.*/runs/" },
+    { "pattern": "^https://github.com/.*/actions/runs/" },
+    { "pattern": "^https://github.com/.*/commit/" },
+    { "pattern": "^https://github.com/.*/files#" },
+    { "pattern": "^#" }
+  ],
+  "timeout": "10s",
+  "retryOn429": true,
+  "retryCount": 3,
+  "aliveStatusCodes": [200, 206, 301, 302]
+}

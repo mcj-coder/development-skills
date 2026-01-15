@@ -46,6 +46,7 @@
     "danger": "^13.0.5",
     "husky": "^9.1.7",
     "lint-staged": "^16.2.7",
+    "markdown-link-check": "^3.14.2",
     "markdownlint-cli2": "^0.20.0",
     "prettier": "^3.6.2",
     "secretlint": "^11.2.3"
