@@ -10,7 +10,8 @@
     { "pattern": "^url$" },
     { "pattern": "link-to-" },
     { "pattern": "XXXX-" },
-    { "pattern": "\\{.*\\}" }
+    { "pattern": "\\{.*\\}" },
+    { "pattern": "%7B.*%7D" }
   ],
   "timeout": "10s",
   "retryOn429": true,
