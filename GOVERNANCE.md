@@ -69,7 +69,7 @@ All significant decisions follow a transparent process:
 ### Architecture Decision Records (ADRs)
 
 Major architectural decisions are documented in [docs/adr/](docs/adr/). ADRs
-follow the format defined in [ADR-0001](docs/adr/ADR-0001-use-adrs.md).
+follow the format defined in [ADR-0000](docs/adr/0000-use-adrs.md).
 
 ## Conflict Resolution
 
