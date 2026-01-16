@@ -121,3 +121,71 @@ Add to your CI pipeline to track debt over time:
       echo "::warning::$QUICK_WINS quick wins pending - consider addressing"
     fi
 ```
+
+## Worked Scoring Example
+
+### Debt Item: "Replace hand-rolled JSON serialization with System.Text.Json"
+
+#### Step 1: Score each dimension (1-5)
+
+| Dimension | Score | Justification                                                |
+| --------- | ----- | ------------------------------------------------------------ |
+| Impact    | 4     | Performance issues in logs, 3 production bugs last quarter   |
+| Risk      | 3     | Moderate: affects multiple services, well-defined interfaces |
+| Effort    | 2     | Low: library swap, ~2 days work, good test coverage          |
+
+#### Step 2: Calculate weighted score
+
+```text
+Score = (Impact × 0.4) + (Risk × 0.3) + ((6 - Effort) × 0.3)
+Score = (4 × 0.4) + (3 × 0.3) + ((6 - 2) × 0.3)
+Score = 1.6 + 0.9 + 1.2
+Score = 3.7
+```
+
+#### Step 3: Classify
+
+- Score 3.7 = **High priority**
+- Effort 2 + Impact 4 = **Quick Win candidate**
+
+#### Step 4: Horizon assignment
+
+- Quick Win + High Priority → **Sprint horizon** (do next sprint)
+
+## Sample Debt Register
+
+```markdown
+# Technical Debt Register
+
+Last updated: 2026-01-15
+Review cadence: Monthly
+
+## Quick Wins (High Impact, Low Effort)
+
+| ID     | Item                           | Impact | Risk | Effort | Score | Horizon |
+| ------ | ------------------------------ | ------ | ---- | ------ | ----- | ------- |
+| TD-001 | Replace JSON serialization     | 4      | 3    | 2      | 3.7   | Sprint  |
+| TD-003 | Add missing null checks in API | 3      | 4    | 1      | 3.5   | Sprint  |
+
+## Planned Remediation
+
+| ID     | Item                       | Impact | Risk | Effort | Score | Horizon |
+| ------ | -------------------------- | ------ | ---- | ------ | ----- | ------- |
+| TD-002 | Extract payment module     | 5      | 4    | 4      | 3.3   | Quarter |
+| TD-004 | Migrate to async handlers  | 4      | 3    | 4      | 2.9   | Quarter |
+| TD-005 | Consolidate duplicate DTOs | 3      | 2    | 3      | 2.6   | 6-month |
+
+## Parking Lot (Low Priority)
+
+| ID     | Item                     | Impact | Risk | Effort | Score | Reason       |
+| ------ | ------------------------ | ------ | ---- | ------ | ----- | ------------ |
+| TD-006 | Rename legacy namespace  | 2      | 1    | 3      | 1.9   | Cosmetic     |
+| TD-007 | Remove deprecated API v1 | 2      | 2    | 4      | 1.8   | No consumers |
+
+## Summary
+
+- **Total items**: 7
+- **Quick wins pending**: 2
+- **Sprint capacity allocated**: 20% for debt
+- **Next review**: 2026-02-15
+```

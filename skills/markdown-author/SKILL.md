@@ -159,7 +159,7 @@ See [Validation Rules Reference](references/validation-rules.md) for complete li
 
 **Malformed JSON:**
 
-````text
+`````text
 Error: .markdownlint.json is invalid JSON
   Line 5: Unexpected token }
 
@@ -369,4 +369,172 @@ cp templates/markdownlint-minimal.json.template .markdownlint.json
 - [Editor Integration](references/editor-integration.md) - VS Code and other editor setup
 - Pre-commit hooks: `.husky/pre-commit` and `package.json` lint-staged configuration
 - markdownlint rules: <https://github.com/DavidAnson/markdownlint/blob/main/doc/Rules.md>
+
+## Before/After Examples
+
+### Line Length (MD013)
+
+**Before (violation):**
+
+```markdown
+This is a very long line that exceeds the configured line length limit of 120 characters and will cause the markdownlint check to fail when committed.
+```
+
+**After (fixed):**
+
+```markdown
+This is a very long line that exceeds the configured line length limit of 120
+characters and will cause the markdownlint check to fail when committed.
+```
+
+### Heading Hierarchy (MD001)
+
+**Before (violation):**
+
+```markdown
+# Main Title
+
+### Skipped Level
+
+Content here jumps from h1 to h3.
+```
+
+**After (fixed):**
+
+```markdown
+# Main Title
+
+## Proper Level
+
+Content here follows h1 → h2 hierarchy.
+```
+
+### Code Fence Language (MD040)
+
+**Before (violation):**
+
+````markdown
+```
+npm install
+npm run build
+```
+`````
+
+**After (fixed):**
+
+````markdown
+```bash
+npm install
+npm run build
+```
 ````
+
+### Spelling Error
+
+**Before (violation):**
+
+```markdown
+The agentskills module provides reusable behaviours.
+```
+
+**After (fixed - add to dictionary):**
+
+```json
+// cspell.json
+{
+  "words": ["agentskills"]
+}
+```
+
+```markdown
+The agentskills module provides reusable behaviours.
+```
+
+## Validation Commands
+
+### Quick Validation
+
+```bash
+# Validate single file
+npx markdownlint-cli2 "path/to/file.md"
+
+# Validate with auto-fix
+npx markdownlint-cli2 --fix "path/to/file.md"
+
+# Check spelling
+npx cspell "path/to/file.md"
+
+# Validate all markdown files
+npx markdownlint-cli2 "**/*.md"
+npx cspell "**/*.md"
+```
+
+### Pre-Commit Validation
+
+```bash
+# Run what pre-commit will run
+npx lint-staged --dry-run
+
+# Run lint-staged for real
+npx lint-staged
+```
+
+### CI Validation
+
+```yaml
+# GitHub Actions example
+- name: Lint Markdown
+  run: npx markdownlint-cli2 "**/*.md"
+
+- name: Check Spelling
+  run: npx cspell "**/*.md" --no-progress
+```
+
+### VS Code Integration
+
+```json
+// .vscode/settings.json
+{
+  "editor.formatOnSave": true,
+  "markdownlint.config": {
+    "extends": "./.markdownlint.json"
+  },
+  "cSpell.enabled": true
+}
+```
+
+### Validation Script
+
+```bash
+#!/bin/bash
+# validate-markdown.sh
+
+echo "=== Markdown Validation ==="
+
+# Count files
+FILES=$(find . -name "*.md" -not -path "./node_modules/*" | wc -l)
+echo "Found $FILES markdown files"
+
+# Run markdownlint
+echo ""
+echo "Running markdownlint..."
+if npx markdownlint-cli2 "**/*.md" --ignore node_modules; then
+  echo "✓ Markdownlint passed"
+else
+  echo "✗ Markdownlint failed"
+  exit 1
+fi
+
+# Run cspell
+echo ""
+echo "Running cspell..."
+if npx cspell "**/*.md" --no-progress; then
+  echo "✓ Spelling check passed"
+else
+  echo "✗ Spelling check failed"
+  exit 1
+fi
+
+echo ""
+echo "=== All checks passed ==="
+```

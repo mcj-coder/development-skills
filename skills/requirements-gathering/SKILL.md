@@ -666,3 +666,160 @@ All issue templates follow the structured format:
 - `skills/issue-driven-delivery/SKILL.md` - Work item lifecycle management
 - `superpowers:brainstorming` - Creating designs for existing tickets (requires Superpowers)
 - `superpowers:writing-plans` - Creating implementation plans (requires Superpowers)
+
+## Question Bank by Work Type
+
+### New Feature
+
+| Category | Question                                    | Why It Matters                |
+| -------- | ------------------------------------------- | ----------------------------- |
+| Purpose  | "What problem does this feature solve?"     | Establishes value proposition |
+| Users    | "Who will use this feature?"                | Identifies target audience    |
+| Success  | "How will you know it's working correctly?" | Defines acceptance criteria   |
+| Scope    | "What's the minimum viable version?"        | Prevents scope creep          |
+| Priority | "Is this blocking other work?"              | Helps with scheduling         |
+
+### Bug Fix
+
+| Category     | Question                                   | Why It Matters           |
+| ------------ | ------------------------------------------ | ------------------------ |
+| Reproduction | "Can you describe the steps to reproduce?" | Enables debugging        |
+| Expected     | "What should happen instead?"              | Defines correct behavior |
+| Impact       | "How many users are affected?"             | Determines priority      |
+| Workaround   | "Is there a temporary workaround?"         | Assesses urgency         |
+| Environment  | "What environment does this occur in?"     | Narrows root cause       |
+
+### Refactoring
+
+| Category    | Question                                   | Why It Matters        |
+| ----------- | ------------------------------------------ | --------------------- |
+| Motivation  | "What's driving this refactoring?"         | Validates need        |
+| Scope       | "Which components are affected?"           | Estimates effort      |
+| Risk        | "What could break during this change?"     | Identifies test needs |
+| Constraints | "Any backward compatibility requirements?" | Defines boundaries    |
+| Success     | "How will we measure improvement?"         | Sets clear goals      |
+
+### Infrastructure/DevOps
+
+| Category     | Question                                       | Why It Matters        |
+| ------------ | ---------------------------------------------- | --------------------- |
+| Trigger      | "What's prompting this infrastructure change?" | Establishes context   |
+| Scale        | "What scale/load requirements exist?"          | Sizes solution        |
+| Dependencies | "What systems depend on this?"                 | Identifies risks      |
+| Rollback     | "What's the rollback plan if it fails?"        | Ensures safety        |
+| Monitoring   | "How will we know it's working?"               | Defines observability |
+
+### Documentation
+
+| Category    | Question                                               | Why It Matters           |
+| ----------- | ------------------------------------------------------ | ------------------------ |
+| Audience    | "Who is the target reader?"                            | Sets tone and depth      |
+| Gap         | "What's missing from current docs?"                    | Identifies scope         |
+| Format      | "What format works best (guide, reference, tutorial)?" | Structures content       |
+| Examples    | "What examples would be most helpful?"                 | Adds practical value     |
+| Maintenance | "How often will this need updating?"                   | Plans for sustainability |
+
+## "Enough Info" Validation Checklist
+
+Before creating the ticket, verify you have gathered sufficient information:
+
+### Minimum Required (All Work Types)
+
+- [ ] **Goal is clear**: Can state in one sentence what this achieves
+- [ ] **Success criteria exist**: At least 2 testable acceptance criteria
+- [ ] **Scope is bounded**: Know what's included AND excluded
+- [ ] **No major unknowns**: No "TBD" or "to be determined" items
+
+### Feature-Specific
+
+- [ ] **User identified**: Know who will use this
+- [ ] **MVP defined**: Know minimum viable scope
+- [ ] **Dependencies known**: Identified blocking/blocked work
+
+### Bug-Specific
+
+- [ ] **Reproduction steps**: Can reproduce the issue
+- [ ] **Expected behavior**: Know correct behavior
+- [ ] **Environment**: Know where it occurs
+
+### Refactoring-Specific
+
+- [ ] **Motivation documented**: Know why this is needed
+- [ ] **Risk assessed**: Identified what could break
+- [ ] **Success measurable**: Can verify improvement
+
+## Quick Validation Script
+
+```bash
+#!/bin/bash
+# validate-requirements.sh - Check if requirements are sufficient
+
+ISSUE_BODY="$1"
+
+ERRORS=0
+
+echo "=== Requirements Validation ==="
+
+# Check for Goal section
+if echo "$ISSUE_BODY" | grep -qi "## Goal"; then
+  echo "✓ Goal section present"
+else
+  echo "✗ Goal section missing"
+  ((ERRORS++))
+fi
+
+# Check for Requirements section
+if echo "$ISSUE_BODY" | grep -qi "## Requirements"; then
+  REQ_COUNT=$(echo "$ISSUE_BODY" | grep -cE "^[0-9]+\.")
+  if [ "$REQ_COUNT" -ge 2 ]; then
+    echo "✓ Requirements section has $REQ_COUNT items"
+  else
+    echo "⚠ Only $REQ_COUNT requirement(s) - consider adding more"
+  fi
+else
+  echo "✗ Requirements section missing"
+  ((ERRORS++))
+fi
+
+# Check for Acceptance Criteria
+if echo "$ISSUE_BODY" | grep -qi "## Acceptance"; then
+  AC_COUNT=$(echo "$ISSUE_BODY" | grep -cE "^\s*-\s*\[\s*\]")
+  if [ "$AC_COUNT" -ge 2 ]; then
+    echo "✓ Acceptance criteria has $AC_COUNT items"
+  else
+    echo "⚠ Only $AC_COUNT acceptance criterion - add more"
+  fi
+else
+  echo "✗ Acceptance criteria section missing"
+  ((ERRORS++))
+fi
+
+# Check for TBD markers
+TBD_COUNT=$(echo "$ISSUE_BODY" | grep -ciE "tbd|to be determined|unknown|\?\?\?")
+if [ "$TBD_COUNT" -eq 0 ]; then
+  echo "✓ No TBD markers found"
+else
+  echo "⚠ Found $TBD_COUNT TBD markers - resolve before proceeding"
+fi
+
+# Summary
+echo ""
+if [ $ERRORS -eq 0 ]; then
+  echo "✓ Requirements appear sufficient"
+else
+  echo "✗ $ERRORS issue(s) found - gather more information"
+fi
+```
+
+## Stop-and-Ask Triggers
+
+If you encounter these during gathering, STOP and ask clarifying questions:
+
+| Trigger                           | Action                                    |
+| --------------------------------- | ----------------------------------------- |
+| User says "I'm not sure"          | Ask for what they DO know                 |
+| Multiple interpretations possible | Present options, ask which                |
+| Scope seems very large            | Ask about MVP/phases                      |
+| Technical jargon unclear          | Ask for plain language explanation        |
+| Contradictory requirements        | Surface contradiction, ask for resolution |
+| Missing stakeholder input         | Ask if others need to be consulted        |

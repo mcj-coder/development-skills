@@ -73,6 +73,125 @@ For immutable releases:
 See `references/scoping-strategies.md` for tooling examples and detailed patterns.
 See `references/rationalizations.md` for excuse table and pressure responses.
 
+## Build Tool Commands
+
+### Nx (TypeScript/JavaScript)
+
+```bash
+# Find affected projects
+npx nx affected:apps --base=main --head=HEAD
+
+# Run tests only for affected projects
+npx nx affected:test --base=main --head=HEAD
+
+# Build only affected projects
+npx nx affected:build --base=main --head=HEAD
+
+# Show dependency graph of affected
+npx nx affected:graph --base=main --head=HEAD
+```
+
+### Bazel
+
+```bash
+# Query affected targets
+bazel query "rdeps(//..., set($(git diff --name-only main...HEAD)))"
+
+# Test only affected targets
+bazel test $(bazel query "rdeps(//..., set($(git diff --name-only main...HEAD)))" --output=label)
+
+# Build only affected
+bazel build $(bazel query "kind(.*_binary, rdeps(//..., set($(git diff --name-only main...HEAD))))")
+```
+
+### Gradle
+
+```bash
+# Using gradle-affected plugin
+./gradlew affectedUnitTests -Paffected.base=main
+
+# Manual approach with changed modules
+CHANGED=$(git diff --name-only main...HEAD | grep -E "^[^/]+/" | cut -d'/' -f1 | sort -u)
+for module in $CHANGED; do
+  ./gradlew :$module:test
+done
+```
+
+### Turborepo (TypeScript/JavaScript)
+
+```bash
+# Run tests for affected packages
+npx turbo run test --filter='...[origin/main]'
+
+# Build affected packages
+npx turbo run build --filter='...[origin/main]'
+```
+
+## Delta Coverage Workflow
+
+### Step 1: Generate baseline coverage
+
+```bash
+# Checkout main, run tests with coverage
+git checkout main
+npm test -- --coverage --coverageReporters=json
+cp coverage/coverage-final.json coverage-baseline.json
+git checkout -
+```
+
+### Step 2: Identify modified lines
+
+```bash
+# Get line numbers of changes
+git diff main...HEAD --unified=0 | grep -E "^@@" > changed-lines.txt
+```
+
+### Step 3: Calculate delta coverage
+
+```javascript
+// delta-coverage.js
+const baseline = require("./coverage-baseline.json");
+const current = require("./coverage/coverage-final.json");
+const changedFiles = execSync("git diff --name-only main...HEAD")
+  .toString()
+  .split("\n");
+
+let coveredLines = 0,
+  totalLines = 0;
+
+for (const file of changedFiles.filter(
+  (f) => f.endsWith(".ts") || f.endsWith(".js"),
+)) {
+  const fileCoverage = current[file];
+  if (!fileCoverage) continue;
+
+  const changedLineNumbers = getChangedLines(file); // from git diff
+  for (const line of changedLineNumbers) {
+    totalLines++;
+    if (fileCoverage.s[line] > 0) coveredLines++;
+  }
+}
+
+const deltaCoverage = (coveredLines / totalLines) * 100;
+console.log(`Delta coverage: ${deltaCoverage.toFixed(1)}%`);
+if (deltaCoverage < 80) process.exit(1);
+```
+
+### CI Integration (GitHub Actions)
+
+```yaml
+- name: Delta coverage check
+  run: |
+    git fetch origin main
+    CHANGED_FILES=$(git diff --name-only origin/main...HEAD | grep -E '\.(ts|js)$' || true)
+    if [ -z "$CHANGED_FILES" ]; then
+      echo "No code changes, skipping delta coverage"
+      exit 0
+    fi
+    npm test -- --coverage --collectCoverageFrom="$CHANGED_FILES"
+    node scripts/delta-coverage.js
+```
+
 ## Required Agent Steps
 
 1. Announce skill and why it applies

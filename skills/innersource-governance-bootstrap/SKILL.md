@@ -182,3 +182,146 @@ When reviewing a repository claiming InnerSource status:
 4. Validate contribution workflow is documented.
 5. Flag any missing or outdated governance documentation.
 6. Mark repository as **non-compliant** if core requirements missing.
+
+## Minimal Compliance Checklist
+
+Use this checklist for quick compliance verification:
+
+### Documentation (Required)
+
+- [ ] `README.md` exists and contains project overview
+- [ ] `CONTRIBUTING.md` exists with PR process documented
+- [ ] `CODE_OF_CONDUCT.md` exists (or org-level reference)
+- [ ] `CODEOWNERS` file exists with valid team assignments
+- [ ] `GOVERNANCE.md` exists with decision process
+
+### Branch Protection (Required)
+
+- [ ] Default branch (main/master) is protected
+- [ ] PR reviews required before merge
+- [ ] CODEOWNERS approval required
+- [ ] Status checks required to pass
+- [ ] Force push disabled on protected branches
+
+### Repository Settings (Required)
+
+- [ ] Issue templates configured
+- [ ] PR template configured
+- [ ] Branch naming conventions documented
+
+## Verification Commands
+
+### GitHub CLI Verification
+
+```bash
+# Check required files exist
+REQUIRED_FILES="README.md CONTRIBUTING.md CODE_OF_CONDUCT.md CODEOWNERS GOVERNANCE.md"
+for file in $REQUIRED_FILES; do
+  if [ -f "$file" ]; then
+    echo "✓ $file exists"
+  else
+    echo "✗ $file MISSING"
+  fi
+done
+```
+
+### CODEOWNERS Validation
+
+```bash
+# Verify CODEOWNERS syntax and team existence
+gh api repos/{owner}/{repo}/codeowners/errors --jq '.errors[]'
+
+# Check CODEOWNERS is being enforced
+gh api repos/{owner}/{repo}/branches/main/protection \
+  --jq '.required_pull_request_reviews.require_code_owner_reviews'
+# Expected: true
+```
+
+### Branch Protection Verification
+
+```bash
+# Get branch protection rules
+gh api repos/{owner}/{repo}/branches/main/protection --jq '{
+  enforce_admins: .enforce_admins.enabled,
+  required_reviews: .required_pull_request_reviews.required_approving_review_count,
+  codeowner_reviews: .required_pull_request_reviews.require_code_owner_reviews,
+  status_checks: .required_status_checks.strict,
+  force_push: .allow_force_pushes.enabled
+}'
+# Expected: enforce_admins=true, required_reviews>=1, codeowner_reviews=true,
+#           status_checks=true, force_push=false
+```
+
+### Full Compliance Script
+
+```bash
+#!/bin/bash
+# innersource-compliance-check.sh
+
+REPO="${1:-$(gh repo view --json nameWithOwner -q .nameWithOwner)}"
+ERRORS=0
+
+echo "Checking InnerSource compliance for $REPO"
+echo "==========================================="
+
+# Check required files
+echo -e "\n## Required Files"
+for file in README.md CONTRIBUTING.md CODE_OF_CONDUCT.md CODEOWNERS GOVERNANCE.md; do
+  if gh api "repos/$REPO/contents/$file" &>/dev/null; then
+    echo "✓ $file"
+  else
+    echo "✗ $file MISSING"
+    ((ERRORS++))
+  fi
+done
+
+# Check branch protection
+echo -e "\n## Branch Protection (main)"
+PROTECTION=$(gh api "repos/$REPO/branches/main/protection" 2>/dev/null)
+if [ -z "$PROTECTION" ]; then
+  echo "✗ No branch protection configured"
+  ((ERRORS++))
+else
+  CODEOWNER=$(echo "$PROTECTION" | jq -r '.required_pull_request_reviews.require_code_owner_reviews // false')
+  REVIEWS=$(echo "$PROTECTION" | jq -r '.required_pull_request_reviews.required_approving_review_count // 0')
+
+  if [ "$CODEOWNER" = "true" ]; then
+    echo "✓ CODEOWNERS review required"
+  else
+    echo "✗ CODEOWNERS review NOT required"
+    ((ERRORS++))
+  fi
+
+  if [ "$REVIEWS" -ge 1 ]; then
+    echo "✓ PR reviews required ($REVIEWS)"
+  else
+    echo "✗ PR reviews NOT required"
+    ((ERRORS++))
+  fi
+fi
+
+# Summary
+echo -e "\n## Summary"
+if [ $ERRORS -eq 0 ]; then
+  echo "✓ Repository is InnerSource compliant"
+  exit 0
+else
+  echo "✗ $ERRORS compliance issues found"
+  exit 1
+fi
+```
+
+### Usage
+
+```bash
+# Check current repository
+./innersource-compliance-check.sh
+
+# Check specific repository
+./innersource-compliance-check.sh org/repo-name
+
+# CI integration
+- name: InnerSource Compliance
+  run: ./scripts/innersource-compliance-check.sh
+  continue-on-error: false
+```

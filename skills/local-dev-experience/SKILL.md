@@ -127,3 +127,109 @@ services:
 | Service startup        | < 10s  | < 30s      |
 
 If exceeding targets, investigate and optimize.
+
+## Baseline vs Target Worksheet
+
+Use this worksheet to measure current state and track improvements:
+
+````markdown
+# Local Dev Experience Assessment
+
+**Project**: [Project Name]
+**Date**: YYYY-MM-DD
+**Assessor**: [Name]
+
+## Current Baseline Measurements
+
+| Operation              | Baseline | Target | Gap     | Priority |
+| ---------------------- | -------- | ------ | ------- | -------- |
+| Code change to running | [X]s     | < 1s   | [X-1]s  | [H/M/L]  |
+| Single test execution  | [X]s     | < 2s   | [X-2]s  | [H/M/L]  |
+| Full test suite        | [X]s     | < 60s  | [X-60]s | [H/M/L]  |
+| Lint/format check      | [X]s     | < 1s   | [X-1]s  | [H/M/L]  |
+| Service startup        | [X]s     | < 10s  | [X-10]s | [H/M/L]  |
+| Full rebuild           | [X]s     | < 30s  | [X-30]s | [H/M/L]  |
+
+## Measurement Commands
+
+Record the commands used to measure each baseline:
+
+| Operation       | Command                                         | Notes |
+| --------------- | ----------------------------------------------- | ----- |
+| Hot reload      | `time (edit file && wait for reload)`           |       |
+| Single test     | `time npm test -- --testNamePattern="specific"` |       |
+| Full suite      | `time npm test`                                 |       |
+| Lint check      | `time npm run lint`                             |       |
+| Service startup | `time npm run dev` (until ready)                |       |
+| Full rebuild    | `time npm run build`                            |       |
+
+## Improvement Actions
+
+| Action                    | Expected Gain    | Actual Gain | Status    |
+| ------------------------- | ---------------- | ----------- | --------- |
+| Enable incremental builds | -50% build time  |             | ☐ Pending |
+| Configure test filtering  | -80% test time   |             | ☐ Pending |
+| Add lint caching          | -70% lint time   |             | ☐ Pending |
+| Enable hot reload         | -90% reload time |             | ☐ Pending |
+
+## Evidence Capture
+
+### Before Optimization
+
+```bash
+# Record baseline measurements
+$ time npm run build
+real    0m45.123s
+
+$ time npm test
+real    1m23.456s
+```
+
+### After Optimization
+
+```bash
+# Record improved measurements
+$ time npm run build
+real    0m12.345s  # 73% improvement
+
+$ time npm test -- --watch --changedSince=main
+real    0m5.678s   # 96% improvement (changed files only)
+```
+
+## Summary
+
+- **Total time saved per iteration**: [X] seconds
+- **Iterations per day (estimated)**: [N]
+- **Daily productivity gain**: [X × N] seconds = [Y] minutes
+````
+
+## Quick Measurement Script
+
+```bash
+#!/bin/bash
+# measure-dev-experience.sh
+
+echo "=== Local Dev Experience Baseline ==="
+echo ""
+
+# Full build time
+echo "Measuring full build..."
+BUILD_TIME=$( { time npm run build 2>&1; } 2>&1 | grep real | awk '{print $2}' )
+echo "Full build: $BUILD_TIME"
+
+# Single test time
+echo "Measuring single test..."
+TEST_TIME=$( { time npm test -- --testNamePattern="should" --bail 2>&1; } 2>&1 | grep real | awk '{print $2}' )
+echo "Single test: $TEST_TIME"
+
+# Lint time
+echo "Measuring lint..."
+LINT_TIME=$( { time npm run lint 2>&1; } 2>&1 | grep real | awk '{print $2}' )
+echo "Lint check: $LINT_TIME"
+
+echo ""
+echo "=== Results ==="
+echo "Build: $BUILD_TIME"
+echo "Test:  $TEST_TIME"
+echo "Lint:  $LINT_TIME"
+```

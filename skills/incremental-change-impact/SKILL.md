@@ -75,3 +75,132 @@ and `references/tooling.md` for detailed techniques.
 - [ ] Cascading effects assessed if applicable
 - [ ] Risk assessment provided (breaking/non-breaking, severity)
 - [ ] Verification approach recommended
+
+## Dependency Tracing Commands
+
+### .NET (C#)
+
+```bash
+# Find all references to a type/method using dotnet CLI
+dotnet build --no-incremental 2>&1 | grep "error CS"
+
+# Using grep for direct references
+grep -rn "ClassName" --include="*.cs" src/
+
+# Using Roslyn analyzers (via dotnet format)
+dotnet format analyzers --diagnostics=IDE0051  # Find unused members
+
+# NuGet dependency graph
+dotnet list package --include-transitive
+```
+
+### TypeScript/JavaScript
+
+```bash
+# Find imports of a module
+grep -rn "from ['\"].*moduleName" --include="*.ts" --include="*.tsx" src/
+
+# Using madge for dependency graph
+npx madge --circular src/  # Find circular deps
+npx madge --depends-on src/utils/helper.ts src/  # Find dependents
+
+# TypeScript compiler for unused exports
+npx ts-prune  # Find unused exports
+```
+
+### Python
+
+```bash
+# Find imports using grep
+grep -rn "^from module import\|^import module" --include="*.py" src/
+
+# Using pipdeptree for package dependencies
+pipdeptree --reverse --packages mypackage
+
+# Using vulture for dead code
+vulture src/  # Find unused code
+
+# AST-based analysis
+python -c "import ast; print(ast.dump(ast.parse(open('file.py').read())))"
+```
+
+### Go
+
+```bash
+# Find package usages
+go list -f '{{.ImportPath}} {{.Imports}}' ./... | grep "target/package"
+
+# Reverse dependencies
+go mod why -m github.com/org/package
+
+# Find all callers of a function
+grep -rn "FunctionName(" --include="*.go" .
+```
+
+### Java
+
+```bash
+# Using jdeps for module dependencies
+jdeps --module-path mods -s myapp.jar
+
+# Gradle dependencies
+./gradlew dependencies --configuration compileClasspath
+
+# Find class references
+grep -rn "ClassName" --include="*.java" src/
+```
+
+## Recording Findings Template
+
+```markdown
+# Impact Analysis: [Change Description]
+
+**Date**: YYYY-MM-DD
+**Analyst**: [Name]
+**Change Type**: [rename|add|modify|delete|config]
+
+## Summary
+
+[1-2 sentence description of the proposed change]
+
+## Direct Dependencies
+
+| File                        | Line | Usage Type            | Risk   |
+| --------------------------- | ---- | --------------------- | ------ |
+| src/api/UserController.cs   | 42   | Method call           | Medium |
+| src/services/AuthService.cs | 118  | Constructor injection | High   |
+
+## Indirect Dependencies
+
+| Category      | Finding                            | Risk   |
+| ------------- | ---------------------------------- | ------ |
+| Reflection    | Used in DI container registration  | High   |
+| Serialization | JSON property name in API response | Medium |
+| Configuration | Referenced in appsettings.json     | Low    |
+
+## Affected Tests
+
+| Test Category | Count | Files                         |
+| ------------- | ----- | ----------------------------- |
+| Unit          | 12    | tests/unit/UserTests.cs, ...  |
+| Integration   | 3     | tests/integration/ApiTests.cs |
+| E2E           | 1     | tests/e2e/LoginFlow.spec.ts   |
+
+## Non-Code Impacts
+
+- [ ] API documentation needs update
+- [ ] README references this component
+- [ ] External API consumers may be affected
+
+## Risk Assessment
+
+**Breaking Change**: Yes/No
+**Severity**: High/Medium/Low
+**Recommended Approach**: [Incremental migration with feature flag / Direct replacement / etc.]
+
+## Verification Plan
+
+1. Run affected unit tests: `dotnet test --filter "Category=User"`
+2. Run integration tests: `dotnet test --filter "Category=Integration"`
+3. Manual verification: [specific steps]
+```

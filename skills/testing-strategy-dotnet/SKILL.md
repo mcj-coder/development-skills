@@ -190,3 +190,417 @@ Published libraries must prevent accidental public surface changes and enforce c
 - Contracts/public APIs: intentional change, versioned, compatible, and checked automatically.
 - Diagnosability: failures are explainable from logs/traces without payload dumps.
 - Payload discipline: full payloads restricted to `Debug`/`Trace` only.
+
+## Example Solution Structure
+
+```text
+MyCompany.OrderService/
+├── src/
+│   ├── MyCompany.OrderService.Domain/
+│   │   ├── Orders/
+│   │   │   ├── Order.cs
+│   │   │   ├── OrderItem.cs
+│   │   │   └── IOrderRepository.cs
+│   │   └── MyCompany.OrderService.Domain.csproj
+│   │
+│   ├── MyCompany.OrderService.Application/
+│   │   ├── Orders/
+│   │   │   ├── Commands/
+│   │   │   │   ├── CreateOrderCommand.cs
+│   │   │   │   └── CreateOrderCommandHandler.cs
+│   │   │   └── Queries/
+│   │   │       ├── GetOrderQuery.cs
+│   │   │       └── GetOrderQueryHandler.cs
+│   │   └── MyCompany.OrderService.Application.csproj
+│   │
+│   ├── MyCompany.OrderService.Infrastructure/
+│   │   ├── Persistence/
+│   │   │   ├── OrderRepository.cs
+│   │   │   └── AppDbContext.cs
+│   │   └── MyCompany.OrderService.Infrastructure.csproj
+│   │
+│   └── MyCompany.OrderService.WebApi/
+│       ├── Controllers/
+│       │   └── OrdersController.cs
+│       ├── Program.cs
+│       └── MyCompany.OrderService.WebApi.csproj
+│
+├── tests/
+│   ├── MyCompany.OrderService.Domain.UnitTest/
+│   │   ├── Orders/
+│   │   │   └── OrderTests.cs
+│   │   └── MyCompany.OrderService.Domain.UnitTest.csproj
+│   │
+│   ├── MyCompany.OrderService.Application.UnitTest/
+│   │   ├── Orders/
+│   │   │   └── CreateOrderCommandHandlerTests.cs
+│   │   └── MyCompany.OrderService.Application.UnitTest.csproj
+│   │
+│   ├── MyCompany.OrderService.WebApi.SystemTest/
+│   │   ├── Features/
+│   │   │   └── Orders/
+│   │   │       ├── CreateOrder.feature
+│   │   │       └── CreateOrderSteps.cs
+│   │   ├── Fixtures/
+│   │   │   └── WebApiFixture.cs
+│   │   └── MyCompany.OrderService.WebApi.SystemTest.csproj
+│   │
+│   ├── MyCompany.OrderService.WebApi.E2E/
+│   │   ├── Features/
+│   │   │   └── OrderJourney.feature
+│   │   ├── Fixtures/
+│   │   │   ├── PostgresFixture.cs
+│   │   │   └── E2EFixture.cs
+│   │   └── MyCompany.OrderService.WebApi.E2E.csproj
+│   │
+│   ├── MyCompany.OrderService.E2E/
+│   │   ├── Features/
+│   │   │   ├── SmokeTests.feature
+│   │   │   └── KeyJourneys.feature
+│   │   └── MyCompany.OrderService.E2E.csproj
+│   │
+│   └── MyCompany.OrderService.ArchitectureTest/
+│       ├── LayeringTests.cs
+│       ├── NamingConventionTests.cs
+│       └── MyCompany.OrderService.ArchitectureTest.csproj
+│
+├── MyCompany.OrderService.sln
+└── Directory.Build.props
+```
+
+### Project References
+
+```text
+Domain.UnitTest         → Domain
+Application.UnitTest    → Application, Domain
+WebApi.SystemTest       → WebApi, Application, Domain (stubs external only)
+WebApi.E2E              → WebApi (via HTTP, no direct reference)
+OrderService.E2E        → None (black box, HTTP only)
+ArchitectureTest        → All src projects (reflection-based)
+```
+
+## Sample CI Matrix
+
+### GitHub Actions
+
+```yaml
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+env:
+  DOTNET_VERSION: "8.0.x"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+
+      - name: Restore
+        run: dotnet restore
+
+      - name: Build
+        run: dotnet build --no-restore --configuration Release
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: build
+          path: |
+            **/bin/Release/**
+            !**/obj/**
+
+  unit-tests:
+    needs: build
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        project:
+          - MyCompany.OrderService.Domain.UnitTest
+          - MyCompany.OrderService.Application.UnitTest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+
+      - name: Run unit tests
+        run: |
+          dotnet test tests/${{ matrix.project }}/${{ matrix.project }}.csproj \
+            --configuration Release \
+            --logger "trx;LogFileName=results.trx" \
+            --collect:"XPlat Code Coverage"
+
+      - name: Upload test results
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: test-results-${{ matrix.project }}
+          path: tests/${{ matrix.project }}/TestResults/
+
+  architecture-tests:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+
+      - name: Run architecture tests
+        run: |
+          dotnet test tests/MyCompany.OrderService.ArchitectureTest/ \
+            --configuration Release \
+            --logger "trx;LogFileName=results.trx"
+
+  system-tests:
+    needs: [unit-tests, architecture-tests]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+
+      - name: Run system tests
+        run: |
+          dotnet test tests/MyCompany.OrderService.WebApi.SystemTest/ \
+            --configuration Release \
+            --logger "trx;LogFileName=results.trx"
+
+      - name: Upload test results
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: system-test-results
+          path: tests/MyCompany.OrderService.WebApi.SystemTest/TestResults/
+
+  component-e2e:
+    needs: system-tests
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:15
+        env:
+          POSTGRES_PASSWORD: testpass
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+
+      - name: Run component E2E tests
+        run: |
+          dotnet test tests/MyCompany.OrderService.WebApi.E2E/ \
+            --configuration Release \
+            --logger "trx;LogFileName=results.trx" \
+            --filter "Category!=Smoke"
+
+      - name: Upload test results
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: e2e-test-results
+          path: tests/MyCompany.OrderService.WebApi.E2E/TestResults/
+
+  # Mainline only: full repo-level E2E
+  repo-e2e:
+    if: github.ref == 'refs/heads/main'
+    needs: component-e2e
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+
+      - name: Run repo-level E2E tests
+        run: |
+          dotnet test tests/MyCompany.OrderService.E2E/ \
+            --configuration Release \
+            --logger "trx;LogFileName=results.trx"
+```
+
+### Azure DevOps
+
+```yaml
+trigger:
+  branches:
+    include:
+      - main
+
+pr:
+  branches:
+    include:
+      - main
+
+pool:
+  vmImage: "ubuntu-latest"
+
+variables:
+  dotnetVersion: "8.0.x"
+  buildConfiguration: "Release"
+
+stages:
+  - stage: Build
+    jobs:
+      - job: Build
+        steps:
+          - task: UseDotNet@2
+            inputs:
+              version: $(dotnetVersion)
+
+          - script: dotnet build --configuration $(buildConfiguration)
+            displayName: Build
+
+          - publish: $(System.DefaultWorkingDirectory)
+            artifact: build
+
+  - stage: Test
+    dependsOn: Build
+    jobs:
+      - job: UnitTests
+        strategy:
+          matrix:
+            Domain:
+              project: "MyCompany.OrderService.Domain.UnitTest"
+            Application:
+              project: "MyCompany.OrderService.Application.UnitTest"
+        steps:
+          - task: UseDotNet@2
+            inputs:
+              version: $(dotnetVersion)
+
+          - script: |
+              dotnet test tests/$(project)/$(project).csproj \
+                --configuration $(buildConfiguration) \
+                --logger trx \
+                --collect:"XPlat Code Coverage"
+            displayName: Run $(project)
+
+          - task: PublishTestResults@2
+            inputs:
+              testResultsFormat: "VSTest"
+              testResultsFiles: "**/TestResults/*.trx"
+
+      - job: ArchitectureTests
+        steps:
+          - task: UseDotNet@2
+            inputs:
+              version: $(dotnetVersion)
+
+          - script: |
+              dotnet test tests/MyCompany.OrderService.ArchitectureTest/ \
+                --configuration $(buildConfiguration)
+            displayName: Run architecture tests
+
+      - job: SystemTests
+        dependsOn: [UnitTests, ArchitectureTests]
+        steps:
+          - task: UseDotNet@2
+            inputs:
+              version: $(dotnetVersion)
+
+          - script: |
+              dotnet test tests/MyCompany.OrderService.WebApi.SystemTest/ \
+                --configuration $(buildConfiguration) \
+                --logger trx
+            displayName: Run system tests
+
+          - task: PublishTestResults@2
+            inputs:
+              testResultsFormat: "VSTest"
+              testResultsFiles: "**/TestResults/*.trx"
+
+  - stage: E2E
+    dependsOn: Test
+    condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/main'))
+    jobs:
+      - job: ComponentE2E
+        services:
+          postgres:
+            image: postgres:15
+            ports:
+              - 5432:5432
+        steps:
+          - task: UseDotNet@2
+            inputs:
+              version: $(dotnetVersion)
+
+          - script: |
+              dotnet test tests/MyCompany.OrderService.WebApi.E2E/ \
+                --configuration $(buildConfiguration)
+            displayName: Run component E2E tests
+```
+
+### CI Matrix Summary
+
+| Stage              | PR             | Mainline | Post-Deploy  |
+| ------------------ | -------------- | -------- | ------------ |
+| Build              | Yes            | Yes      | N/A          |
+| Unit Tests         | Yes (parallel) | Yes      | N/A          |
+| Architecture Tests | Yes            | Yes      | N/A          |
+| System Tests       | Yes            | Yes      | N/A          |
+| Component E2E      | Subset         | Full     | N/A          |
+| Repo-level E2E     | No             | Full     | N/A          |
+| Smoke Tests        | No             | No       | Yes (@smoke) |
+
+### Test Execution Order
+
+```text
+1. Build
+   └─► Compile all projects
+
+2. Unit Tests (parallel)
+   ├─► Domain.UnitTest
+   └─► Application.UnitTest
+
+3. Architecture Tests (parallel with Unit)
+   └─► ArchitectureTest
+
+4. System Tests (after Unit + Arch pass)
+   └─► WebApi.SystemTest
+
+5. Component E2E (after System pass)
+   └─► WebApi.E2E
+
+6. Repo-level E2E (mainline only, after Component E2E)
+   └─► OrderService.E2E
+```
+
+### Diagnostic Artifact Collection
+
+```yaml
+# Add to each test job for failure diagnostics
+- name: Collect diagnostics on failure
+  if: failure()
+  run: |
+    mkdir -p diagnostics
+    # Collect structured logs
+    cp -r logs/*.json diagnostics/ 2>/dev/null || true
+    # Collect traces
+    cp -r traces/*.otlp diagnostics/ 2>/dev/null || true
+    # Collect Playwright artifacts (if UI tests)
+    cp -r playwright-report/ diagnostics/ 2>/dev/null || true
+
+- name: Upload diagnostics
+  if: failure()
+  uses: actions/upload-artifact@v4
+  with:
+    name: diagnostics-${{ github.job }}
+    path: diagnostics/
+    retention-days: 7
+```

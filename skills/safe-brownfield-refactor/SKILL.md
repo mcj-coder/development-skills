@@ -199,3 +199,94 @@ If production issues occur during refactoring:
 | Change is large       | Break into smaller increments      |
 | Rollback is slow      | Add feature flags                  |
 | Risk is high          | Parallel implementation            |
+
+## Sample Characterisation Test Template
+
+```csharp
+/// <summary>
+/// Characterisation tests for LegacyOrderProcessor.
+/// These tests document CURRENT behaviour, not CORRECT behaviour.
+/// Do NOT fix "bugs" found here without explicit decision.
+/// </summary>
+public class LegacyOrderProcessorCharacterisationTests
+{
+    private readonly LegacyOrderProcessor _sut;
+
+    public LegacyOrderProcessorCharacterisationTests()
+    {
+        _sut = new LegacyOrderProcessor(/* real dependencies */);
+    }
+
+    [Fact]
+    public void ProcessOrder_WithNullCustomer_ReturnsMinusOne()
+    {
+        // CHARACTERISATION: Current behaviour returns -1 for null customer
+        // This may be a bug, but it's what production does
+        var result = _sut.ProcessOrder(null, new Order());
+
+        result.Should().Be(-1);
+    }
+
+    [Fact]
+    public void ProcessOrder_WithExpiredDiscount_StillAppliesDiscount()
+    {
+        // CHARACTERISATION: Expired discounts are still applied
+        // Known bug #1234 - fixing requires migration plan
+        var order = new Order { DiscountCode = "EXPIRED2020" };
+
+        var result = _sut.ProcessOrder(customer, order);
+
+        result.TotalDiscount.Should().BeGreaterThan(0);
+    }
+
+    [Theory]
+    [InlineData("", 0)]           // Empty input returns 0
+    [InlineData("INVALID", -1)]   // Invalid code returns -1
+    [InlineData("VALID10", 10)]   // Valid code applies correctly
+    public void ApplyDiscount_VariousInputs_DocumentedBehaviour(
+        string code, decimal expected)
+    {
+        var result = _sut.ApplyDiscount(code);
+        result.Should().Be(expected);
+    }
+}
+```
+
+## Refactor Sequencing Checklist
+
+Before each refactoring step, complete this checklist:
+
+### Pre-Refactor Checklist
+
+- [ ] **Characterisation tests written** for code being changed
+- [ ] **All characterisation tests pass** against current implementation
+- [ ] **Change scope documented** (which files/methods will change)
+- [ ] **Rollback plan identified** (revert commit, feature flag, or dual-run)
+- [ ] **Dependencies mapped** (what else might break)
+- [ ] **Estimate reviewed** (3x initial estimate for legacy code)
+
+### During Refactor Checklist
+
+- [ ] **Small commits** (each independently revertable)
+- [ ] **Tests run after each change** (characterisation + any new tests)
+- [ ] **Behaviour preserved** (no functional changes unless explicit)
+- [ ] **Comments added** for non-obvious legacy behaviour retained
+- [ ] **Technical debt noted** (issues found but not fixed this iteration)
+
+### Post-Refactor Checklist
+
+- [ ] **All tests pass** (characterisation + new + existing)
+- [ ] **Code review completed** with focus on behaviour preservation
+- [ ] **Deployment plan documented** (incremental rollout if possible)
+- [ ] **Monitoring configured** for relevant metrics
+- [ ] **Rollback tested** (verify rollback works before full deploy)
+- [ ] **Documentation updated** (if public interfaces changed)
+
+### Refactor Sequencing Order
+
+1. **Extract method** - Isolate the code to change
+2. **Add characterisation tests** - Document current behaviour
+3. **Refactor internals** - Change implementation, preserve interface
+4. **Add new tests** - Test improved behaviour
+5. **Remove duplication** - Clean up temporary scaffolding
+6. **Update documentation** - Reflect new structure

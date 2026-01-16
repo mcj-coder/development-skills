@@ -250,3 +250,203 @@ For example, `requirements-gathering` checks that no ticket exists before procee
 - `references/AUTOFIX.md` - Detailed AutoFix behaviour for each verification check
 - `process-skill-router` - Route to correct process skill based on context
 - `requirements-gathering` - Example of precondition guard pattern
+
+## Prerequisite Validation Script
+
+Use this script to verify all prerequisites are met:
+
+```bash
+#!/bin/bash
+# validate-skills-first.sh
+
+ERRORS=0
+WARNINGS=0
+
+echo "=== Skills-First Workflow Validation ==="
+echo ""
+
+# Check 1: Superpowers installed
+echo "1. Checking Superpowers installation..."
+if [ -d "$HOME/.claude/plugins/cache/superpowers-marketplace" ]; then
+  echo "   ✓ Superpowers plugin directory exists"
+else
+  echo "   ✗ Superpowers not installed"
+  echo "   Fix: Run 'npm install -g @anthropic/superpowers' or install via Claude settings"
+  ((ERRORS++))
+fi
+
+# Check 2: AGENTS.md exists
+echo ""
+echo "2. Checking AGENTS.md..."
+if [ -f "AGENTS.md" ]; then
+  echo "   ✓ AGENTS.md exists"
+
+  # Check for skills-first reference
+  if grep -q "skills-first-workflow" AGENTS.md; then
+    echo "   ✓ References skills-first-workflow"
+  else
+    echo "   ⚠ Does not reference skills-first-workflow"
+    ((WARNINGS++))
+  fi
+
+  # Check for prerequisite URLs
+  if grep -q "github.com" AGENTS.md; then
+    echo "   ✓ Contains prerequisite repository URLs"
+  else
+    echo "   ⚠ No prerequisite repository URLs found"
+    ((WARNINGS++))
+  fi
+else
+  echo "   ✗ AGENTS.md not found"
+  echo "   Fix: Create AGENTS.md from template"
+  ((ERRORS++))
+fi
+
+# Check 3: README.md exists
+echo ""
+echo "3. Checking README.md..."
+if [ -f "README.md" ]; then
+  echo "   ✓ README.md exists"
+else
+  echo "   ✗ README.md not found"
+  ((ERRORS++))
+fi
+
+# Check 4: Git repository
+echo ""
+echo "4. Checking git repository..."
+if git rev-parse --git-dir > /dev/null 2>&1; then
+  echo "   ✓ Git repository initialized"
+
+  # Check for remote
+  if git remote get-url origin > /dev/null 2>&1; then
+    echo "   ✓ Remote 'origin' configured"
+  else
+    echo "   ⚠ No remote configured"
+    ((WARNINGS++))
+  fi
+else
+  echo "   ✗ Not a git repository"
+  ((ERRORS++))
+fi
+
+# Summary
+echo ""
+echo "=== Summary ==="
+echo "Errors: $ERRORS"
+echo "Warnings: $WARNINGS"
+
+if [ $ERRORS -eq 0 ]; then
+  echo ""
+  echo "✓ All prerequisites met - ready for skills-first workflow"
+  exit 0
+else
+  echo ""
+  echo "✗ $ERRORS prerequisite(s) not met"
+  echo "Run AutoFix or manually resolve before proceeding"
+  exit 1
+fi
+```
+
+## Sample Verification Commands
+
+### Check Superpowers Status
+
+```bash
+# Check if Superpowers CLI is available
+superpowers --version
+
+# Check plugin installation location
+ls -la ~/.claude/plugins/cache/superpowers-marketplace/
+
+# Verify using-superpowers skill exists
+ls ~/.claude/plugins/cache/superpowers-marketplace/superpowers/*/skills/using-superpowers/
+```
+
+### Check Repository Prerequisites
+
+```bash
+# Verify AGENTS.md content
+cat AGENTS.md | head -50
+
+# Check for required sections
+grep -E "^#|skills-first" AGENTS.md
+
+# Verify README.md exists and has content
+wc -l README.md
+```
+
+### Validate Skill Loading
+
+```bash
+# In Claude Code, verify skills loaded
+# These commands show skill status in conversation
+
+# Check if using-superpowers is active
+# (Look for skill announcement in conversation)
+
+# Verify process skills available
+# (Use /skills command in Claude Code)
+```
+
+## AutoFix Command Examples
+
+When validation fails, AutoFix performs these actions:
+
+### Missing AGENTS.md
+
+```bash
+# AutoFix creates AGENTS.md from template
+cat > AGENTS.md << 'EOF'
+# AGENTS.md - Skills-First Workflow
+
+## Required Reading
+
+Before ANY work in this repository, load: `development-skills:skills-first-workflow`
+
+## Prerequisites
+
+- Superpowers: https://github.com/anthropics/superpowers
+- Development Skills: https://github.com/org/development-skills
+
+## Process Skills
+
+1. **requirements-gathering** - Before creating tickets
+2. **brainstorming** - For unclear requirements
+3. **writing-plans** - For multi-step tasks
+4. **test-driven-development** - For code changes
+5. **verification-before-completion** - Before claiming done
+EOF
+
+git add AGENTS.md
+git commit -m "docs: add AGENTS.md for skills-first workflow"
+```
+
+### Missing Superpowers
+
+```bash
+# AutoFix installs Superpowers
+# (Actual command depends on environment)
+
+# For Claude Code:
+# Settings > Extensions > Install Superpowers
+
+# For CLI:
+npm install -g @anthropic/superpowers
+superpowers bootstrap
+```
+
+## Evidence Checklist
+
+Before proceeding with any task, verify:
+
+- [ ] `validate-skills-first.sh` exits with code 0
+- [ ] Superpowers plugin directory exists
+- [ ] AGENTS.md contains skills-first-workflow reference
+- [ ] README.md exists
+- [ ] Git repository initialized with remote
+
+```bash
+# One-liner verification
+./validate-skills-first.sh && echo "Ready to proceed"
+```

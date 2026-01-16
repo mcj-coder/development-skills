@@ -157,6 +157,187 @@ These statements indicate security analysis gaps:
 
 **All mean:** Apply this skill properly or document explicit opt-out with risk acceptance.
 
+## Sample Suppression Entries
+
+### ESLint Security Suppressions
+
+```javascript
+// GOOD: Specific, justified, linked to ticket
+// eslint-disable-next-line security/detect-object-injection -- Index validated against allowlist per SEC-123
+const value = obj[sanitizedKey];
+
+// eslint-disable-next-line security/detect-non-literal-fs-filename -- Path validated from config, not user input
+const config = fs.readFileSync(configPath);
+
+// BAD: Vague, no justification
+// eslint-disable-next-line security/detect-object-injection
+const value = obj[key];
+```
+
+### Bandit Suppressions (Python)
+
+```python
+# GOOD: Specific reason, ticket reference
+# nosec B105 - Placeholder constant for testing, replaced at runtime. See SEC-456
+TEST_TOKEN_PLACEHOLDER = "REPLACE_WITH_REAL_TOKEN"
+
+# nosec B608 - SQL query uses parameterized values, table name from enum only
+query = f"SELECT * FROM {TableName.USERS.value} WHERE id = %s"
+
+# BAD: No explanation
+password = "admin123"  # nosec
+```
+
+### Semgrep Suppressions
+
+```yaml
+# In code (inline):
+# nosemgrep: javascript.express.security.audit.xss.mustache-escape
+
+# In .semgrepignore file:
+# Ignore test fixtures
+tests/fixtures/**
+
+# In semgrep config (.semgrep.yml):
+rules:
+  - id: custom-rule
+    paths:
+      exclude:
+        - "*_test.go"
+        - "testdata/**"
+```
+
+### CodeQL Suppressions (via SARIF)
+
+```yaml
+# codeql-config.yml
+paths-ignore:
+  - tests/**
+  - "**/testdata/**"
+query-filters:
+  - exclude:
+      id: js/unused-local-variable
+      # Only exclude in test files
+      paths: "**/*.test.js"
+```
+
+### Suppression Tracking Template
+
+```markdown
+## Security Suppression Log
+
+| ID      | Tool    | Rule                    | File         | Justification    | Owner | Expiry     | Ticket  |
+| ------- | ------- | ----------------------- | ------------ | ---------------- | ----- | ---------- | ------- |
+| SUP-001 | Bandit  | B105                    | config.py:42 | Test placeholder | @dev  | 2025-03-01 | SEC-123 |
+| SUP-002 | Semgrep | xss-audit               | api.ts:156   | Sanitized output | @lead | N/A (FP)   | N/A     |
+| SUP-003 | ESLint  | detect-object-injection | util.js:89   | Validated index  | @dev  | 2025-04-15 | SEC-456 |
+```
+
+## Evidence Capture Guidance
+
+### Scan Evidence Template
+
+````markdown
+## Security Scan Evidence
+
+**Date**: YYYY-MM-DD
+**Commit**: abc1234
+**Branch**: feature/xyz
+**Scanner Version**: [tool@version]
+
+### Summary
+
+| Severity | Count | Status                 |
+| -------- | ----- | ---------------------- |
+| Critical | 0     | Pass                   |
+| High     | 2     | Blocked (requires fix) |
+| Medium   | 5     | Baselined              |
+| Low      | 12    | Info only              |
+
+### New Findings
+
+| ID   | Severity | Rule          | Location          | Status       |
+| ---- | -------- | ------------- | ----------------- | ------------ |
+| F001 | High     | sql-injection | api/query.ts:45   | Fix required |
+| F002 | High     | xss-reflected | web/render.ts:123 | Fix required |
+
+### Baselined Findings
+
+| ID   | Severity | Baseline Date | Review Date | Ticket  |
+| ---- | -------- | ------------- | ----------- | ------- |
+| B001 | Medium   | 2024-12-01    | 2025-03-01  | SEC-789 |
+| B002 | Medium   | 2024-12-01    | 2025-03-01  | SEC-790 |
+
+### Verification
+
+```bash
+# Commands run
+semgrep --config=p/security-audit --sarif -o results.sarif .
+bandit -r src/ -f sarif -o bandit.sarif
+gitleaks detect --source . --report-format sarif --report-path secrets.sarif
+```
+````
+
+### CI Pipeline Evidence
+
+```yaml
+# GitHub Actions example with evidence artifacts
+security-scan:
+  runs-on: ubuntu-latest
+  steps:
+    - uses: actions/checkout@v4
+
+    - name: Run Semgrep
+      uses: returntocorp/semgrep-action@v1
+      with:
+        config: p/security-audit
+        generateSarif: true
+
+    - name: Run Gitleaks
+      uses: gitleaks/gitleaks-action@v2
+      with:
+        report_format: sarif
+
+    - name: Upload SARIF results
+      uses: github/codeql-action/upload-sarif@v3
+      with:
+        sarif_file: results/
+
+    - name: Archive scan evidence
+      uses: actions/upload-artifact@v4
+      with:
+        name: security-scan-evidence-${{ github.sha }}
+        path: |
+          results/*.sarif
+          results/*.json
+        retention-days: 90
+```
+
+### Evidence Retention Requirements
+
+| Evidence Type      | Retention       | Storage           |
+| ------------------ | --------------- | ----------------- |
+| SARIF reports      | 90 days minimum | CI artifacts      |
+| Suppression log    | Permanent       | Repository        |
+| Baseline snapshots | Per release     | Release artifacts |
+| Audit trail        | 1 year          | Compliance system |
+
+### Verification Commands
+
+```bash
+# Verify SARIF output is valid
+cat results.sarif | jq '.runs[0].results | length'
+
+# Check for unaddressed critical/high findings
+jq '[.runs[].results[] | select(.level == "error")] | length' results.sarif
+
+# Verify no secrets in scan scope
+gitleaks detect --source . --verbose --no-git
+
+# Compare against baseline
+semgrep --config=p/security-audit --baseline-commit HEAD~1 .
+```
+
 ## Reference Documents
 
 Load based on specific need:

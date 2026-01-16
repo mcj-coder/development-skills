@@ -40,3 +40,61 @@ description: Standardise unit/integration test assertions on open-source librari
 
 - Reject PRs that introduce non-open-source assertion libraries.
 - Require a documented license verification for new/updated test dependencies.
+
+## Load: migration
+
+### Migration Checklist (FluentAssertions → AwesomeAssertions)
+
+- [ ] **Update NuGet packages**: Replace `FluentAssertions` with `AwesomeAssertions`
+- [ ] **Update using statements**: `using FluentAssertions;` → `using AwesomeAssertions;`
+- [ ] **Run tests**: Verify all existing tests pass (API is largely compatible)
+- [ ] **Check breaking changes**: Review release notes for any API differences
+- [ ] **Update CI**: Ensure package restore works in CI pipeline
+- [ ] **Document decision**: Add ADR noting the migration and rationale
+
+### Sample Assertion Diff
+
+```diff
+// Package reference
+- <PackageReference Include="FluentAssertions" Version="6.12.0" />
++ <PackageReference Include="AwesomeAssertions" Version="7.0.0" />
+
+// Using statement
+- using FluentAssertions;
++ using AwesomeAssertions;
+
+// Assertions remain the same
+result.Should().NotBeNull();
+result.Items.Should().HaveCount(3);
+result.CreatedAt.Should().BeCloseTo(DateTime.UtcNow, TimeSpan.FromSeconds(1));
+```
+
+### Common Assertion Patterns
+
+```csharp
+// Object equivalence (ignoring specific properties)
+actual.Should().BeEquivalentTo(expected, options => options
+    .Excluding(x => x.Id)
+    .Excluding(x => x.CreatedAt));
+
+// Collection assertions
+items.Should().ContainSingle(x => x.Name == "Test");
+items.Should().BeInAscendingOrder(x => x.Priority);
+items.Should().AllSatisfy(x => x.IsValid.Should().BeTrue());
+
+// Exception assertions
+action.Should().Throw<ValidationException>()
+    .WithMessage("*required*");
+
+// Async assertions
+await action.Should().ThrowAsync<NotFoundException>();
+```
+
+### xUnit vs AwesomeAssertions Comparison
+
+| xUnit Assert                     | AwesomeAssertions              | Benefit               |
+| -------------------------------- | ------------------------------ | --------------------- |
+| `Assert.Equal(expected, actual)` | `actual.Should().Be(expected)` | Fluent, readable      |
+| `Assert.NotNull(obj)`            | `obj.Should().NotBeNull()`     | Chaining support      |
+| `Assert.Contains(item, list)`    | `list.Should().Contain(item)`  | Better error messages |
+| `Assert.Throws<T>(action)`       | `action.Should().Throw<T>()`   | Message assertions    |
