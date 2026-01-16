@@ -350,3 +350,207 @@ builder.Host.UseSerilog((context, config) =>
    - Add custom spans for business operations
    - Tune sampling strategies
    - Establish alerting on key signals
+
+## Minimal Validation Checklist
+
+Use this checklist to verify observability is correctly configured:
+
+### Structured Logging Validation
+
+- [ ] Log entry contains structured fields (not just message string)
+- [ ] Correlation ID present in all request-scoped logs
+- [ ] Log level appropriate for message type
+- [ ] No PII or sensitive data in logs
+
+**Sample log entry to verify:**
+
+```json
+{
+  "timestamp": "2024-01-15T10:30:45.123Z",
+  "level": "Information",
+  "message": "User logged in successfully",
+  "properties": {
+    "UserId": "usr_12345",
+    "IpAddress": "192.168.1.100",
+    "CorrelationId": "abc-123-def-456",
+    "ServiceName": "auth-api"
+  }
+}
+```
+
+**Validation command:**
+
+```bash
+# Check log output format
+curl -s http://localhost:5000/api/health | jq .
+# Then check application logs for structured output
+
+# Verify correlation ID propagation
+curl -H "X-Correlation-ID: test-123" http://localhost:5000/api/users/1
+# Check logs contain "CorrelationId": "test-123"
+```
+
+### Metrics Validation
+
+- [ ] RED metrics exposed for HTTP endpoints
+- [ ] Metric names follow semantic conventions
+- [ ] Labels have bounded cardinality
+- [ ] Metrics endpoint accessible
+
+**Sample metric names to verify:**
+
+```text
+http_server_request_duration_seconds_bucket{method="GET",route="/api/users/{id}",status="200",le="0.1"}
+http_server_request_duration_seconds_count{method="GET",route="/api/users/{id}",status="200"}
+http_server_active_requests{method="GET"}
+```
+
+**Validation command:**
+
+```bash
+# Check metrics endpoint
+curl -s http://localhost:5000/metrics | grep http_server
+
+# Verify histogram buckets exist
+curl -s http://localhost:5000/metrics | grep "_bucket"
+
+# Check for high-cardinality labels (should NOT see user IDs, request IDs, etc.)
+curl -s http://localhost:5000/metrics | grep -E "user_id|request_id"
+# Should return nothing
+```
+
+### Trace Propagation Validation
+
+- [ ] W3C traceparent header propagated
+- [ ] Spans created for HTTP requests
+- [ ] Database operations create child spans
+- [ ] Cross-service traces connected
+
+**Sample trace header:**
+
+```text
+traceparent: 00-0af7651916cd43dd8448eb211c80319c-b7ad6b7169203331-01
+tracestate: myvendor=value
+```
+
+**Validation command:**
+
+```bash
+# Verify trace context propagation
+# Make request with traceparent header
+curl -H "traceparent: 00-12345678901234567890123456789012-1234567890123456-01" \
+     -v http://localhost:5000/api/users/1 2>&1 | grep -i traceparent
+
+# Check response includes traceparent
+# Verify downstream services receive same trace ID
+
+# Check OTLP exporter connectivity
+curl -s http://localhost:4317/health  # gRPC health check
+curl -s http://localhost:4318/health  # HTTP health check
+```
+
+### Quick Validation Script
+
+```bash
+#!/bin/bash
+# validate-observability.sh
+
+SERVICE_URL="${1:-http://localhost:5000}"
+ERRORS=0
+
+echo "=== Observability Validation ==="
+echo "Service: $SERVICE_URL"
+echo ""
+
+# Test 1: Metrics endpoint
+echo "1. Checking metrics endpoint..."
+if curl -sf "$SERVICE_URL/metrics" > /dev/null; then
+  echo "   ✓ Metrics endpoint accessible"
+
+  # Check for RED metrics
+  if curl -sf "$SERVICE_URL/metrics" | grep -q "http_server_request_duration"; then
+    echo "   ✓ Duration metric present"
+  else
+    echo "   ✗ Duration metric missing"
+    ((ERRORS++))
+  fi
+else
+  echo "   ✗ Metrics endpoint not accessible"
+  ((ERRORS++))
+fi
+
+# Test 2: Correlation ID propagation
+echo ""
+echo "2. Checking correlation ID propagation..."
+CORRELATION_ID="test-$(date +%s)"
+RESPONSE=$(curl -sf -H "X-Correlation-ID: $CORRELATION_ID" "$SERVICE_URL/api/health" -i 2>&1)
+if echo "$RESPONSE" | grep -qi "x-correlation-id"; then
+  echo "   ✓ Correlation ID returned in response"
+else
+  echo "   ✗ Correlation ID not propagated"
+  ((ERRORS++))
+fi
+
+# Test 3: Trace context
+echo ""
+echo "3. Checking trace context propagation..."
+TRACE_ID="12345678901234567890123456789012"
+RESPONSE=$(curl -sf -H "traceparent: 00-$TRACE_ID-1234567890123456-01" \
+                "$SERVICE_URL/api/health" -i 2>&1)
+if echo "$RESPONSE" | grep -qi "traceparent"; then
+  echo "   ✓ Trace context propagated"
+else
+  echo "   ⚠ Trace context not in response headers (may be logged internally)"
+fi
+
+# Summary
+echo ""
+echo "=== Summary ==="
+if [ $ERRORS -eq 0 ]; then
+  echo "✓ All validations passed"
+  exit 0
+else
+  echo "✗ $ERRORS validation(s) failed"
+  exit 1
+fi
+```
+
+### Evidence Template
+
+````markdown
+# Observability Validation Evidence
+
+**Service**: [service-name]
+**Date**: YYYY-MM-DD
+**Validator**: [name]
+
+## Logging
+
+- [x] Structured logging configured
+- [x] Correlation ID middleware active
+- [x] Log level: Information (production)
+
+**Sample log entry:**
+[paste actual log entry here]
+
+## Metrics
+
+- [x] Metrics endpoint: /metrics
+- [x] RED metrics present
+- [x] No high-cardinality labels
+
+**Metrics output:**
+
+```text
+[paste relevant metrics here]
+```
+
+## Tracing
+
+- [x] OpenTelemetry SDK configured
+- [x] W3C Trace Context propagation
+- [x] Sampling: 10% (production)
+
+**Trace verification:**
+[paste trace ID and verification steps]
+````

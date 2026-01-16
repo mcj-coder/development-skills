@@ -259,7 +259,9 @@
     "gradlew",
     "Paffected",
     "mypackage",
-    "jdeps"
+    "jdeps",
+    "myorg",
+    "myvendor"
   ],
   "ignorePaths": ["node_modules/**", "package-lock.json"]
 }

@@ -300,3 +300,173 @@ npx lerna publish
 - **walking-skeleton-delivery**: Use monorepo structure for E2E skeleton across services
 - **ci-cd-conformance**: Configure CI/CD pipelines with affected-only execution
 - **automated-standards-enforcement**: Apply linting and formatting across all packages
+
+## Evidence Examples
+
+### Nx Graph Output
+
+```bash
+npx nx graph --file=output.json
+```
+
+**Sample output.json (dependency graph):**
+
+```json
+{
+  "graph": {
+    "nodes": {
+      "web": {
+        "name": "web",
+        "type": "app",
+        "data": { "root": "apps/web" }
+      },
+      "api": {
+        "name": "api",
+        "type": "app",
+        "data": { "root": "apps/api" }
+      },
+      "ui": {
+        "name": "ui",
+        "type": "lib",
+        "data": { "root": "packages/ui" }
+      },
+      "utils": {
+        "name": "utils",
+        "type": "lib",
+        "data": { "root": "packages/utils" }
+      }
+    },
+    "dependencies": {
+      "web": [
+        { "source": "web", "target": "ui", "type": "static" },
+        { "source": "web", "target": "utils", "type": "static" }
+      ],
+      "api": [{ "source": "api", "target": "utils", "type": "static" }],
+      "ui": [{ "source": "ui", "target": "utils", "type": "static" }],
+      "utils": []
+    }
+  }
+}
+```
+
+### Turborepo Graph Output
+
+```bash
+$ npx turbo run build --graph=graph.html
+# Or JSON format:
+$ npx turbo run build --graph=graph.json
+```
+
+**Sample turbo output (task execution):**
+
+```text
+• Packages in scope: @myorg/api, @myorg/ui, @myorg/utils, @myorg/web
+• Running build in 4 packages
+• Remote caching disabled
+
+@myorg/utils:build: cache hit, replaying output
+@myorg/ui:build: cache miss, executing
+@myorg/api:build: cache hit, replaying output
+@myorg/web:build: cache miss, executing
+
+ Tasks:    4 successful, 4 total
+Cached:    2 cached, 4 total
+  Time:    3.245s
+```
+
+### Affected Detection Evidence
+
+```bash
+# Nx affected output
+$ npx nx affected:apps --base=main --head=HEAD
+>  NX   Affected apps:
+- web
+
+$ npx nx affected:libs --base=main --head=HEAD
+>  NX   Affected libs:
+- ui
+- utils
+
+# Turborepo affected output
+$ npx turbo run build --filter='...[origin/main]' --dry-run
+• Packages in scope: @myorg/ui, @myorg/web
+• Running build in 2 packages
+• 2 packages in graph are affected by changes
+```
+
+## Baseline Performance Metrics
+
+### Metrics to Capture
+
+| Metric              | Description                     | Target        |
+| ------------------- | ------------------------------- | ------------- |
+| Cold build time     | Full build with empty cache     | Baseline      |
+| Warm build time     | Full build with populated cache | < 10% of cold |
+| Affected build time | Build only changed packages     | < 30% of cold |
+| Cache hit rate      | Percentage of cached tasks      | > 80% in CI   |
+
+### Performance Worksheet
+
+```markdown
+# Monorepo Performance Baseline
+
+**Repository**: [repo-name]
+**Date**: YYYY-MM-DD
+**Tool**: [Nx/Turborepo/Lerna]
+**Packages**: [N] apps, [M] libs
+
+## Build Performance
+
+| Scenario         | Time | Cache Status | Notes                                  |
+| ---------------- | ---- | ------------ | -------------------------------------- |
+| Cold build (all) | [X]s | No cache     | `nx run-many -t build --skip-nx-cache` |
+| Warm build (all) | [X]s | Full cache   | Second run of above                    |
+| Affected (1 lib) | [X]s | Partial      | After changing utils                   |
+| Affected (1 app) | [X]s | Partial      | After changing web only                |
+
+## CI Performance
+
+| Metric             | Before Optimization | After | Improvement |
+| ------------------ | ------------------- | ----- | ----------- |
+| Average PR build   | [X]m                | [Y]m  | [Z]%        |
+| Cache hit rate     | [X]%                | [Y]%  | +[Z]%       |
+| Affected detection | [X]s                | [Y]s  | [Z]%        |
+
+## Verification Commands
+
+# Measure cold build
+
+time npx nx run-many -t build --skip-nx-cache
+
+# Measure warm build (run twice, take second)
+
+npx nx run-many -t build
+time npx nx run-many -t build
+
+# Measure affected build
+
+git checkout -b test-affected
+echo "// change" >> packages/utils/src/index.ts
+time npx nx affected -t build --base=main
+git checkout main && git branch -D test-affected
+
+# Check cache statistics (Nx)
+
+npx nx show cache-stats
+
+# Check cache statistics (Turborepo)
+
+npx turbo run build --summarize
+```
+
+### Sample CI Evidence
+
+```yaml
+# GitHub Actions summary output
+Build Summary:
+  Total packages: 12
+  Affected packages: 3
+  Cached tasks: 9/12 (75%)
+  Build time: 45s (vs 180s full build)
+  Cache savings: 135s (75% reduction)
+```
