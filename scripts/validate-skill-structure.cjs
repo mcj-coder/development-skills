@@ -70,6 +70,61 @@ function main() {
  * @returns {ValidationError[]} Array of validation errors
  */
 function validateSkill(skillName) {
+  const skillDir = path.join(SKILLS_DIR, skillName);
+  /** @type {ValidationError[]} */
+  const errors = [];
+
+  // Required: SKILL.md
+  const skillMdPath = path.join(skillDir, "SKILL.md");
+  if (!fs.existsSync(skillMdPath)) {
+    errors.push({
+      skill: skillName,
+      file: "SKILL.md",
+      message: "Missing required file SKILL.md",
+    });
+  }
+
+  // Required: *.test.md (at least one)
+  const testFiles = fs
+    .readdirSync(skillDir)
+    .filter((f) => f.endsWith(".test.md"));
+  if (testFiles.length === 0) {
+    errors.push({
+      skill: skillName,
+      file: "*.test.md",
+      message: "Missing required test file (*.test.md)",
+    });
+  }
+
+  // Conditional: references/README.md if references/ exists
+  const refsDir = path.join(skillDir, "references");
+  if (fs.existsSync(refsDir) && fs.statSync(refsDir).isDirectory()) {
+    const refsReadme = path.join(refsDir, "README.md");
+    if (!fs.existsSync(refsReadme)) {
+      errors.push({
+        skill: skillName,
+        file: "references/README.md",
+        message: "Missing README.md in references/ directory",
+      });
+    }
+  }
+
+  // Continue to section validation if SKILL.md exists
+  if (fs.existsSync(skillMdPath)) {
+    const content = fs.readFileSync(skillMdPath, "utf-8");
+    errors.push(...validateSkillContent(skillName, content));
+  }
+
+  return errors;
+}
+
+/**
+ * Validate SKILL.md content
+ * @param {string} skillName - Name of the skill
+ * @param {string} content - Content of SKILL.md
+ * @returns {ValidationError[]} Array of validation errors
+ */
+function validateSkillContent(skillName, content) {
   // TODO: Implement in subsequent tasks
   return [];
 }
