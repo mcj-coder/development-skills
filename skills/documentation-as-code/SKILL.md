@@ -42,6 +42,72 @@ description: Use when user creates/modifies/reviews documentation (Markdown, ADR
 
 See [Validation Configuration](references/validation-configuration.md) for setup.
 
+## Verification Commands for Doc-Only Changes
+
+For documentation-only changes, use these commands to verify quality before
+completion:
+
+### Local Verification
+
+```bash
+# Markdown formatting check
+npm run lint:md
+
+# Spell check
+npm run spell
+
+# Both checks (combined command)
+npm run validate:docs
+```
+
+### Specific File Validation
+
+```bash
+# Check single file
+npx markdownlint-cli2 docs/README.md
+
+# Check documentation directory
+npx markdownlint-cli2 "docs/**/*.md"
+
+# Spell check specific files
+npx cspell "docs/**/*.md" --no-progress
+
+# Link validation (requires configuration)
+npx markdown-link-check docs/README.md
+```
+
+### Evidence Capture for Issue Comments
+
+When documenting doc-only verification, post evidence like:
+
+```markdown
+## Verification
+
+- [x] `npm run lint:md` passed
+- [x] `npm run spell` passed
+- [x] All links verified (no broken references)
+- Link validation output: [CI check details](link-to-workflow-run)
+```
+
+### Brownfield Baseline Verification
+
+For existing docs without validation:
+
+```bash
+# Capture baseline violations for documentation
+npm run lint:md > lint-baseline.txt 2>&1
+npm run spell > spell-baseline.txt 2>&1
+
+# Document findings in baseline file
+echo "## Baseline Issues Identified
+- Markdown formatting issues: $(wc -l < lint-baseline.txt)
+- Spelling issues: $(wc -l < spell-baseline.txt)
+" > docs/validation-baseline.md
+```
+
+**Key Point:** For doc-only changes, verification evidence is process-only
+(analytical). Link to CI output or command results, not commit SHAs.
+
 ## Brownfield Approach
 
 1. Run baseline validation

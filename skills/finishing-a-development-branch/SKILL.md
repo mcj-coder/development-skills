@@ -392,3 +392,51 @@ Consider tracking:
 - Number of PRs created without verification evidence
 - Issues found in verification vs PR review
 - Use metrics to demonstrate SHIFT LEFT value
+
+## Quick Reference
+
+### Decision Flowchart
+
+```text
+┌─────────────────────────────────────┐
+│ Implementation Complete?            │
+│ (tests pass, changes committed)     │
+└───────────────┬─────────────────────┘
+                │ YES
+                ▼
+┌─────────────────────────────────────┐
+│ Verification/Reviews Complete?      │
+│ (QA + role-based reviews done)      │
+└───────────────┬─────────────────────┘
+                │
+       ┌────────┴────────┐
+       │                 │
+       ▼ NO              ▼ YES
+┌─────────────┐   ┌─────────────────┐
+│ STOP        │   │ Choose Path:    │
+│ Complete    │   │ 1. Direct merge │
+│ verification│   │ 2. Create PR    │
+│ first       │   │ 3. Abandon      │
+└─────────────┘   └─────────────────┘
+```
+
+### Minimum Viable Verification (Small Changes)
+
+For small, low-risk changes (documentation typos, config tweaks, single-file fixes):
+
+| Verification Item     | Full Process        | MVP for Small Changes    |
+| --------------------- | ------------------- | ------------------------ |
+| QA Verification       | Full AC walkthrough | Self-verify + note in PR |
+| Skill Author Review   | Formal review       | Skip if no skill changes |
+| Doc Expert Review     | Formal review       | Self-review for typos    |
+| Evidence in Work Item | Detailed comments   | Single summary comment   |
+| PR Creation           | After all reviews   | After self-verification  |
+
+**MVP applies when ALL conditions met:**
+
+- [ ] Change touches ≤3 files
+- [ ] No logic changes (typo, config, comment-only)
+- [ ] Low blast radius (won't break other features)
+- [ ] Author is confident in correctness
+
+**If ANY condition fails:** Use full verification process.

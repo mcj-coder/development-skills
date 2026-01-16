@@ -369,6 +369,101 @@ This prevents other users from reading account mappings.
 - [ ] `gh auth status` shows expected account
 - [ ] Test commit verifies GPG signature valid
 
+## Validation Commands
+
+### Verify Current Persona State
+
+```bash
+# Show current Git identity
+git config user.name
+git config user.email
+git config user.signingkey
+
+# Show current GitHub account
+gh auth status
+
+# Combined verification
+show_persona
+```
+
+### Test GPG Signing
+
+```bash
+# Verify GPG key exists and can sign
+echo "test" | gpg --clearsign --local-user "$(git config user.email)"
+
+# Verify commit signing works
+git commit --allow-empty -m "test: verify GPG signing" --gpg-sign
+git log -1 --show-signature
+git reset --hard HEAD~1  # Remove test commit
+```
+
+### Validate Persona Configuration
+
+```bash
+# Check persona config exists
+ls -la ~/.config/<repo-name>/persona-config.sh
+
+# Check file permissions (should be 600)
+stat -c "%a" ~/.config/<repo-name>/persona-config.sh  # Linux
+stat -f "%Lp" ~/.config/<repo-name>/persona-config.sh  # macOS
+
+# List available personas
+source ~/.config/<repo-name>/persona-config.sh
+use_persona  # With no argument, lists available personas
+```
+
+## Rollback Procedure
+
+### Reset to Default Git Identity
+
+If persona switching fails or corrupts Git config:
+
+```bash
+# Reset to default identity (from ~/.gitconfig)
+git config --unset user.name
+git config --unset user.email
+git config --unset user.signingkey
+
+# Verify reset
+git config --global user.name   # Should show global default
+git config --global user.email  # Should show global default
+```
+
+### Reset GitHub CLI Auth
+
+If `gh` CLI is in wrong account:
+
+```bash
+# List authenticated accounts
+gh auth status
+
+# Switch to correct account
+gh auth switch --user <account-name>
+
+# If account not listed, re-authenticate
+gh auth login
+```
+
+### Emergency Rollback (All Settings)
+
+If completely corrupted, reset everything:
+
+```bash
+# 1. Clear local git config
+git config --unset-all user.name
+git config --unset-all user.email
+git config --unset-all user.signingkey
+
+# 2. Reset gh auth
+gh auth logout --hostname github.com
+gh auth login
+
+# 3. Regenerate persona config
+rm ~/.config/<repo-name>/persona-config.sh
+# Re-run persona-switching setup
+```
+
 ## References
 
 - `references/persona-config-template.sh` - Shell script template

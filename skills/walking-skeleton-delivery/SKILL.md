@@ -134,3 +134,148 @@ npm install express
 python -m venv .venv
 pip install fastapi uvicorn
 ```
+
+## Sample Skeleton Acceptance Test
+
+### BDD Scenario (Gherkin)
+
+```gherkin
+Feature: Walking Skeleton E2E Validation
+  As a developer
+  I want to verify the skeleton can process a request end-to-end
+  So that I can validate the architecture before building features
+
+  Scenario: Health check returns healthy status
+    Given the API is running
+    When I request GET /health
+    Then the response status should be 200
+    And the response body should contain "Healthy"
+
+  Scenario: Create and retrieve item proves persistence works
+    Given the API is running
+    And the database is empty
+    When I POST to /api/items with body '{"name": "test"}'
+    Then the response status should be 201
+    And the response should contain an "id"
+    When I GET /api/items/{id}
+    Then the response status should be 200
+    And the response body should contain "test"
+```
+
+### Test Implementation (.NET Example)
+
+```csharp
+public class SkeletonAcceptanceTests : IClassFixture<WebApplicationFactory<Program>>
+{
+    private readonly HttpClient _client;
+
+    public SkeletonAcceptanceTests(WebApplicationFactory<Program> factory)
+    {
+        _client = factory.CreateClient();
+    }
+
+    [Fact]
+    public async Task HealthCheck_ReturnsHealthy()
+    {
+        // When
+        var response = await _client.GetAsync("/health");
+
+        // Then
+        response.StatusCode.Should().Be(HttpStatusCode.OK);
+        var content = await response.Content.ReadAsStringAsync();
+        content.Should().Contain("Healthy");
+    }
+
+    [Fact]
+    public async Task CreateAndRetrieveItem_ProvesE2EWorks()
+    {
+        // When - Create
+        var createResponse = await _client.PostAsJsonAsync("/api/items",
+            new { name = "skeleton-test" });
+
+        // Then - Created
+        createResponse.StatusCode.Should().Be(HttpStatusCode.Created);
+        var created = await createResponse.Content.ReadFromJsonAsync<ItemDto>();
+        created!.Id.Should().NotBeEmpty();
+
+        // When - Retrieve
+        var getResponse = await _client.GetAsync($"/api/items/{created.Id}");
+
+        // Then - Retrieved
+        getResponse.StatusCode.Should().Be(HttpStatusCode.OK);
+        var retrieved = await getResponse.Content.ReadFromJsonAsync<ItemDto>();
+        retrieved!.Name.Should().Be("skeleton-test");
+    }
+}
+```
+
+## Minimal Deployment Pipeline Example
+
+### GitHub Actions (.github/workflows/skeleton-deploy.yml)
+
+```yaml
+name: Walking Skeleton Deploy
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: "8.0.x"
+
+      - name: Restore
+        run: dotnet restore
+
+      - name: Build
+        run: dotnet build --no-restore
+
+      - name: Test (includes skeleton acceptance tests)
+        run: dotnet test --no-build --verbosity normal
+
+  deploy-skeleton:
+    needs: build-and-test
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    environment: skeleton-validation
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build container
+        run: docker build -t skeleton-app:${{ github.sha }} .
+
+      - name: Deploy to validation environment
+        run: |
+          echo "Deploy skeleton to validation environment"
+          # Replace with actual deployment commands
+          # docker push, kubectl apply, etc.
+
+      - name: Verify skeleton E2E
+        run: |
+          # Wait for deployment
+          sleep 30
+          # Hit health endpoint
+          curl -f https://skeleton-validation.example.com/health
+          # Run smoke test
+          curl -f -X POST https://skeleton-validation.example.com/api/items \
+            -H "Content-Type: application/json" \
+            -d '{"name":"smoke-test"}'
+```
+
+### Pipeline Validation Checklist
+
+- [ ] Pipeline triggers on push to main
+- [ ] Build step succeeds
+- [ ] Skeleton acceptance tests pass
+- [ ] Deployment to validation environment succeeds
+- [ ] Health check responds after deployment
+- [ ] E2E smoke test passes in deployed environment

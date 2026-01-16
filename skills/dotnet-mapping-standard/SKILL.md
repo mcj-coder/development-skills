@@ -59,3 +59,62 @@ description: Standardise mapping (DTOs/contracts/persistence models) using sourc
 
 - Reject PRs introducing runtime reflection mapping unless justified per `dotnet-source-generation-first`.
 - Require mapping tests for critical boundary conversions (typed IDs and value objects).
+
+## Load: testing
+
+### Mapping Unit Test Template
+
+```csharp
+public class OrderMapperTests
+{
+    [Fact]
+    public void ToEntity_WithValidDto_MapsAllProperties()
+    {
+        // Arrange
+        var dto = new CreateOrderRequest
+        {
+            CustomerId = "cust-123",
+            Amount = 99.99m,
+            Currency = "GBP"
+        };
+
+        // Act
+        var entity = OrderMapper.ToEntity(dto);
+
+        // Assert
+        entity.CustomerId.Value.Should().Be("cust-123");
+        entity.Amount.Value.Should().Be(99.99m);
+        entity.Amount.Currency.Should().Be(Currency.GBP);
+    }
+
+    [Fact]
+    public void ToDto_RoundTrip_PreservesData()
+    {
+        // Arrange
+        var original = new Order(
+            CustomerId.From("cust-123"),
+            Money.From(99.99m, Currency.GBP));
+
+        // Act
+        var dto = OrderMapper.ToDto(original);
+        var roundTripped = OrderMapper.ToEntity(dto);
+
+        // Assert
+        roundTripped.Should().BeEquivalentTo(original);
+    }
+}
+```
+
+### DI Gating Checklist
+
+When reviewing mappers registered in DI:
+
+- [ ] Does the mapper have **zero** injected dependencies?
+  - **YES**: Refactor to static mapper, remove DI registration
+  - **NO**: Proceed to next check
+- [ ] Are all injected dependencies used during mapping?
+  - **NO**: Remove unused dependencies
+  - **YES**: Proceed
+- [ ] Is injection for "testability only"?
+  - **YES**: Reject - test static mappers directly
+  - **NO**: Injection acceptable
