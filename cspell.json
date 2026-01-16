@@ -255,7 +255,11 @@
     "nosemgrep",
     "vulns",
     "skillsets",
-    "skillset"
+    "skillset",
+    "gradlew",
+    "Paffected",
+    "mypackage",
+    "jdeps"
   ],
   "ignorePaths": ["node_modules/**", "package-lock.json"]
 }
