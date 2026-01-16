@@ -96,3 +96,158 @@ When gates cannot be met immediately:
 5. Review exceptions weekly
 
 Never disable gates without documented exception.
+
+## Sample Gate Configurations
+
+### .NET (GitHub Actions)
+
+```yaml
+# .github/workflows/quality-gates.yml
+name: Quality Gates
+
+on: [pull_request]
+
+jobs:
+  quality:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: "8.0.x"
+
+      - name: Build
+        run: dotnet build --warnaserror
+
+      - name: Test with Coverage
+        run: |
+          dotnet test --collect:"XPlat Code Coverage" \
+            --settings coverlet.runsettings \
+            -- DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Format=opencover
+
+      - name: Coverage Gate
+        uses: codecov/codecov-action@v4
+        with:
+          fail_ci_if_error: true
+          threshold: 80
+
+      - name: Security Scan (SAST)
+        uses: github/codeql-action/analyze@v3
+```
+
+### Node.js (GitHub Actions)
+
+```yaml
+jobs:
+  quality:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Install & Build
+        run: npm ci && npm run build
+
+      - name: Lint (warnings as errors)
+        run: npm run lint -- --max-warnings 0
+
+      - name: Test with Coverage
+        run: npm test -- --coverage --coverageThreshold='{"global":{"branches":80,"functions":80,"lines":80}}'
+
+      - name: Security Audit
+        run: npm audit --audit-level=high
+```
+
+### Python (GitHub Actions)
+
+```yaml
+jobs:
+  quality:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt -r requirements-dev.txt
+
+      - name: Lint (ruff)
+        run: ruff check . --output-format=github
+
+      - name: Type check (mypy)
+        run: mypy src/ --strict
+
+      - name: Test with Coverage
+        run: pytest --cov=src --cov-fail-under=80
+
+      - name: Security (bandit)
+        run: bandit -r src/ -ll
+```
+
+## Coverage Ratchet Example
+
+For brownfield codebases, implement a ratchet that only allows coverage to increase:
+
+```yaml
+# coverage-ratchet.yml
+name: Coverage Ratchet
+
+on: [pull_request]
+
+jobs:
+  ratchet:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Get baseline coverage
+        id: baseline
+        run: |
+          git checkout origin/main
+          npm test -- --coverage --coverageReporters=json-summary
+          BASELINE=$(cat coverage/coverage-summary.json | jq '.total.lines.pct')
+          echo "coverage=$BASELINE" >> $GITHUB_OUTPUT
+
+      - name: Get PR coverage
+        id: current
+        run: |
+          git checkout ${{ github.head_ref }}
+          npm test -- --coverage --coverageReporters=json-summary
+          CURRENT=$(cat coverage/coverage-summary.json | jq '.total.lines.pct')
+          echo "coverage=$CURRENT" >> $GITHUB_OUTPUT
+
+      - name: Enforce ratchet
+        run: |
+          BASELINE=${{ steps.baseline.outputs.coverage }}
+          CURRENT=${{ steps.current.outputs.coverage }}
+          if (( $(echo "$CURRENT < $BASELINE" | bc -l) )); then
+            echo "::error::Coverage decreased from $BASELINE% to $CURRENT%"
+            exit 1
+          fi
+          echo "Coverage: $BASELINE% → $CURRENT% ✓"
+```
+
+### Ratchet Configuration File
+
+```json
+// .coverage-ratchet.json
+{
+  "baseline": 65.5,
+  "target": 80,
+  "increment": 0.5,
+  "excludePaths": ["**/migrations/**", "**/generated/**"],
+  "enforceOnFiles": ["src/**/*.ts", "src/**/*.tsx"]
+}
+```
