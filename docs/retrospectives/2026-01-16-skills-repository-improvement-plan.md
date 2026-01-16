@@ -232,4 +232,4 @@ of Overview and Red Flags sections across all 55 skills.
 - [Phase 2 PR #382](https://github.com/mcj-coder/development-skills/pull/382)
 - [Phase 3 PR #384](https://github.com/mcj-coder/development-skills/pull/384)
 - [Phase 4 Issue #385](https://github.com/mcj-coder/development-skills/issues/385)
-- [Original Plan](~/.claude/plans/indexed-snacking-pillow.md)
+- Original Plan: `~/.claude/plans/indexed-snacking-pillow.md` (local file)
