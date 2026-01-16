@@ -268,7 +268,11 @@
     "CIEOF",
     "conftest",
     "Exploitability",
-    "Requestor"
+    "isready",
+    "Requestor",
+    "semgrepignore",
+    "testdata",
+    "testpass"
   ],
   "ignorePaths": ["node_modules/**", "package-lock.json"]
 }

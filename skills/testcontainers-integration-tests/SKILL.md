@@ -152,3 +152,221 @@ dotnet add package Testcontainers.RabbitMq
 # MongoDB
 dotnet add package Testcontainers.MongoDb
 ```
+
+## Sample CI Run Logs
+
+### Successful Test Run
+
+```text
+Starting test execution...
+[Testcontainers] Connected to Docker:
+  Host: unix:///var/run/docker.sock
+  Server Version: 24.0.7
+  API Version: 1.43
+
+[Testcontainers] Pulling image: postgres:15
+[Testcontainers] Pulling image: redis:7-alpine
+[Testcontainers] Creating container for image: postgres:15
+[Testcontainers] Container 8a3f2b... created (postgres:15)
+[Testcontainers] Starting container 8a3f2b...
+[Testcontainers] Waiting for container 8a3f2b to be ready...
+[Testcontainers] Container 8a3f2b started and ready (took 2.3s)
+[Testcontainers] Creating container for image: redis:7-alpine
+[Testcontainers] Container 4c7e91... created (redis:7-alpine)
+[Testcontainers] Starting container 4c7e91...
+[Testcontainers] Container 4c7e91 started and ready (took 0.8s)
+
+Test run for MyApp.SystemTest.dll (.NETCoreApp,Version=v8.0)
+Microsoft (R) Test Execution Command Line Tool Version 17.8.0
+
+Starting test execution, please wait...
+A total of 1 test files matched the specified pattern.
+
+Passed!  - Failed:     0, Passed:    47, Skipped:     0, Total:    47, Duration: 12.4 s
+
+[Testcontainers] Stopping container 8a3f2b...
+[Testcontainers] Container 8a3f2b stopped
+[Testcontainers] Stopping container 4c7e91...
+[Testcontainers] Container 4c7e91 stopped
+```
+
+### Failed Test Run (Connection Issue)
+
+```text
+Starting test execution...
+[Testcontainers] Connected to Docker:
+  Host: unix:///var/run/docker.sock
+
+[Testcontainers] Creating container for image: postgres:15
+[Testcontainers] Container 2d8a4f... created (postgres:15)
+[Testcontainers] Starting container 2d8a4f...
+[Testcontainers] Waiting for container 2d8a4f to be ready...
+[Testcontainers] Container 2d8a4f started and ready (took 2.1s)
+
+Test run for MyApp.SystemTest.dll (.NETCoreApp,Version=v8.0)
+
+Starting test execution, please wait...
+
+[xUnit.net 00:00:03.45]     MyApp.SystemTest.OrderTests.CreateOrder_WithValidData_ReturnsCreated [FAIL]
+  Failed MyApp.SystemTest.OrderTests.CreateOrder_WithValidData_ReturnsCreated [1.2s]
+  Error Message:
+   Npgsql.NpgsqlException : Failed to connect to 127.0.0.1:32789
+   ---> System.Net.Sockets.SocketException : Connection refused
+  Stack Trace:
+     at Npgsql.Internal.NpgsqlConnector.Connect(...)
+     at MyApp.SystemTest.OrderTests.CreateOrder_WithValidData_ReturnsCreated() in OrderTests.cs:line 45
+
+Failed!  - Failed:     1, Passed:    46, Skipped:     0, Total:    47, Duration: 8.7 s
+
+[Testcontainers] Stopping container 2d8a4f...
+```
+
+### CI Pipeline Output (GitHub Actions)
+
+```text
+Run dotnet test tests/MyApp.SystemTest/
+  dotnet test tests/MyApp.SystemTest/ --logger "console;verbosity=detailed" --collect:"XPlat Code Coverage"
+
+info: Testcontainers[0]
+      Docker container 8a3f2b is starting (image: postgres:15)
+info: Testcontainers[0]
+      Docker container 8a3f2b is ready (postgres:15)
+info: Testcontainers[0]
+      Docker container 4c7e91 is starting (image: redis:7-alpine)
+info: Testcontainers[0]
+      Docker container 4c7e91 is ready (redis:7-alpine)
+
+Test Run Successful.
+Total tests: 47
+     Passed: 47
+ Total time: 15.234 Seconds
+
+Code Coverage Results:
+  Generating report 'coverage.cobertura.xml'
+  Line coverage: 78.5%
+  Branch coverage: 72.3%
+```
+
+## Container Lifecycle Checklist
+
+### Pre-Test Setup
+
+- [ ] Docker daemon running and accessible
+- [ ] Required images available (or network access to pull)
+- [ ] Sufficient disk space for container volumes
+- [ ] Port range available (Testcontainers uses random ports)
+- [ ] Test database migration scripts ready
+
+### Per-Test Class Lifecycle
+
+```text
+[Collection Start]
+  │
+  ├─► Create fixture (IAsyncLifetime.InitializeAsync)
+  │     ├─► Pull image (if not cached)
+  │     ├─► Create container
+  │     ├─► Start container
+  │     ├─► Wait for ready (health check)
+  │     └─► Run migrations/seed data
+  │
+  ├─► Run tests (parallel within collection)
+  │     ├─► Test 1: Begin transaction → Execute → Rollback
+  │     ├─► Test 2: Begin transaction → Execute → Rollback
+  │     └─► Test N: Begin transaction → Execute → Rollback
+  │
+  └─► Dispose fixture (IAsyncLifetime.DisposeAsync)
+        ├─► Stop container
+        └─► Remove container
+[Collection End]
+```
+
+### Test Isolation Checklist
+
+- [ ] Each test runs in its own transaction (rolled back after)
+- [ ] No shared mutable state between tests
+- [ ] Test data created with unique identifiers
+- [ ] Parallel tests don't conflict on resources
+- [ ] Container state reset between test collections
+
+### CI Environment Checklist
+
+- [ ] Docker-in-Docker or Docker socket mounted
+- [ ] Sufficient memory for containers (min 2GB recommended)
+- [ ] Container cleanup on job failure (use `finally` or `always`)
+- [ ] Image caching configured for faster runs
+- [ ] Timeout configured for container startup
+
+### Troubleshooting Checklist
+
+| Symptom               | Check                  | Fix                                   |
+| --------------------- | ---------------------- | ------------------------------------- |
+| Container won't start | Docker daemon running? | `docker ps` to verify                 |
+| Connection refused    | Using mapped port?     | Use `container.GetMappedPublicPort()` |
+| Tests timeout         | Container ready check? | Add explicit wait strategy            |
+| Flaky tests           | Transaction isolation? | Ensure rollback after each test       |
+| Slow CI               | Image caching?         | Pre-pull images in CI setup           |
+| Port conflicts        | Random ports?          | Let Testcontainers assign ports       |
+
+### Container Health Verification
+
+```csharp
+// PostgreSQL ready check
+public async Task WaitForPostgresReady()
+{
+    var connectionString = _postgres.GetConnectionString();
+    await using var connection = new NpgsqlConnection(connectionString);
+
+    var retries = 10;
+    while (retries > 0)
+    {
+        try
+        {
+            await connection.OpenAsync();
+            await using var cmd = new NpgsqlCommand("SELECT 1", connection);
+            await cmd.ExecuteScalarAsync();
+            return; // Ready
+        }
+        catch
+        {
+            retries--;
+            await Task.Delay(500);
+        }
+    }
+    throw new Exception("PostgreSQL container failed to become ready");
+}
+```
+
+### Evidence Template
+
+```markdown
+## Integration Test Evidence
+
+**Date**: YYYY-MM-DD
+**Commit**: abc1234
+**CI Run**: [link to CI job]
+
+### Container Configuration
+
+| Container  | Image          | Startup Time | Port  |
+| ---------- | -------------- | ------------ | ----- |
+| PostgreSQL | postgres:15    | 2.3s         | 32789 |
+| Redis      | redis:7-alpine | 0.8s         | 32790 |
+
+### Test Results
+
+| Suite      | Total | Passed | Failed | Duration |
+| ---------- | ----- | ------ | ------ | -------- |
+| SystemTest | 47    | 47     | 0      | 12.4s    |
+
+### Isolation Verification
+
+- [x] Transaction rollback confirmed
+- [x] No cross-test data leakage
+- [x] Parallel execution stable
+
+### Container Cleanup
+
+- [x] All containers stopped
+- [x] All containers removed
+- [x] No orphaned volumes
+```
