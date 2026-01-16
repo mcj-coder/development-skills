@@ -4,6 +4,9 @@ description: |
   Use when setting up new repositories or auditing existing ones for security
   and best practice compliance. Covers branch protection, secret scanning, CI/CD security,
   documentation, and agent enablement.
+metadata:
+  type: Platform
+  priority: P0
 ---
 
 # Repo Best Practices Bootstrap
@@ -14,6 +17,37 @@ Ensure repositories have appropriate security and best practice features configu
 Applicable to both greenfield (new repository) and brownfield (existing repository) projects.
 
 **REQUIRED:** superpowers:verification-before-completion
+
+## Bootstrapping Skills Decision Matrix
+
+Use this matrix to select the appropriate bootstrapping skill:
+
+| If You Need To...                                            | Use This Skill                           |
+| ------------------------------------------------------------ | ---------------------------------------- |
+| Start a new project from scratch                             | greenfield-baseline                      |
+| Add/audit quality tooling (linting, tests, SAST)             | automated-standards-enforcement          |
+| Add/audit repo security (branch protection, secret scanning) | **repo-best-practices-bootstrap** (this) |
+
+### Skill Scope Comparison
+
+| Aspect            | greenfield-baseline          | automated-standards-enforcement | repo-best-practices-bootstrap |
+| ----------------- | ---------------------------- | ------------------------------- | ----------------------------- |
+| **Primary Focus** | Project foundation           | Quality tooling                 | Repo security/compliance      |
+| **Project State** | New (no existing code)       | New or existing                 | New or existing               |
+| **Outputs**       | Repo structure, CI/CD, docs  | Linting, tests, SAST config     | Branch rules, secrets config  |
+| **Triggers**      | Entry point for new projects | Auto-triggered or standalone    | Invoke directly               |
+
+### Invocation Context
+
+- **Greenfield projects**: Invoke after greenfield-baseline establishes structure
+- **Brownfield projects**: Invoke directly for security audit
+- **Compliance checks**: Invoke directly for audit against checklist
+
+### Do NOT Use This Skill When
+
+- Starting a brand new project without structure (use greenfield-baseline first)
+- Only need quality tooling (use automated-standards-enforcement)
+- Repository security already configured and passing audit
 
 **Categories covered:**
 

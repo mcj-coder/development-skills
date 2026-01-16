@@ -1,9 +1,45 @@
 ---
 name: security-processes
 description: Use when defining or enforcing cross-language security processes including SCA, SBOM/container scanning, SAST strategy, dependency update governance, release gates, and exception handling.
+metadata:
+  type: Quality
+  priority: P0
 ---
 
-# Security processes (cross-cutting, multi-language)
+# Security Processes (Cross-Cutting, Multi-Language)
+
+## Overview
+
+Organization-grade security governance across languages and platforms. This skill defines
+security policies, processes, and exception handling at the organizational level.
+
+## Security Skills Decision Matrix
+
+Use this matrix to select the appropriate security skill:
+
+| If You Need To...                                              | Use This Skill                |
+| -------------------------------------------------------------- | ----------------------------- |
+| Define org-wide security policies and governance               | **security-processes** (this) |
+| Set up SAST tools, secrets detection, or security linting      | static-analysis-security      |
+| Configure CI/CD quality gates including security scan blocking | quality-gate-enforcement      |
+
+### Skill Scope Comparison
+
+| Aspect             | security-processes              | static-analysis-security        | quality-gate-enforcement        |
+| ------------------ | ------------------------------- | ------------------------------- | ------------------------------- |
+| **Primary Focus**  | Governance & policy             | Tool configuration              | Pipeline enforcement            |
+| **Scope**          | Organization-wide               | Project-level                   | Pipeline-level                  |
+| **Outputs**        | Policies, SLAs, exception rules | Tool configs, suppression rules | Gate thresholds, blocking rules |
+| **When to Invoke** | Defining security standards     | Setting up scanning             | Configuring CI/CD               |
+| **Relationship**   | Orchestrates other skills       | Implements SAST portion         | Enforces as gates               |
+
+### Invocation Order
+
+For a complete security implementation:
+
+1. **security-processes** - Define policies and requirements first
+2. **static-analysis-security** - Configure SAST tools per policy
+3. **quality-gate-enforcement** - Enforce as CI/CD gates
 
 ## Purpose
 

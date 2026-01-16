@@ -1,6 +1,9 @@
 ---
 name: automated-standards-enforcement
 description: Use when creating or modifying any repository to establish automated quality enforcement (linting, spelling, tests, SAST, security). Applies by default unless user explicitly refuses. Ensures clean build policy with minimal developer friction.
+metadata:
+  type: Platform
+  priority: P0
 ---
 
 # Automated Standards Enforcement
@@ -10,6 +13,37 @@ description: Use when creating or modifying any repository to establish automate
 **P0 Foundational** - Applies by default. Zero-warning clean builds. Baseline for brownfield.
 
 **REQUIRED:** superpowers:verification-before-completion, superpowers:test-driven-development
+
+## Bootstrapping Skills Decision Matrix
+
+Use this matrix to select the appropriate bootstrapping skill:
+
+| If You Need To...                                            | Use This Skill                             |
+| ------------------------------------------------------------ | ------------------------------------------ |
+| Start a new project from scratch                             | greenfield-baseline                        |
+| Add/audit quality tooling (linting, tests, SAST)             | **automated-standards-enforcement** (this) |
+| Add/audit repo security (branch protection, secret scanning) | repo-best-practices-bootstrap              |
+
+### Skill Scope Comparison
+
+| Aspect            | greenfield-baseline          | automated-standards-enforcement | repo-best-practices-bootstrap |
+| ----------------- | ---------------------------- | ------------------------------- | ----------------------------- |
+| **Primary Focus** | Project foundation           | Quality tooling                 | Repo security/compliance      |
+| **Project State** | New (no existing code)       | New or existing                 | New or existing               |
+| **Outputs**       | Repo structure, CI/CD, docs  | Linting, tests, SAST config     | Branch rules, secrets config  |
+| **Triggers**      | Entry point for new projects | Auto-triggered or standalone    | Use after structure exists    |
+
+### Invocation Context
+
+- **Greenfield projects**: Auto-triggered by greenfield-baseline
+- **Brownfield projects**: Invoke directly with brownfield approach
+- **Existing repos**: Invoke directly for quality tooling audit/addition
+
+### Do NOT Use This Skill When
+
+- Starting a brand new project (use greenfield-baseline, which triggers this skill)
+- Only need repo security/compliance (use repo-best-practices-bootstrap)
+- Quality tooling already exists and passes (no changes needed)
 
 ## When to Use
 

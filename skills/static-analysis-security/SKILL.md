@@ -1,6 +1,9 @@
 ---
 name: static-analysis-security
 description: Use when implementing or configuring static analysis for security, including SAST tools, security linting, secrets detection, and vulnerability threshold management. Covers tool selection, CI integration, IDE setup, and suppression policies.
+metadata:
+  type: Quality
+  priority: P1
 ---
 
 # Static Analysis Security
@@ -11,6 +14,32 @@ description: Use when implementing or configuring static analysis for security, 
 Complements manual code review with consistent, repeatable security checks.
 
 **REQUIRED:** superpowers:verification-before-completion
+
+## Security Skills Decision Matrix
+
+Use this matrix to select the appropriate security skill:
+
+| If You Need To...                                              | Use This Skill                      |
+| -------------------------------------------------------------- | ----------------------------------- |
+| Define org-wide security policies and governance               | security-processes                  |
+| Set up SAST tools, secrets detection, or security linting      | **static-analysis-security** (this) |
+| Configure CI/CD quality gates including security scan blocking | quality-gate-enforcement            |
+
+### Skill Scope Comparison
+
+| Aspect             | security-processes              | static-analysis-security        | quality-gate-enforcement        |
+| ------------------ | ------------------------------- | ------------------------------- | ------------------------------- |
+| **Primary Focus**  | Governance & policy             | Tool configuration              | Pipeline enforcement            |
+| **Scope**          | Organization-wide               | Project-level                   | Pipeline-level                  |
+| **Outputs**        | Policies, SLAs, exception rules | Tool configs, suppression rules | Gate thresholds, blocking rules |
+| **When to Invoke** | Defining security standards     | Setting up scanning             | Configuring CI/CD               |
+| **Relationship**   | Orchestrates other skills       | Implements SAST portion         | Enforces as gates               |
+
+### Do NOT Use This Skill When
+
+- Defining organizational security policies (use security-processes)
+- Configuring CI/CD pipeline blocking rules (use quality-gate-enforcement)
+- Tool configurations already exist and need enforcement (use quality-gate-enforcement)
 
 ## When to Use
 

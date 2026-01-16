@@ -1,6 +1,9 @@
 ---
 name: greenfield-baseline
 description: Use when starting a new project from scratch to establish proper foundation with quality gates, repository structure, CI/CD, and development standards before any feature work begins.
+metadata:
+  type: Platform
+  priority: P2
 ---
 
 # Greenfield Baseline
@@ -13,6 +16,41 @@ baseline infrastructure: quality gates, repository structure, CI/CD pipeline, an
 standards that prevent technical debt from day one.
 
 **REQUIRED:** superpowers:verification-before-completion, superpowers:test-driven-development
+
+## Bootstrapping Skills Decision Matrix
+
+Use this matrix to select the appropriate bootstrapping skill:
+
+| If You Need To...                                            | Use This Skill                  |
+| ------------------------------------------------------------ | ------------------------------- |
+| Start a new project from scratch                             | **greenfield-baseline** (this)  |
+| Add/audit quality tooling (linting, tests, SAST)             | automated-standards-enforcement |
+| Add/audit repo security (branch protection, secret scanning) | repo-best-practices-bootstrap   |
+
+### Skill Scope Comparison
+
+| Aspect            | greenfield-baseline          | automated-standards-enforcement  | repo-best-practices-bootstrap |
+| ----------------- | ---------------------------- | -------------------------------- | ----------------------------- |
+| **Primary Focus** | Project foundation           | Quality tooling                  | Repo security/compliance      |
+| **Project State** | New (no existing code)       | New or existing                  | New or existing               |
+| **Outputs**       | Repo structure, CI/CD, docs  | Linting, tests, SAST config      | Branch rules, secrets config  |
+| **Triggers**      | Entry point for new projects | Triggered by greenfield-baseline | Use after structure exists    |
+
+### Invocation Order for New Projects
+
+```text
+1. greenfield-baseline         (establish project structure)
+   ├── automated-standards-enforcement (quality tooling - auto-triggered)
+   └── repo-best-practices-bootstrap   (security config - invoke after)
+2. walking-skeleton-delivery   (E2E validation - invoke after baseline)
+```
+
+### Do NOT Use This Skill When
+
+- Project has existing code or structure (this is brownfield - use automated-standards-enforcement
+  with brownfield strategy)
+- Only need to add quality tooling (use automated-standards-enforcement directly)
+- Only need security/compliance audit (use repo-best-practices-bootstrap directly)
 
 ## When to Use
 

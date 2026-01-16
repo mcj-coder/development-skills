@@ -1,16 +1,70 @@
 ---
 name: testing-strategy-agnostic
 description: Use when defining, reviewing, or improving a testing strategy in any stack; focuses on layered testing, incremental enforcement, data safety, architecture enforcement, contract versioning, and observability.
+metadata:
+  type: Quality
+  priority: P1
 ---
 
 # Testing Strategy (Platform & Tooling Agnostic)
 
-## Intent
+## Overview
 
 Establish a pragmatic, layered testing strategy that maximises signal, supports incremental
 adoption, and ensures failures are diagnosable with minimal noise. Extend functional testing
 with **architecture testing** and **public API/contract governance** so solutions remain
 maintainable over time.
+
+## Testing Skills Decision Tree
+
+Use this decision tree to select the appropriate testing skill:
+
+```text
+Start Here
+    │
+    ├── Defining overall testing strategy?
+    │   └── YES → testing-strategy-agnostic (this skill)
+    │
+    ├── Using .NET?
+    │   │
+    │   ├── YES → testing-strategy-dotnet (for .NET conventions)
+    │   │         │
+    │   │         ├── Using .NET Aspire distributed apps?
+    │   │         │   └── YES → aspire-integration-testing
+    │   │         │
+    │   │         └── Need real database/queue/cache in tests?
+    │   │             └── YES → testcontainers-integration-tests
+    │   │
+    │   └── NO → Use this skill with language-specific tooling
+    │
+    └── Need architecture boundary testing?
+        └── YES → architecture-testing
+```
+
+### Testing Skills Comparison
+
+| Skill                            | Scope                     | When to Use                             |
+| -------------------------------- | ------------------------- | --------------------------------------- |
+| **testing-strategy-agnostic**    | Any stack                 | Defining overall strategy, principles   |
+| testing-strategy-dotnet          | .NET only                 | .NET-specific conventions and tooling   |
+| aspire-integration-testing       | .NET Aspire               | Distributed apps with multiple services |
+| testcontainers-integration-tests | Any stack with containers | Tests needing real infrastructure       |
+| architecture-testing             | Any stack                 | Enforcing architectural boundaries      |
+
+### Invocation Flow
+
+For a complete .NET testing implementation:
+
+1. **testing-strategy-agnostic** - Understand principles (if new to testing strategy)
+2. **testing-strategy-dotnet** - Apply .NET-specific conventions
+3. **testcontainers-integration-tests** OR **aspire-integration-testing** - For integration tests
+4. **architecture-testing** - For boundary enforcement
+
+### Do NOT Use This Skill When
+
+- You need .NET-specific tooling guidance (use testing-strategy-dotnet)
+- You're implementing Aspire-specific tests (use aspire-integration-testing)
+- You need container-based infrastructure for tests (use testcontainers-integration-tests)
 
 ## When to Use
 
