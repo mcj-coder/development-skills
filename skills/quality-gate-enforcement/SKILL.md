@@ -1,6 +1,9 @@
 ---
 name: quality-gate-enforcement
 description: Use when creating or modifying CI/CD pipelines to enforce quality gates (coverage thresholds, security scans, test requirements, performance benchmarks). Ensures code quality standards are automatically enforced before merge or deployment.
+metadata:
+  type: Quality
+  priority: P1
 ---
 
 # Quality Gate Enforcement
@@ -10,6 +13,32 @@ description: Use when creating or modifying CI/CD pipelines to enforce quality g
 **P1 Quality & Correctness** - Applies to all CI/CD pipelines. Quality gates are blocking by default.
 
 **REQUIRED:** superpowers:verification-before-completion, superpowers:test-driven-development
+
+## Security Skills Decision Matrix
+
+Use this matrix to select the appropriate security skill:
+
+| If You Need To...                                              | Use This Skill                      |
+| -------------------------------------------------------------- | ----------------------------------- |
+| Define org-wide security policies and governance               | security-processes                  |
+| Set up SAST tools, secrets detection, or security linting      | static-analysis-security            |
+| Configure CI/CD quality gates including security scan blocking | **quality-gate-enforcement** (this) |
+
+### Skill Scope Comparison
+
+| Aspect             | security-processes              | static-analysis-security        | quality-gate-enforcement        |
+| ------------------ | ------------------------------- | ------------------------------- | ------------------------------- |
+| **Primary Focus**  | Governance & policy             | Tool configuration              | Pipeline enforcement            |
+| **Scope**          | Organization-wide               | Project-level                   | Pipeline-level                  |
+| **Outputs**        | Policies, SLAs, exception rules | Tool configs, suppression rules | Gate thresholds, blocking rules |
+| **When to Invoke** | Defining security standards     | Setting up scanning             | Configuring CI/CD               |
+| **Relationship**   | Orchestrates other skills       | Implements SAST portion         | Enforces as gates               |
+
+### Do NOT Use This Skill When
+
+- Defining what policies should be enforced (use security-processes)
+- Selecting and configuring SAST tools (use static-analysis-security)
+- Setting up tool-specific suppression rules (use static-analysis-security)
 
 ## When to Use
 
