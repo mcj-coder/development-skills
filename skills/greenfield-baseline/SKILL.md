@@ -232,3 +232,126 @@ When baseline is established, provide:
 
 **Next step:** Apply walking-skeleton-delivery for E2E validation
 ```
+
+## Stack-Agnostic Baseline Path
+
+For projects where technology stack is not yet decided:
+
+### Minimum Viable Baseline (Any Stack)
+
+```bash
+# 1. Repository essentials
+mkdir -p src tests docs/adr
+touch README.md CONTRIBUTING.md .gitignore .editorconfig
+
+# 2. Basic .editorconfig (universal)
+cat > .editorconfig << 'EOF'
+root = true
+
+[*]
+indent_style = space
+indent_size = 4
+end_of_line = lf
+charset = utf-8
+trim_trailing_whitespace = true
+insert_final_newline = true
+EOF
+
+# 3. Minimal .gitignore
+cat > .gitignore << 'EOF'
+# IDE
+.idea/
+.vscode/
+*.swp
+
+# Build outputs
+/dist/
+/build/
+/out/
+
+# Dependencies
+node_modules/
+.venv/
+vendor/
+
+# Environment
+.env
+.env.local
+EOF
+
+# 4. README template
+cat > README.md << 'EOF'
+# Project Name
+
+## Overview
+[Brief description]
+
+## Getting Started
+[Setup instructions - to be completed when stack is chosen]
+
+## Development
+[Development workflow - to be completed]
+
+## License
+[License information]
+EOF
+```
+
+### Stack Selection ADR Template
+
+```markdown
+# ADR-0001: Technology Stack Selection
+
+## Status
+
+Proposed
+
+## Context
+
+Starting new project with requirements: [list requirements]
+
+## Decision
+
+We will use [stack] because:
+
+- [Reason 1]
+- [Reason 2]
+
+## Consequences
+
+- [Positive consequence]
+- [Trade-off to manage]
+```
+
+## Minimal Baseline for Prototypes
+
+For rapid prototyping where full baseline is overhead:
+
+### Prototype Baseline (< 1 week projects)
+
+| Item             | Full Baseline      | Prototype Baseline         |
+| ---------------- | ------------------ | -------------------------- |
+| README.md        | Comprehensive      | One-liner description      |
+| .gitignore       | Stack-specific     | Basic IDE/build ignores    |
+| Linting          | Full configuration | Language default only      |
+| CI/CD            | Full pipeline      | None (manual verification) |
+| Tests            | Full strategy      | Smoke tests only           |
+| Pre-commit hooks | Full suite         | None                       |
+| Documentation    | ADRs, guides       | README only                |
+
+### Prototype Checklist
+
+- [ ] README.md with project purpose
+- [ ] .gitignore for IDE and build artifacts
+- [ ] Single-command run capability
+- [ ] One smoke test proving core functionality
+- [ ] Time-boxed: Max 30 minutes on baseline
+
+### Promotion Path: Prototype → Production
+
+When prototype proves valuable:
+
+1. Apply full `greenfield-baseline` retroactively
+2. Add quality gates before any additional features
+3. Document learnings from prototype phase
+4. Treat as brownfield from this point

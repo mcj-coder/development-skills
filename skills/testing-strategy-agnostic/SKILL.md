@@ -154,3 +154,82 @@ Architecture tests enforce solution structure and prevent architectural drift.
 - Contract discipline: is the contract/public interface change intentional, versioned, and compatible?
 - Observability: are failures diagnosable without payload dumps?
 - Payload discipline: full payloads restricted to `Debug`/`Trace` only.
+
+---
+
+## Minimal Baseline Strategy Template
+
+For small repositories or MVP projects, use this streamlined testing strategy:
+
+### Small Repo Testing Strategy
+
+````markdown
+# Testing Strategy: [Project Name]
+
+## Scope
+
+[1-2 sentence project description]
+
+## Test Tiers
+
+### Unit Tests (Required)
+
+- **Coverage target**: 70% on business logic
+- **Focus**: Domain models, validators, pure functions
+- **Exclusions**: Controllers, database access, external integrations
+
+### Integration Tests (Required for APIs)
+
+- **Coverage**: All public API endpoints
+- **Approach**: In-memory database or TestContainers
+- **Focus**: Request/response contracts, error handling
+
+### E2E Tests (Optional for MVP)
+
+- **Scope**: Critical user journey only (e.g., signup → core action)
+- **Frequency**: Run on merge to main, not on every PR
+
+## Quality Gates
+
+| Gate                     | Threshold | Enforcement         |
+| ------------------------ | --------- | ------------------- |
+| Unit test pass           | 100%      | Block merge         |
+| Coverage (changed files) | 70%       | Block merge         |
+| Integration tests        | 100% pass | Block merge         |
+| E2E tests                | 100% pass | Block merge to main |
+
+## Execution
+
+```bash
+# Unit tests (fast, run on every commit)
+npm test -- --coverage
+
+# Integration tests (run on PR)
+npm run test:integration
+
+# E2E tests (run on merge to main)
+npm run test:e2e
+```
+````
+
+## Evidence Template
+
+When documenting test coverage:
+
+```markdown
+## Test Evidence
+
+- Unit tests: [X/Y passing] ([coverage report link])
+- Integration tests: [X/Y passing]
+- Changed files coverage: [X]%
+```
+
+### When to Upgrade from Minimal
+
+Upgrade to full strategy when ANY of these occur:
+
+- Team size exceeds 3 developers
+- More than 2 integration points (external APIs, databases)
+- Production incidents related to untested scenarios
+- Code complexity metrics indicate high cyclomatic complexity
+- Contract versioning becomes necessary
