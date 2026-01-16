@@ -3,6 +3,12 @@ name: dotnet-efcore-practices
 description: Standardise EF Core usage: isolate migrations in a dedicated project excluded from code coverage, and enforce attribute-linked dedicated type configuration classes.
 ---
 
+## Overview
+
+Standardise Entity Framework Core usage with dedicated migrations projects excluded from code
+coverage, attribute-linked configuration types for entities, and deterministic configuration
+discovery. This ensures clean separation between business logic and infrastructure scaffolding.
+
 ## Core
 
 ### When to use
@@ -246,3 +252,16 @@ Expected: File contains exclusion patterns for migrations path (e.g., `**/Migrat
 - [ ] xUnit repository tests use `IAsyncLifetime` for async setup/teardown
 - [ ] Configuration types exist in Persistence project (not in migrations)
 - [ ] Migration files are in dedicated `*.Persistence.Migrations` project only
+
+## Red Flags - STOP
+
+These statements indicate EF Core hygiene issues:
+
+| Thought                                    | Reality                                                            |
+| ------------------------------------------ | ------------------------------------------------------------------ |
+| "Migrations can stay in the main project"  | Isolate migrations in a dedicated project; they're scaffolding     |
+| "OnModelCreating is fine for all config"   | Use dedicated configuration types per entity; keep DbContext clean |
+| "Coverage should include migrations"       | Exclude migrations from coverage; they're generated infrastructure |
+| "Ad-hoc configuration is faster"           | Attribute-linked discovery ensures consistency; prevents drift     |
+| "In-memory database is enough for tests"   | Use TestContainers for realistic persistence testing when needed   |
+| "Reflection scanning order doesn't matter" | Ensure deterministic ordering; non-determinism causes subtle bugs  |

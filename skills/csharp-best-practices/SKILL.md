@@ -9,6 +9,13 @@ description: >-
 
 # C# Best Practices (Version-Aware Skill)
 
+## Overview
+
+Apply C# best practices appropriate to the project's effective language version. This skill
+detects the language/runtime configuration, prefers the newest supported features, and
+consults version-specific references progressively from C# 10 upward while respecting
+repository conventions.
+
 ## Intent
 
 Apply C# best practices appropriate to the project's **effective language version**.
@@ -141,3 +148,16 @@ If clarification is requested, record:
 - Do not enable preview features unless explicitly configured.
 - Do not upgrade SDK or TFM unless requested.
 - Avoid unrelated formatting changes and "style churn".
+
+## Red Flags - STOP
+
+These statements indicate misalignment with C# best practices:
+
+| Thought                                    | Reality                                                             |
+| ------------------------------------------ | ------------------------------------------------------------------- |
+| "Let's use C# 14 features everywhere"      | Match the project's effective language version; don't assume latest |
+| "Enable all analyzers globally"            | Optional analyzers need clarification; mass changes cause churn     |
+| "Preview features are fine for production" | Avoid preview unless explicitly configured and justified            |
+| "Upgrade the TFM while fixing this bug"    | Don't upgrade SDK/TFM unless explicitly requested                   |
+| "This code style is better"                | Avoid unrelated formatting changes; focus on the task at hand       |
+| "Apply the latest patterns to all code"    | Only modify touched code unless broader refactor is requested       |

@@ -295,6 +295,19 @@ npx lerna version
 npx lerna publish
 ```
 
+## Red Flags - STOP
+
+These statements indicate monorepo anti-patterns:
+
+| Thought                             | Reality                                                                   |
+| ----------------------------------- | ------------------------------------------------------------------------- |
+| "Everything in one repo is simpler" | Without proper tooling, monorepos become unmanageable; use orchestration  |
+| "We don't need affected detection"  | Full builds on every commit waste CI time exponentially; enable filtering |
+| "Caching isn't worth the setup"     | Remote caching can reduce build times by 70%+; invest in setup            |
+| "Packages can depend on anything"   | Unconstrained coupling kills build performance; define boundaries         |
+| "We'll optimise builds later"       | Build performance debt compounds quickly; configure pipelines early       |
+| "Task ordering doesn't matter"      | Missing dependencies cause flaky builds; explicitly define dependsOn      |
+
 ## Integration with Other Skills
 
 - **walking-skeleton-delivery**: Use monorepo structure for E2E skeleton across services

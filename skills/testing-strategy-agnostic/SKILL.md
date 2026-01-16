@@ -287,3 +287,16 @@ Upgrade to full strategy when ANY of these occur:
 - Production incidents related to untested scenarios
 - Code complexity metrics indicate high cyclomatic complexity
 - Contract versioning becomes necessary
+
+## Red Flags - STOP
+
+These statements indicate testing strategy anti-patterns:
+
+| Thought                             | Reality                                                                       |
+| ----------------------------------- | ----------------------------------------------------------------------------- |
+| "We'll add tests later"             | Untested code becomes untestable; test-first is non-negotiable                |
+| "E2E tests cover everything"        | E2E tests are slow and brittle; use the test pyramid                          |
+| "100% coverage means bug-free"      | Coverage measures execution, not correctness; focus on meaningful assertions  |
+| "Mocking everything is fine"        | Over-mocking hides integration failures; stub only external dependencies      |
+| "Architecture tests are overkill"   | Architectural drift is expensive to fix; enforce boundaries continuously      |
+| "Contract changes don't need tests" | Breaking changes break consumers; version explicitly and verify compatibility |

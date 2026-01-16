@@ -3,6 +3,12 @@ name: dotnet-specification-pattern
 description: Prefer Specification Pattern for query composition and domain selection logic; avoid generic Repository Pattern duplication of ORM semantics.
 ---
 
+## Overview
+
+Prefer the Specification Pattern over generic Repository Pattern for query composition and
+domain selection logic. Specifications define what to fetch while infrastructure decides how
+to execute, enabling composable, testable selection logic without exposing ORM details.
+
 ## Core
 
 ### When to use
@@ -164,3 +170,16 @@ var customers = await _repo.ListAsync(
 2. **Week 2**: Extract 3-5 most-used query patterns into specifications
 3. **Week 3**: Deprecate generic query methods (`GetAll()`, `Find()`)
 4. **Week 4**: Remove deprecated methods, enforce specs in code review
+
+## Red Flags - STOP
+
+These statements indicate specification pattern misuse:
+
+| Thought                                      | Reality                                                             |
+| -------------------------------------------- | ------------------------------------------------------------------- |
+| "Generic repository with GetAll() is fine"   | GetAll() duplicates ORM semantics; use specifications               |
+| "IQueryable in handlers is convenient"       | Keep IQueryable in infrastructure; expose specs to application      |
+| "Each query needs its own repository method" | Compose specifications instead; avoid method explosion              |
+| "Specifications add too much overhead"       | Named specs improve testability and reuse; worth the structure      |
+| "LINQ in handlers is more readable"          | Scattered LINQ causes duplication; named specs are self-documenting |
+| "N+1 queries are fine for now"               | Specs should include eager loading strategy; prevent N+1 upfront    |

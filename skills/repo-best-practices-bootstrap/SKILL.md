@@ -703,3 +703,16 @@ gh workflow view ci.yml
 # List configured workflows
 gh workflow list
 ```
+
+## Red Flags - STOP
+
+These statements indicate bootstrap anti-patterns:
+
+| Thought                             | Reality                                                                        |
+| ----------------------------------- | ------------------------------------------------------------------------------ |
+| "We'll add security later"          | Security debt compounds; configure branch protection and scanning from day one |
+| "Pre-commit hooks are enough"       | Hooks can be bypassed; CI/CD enforcement is mandatory                          |
+| "Secret scanning isn't needed yet"  | One leaked secret is one too many; enable scanning immediately                 |
+| "Documentation can wait"            | README and CONTRIBUTING attract contributors; invest early                     |
+| "Skip signed commits, it's complex" | Verified commits prevent impersonation; follow the playbook                    |
+| "We don't need all these checks"    | Document opt-outs with justification; don't silently skip                      |

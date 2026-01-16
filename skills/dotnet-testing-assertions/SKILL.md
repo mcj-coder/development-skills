@@ -3,6 +3,12 @@ name: dotnet-testing-assertions
 description: Standardise unit/integration test assertions on open-source libraries; prefer AwesomeAssertions over non-open-source alternatives.
 ---
 
+## Overview
+
+Standardise test assertions on open-source libraries, preferring AwesomeAssertions (the
+community fork of FluentAssertions) for fluent, readable assertions with better error
+messages. Enforce OSS license revalidation for all test dependencies.
+
 ## Core
 
 ### When to use
@@ -98,3 +104,16 @@ await action.Should().ThrowAsync<NotFoundException>();
 | `Assert.NotNull(obj)`            | `obj.Should().NotBeNull()`     | Chaining support      |
 | `Assert.Contains(item, list)`    | `list.Should().Contain(item)`  | Better error messages |
 | `Assert.Throws<T>(action)`       | `action.Should().Throw<T>()`   | Message assertions    |
+
+## Red Flags - STOP
+
+These statements indicate assertion anti-patterns:
+
+| Thought                               | Reality                                                      |
+| ------------------------------------- | ------------------------------------------------------------ |
+| "xUnit Assert is good enough"         | Fluent assertions provide better error messages and chaining |
+| "Any assertion library will do"       | Ensure OSS license compliance; verify before adopting        |
+| "Assert exact timestamps"             | Use BeCloseTo for time; exact matches are brittle            |
+| "Assert full object equality"         | Use BeEquivalentTo with exclusions; ignore generated fields  |
+| "Over-specify implementation details" | Assert behaviour and outcomes, not implementation            |
+| "Skip license verification"           | All test dependencies need OSS license revalidation          |

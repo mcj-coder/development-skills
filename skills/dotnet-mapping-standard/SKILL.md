@@ -3,6 +3,12 @@ name: dotnet-mapping-standard
 description: Standardise mapping (DTOs/contracts/persistence models) using source-generated mappers and explicit boundary conversions.
 ---
 
+## Overview
+
+Standardise mapping between DTOs, domain models, and persistence models using source-generated
+mappers. Mappings live at explicit boundaries (API, infrastructure) with deterministic,
+testable conversion paths and no runtime reflection magic.
+
 ## Core
 
 ### When to use
@@ -118,3 +124,16 @@ When reviewing mappers registered in DI:
 - [ ] Is injection for "testability only"?
   - **YES**: Reject - test static mappers directly
   - **NO**: Injection acceptable
+
+## Red Flags - STOP
+
+These statements indicate mapping anti-patterns:
+
+| Thought                                 | Reality                                                         |
+| --------------------------------------- | --------------------------------------------------------------- |
+| "AutoMapper conventions will handle it" | Explicit mapping prevents runtime surprises; be deliberate      |
+| "Mapping logic belongs in the entity"   | Keep entities clean; mappers handle boundary concerns           |
+| "Inject the mapper for testability"     | Pure mappers don't need DI; test static mappers directly        |
+| "Runtime reflection is fine"            | Source-generated mappers are faster and fail at compile time    |
+| "Implicit conversions are convenient"   | Explicit conversions make boundary crossings visible            |
+| "Round-trip tests aren't worth it"      | Round-trip tests catch subtle mapping bugs; always include them |

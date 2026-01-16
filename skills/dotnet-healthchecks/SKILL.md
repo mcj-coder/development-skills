@@ -3,6 +3,12 @@ name: dotnet-healthchecks
 description: Standardise health check implementation using the AspNetCore.Diagnostics.HealthChecks open-source ecosystem.
 ---
 
+## Overview
+
+Standardise health check implementation using the AspNetCore.Diagnostics.HealthChecks (Xabaril)
+open-source ecosystem. Prefer battle-tested packages over bespoke probes for liveness, readiness,
+and dependency health endpoints across databases, caches, message brokers, and external services.
+
 ## Core
 
 ### When to use
@@ -321,3 +327,16 @@ public class HealthCheckWithTestContainersTests : IAsyncLifetime
     }
 }
 ```
+
+## Red Flags - STOP
+
+These statements indicate health check anti-patterns:
+
+| Thought                              | Reality                                                        |
+| ------------------------------------ | -------------------------------------------------------------- |
+| "We'll write our own health checks"  | Use Xabaril packages; they're battle-tested for common deps    |
+| "Liveness should check the database" | Liveness checks process state only; database is for readiness  |
+| "One health endpoint is enough"      | Separate liveness from readiness; prevent unnecessary restarts |
+| "Health checks don't need tests"     | Test both unit (IHealthCheck) and integration (endpoints)      |
+| "Embed connection strings directly"  | Use configuration; avoid secrets in health check registration  |
+| "Any failure should restart the pod" | Readiness failures remove from LB; only liveness restarts      |

@@ -3,6 +3,12 @@ name: observability-logging-baseline
 description: Use when establishing observability foundations including structured logging, metrics, and distributed tracing using OpenTelemetry standards.
 ---
 
+## Overview
+
+Establish production-ready observability foundations using OpenTelemetry standards. Covers
+structured logging with message templates, RED/USE metrics, distributed tracing with W3C
+Trace Context, and correlation ID propagation across service boundaries.
+
 ## Core
 
 ### When to use
@@ -554,3 +560,16 @@ fi
 **Trace verification:**
 [paste trace ID and verification steps]
 ````
+
+## Red Flags - STOP
+
+These statements indicate observability anti-patterns:
+
+| Thought                                 | Reality                                            |
+| --------------------------------------- | -------------------------------------------------- |
+| "String interpolation is fine for logs" | Structured templates enable searching and alerting |
+| "Console.WriteLine works for now"       | Use proper logging with levels and enrichment      |
+| "Vendor SDK is easier"                  | OpenTelemetry provides portability; avoid lock-in  |
+| "Correlation IDs add complexity"        | IDs are essential for distributed debugging        |
+| "Log everything at Info level"          | Appropriate levels prevent noise and reduce costs  |
+| "Custom metric names are clearer"       | Semantic conventions enable dashboard portability  |

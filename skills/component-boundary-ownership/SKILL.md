@@ -5,6 +5,12 @@ description: Use when user decides repository organization, where functionality 
 
 # Component Boundary Ownership
 
+## Overview
+
+Determine macro-level repository organisation and component boundaries based on deployment
+independence, team ownership, coupling analysis, and reuse patterns. Delegates micro-level
+concerns (intra-component file layout) to scoped-colocation skill.
+
 Ensure clear ownership and minimal coupling when organizing repositories. Determines macro
 placement (which component owns what), delegates micro placement (file layout within
 components) to scoped-colocation.
