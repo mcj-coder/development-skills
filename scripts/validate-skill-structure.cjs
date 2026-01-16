@@ -119,13 +119,103 @@ function validateSkill(skillName) {
 }
 
 /**
- * Validate SKILL.md content
+ * Validate SKILL.md content (frontmatter and sections)
  * @param {string} skillName - Name of the skill
  * @param {string} content - Content of SKILL.md
  * @returns {ValidationError[]} Array of validation errors
  */
 function validateSkillContent(skillName, content) {
-  // TODO: Implement in subsequent tasks
+  /** @type {ValidationError[]} */
+  const errors = [];
+  const lines = content.split("\n");
+
+  // Parse frontmatter
+  const frontmatter = parseFrontmatter(content);
+
+  // Required frontmatter: name
+  if (!frontmatter.name) {
+    errors.push({
+      skill: skillName,
+      file: "SKILL.md",
+      message: "Missing required frontmatter field: name",
+      line: 1,
+    });
+  } else if (frontmatter.name !== skillName) {
+    errors.push({
+      skill: skillName,
+      file: "SKILL.md",
+      message: `Frontmatter 'name' (${frontmatter.name}) does not match directory name (${skillName})`,
+      line: frontmatter.nameLine,
+    });
+  }
+
+  // Required frontmatter: description
+  if (!frontmatter.description) {
+    errors.push({
+      skill: skillName,
+      file: "SKILL.md",
+      message: "Missing required frontmatter field: description",
+      line: 1,
+    });
+  }
+
+  // Validate required sections
+  errors.push(...validateRequiredSections(skillName, lines));
+
+  return errors;
+}
+
+/**
+ * Parse YAML frontmatter from markdown content
+ * @param {string} content - Markdown content
+ * @returns {{name?: string, nameLine?: number, description?: string, descriptionLine?: number}}
+ */
+function parseFrontmatter(content) {
+  const lines = content.split("\n");
+  const result = {};
+
+  if (lines[0] !== "---") {
+    return result;
+  }
+
+  let endIndex = -1;
+  for (let i = 1; i < lines.length; i++) {
+    if (lines[i] === "---") {
+      endIndex = i;
+      break;
+    }
+  }
+
+  if (endIndex === -1) {
+    return result;
+  }
+
+  // Simple YAML parsing for name and description
+  for (let i = 1; i < endIndex; i++) {
+    const line = lines[i];
+    const nameMatch = line.match(/^name:\s*(.+)/);
+    if (nameMatch) {
+      result.name = nameMatch[1].trim();
+      result.nameLine = i + 1; // 1-indexed
+    }
+    const descMatch = line.match(/^description:\s*(.+)/);
+    if (descMatch) {
+      result.description = descMatch[1].trim();
+      result.descriptionLine = i + 1;
+    }
+  }
+
+  return result;
+}
+
+/**
+ * Validate required sections exist in SKILL.md
+ * @param {string} skillName - Name of the skill
+ * @param {string[]} lines - Lines of SKILL.md
+ * @returns {ValidationError[]} Array of validation errors
+ */
+function validateRequiredSections(skillName, lines) {
+  // TODO: Implement in next task
   return [];
 }
 
