@@ -42,6 +42,24 @@ jobs:
           find . -name '*.md' -not -path './node_modules/*' -not -path './.git/*' -not -path './.worktrees/*' | \
           xargs -n 1 npx markdown-link-check --config .markdown-link-check.json --quiet
 
+  skill-validation:
+    name: Skill Structure Validation
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Validate skill structure
+        run: npm run validate:skills
+
   danger:
     name: DangerJS PR Validation
     runs-on: ubuntu-latest
