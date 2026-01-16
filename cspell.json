@@ -244,6 +244,7 @@
     "autobuild",
     "Autobuild",
     "choco",
+    "clearsign",
     "Checkmarx",
     "gosec",
     "misconfigures",
