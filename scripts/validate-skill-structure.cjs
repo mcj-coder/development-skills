@@ -215,8 +215,28 @@ function parseFrontmatter(content) {
  * @returns {ValidationError[]} Array of validation errors
  */
 function validateRequiredSections(skillName, lines) {
-  // TODO: Implement in next task
-  return [];
+  /** @type {ValidationError[]} */
+  const errors = [];
+
+  // Required sections per SKILL-FORMAT.md
+  const requiredSections = [
+    { pattern: /^## Overview$/i, name: "Overview" },
+    { pattern: /^## When to Use$/i, name: "When to Use" },
+    { pattern: /^## Core Workflow$/i, name: "Core Workflow" },
+  ];
+
+  for (const section of requiredSections) {
+    const lineIndex = lines.findIndex((line) => section.pattern.test(line));
+    if (lineIndex === -1) {
+      errors.push({
+        skill: skillName,
+        file: "SKILL.md",
+        message: `Missing required section: ## ${section.name}`,
+      });
+    }
+  }
+
+  return errors;
 }
 
 main();
