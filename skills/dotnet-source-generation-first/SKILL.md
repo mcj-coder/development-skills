@@ -3,6 +3,13 @@ name: dotnet-source-generation-first
 description: Prefer compile-time source generation over runtime evaluation for repetitive cross-cutting concerns (mapping, logging, regex, etc.).
 ---
 
+## Overview
+
+Prefer compile-time source generation over runtime reflection for repetitive cross-cutting
+concerns like mapping, serialization, regex, and logging. Source generation provides
+determinism, compile-time verification, reduced runtime overhead, and better AOT/trimming
+compatibility.
+
 ## Core
 
 ### When to use
@@ -110,3 +117,16 @@ Reflection/runtime codegen may be used when:
   - a justification,
   - a benchmark or measurable rationale,
   - confirmation that no suitable OSS source-gen alternative exists.
+
+## Red Flags - STOP
+
+These statements indicate source generation bypass:
+
+| Thought                            | Reality                                                  |
+| ---------------------------------- | -------------------------------------------------------- |
+| "Reflection is more flexible"      | Source gen handles most cases; flexibility rarely needed |
+| "Startup cost doesn't matter"      | AOT/trimming require source gen; plan for it early       |
+| "We'll optimize later"             | Retrofitting source gen is expensive; start with it      |
+| "No source-gen library exists"     | Check thoroughly; ecosystem is rapidly growing           |
+| "It's just a few operations"       | Hot paths compound; measure before dismissing            |
+| "Dynamic types require reflection" | True for plugins; false for most business code           |

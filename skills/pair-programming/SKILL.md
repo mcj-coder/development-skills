@@ -1527,6 +1527,19 @@ gh issue edit N --add-label "pair-programming:handoff"
 gh issue edit N --remove-label "pair-programming:active"
 ```
 
+## Red Flags - STOP
+
+These statements indicate pair programming anti-patterns:
+
+| Thought                                       | Reality                                                              |
+| --------------------------------------------- | -------------------------------------------------------------------- |
+| "Let me just push this quickly"               | All work must be issue-linked and reviewed; no shortcuts             |
+| "Skip automated reviews, human will catch it" | Automated reviews catch issues cheaply; always run them first        |
+| "Parallel work is too complex"                | Worktrees enable true parallel execution; invest in setup            |
+| "Human needs to approve every step"           | That's collaboration, not supervision; define clear checkpoints      |
+| "I'll escalate after I try everything"        | Escalate early when blocked; don't waste time on dead ends           |
+| "Agent should handle everything autonomously" | Human oversight ensures alignment; balance autonomy with checkpoints |
+
 ## See Also
 
 - `docs/references/subagent-coordination-patterns.md` - Patterns for parallel subagent work

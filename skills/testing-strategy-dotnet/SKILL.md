@@ -5,6 +5,13 @@ description: Use when implementing or reviewing a .NET testing approach with uni
 
 # Testing Strategy (.NET Opinionated)
 
+## Overview
+
+Define a consistent .NET testing architecture with clear project naming conventions, tiered
+testing (unit, system, E2E), BDD practices using Reqnroll, architecture enforcement with
+NetArchTest, and public API governance for published libraries. Enforces observability
+criteria and payload logging constraints.
+
 ## Intent
 
 Define a consistent .NET testing architecture with:
@@ -604,3 +611,16 @@ stages:
     path: diagnostics/
     retention-days: 7
 ```
+
+## Red Flags - STOP
+
+These statements indicate testing strategy misalignment:
+
+| Thought                            | Reality                                                      |
+| ---------------------------------- | ------------------------------------------------------------ |
+| "Unit tests are enough"            | System and E2E tests catch integration issues; use all tiers |
+| "Mock everything"                  | Mock external dependencies only; real wiring catches bugs    |
+| "Architecture tests are overkill"  | Prevent structural drift; enforce layering from the start    |
+| "API compatibility doesn't matter" | Breaking changes hurt consumers; track public surface        |
+| "Payload logging at Info is fine"  | Full payloads at Debug/Trace only; avoid noise               |
+| "Skip observability assertions"    | Verify correlation IDs and structured logs in tests          |

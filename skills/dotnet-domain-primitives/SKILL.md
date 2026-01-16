@@ -3,6 +3,13 @@ name: dotnet-domain-primitives
 description: Prevent primitive obsession by enforcing StronglyTypedIds and value objects in domain models and at boundaries.
 ---
 
+## Overview
+
+Prevent primitive obsession by enforcing strongly typed identifiers and value objects in
+domain models. Conversions to/from primitives are permitted only at explicit boundaries
+(persistence, transport, serialization), ensuring type safety and validation throughout
+the domain layer.
+
 ## Core
 
 ### When to use
@@ -194,3 +201,16 @@ public class CustomerMapper
 - New entities/aggregates use typed IDs.
 - No domain-layer primitive IDs added.
 - Boundary conversion is explicit and covered by unit tests.
+
+## Red Flags - STOP
+
+These statements indicate primitive obsession patterns:
+
+| Thought                               | Reality                                                       |
+| ------------------------------------- | ------------------------------------------------------------- |
+| "Guid is fine for identifiers"        | Primitive IDs lose type safety; use strongly typed IDs        |
+| "String is good enough for email"     | Value objects centralise validation; prevent invalid data     |
+| "Implicit conversions are convenient" | Implicit conversions obscure boundaries; be explicit          |
+| "Domain types add too much ceremony"  | Source generators eliminate boilerplate; use them             |
+| "We'll add types later"               | Retrofitting types is expensive; start with them              |
+| "Validation can happen anywhere"      | Centralise validation in domain types; single source of truth |

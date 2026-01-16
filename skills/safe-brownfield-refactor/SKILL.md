@@ -290,3 +290,16 @@ Before each refactoring step, complete this checklist:
 4. **Add new tests** - Test improved behaviour
 5. **Remove duplication** - Clean up temporary scaffolding
 6. **Update documentation** - Reflect new structure
+
+## Red Flags - STOP
+
+These statements indicate brownfield refactoring anti-patterns:
+
+| Thought                               | Reality                                                                     |
+| ------------------------------------- | --------------------------------------------------------------------------- |
+| "Let's rewrite the whole thing"       | Big bang rewrites fail more often than succeed; use strangler fig           |
+| "Tests can wait until after cleanup"  | Characterisation tests BEFORE any changes; they're your safety net          |
+| "This refactor is straightforward"    | Legacy code has hidden complexity; triple your estimate                     |
+| "Tests pass, so we're safe"           | Production has scenarios tests don't cover; deploy incrementally            |
+| "Just one more thing while I'm here"  | Scope creep kills refactors; one logical change at a time                   |
+| "We understand this code well enough" | Document assumptions with characterisation tests; trust evidence not memory |

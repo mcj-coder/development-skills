@@ -3,6 +3,12 @@ name: innersource-governance-bootstrap
 description: Use when establishing InnerSource governance in a repository to enable internal open-source collaboration patterns, standardised contribution workflows, and community-driven development practices within an organisation.
 ---
 
+## Overview
+
+Establish InnerSource governance in repositories to enable internal open-source collaboration
+patterns. Provides standardised contribution workflows, community documentation templates,
+ownership models, and transparent decision-making processes within an organisation.
+
 ## Core
 
 ### When to use
@@ -325,3 +331,16 @@ fi
   run: ./scripts/innersource-compliance-check.sh
   continue-on-error: false
 ```
+
+## Red Flags - STOP
+
+These statements indicate InnerSource governance gaps:
+
+| Thought                            | Reality                                                            |
+| ---------------------------------- | ------------------------------------------------------------------ |
+| "CONTRIBUTING.md can wait"         | Contributors need guidance from day one; add it early              |
+| "We know who owns what"            | Undocumented ownership causes confusion; use CODEOWNERS            |
+| "Informal decisions work fine"     | Transparent processes build trust; document in GOVERNANCE.md       |
+| "Anyone can review PRs"            | Define CODEOWNERS for accountability; enforce in branch protection |
+| "We'll onboard contributors later" | Early documentation attracts contributors; invest upfront          |
+| "Code of Conduct is optional"      | Expected behaviour must be explicit; adopt a standard              |

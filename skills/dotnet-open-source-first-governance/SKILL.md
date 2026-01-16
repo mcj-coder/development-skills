@@ -3,6 +3,12 @@ name: dotnet-open-source-first-governance
 description: Enforce open-source-first dependency selection with mandatory live license revalidation (web search) and review-time gating.
 ---
 
+## Overview
+
+Enforce open-source-first dependency selection with mandatory live license revalidation at
+review time. Historical OSS status is insufficient; verify current licensing via web search
+for every dependency selection, upgrade, or review to catch recent licensing changes.
+
 ## Core
 
 ### When to use
@@ -71,3 +77,16 @@ When encountering a new library, an upgrade, or a dependency review, the agent m
 1. perform a live web search for current licensing,
 2. flag ambiguity or recent changes,
 3. mark the dependency **unapproved** if licensing cannot be verified confidently.
+
+## Red Flags - STOP
+
+These statements indicate license governance bypass:
+
+| Thought                                | Reality                                               |
+| -------------------------------------- | ----------------------------------------------------- |
+| "It was open source last time"         | Licenses change; revalidate with every upgrade        |
+| "The package name sounds open source"  | Verify the LICENSE file directly; names mislead       |
+| "Transitive deps don't matter"         | Critical transitives need license checks too          |
+| "We'll check licensing before release" | Check at PR time; late discovery is costly            |
+| "Source-available is the same"         | Source-available often has restrictions; verify terms |
+| "Copyleft is fine for internal tools"  | Distribution models matter; understand obligations    |

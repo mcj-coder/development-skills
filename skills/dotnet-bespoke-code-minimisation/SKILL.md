@@ -3,6 +3,12 @@ name: dotnet-bespoke-code-minimisation
 description: Bias against bespoke scripts/frameworks by default; prefer mature open-source tools and composable libraries with clear ownership.
 ---
 
+## Overview
+
+Bias against bespoke internal implementations by preferring mature open-source tools and
+composable libraries. When custom code is unavoidable, enforce justification rubrics that
+require explicit rationale, ownership, versioning, testing, and security considerations.
+
 ## Core
 
 ### When to use
@@ -184,3 +190,16 @@ Evidence required in PR:
       zero-dependency model"
 - [ ] Tests: Core mappings covered
 - [ ] Documentation: Mapping conventions explained (if non-obvious)
+
+## Red Flags - STOP
+
+These statements indicate bypass of bespoke minimisation principles:
+
+| Thought                             | Reality                                                         |
+| ----------------------------------- | --------------------------------------------------------------- |
+| "We need full control over this"    | OSS libraries offer customisation; evaluate before rejecting    |
+| "OSS is too heavy for our needs"    | Measure actual overhead; most libraries are well-optimised      |
+| "We're special, our case is unique" | Most "unique" cases have OSS solutions; search thoroughly       |
+| "I can write this in a day"         | Maintenance cost exceeds initial development; OSS shifts burden |
+| "External dependencies are risky"   | Well-maintained OSS with active communities reduces risk        |
+| "We'll document it later"           | Undocumented internal code becomes unmaintainable quickly       |

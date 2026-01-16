@@ -9,6 +9,13 @@ description: >
 
 # .NET best practices (version-aware, progressive-loading)
 
+## Overview
+
+Apply modern .NET platform capabilities and recommended engineering practices across the full
+lifecycle of a .NET codebase. This skill covers runtime/framework choices, SDK/tooling,
+packaging, deployment strategy, and version-aware best practices for implementation,
+maintenance, and code review scenarios.
+
 ## Purpose
 
 Apply modern .NET platform capabilities and recommended engineering practices across the
@@ -120,3 +127,16 @@ When used during code review, apply this skill to evaluate:
 - Cumulative upgrade checklist when crossing multiple majors.
 - Risks/breaking-change checklist and required test gates (contract/perf/integration).
 - Repository standards updates (packaging, analyzers, SDK pinning, CI enforcement).
+
+## Red Flags - STOP
+
+These statements indicate misalignment with .NET best practices:
+
+| Thought                                     | Reality                                                                   |
+| ------------------------------------------- | ------------------------------------------------------------------------- |
+| "We'll stay on .NET 6 indefinitely"         | LTS versions have end-of-life dates; plan upgrades proactively            |
+| "Sync-over-async is fine for this case"     | Async should be end-to-end; sync-over-async causes thread pool starvation |
+| "We don't need analyzers"                   | Analyzers catch issues at compile time; enable and address warnings       |
+| "NuGet package versions in csproj are fine" | Use Central Package Management for consistency and security               |
+| "Security patches can wait"                 | Runtime security updates need defined SLAs; treat as routine work         |
+| "AOT/trimming will just work"               | Validate compatibility before enabling; many patterns are incompatible    |

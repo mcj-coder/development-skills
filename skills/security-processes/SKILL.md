@@ -307,3 +307,16 @@ trufflehog filesystem . --only-verified
 # Generate SBOM locally
 syft . -o spdx-json > sbom.json
 ```
+
+## Red Flags - STOP
+
+These statements indicate security process anti-patterns:
+
+| Thought                               | Reality                                                                    |
+| ------------------------------------- | -------------------------------------------------------------------------- |
+| "We'll add security scanning later"   | Vulnerabilities compound; integrate scanning from the start                |
+| "Low severity can be ignored"         | Low findings accumulate into real risk; track and remediate systematically |
+| "Exceptions don't need documentation" | Undocumented exceptions become permanent; require justification and expiry |
+| "SBOM isn't relevant for us"          | Supply chain attacks are real; generate and sign SBOMs for releases        |
+| "Secret scanning has false positives" | Tune patterns rather than disable; verified-only detection reduces noise   |
+| "One security check is enough"        | Defence in depth requires layers; combine SCA, SAST, secrets, and SBOM     |
