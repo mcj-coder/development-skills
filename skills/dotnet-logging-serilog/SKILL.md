@@ -94,3 +94,91 @@ public sealed class CustomerService
 - If application code references `Serilog.*` types, require refactor to `ILogger` unless there is a strong justification.
 - If host startup uses Serilog, verify startup failures are logged as **Critical** with exception details.
 - Verify critical configuration is applied early enough to capture exceptions thrown during host building.
+
+## Verification: fail-fast startup test
+
+### Fail-fast startup test example
+
+Use this test pattern to verify logging is configured correctly and startup failures are captured:
+
+```csharp
+[Fact]
+public async Task Host_StartupWithLoggingError_LogsExceptionAseCritical()
+{
+    // Arrange: Create a host with intentionally broken configuration
+    var logs = new List<LogEvent>();
+
+    var builder = Host.CreateDefaultBuilder()
+        .ConfigureServices(services =>
+        {
+            services.AddSingleton(new BrokenDependency()); // Throws during startup
+        })
+        .UseSerilog((context, config) =>
+        {
+            config
+                .MinimumLevel.Debug()
+                .WriteTo.Sink(new CollectingSink(logs));
+        });
+
+    // Act & Assert: Verify exception is logged as Critical before propagating
+    var ex = await Assert.ThrowsAsync<InvalidOperationException>(
+        () => builder.Build().RunAsync());
+
+    // Verify Critical-level log entry exists
+    var criticalLog = logs.FirstOrDefault(le => le.Level == LogEventLevel.Fatal);
+    Assert.NotNull(criticalLog);
+    Assert.Contains(typeof(InvalidOperationException).Name, criticalLog.MessageTemplate.Text);
+}
+```
+
+### Serilog configuration verification pattern
+
+Verify configuration at startup using these checks:
+
+```csharp
+// 1. Verify bootstrap logger captures early startup failures
+var logger = new LoggerConfiguration()
+    .MinimumLevel.Debug()
+    .WriteTo.Console()
+    .CreateBootstrapLogger();
+
+try
+{
+    var host = Host.CreateDefaultBuilder()
+        .UseSerilog(logger)
+        .ConfigureServices(/* ... */)
+        .Build();
+
+    await host.RunAsync();
+}
+catch (Exception ex)
+{
+    logger.Fatal(ex, "Host terminated unexpectedly");
+    throw;
+}
+
+// 2. Verify Application Insights integration (if applicable)
+var builder = Host.CreateDefaultBuilder()
+    .ConfigureServices(services =>
+    {
+        services.AddApplicationInsightsTelemetry();
+    })
+    .UseSerilog((context, config) =>
+    {
+        var instrumentationKey = context.Configuration["ApplicationInsights:InstrumentationKey"];
+        config
+            .MinimumLevel.Debug()
+            .WriteTo.ApplicationInsights(
+                new TelemetryClient(new TelemetryConfiguration(instrumentationKey)),
+                TelemetryConverter.Traces);
+    });
+```
+
+### Test checklist for startup logging
+
+- [ ] Bootstrap logger captures exceptions before host configuration completes
+- [ ] Startup exceptions are logged at **Critical** (or **Fatal**) severity
+- [ ] Exception details (stack trace, message) are included in the log
+- [ ] Correlation/trace IDs are present if available
+- [ ] Logs flow to Application Insights (if configured)
+- [ ] No startup exceptions are silently swallowed

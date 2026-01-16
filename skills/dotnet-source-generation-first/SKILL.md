@@ -49,6 +49,61 @@ description: Prefer compile-time source generation over runtime evaluation for r
 - Benchmark representative payload sizes and typical request flows.
 - Focus on startup time, allocations, and throughput for mapping/serialization-heavy systems.
 
+### Minimal benchmark template
+
+When evaluating reflection vs source-generated approaches, use this template:
+
+```csharp
+[MemoryDiagnoser]
+public class MappingBenchmark
+{
+    private MySourceEntity _source = default!;
+    private Mapper _mapper = default!;
+
+    [GlobalSetup]
+    public void Setup() => _mapper = new Mapper();
+
+    [Benchmark]
+    public MyTargetDto Reflection_MapViaReflection() => MapViaReflection(_source);
+
+    [Benchmark]
+    public MyTargetDto SourceGenerated_MapViaSourceGen() => _mapper.Map(_source);
+}
+```
+
+**Focus areas:**
+
+- Startup time (cold startup with reflection vs AOT-friendly source gen)
+- Allocations per operation
+- Throughput (operations/sec) for hot paths
+- Comparison baseline: measure reflection first, then source-gen
+
+### Acceptable exceptions to source-generation-first
+
+Reflection/runtime codegen may be used when:
+
+1. **Ad-hoc/one-time operations**: Not part of hot paths; cost is negligible.
+   - Example: Loading configuration at startup (once per app lifetime)
+   - Justification: Overhead is paid once, not per-request
+
+2. **Highly dynamic scenarios**: Type information unavailable at compile-time.
+   - Example: Plugin systems where types loaded at runtime from external assemblies
+   - Justification: No source-gen alternative exists; runtime introspection necessary
+
+3. **Backwards compatibility constraints**: Source-gen requires breaking API changes.
+   - Example: Maintaining legacy API surface while migrating to source-gen
+   - Justification: Breaking change risk outweighs performance benefit; schedule migration
+
+4. **Prototype/experimental phases**: Validation before investing in source-gen.
+   - Example: Proof-of-concept that reflection will later be replaced
+   - Justification: Speed of iteration > performance; document migration plan
+
+**Required for exceptions:**
+
+- Explicit PR justification
+- Clear scope boundary (not used in hot paths)
+- Migration path documented (if temporary)
+
 ## Load: enforcement
 
 - Any PR adding reflection-based mapping or runtime codegen must include:
