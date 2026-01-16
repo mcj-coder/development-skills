@@ -265,7 +265,10 @@
     "creatordate",
     "softprops",
     "READMEEOF",
-    "CIEOF"
+    "CIEOF",
+    "conftest",
+    "Exploitability",
+    "Requestor"
   ],
   "ignorePaths": ["node_modules/**", "package-lock.json"]
 }

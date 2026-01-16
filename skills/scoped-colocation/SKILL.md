@@ -263,3 +263,278 @@ Before declaring structure complete:
 - [ ] Shared code is genuinely shared (3+ consumers)
 - [ ] No premature extraction to utils/helpers
 - [ ] Directory structure reflects feature boundaries
+
+## Sample Directory Layouts
+
+### Full-Stack Application (React + Node.js)
+
+```text
+project/
+├── src/
+│   ├── features/
+│   │   ├── auth/
+│   │   │   ├── components/
+│   │   │   │   ├── LoginForm.tsx
+│   │   │   │   ├── LoginForm.test.tsx
+│   │   │   │   └── LoginForm.module.css
+│   │   │   ├── hooks/
+│   │   │   │   ├── useAuth.ts
+│   │   │   │   └── useAuth.test.ts
+│   │   │   ├── api/
+│   │   │   │   ├── authApi.ts
+│   │   │   │   └── authApi.test.ts
+│   │   │   └── index.ts           # Public exports
+│   │   │
+│   │   ├── orders/
+│   │   │   ├── components/
+│   │   │   │   ├── OrderList.tsx
+│   │   │   │   ├── OrderList.test.tsx
+│   │   │   │   ├── OrderDetail.tsx
+│   │   │   │   └── OrderDetail.test.tsx
+│   │   │   ├── hooks/
+│   │   │   │   ├── useOrders.ts
+│   │   │   │   └── useOrders.test.ts
+│   │   │   ├── types/
+│   │   │   │   └── order.types.ts
+│   │   │   └── index.ts
+│   │   │
+│   │   └── dashboard/
+│   │       ├── Dashboard.tsx
+│   │       ├── Dashboard.test.tsx
+│   │       └── widgets/
+│   │           ├── SalesWidget.tsx
+│   │           └── SalesWidget.test.tsx
+│   │
+│   ├── shared/                     # Only truly shared (3+ consumers)
+│   │   ├── components/
+│   │   │   ├── Button.tsx
+│   │   │   ├── Button.test.tsx
+│   │   │   └── Modal.tsx
+│   │   └── utils/
+│   │       ├── formatDate.ts
+│   │       └── formatDate.test.ts
+│   │
+│   └── infrastructure/             # Framework/cross-cutting
+│       ├── http/
+│       │   └── apiClient.ts
+│       └── store/
+│           └── configureStore.ts
+│
+└── package.json
+```
+
+### .NET Clean Architecture
+
+```text
+src/
+├── Domain/                         # Core business logic
+│   ├── Orders/
+│   │   ├── Order.cs
+│   │   ├── OrderItem.cs
+│   │   └── IOrderRepository.cs
+│   └── Customers/
+│       ├── Customer.cs
+│       └── ICustomerRepository.cs
+│
+├── Application/                    # Use cases
+│   ├── Orders/
+│   │   ├── Commands/
+│   │   │   ├── CreateOrder/
+│   │   │   │   ├── CreateOrderCommand.cs
+│   │   │   │   ├── CreateOrderHandler.cs
+│   │   │   │   └── CreateOrderValidator.cs
+│   │   │   └── CancelOrder/
+│   │   │       ├── CancelOrderCommand.cs
+│   │   │       └── CancelOrderHandler.cs
+│   │   └── Queries/
+│   │       └── GetOrder/
+│   │           ├── GetOrderQuery.cs
+│   │           └── GetOrderHandler.cs
+│   └── Common/
+│       └── Behaviors/              # Cross-cutting (logging, validation)
+│
+├── Infrastructure/                 # External concerns
+│   ├── Persistence/
+│   │   ├── Orders/
+│   │   │   └── OrderRepository.cs
+│   │   └── AppDbContext.cs
+│   └── ExternalServices/
+│
+└── WebApi/                         # Presentation
+    ├── Controllers/
+    │   ├── OrdersController.cs
+    │   └── CustomersController.cs
+    └── Program.cs
+
+tests/
+├── Domain.Tests/
+│   └── Orders/
+│       └── OrderTests.cs
+├── Application.Tests/
+│   └── Orders/
+│       └── CreateOrderHandlerTests.cs
+└── WebApi.Tests/
+    └── Orders/
+        └── OrdersControllerTests.cs
+```
+
+### Python FastAPI
+
+```text
+src/
+├── features/
+│   ├── auth/
+│   │   ├── __init__.py
+│   │   ├── router.py
+│   │   ├── service.py
+│   │   ├── models.py
+│   │   ├── schemas.py
+│   │   └── test_auth.py
+│   │
+│   ├── orders/
+│   │   ├── __init__.py
+│   │   ├── router.py
+│   │   ├── service.py
+│   │   ├── models.py
+│   │   ├── schemas.py
+│   │   └── test_orders.py
+│   │
+│   └── customers/
+│       ├── __init__.py
+│       ├── router.py
+│       └── test_customers.py
+│
+├── shared/
+│   ├── __init__.py
+│   ├── database.py
+│   └── utils/
+│       ├── __init__.py
+│       └── date_utils.py
+│
+├── main.py
+└── conftest.py                     # Shared test fixtures
+```
+
+## Colocation Audit Checklist
+
+Use this checklist to audit existing codebases:
+
+### Phase 1: Discovery
+
+- [ ] List all top-level directories
+- [ ] Identify if organized by technical layer or feature
+- [ ] Count features/domains in the codebase
+- [ ] Identify test location pattern
+
+### Phase 2: Analysis
+
+For each feature identified:
+
+| Feature | Code Location     | Test Location   | Colocated? | Action       |
+| ------- | ----------------- | --------------- | ---------- | ------------ |
+| Auth    | src/features/auth | tests/auth      | ✓ Yes      | None         |
+| Orders  | src/services/     | tests/services/ | ✗ No       | Move         |
+| Utils   | src/utils/        | tests/utils/    | ⚠ Check    | Review usage |
+
+### Phase 3: Shared Code Audit
+
+For each file in `shared/`, `common/`, `utils/`:
+
+| File            | Used By               | Count | Action          |
+| --------------- | --------------------- | ----- | --------------- |
+| formatDate.ts   | auth, orders, reports | 3     | Keep in shared  |
+| orderHelpers.ts | orders only           | 1     | Move to orders/ |
+| constants.ts    | auth, orders          | 2     | Keep but watch  |
+
+### Phase 4: Refactoring Priority
+
+Based on analysis, prioritize:
+
+1. **High**: Single-feature code in shared directories
+2. **Medium**: Tests not colocated with implementation
+3. **Low**: Assets (styles, fixtures) not colocated
+
+### Audit Script
+
+```bash
+#!/bin/bash
+# colocation-audit.sh
+
+echo "=== Colocation Audit ==="
+echo ""
+
+# Check for common anti-patterns
+echo "## Anti-pattern Detection"
+
+# Separate test directories
+if [ -d "tests" ] || [ -d "__tests__" ]; then
+  TEST_COUNT=$(find . -name "*.test.*" -o -name "*_test.*" | wc -l)
+  COLOCATED=$(find src -name "*.test.*" -o -name "*_test.*" 2>/dev/null | wc -l)
+  echo "Total tests: $TEST_COUNT"
+  echo "Colocated tests: $COLOCATED"
+  if [ "$COLOCATED" -lt "$TEST_COUNT" ]; then
+    echo "⚠ Some tests not colocated with source"
+  fi
+fi
+
+# Check utils/helpers directories
+for dir in utils helpers common; do
+  if [ -d "src/$dir" ]; then
+    FILE_COUNT=$(find "src/$dir" -type f -name "*.ts" -o -name "*.js" -o -name "*.py" | wc -l)
+    echo "⚠ Found src/$dir with $FILE_COUNT files - review for single-feature code"
+  fi
+done
+
+# Check for feature directories
+echo ""
+echo "## Feature Directory Detection"
+if [ -d "src/features" ]; then
+  echo "✓ Feature-based structure detected"
+  ls -d src/features/*/ 2>/dev/null | while read dir; do
+    FEATURE=$(basename "$dir")
+    TEST_FILES=$(find "$dir" -name "*.test.*" -o -name "*_test.*" | wc -l)
+    echo "  $FEATURE: $TEST_FILES colocated tests"
+  done
+else
+  echo "⚠ No features/ directory - consider restructuring"
+fi
+
+echo ""
+echo "=== Audit Complete ==="
+```
+
+### Evidence Template
+
+```markdown
+## Colocation Audit Results
+
+**Repository**: [repo-name]
+**Date**: YYYY-MM-DD
+**Auditor**: [name]
+
+### Current Structure
+
+[Describe current organization pattern]
+
+### Findings
+
+| Category             | Status | Details                   |
+| -------------------- | ------ | ------------------------- |
+| Feature directories  | ✓/✗    | [describe]                |
+| Test colocation      | ✓/✗    | [X]% colocated            |
+| Shared code validity | ✓/✗    | [X] files, [Y] single-use |
+
+### Recommended Actions
+
+1. [ ] Move [X] to feature directory [Y]
+2. [ ] Colocate tests for [feature]
+3. [ ] Review shared/utils for single-use code
+
+### Verification
+
+After refactoring:
+
+- [ ] All tests pass
+- [ ] Import paths updated
+- [ ] No orphaned files
+```
