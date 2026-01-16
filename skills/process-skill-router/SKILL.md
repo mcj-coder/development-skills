@@ -256,3 +256,95 @@ Router is working correctly when:
 - `superpowers:writing-plans` - Create implementation plans
 - `superpowers:test-driven-development` - Implement changes
 - `superpowers:verification-before-completion` - Verify before claiming done
+
+## Decision Tree Test Matrix
+
+Use this matrix to validate routing decisions:
+
+| Test ID | User Prompt                           | Expected Route                 | Priority |
+| ------- | ------------------------------------- | ------------------------------ | -------- |
+| T1      | "The reviewer left comments on my PR" | receiving-code-review          | P1       |
+| T2      | "Tests are failing unexpectedly"      | systematic-debugging           | P2       |
+| T3      | "I want to add dark mode to the app"  | requirements-gathering         | P3       |
+| T4      | "Ticket #123 needs more detail"       | brainstorming                  | P4       |
+| T5      | "I have ticket #456, ready to plan"   | writing-plans                  | P5       |
+| T6      | "Plan approved, let's code #789"      | test-driven-development        | P6       |
+| T7      | "I think the feature is done"         | verification-before-completion | P7       |
+| T8      | "Fix the bug, no ticket yet"          | systematic-debugging           | P2       |
+| T9      | "Build new auth system"               | requirements-gathering         | P3       |
+| T10     | "What should I work on?"              | (prompt for clarification)     | -        |
+
+## Sample Prompts Mapped to Routes
+
+### P1: receiving-code-review
+
+```text
+"The reviewer wants changes to my PR"
+"I got feedback on pull request #42"
+"Address the code review comments"
+"PR has requested changes"
+```
+
+### P2: systematic-debugging
+
+```text
+"The tests are failing"
+"Something broke after the last commit"
+"Getting unexpected error: NullReferenceException"
+"The build worked yesterday but not today"
+```
+
+### P3: requirements-gathering
+
+```text
+"I want to add a new feature"
+"Can you help me build user authentication?"
+"We need to implement export to CSV"
+"Let's create a dashboard"
+```
+
+### P4: brainstorming
+
+```text
+"Ticket #123 is unclear, let's discuss"
+"I'm not sure how to approach this ticket"
+"The requirements need more detail"
+"Let's think through the design for #456"
+```
+
+### P5: writing-plans
+
+```text
+"Ready to plan ticket #123"
+"Let's create an implementation plan"
+"I have the requirements, need a plan"
+"Time to break down the work"
+```
+
+### P6: test-driven-development
+
+```text
+"Plan is approved, let's implement"
+"Ready to write code for #789"
+"Start implementing the feature"
+"Write the tests and code"
+```
+
+### P7: verification-before-completion
+
+```text
+"I think I'm done with this task"
+"Ready to mark this complete"
+"The feature is implemented"
+"Can we close this ticket?"
+```
+
+## Validation Checklist
+
+Before completing routing decision:
+
+- [ ] Evaluated all P1-P7 rules in priority order
+- [ ] First matching precondition selected
+- [ ] User explicit requests respected (if any)
+- [ ] Rationale provided with recommendation
+- [ ] Ambiguous cases prompted for clarification

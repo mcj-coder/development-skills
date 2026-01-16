@@ -239,3 +239,215 @@ Choose based on:
 - Consumer expectations (stability vs features)
 - Team capacity (release overhead)
 - Risk tolerance (testing requirements)
+
+## Sample Tag Commands
+
+### Creating Release Tags
+
+```bash
+# Standard release tag (annotated)
+git tag -a v1.2.3 -m "Release v1.2.3
+
+Summary: Bug fixes and performance improvements
+
+See CHANGELOG.md for details."
+
+# Pre-release tags
+git tag -a v2.0.0-alpha.1 -m "Alpha 1 for v2.0.0 - Internal testing only"
+git tag -a v2.0.0-beta.1 -m "Beta 1 for v2.0.0 - External testing"
+git tag -a v2.0.0-rc.1 -m "Release candidate 1 for v2.0.0"
+
+# Signed release tag (GPG)
+git tag -s v1.2.3 -m "Signed release v1.2.3"
+
+# Push single tag
+git push origin v1.2.3
+
+# Push all tags
+git push origin --tags
+```
+
+### Listing and Managing Tags
+
+```bash
+# List all version tags
+git tag --list 'v*'
+
+# List with dates
+git tag --list 'v*' --format='%(refname:short) - %(creatordate:short)'
+
+# Show tag details
+git show v1.2.3
+
+# Delete local tag
+git tag -d v1.2.3
+
+# Delete remote tag
+git push origin --delete v1.2.3
+
+# Get latest tag
+git describe --tags --abbrev=0
+```
+
+### Hotfix Tag Workflow
+
+```bash
+# Create hotfix branch from release tag
+git checkout -b hotfix/1.2.4 v1.2.3
+
+# Apply fix
+git commit -m "fix: critical security vulnerability"
+
+# Tag the hotfix
+git tag -a v1.2.4 -m "Hotfix v1.2.4
+
+Security fix for CVE-XXXX-YYYY
+See CHANGELOG.md for details."
+
+# Push branch and tag
+git push origin hotfix/1.2.4
+git push origin v1.2.4
+
+# Merge back to main
+git checkout main
+git cherry-pick <hotfix-commit>
+```
+
+## Changelog Linkage Examples
+
+### Linking Tags to Changelog Entries
+
+```markdown
+<!-- CHANGELOG.md -->
+
+# Changelog
+
+All notable changes to this project will be documented in this file.
+
+## [1.2.3] - 2024-01-15
+
+### Added
+
+- New export feature (#123)
+- Dark mode support (#145)
+
+### Fixed
+
+- Login timeout issue (#156)
+- Memory leak in cache handler (#162)
+
+### Security
+
+- Updated dependencies for CVE-XXXX (#171)
+
+[1.2.3]: https://github.com/org/repo/compare/v1.2.2...v1.2.3
+[1.2.2]: https://github.com/org/repo/compare/v1.2.1...v1.2.2
+```
+
+### Auto-generating Release Notes
+
+```bash
+# Generate changelog from commits since last tag
+git log $(git describe --tags --abbrev=0)..HEAD --oneline
+
+# Generate with categories (requires conventional commits)
+git log $(git describe --tags --abbrev=0)..HEAD --pretty=format:"- %s" | grep -E "^- (feat|fix|docs|chore|refactor):"
+
+# Using GitHub CLI for release notes
+gh release create v1.2.3 --generate-notes
+
+# Create release with changelog excerpt
+gh release create v1.2.3 --notes "$(cat <<EOF
+## What's Changed
+
+### New Features
+- Added export functionality (#123)
+- Dark mode support (#145)
+
+### Bug Fixes
+- Fixed login timeout (#156)
+
+**Full Changelog**: https://github.com/org/repo/compare/v1.2.2...v1.2.3
+EOF
+)"
+```
+
+### CI/CD Changelog Automation
+
+```yaml
+# .github/workflows/release.yml
+name: Release
+
+on:
+  push:
+    tags:
+      - "v*"
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Get previous tag
+        id: prev_tag
+        run: |
+          PREV=$(git describe --tags --abbrev=0 HEAD^ 2>/dev/null || echo "")
+          echo "tag=$PREV" >> $GITHUB_OUTPUT
+
+      - name: Generate changelog
+        id: changelog
+        run: |
+          if [ -n "${{ steps.prev_tag.outputs.tag }}" ]; then
+            CHANGES=$(git log ${{ steps.prev_tag.outputs.tag }}..HEAD --pretty=format:"- %s")
+          else
+            CHANGES=$(git log --pretty=format:"- %s" -20)
+          fi
+          echo "changes<<EOF" >> $GITHUB_OUTPUT
+          echo "$CHANGES" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v1
+        with:
+          body: |
+            ## Changes in ${{ github.ref_name }}
+
+            ${{ steps.changelog.outputs.changes }}
+
+            **Full Changelog**: https://github.com/${{ github.repository }}/compare/${{ steps.prev_tag.outputs.tag }}...${{ github.ref_name }}
+```
+
+### Changelog Entry Template
+
+```markdown
+## [X.Y.Z] - YYYY-MM-DD
+
+### Added
+
+- [Feature description] (#issue-number)
+
+### Changed
+
+- [Change description] (#issue-number)
+
+### Deprecated
+
+- [Deprecation notice] - will be removed in vX+1.0.0
+
+### Removed
+
+- [Removal description] - see migration guide
+
+### Fixed
+
+- [Bug fix description] (#issue-number)
+
+### Security
+
+- [Security fix description] (#issue-number, CVE-XXXX-YYYY)
+
+[X.Y.Z]: https://github.com/org/repo/compare/vX.Y.Z-1...vX.Y.Z
+```

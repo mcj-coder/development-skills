@@ -261,7 +261,11 @@
     "mypackage",
     "jdeps",
     "myorg",
-    "myvendor"
+    "myvendor",
+    "creatordate",
+    "softprops",
+    "READMEEOF",
+    "CIEOF"
   ],
   "ignorePaths": ["node_modules/**", "package-lock.json"]
 }
