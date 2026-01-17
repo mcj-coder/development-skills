@@ -10,6 +10,7 @@
     "secretlint": "secretlint \"**/*\"",
     "spell-check": "cspell \"**/*.md\"",
     "test": "node -e \"console.log('No tests configured')\"",
+    "validate:skills": "node scripts/validate-skill-structure.cjs",
     "verify": "npm run lint:check && npm run spell-check && npm run secretlint",
     "prepare": "husky"
   },
