@@ -45,7 +45,6 @@ jobs:
   skill-validation:
     name: Skill Structure Validation
     runs-on: ubuntu-latest
-    continue-on-error: true # TODO: Remove once skills comply with SKILL-FORMAT.md
     steps:
       - uses: actions/checkout@v4
 
