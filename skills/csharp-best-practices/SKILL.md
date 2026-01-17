@@ -16,6 +16,25 @@ detects the language/runtime configuration, prefers the newest supported feature
 consults version-specific references progressively from C# 10 upward while respecting
 repository conventions.
 
+## When to Use
+
+- Implementing or refactoring C# code in any .NET project
+- Reviewing C# code for best practice alignment
+- Upgrading code to use newer C# language features
+- Resolving analyzer warnings or style issues
+- Onboarding to an existing C# codebase to understand effective patterns
+
+## Core Workflow
+
+1. **Detect language version**: Check LangVersion in csproj, Directory.Build.props, or infer from TFM
+2. **Record determination**: Document effective C# version and how it was determined
+3. **Load references progressively**: Load reference docs from C# 10 up to the effective version
+4. **Apply highest-priority guidance**: When conflicts exist, newest version guidance wins
+5. **Handle optional analyzers**: Pause and request clarification for optional/contentious rules
+6. **Apply to touched code only**: Avoid unrelated formatting changes unless broader refactor requested
+7. **Validate build and tests**: Ensure changes compile and pass tests
+8. **Emit summary**: Document applied practices and any pending analyzer decisions
+
 ## Intent
 
 Apply C# best practices appropriate to the project's **effective language version**.

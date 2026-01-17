@@ -17,6 +17,15 @@ components) to scoped-colocation.
 
 **REQUIRED:** superpowers:brainstorming, superpowers:verification-before-completion
 
+## When to Use
+
+- User decides repository organization or restructures codebase
+- User asks where functionality should live (component placement decisions)
+- User reviews or questions existing component boundaries
+- New functionality spans multiple existing components
+- Team ownership changes require boundary realignment
+- Deployment independence needs evaluation for splitting/merging components
+
 ## Core Workflow
 
 1. **Identify candidate boundaries** based on deployment independence, team ownership, coupling analysis, and reuse patterns

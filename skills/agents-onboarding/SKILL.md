@@ -18,6 +18,14 @@ must understand how to work in the repository by reading only AGENTS.md.
 **REQUIRED SUB-SKILL:** `superpowers:brainstorming`
 **REQUIRED SUB-SKILL:** `superpowers:verification-before-completion`
 
+## When to Use
+
+- User integrates AI agents into repository for first time
+- User asks to set up agent guidance, rules, or onboarding documentation
+- Repository is missing agent-specific onboarding docs (no AGENTS.md)
+- Fresh agent context needs to understand repository standards without conversation history
+- Existing AGENTS.md is incomplete or outdated and needs enhancement
+
 ## Core Workflow
 
 1. **Announce** skill and why it applies.

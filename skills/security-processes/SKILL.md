@@ -13,6 +13,25 @@ metadata:
 Organization-grade security governance across languages and platforms. This skill defines
 security policies, processes, and exception handling at the organizational level.
 
+## When to Use
+
+- Defining organisation-wide security policies and governance standards
+- Establishing SCA (Software Composition Analysis) and SBOM requirements
+- Configuring dependency scanning and update governance processes
+- Setting up release gates and security policy enforcement
+- Defining remediation SLAs and exception handling procedures
+- Reviewing or auditing security processes across repositories
+
+## Core Workflow
+
+1. Define security controls matrix by repository type and deployment model
+2. Configure baseline security pipeline (dependency scan, SAST, secret scan, SBOM)
+3. Establish minimum security gates for PRs and releases
+4. Document remediation SLAs by severity (Critical: 24h, High: 7d, Medium: 30d, Low: 90d)
+5. Create exception request and approval workflow
+6. Set up security scan evidence templates for compliance documentation
+7. Configure pipeline stages appropriate to each environment (dev/staging/prod)
+
 ## Security Skills Decision Matrix
 
 Use this matrix to select the appropriate security skill:

@@ -25,6 +25,15 @@ should not need to navigate across multiple unrelated directories.
 - Onboarding to an unfamiliar codebase
 - Adding tests, styles, or related assets to existing features
 
+## Core Workflow
+
+1. Identify the owning feature or domain for the code
+2. Place code in that feature's directory (not in shared/utils)
+3. Colocate tests with implementation in the same directory
+4. Colocate related assets (styles, types, fixtures) with the feature
+5. Extract to shared only when genuinely shared (3+ consumers)
+6. Verify directory structure reflects feature boundaries
+
 ## Core Patterns
 
 ### Pattern 1: Feature-Scoped Directories

@@ -24,6 +24,13 @@ code without destabilising production systems.
 - Improving code quality in systems with high change risk
 - Working with code that has implicit dependencies or undocumented behaviour
 
+## Core Workflow
+
+1. Understanding: Map dependencies, identify risks using assessment matrix, find seams, write characterisation tests
+2. Preparation: Add monitoring, create rollback plan, set up feature flags if needed, establish baseline metrics
+3. Execution: Make one atomic change at a time, run tests after each change, deploy frequently, monitor closely
+4. Verification: Compare before/after metrics, validate characterisation tests pass, remove scaffolding, update documentation
+
 ## Core Principles
 
 ### 1. Characterisation Tests First

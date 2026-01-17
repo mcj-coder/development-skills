@@ -12,6 +12,25 @@ testing (unit, system, E2E), BDD practices using Reqnroll, architecture enforcem
 NetArchTest, and public API governance for published libraries. Enforces observability
 criteria and payload logging constraints.
 
+## When to Use
+
+- Implementing or reviewing a .NET testing approach for a new solution
+- Establishing test project naming and colocation conventions
+- Introducing tiered testing (unit, system, E2E) to an existing codebase
+- Adding architecture tests to enforce structural patterns
+- Reviewing test tier selection and mocking boundaries in PRs
+- Configuring CI pipelines for test execution
+
+## Core Workflow
+
+1. Create test projects following naming conventions (ComponentName.UnitTest, ComponentName.SystemTest, ComponentName.E2E)
+2. Colocate test projects with the component they validate
+3. Implement unit tests with xUnit and Moq for isolated class/method testing
+4. Implement system tests with BDD style (Reqnroll) mocking only external dependencies
+5. Implement E2E tests with Testcontainers for transient infrastructure
+6. Add architecture tests using NetArchTest to enforce layering rules
+7. Configure CI matrix to run appropriate test tiers per stage (PR, mainline, post-deploy)
+
 ## Intent
 
 Define a consistent .NET testing architecture with:

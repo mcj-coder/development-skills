@@ -21,6 +21,16 @@ principles by ensuring verification and role-based reviews complete BEFORE pull 
 - Ready to integrate changes into main branch
 - Need guidance on next steps (PR, merge, cleanup)
 
+## Core Workflow
+
+1. Verify implementation complete: tests pass, changes committed, branch pushed
+2. Check verification requirements: detect changed file types and determine required reviews
+3. Complete pre-PR verification: QA verification and role-based reviews in work item
+4. Post evidence to work item with links to verification comments
+5. Choose integration path: direct merge, create PR, or abandon
+6. Execute chosen path with appropriate commands
+7. Post-integration: update work item state, post final evidence, delete feature branch
+
 ## Prerequisites
 
 Before using this skill:

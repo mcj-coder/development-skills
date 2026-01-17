@@ -9,6 +9,24 @@ Standardise test assertions on open-source libraries, preferring AwesomeAssertio
 community fork of FluentAssertions) for fluent, readable assertions with better error
 messages. Enforce OSS license revalidation for all test dependencies.
 
+## When to Use
+
+- Establishing or reviewing test conventions for a new project
+- Introducing or upgrading assertion libraries in existing projects
+- Migrating from FluentAssertions to AwesomeAssertions
+- Reviewing PRs that add new test dependencies
+- Evaluating assertion library license compliance
+
+## Core Workflow
+
+1. Verify the assertion library is open-source (check license)
+2. Add AwesomeAssertions package reference to test projects
+3. Update using statements to reference AwesomeAssertions namespace
+4. Write fluent assertions using Should() extension methods
+5. Use BeEquivalentTo for DTOs with exclusions for generated fields
+6. Use BeCloseTo for time assertions to avoid brittle exact matches
+7. Run tests to verify assertions work correctly
+
 ## Core
 
 ### When to use

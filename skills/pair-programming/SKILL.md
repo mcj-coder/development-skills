@@ -37,6 +37,15 @@ Do not use when:
 - High-stakes decisions needing real-time human judgement
 - Learning/teaching scenarios where collaboration is the goal
 
+## Core Workflow
+
+1. Trigger: Acknowledge receipt, validate Definition of Ready, request clarification if needed
+2. Planning: Create implementation plan, identify sub-tasks and dependencies, post summary to issue
+3. Implementation: Dispatch sub-agents by skill domain, work in isolated worktrees, coordinate via issue comments
+4. Review Loop: Run tests, request persona-based reviews (Tech Lead, QA, Security), iterate until all pass
+5. Human Checkpoint: Create PR with comprehensive description, wait for human review
+6. Merge: Squash merge on approval, close issue with evidence, archive plan, proceed to next issue
+
 ## Workflow Phases
 
 ```text
