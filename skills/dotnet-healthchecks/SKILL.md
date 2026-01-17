@@ -9,12 +9,25 @@ Standardise health check implementation using the AspNetCore.Diagnostics.HealthC
 open-source ecosystem. Prefer battle-tested packages over bespoke probes for liveness, readiness,
 and dependency health endpoints across databases, caches, message brokers, and external services.
 
+## When to Use
+
+- Building or modifying ASP.NET Core services that need health endpoints
+- Adding health checks for infrastructure dependencies (databases, caches, brokers)
+- Implementing Kubernetes liveness and readiness probes
+- Reviewing PRs that introduce custom health check implementations
+- Configuring orchestration health semantics for containerised services
+
+## Core Workflow
+
+1. **Evaluate Xabaril packages**: Check if AspNetCore.Diagnostics.HealthChecks has a package for the dependency
+2. **Register health checks**: Add checks via `AddHealthChecks()` with appropriate packages
+3. **Separate liveness from readiness**: Tag liveness checks with "live", readiness with "ready"
+4. **Map endpoints**: Configure `/health/live` and `/health/ready` with tag-based predicates
+5. **Configure orchestration**: Set Kubernetes probes to use appropriate endpoints
+6. **Test health checks**: Unit test custom IHealthCheck implementations, integration test endpoints
+7. **Verify with curl**: Use `curl -i` to confirm endpoints return expected status codes
+
 ## Core
-
-### When to use
-
-- Any ASP.NET Core service exposing liveness, readiness, or dependency health endpoints.
-- Any PR introducing health checks for infrastructure dependencies.
 
 ### Defaults (strong preference)
 

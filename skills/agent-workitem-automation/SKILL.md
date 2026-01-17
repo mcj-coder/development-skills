@@ -20,6 +20,25 @@ all times. If you cannot prove context or tooling, stop and fix that first.
 If an issue-driven workflow is required (work item comments, approvals, evidence tracking),
 use `issue-driven-delivery`.
 
+## When to Use
+
+- Agent is asked to autonomously manage a work item (GitHub, Azure DevOps, or Jira)
+- Comment mentions the agent with a task verb (e.g., "manage", "handle", "take", "own")
+- Need to resolve task board source, platform CLI, or step updates
+- Automating delivery flow across ticketing systems
+- Setting up CI/CD workflows triggered by ticket events
+
+## Core Workflow
+
+1. **Discovery**: Read README.md, locate Work Items section, infer platform from URL
+2. **Setup**: Verify CLI is installed and authenticated for the platform
+3. **Load ticket**: Fetch issue details, comments, acceptance criteria, and related PRs
+4. **Execute step**: Determine and execute only the next required step
+5. **Post update**: Comment with Summary, Evidence, Next Step, and Hand-off status
+6. **Update checklist**: Mark completed items in the issue body
+7. **Verify completion**: Use verification-before-completion for all acceptance criteria
+8. **Close or hand-off**: Close when complete with evidence, or hand off to human if blocked
+
 ## End-to-End Autonomous Delivery Flow
 
 Autonomous delivery follows four explicit phases:

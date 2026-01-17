@@ -6,6 +6,28 @@ metadata:
   superseded-by: observability-logging-baseline
 ---
 
+## Overview
+
+This skill standardizes structured logging in .NET applications using `ILogger`/`ILogger<T>`
+abstractions with Serilog as the underlying provider. It ensures startup exceptions are logged at
+Critical severity for immediate visibility in operational tooling, and provides patterns for
+Application Insights and OpenTelemetry integration.
+
+## When to Use
+
+- Building or modifying ASP.NET Core or worker service applications that need structured logging
+- Reviewing PRs that touch host startup, logging configuration, or exception handling
+- Integrating logging with Azure Application Insights or OpenTelemetry
+- Ensuring startup failures are properly captured and visible in monitoring systems
+
+## Core Workflow
+
+1. Configure Serilog as the logging provider during host building with a bootstrap logger for early startup capture
+2. Use `ILogger<T>` abstractions in application code (never reference Serilog types directly)
+3. Wrap host build/run in try/catch and log startup exceptions at Critical severity
+4. Configure appropriate sinks (console for dev, Application Insights or centralized sink for production)
+5. Verify structured properties are used instead of string concatenation for operational fields
+
 > **DEPRECATED**: This skill has been consolidated into `observability-logging-baseline`.
 >
 > - For comprehensive observability guidance (logs, metrics, traces), use

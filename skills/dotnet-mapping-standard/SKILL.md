@@ -9,11 +9,25 @@ Standardise mapping between DTOs, domain models, and persistence models using so
 mappers. Mappings live at explicit boundaries (API, infrastructure) with deterministic,
 testable conversion paths and no runtime reflection magic.
 
+## When to Use
+
+- Mapping between API request/response DTOs and domain models
+- Converting domain entities to/from persistence models
+- Handling integration event contracts at service boundaries
+- Reviewing PRs that introduce new mapping logic
+- Refactoring existing reflection-based mappers to source-generated alternatives
+
+## Core Workflow
+
+1. **Identify mapping boundaries**: Locate where DTOs cross into domain or persistence layers
+2. **Choose source-generated mapper**: Select Mapperly or similar compile-time mapper
+3. **Create explicit mappers**: Implement mapper classes at boundary projects (API, Infrastructure)
+4. **Handle typed IDs explicitly**: Map strongly typed IDs and value objects with explicit conversions
+5. **Apply DI gating rules**: Use static mappers unless mapper has injected dependencies
+6. **Add mapping tests**: Include round-trip tests for critical boundary conversions
+7. **Verify side-effect free**: Ensure mappings have no side effects or external calls
+
 ## Core
-
-### When to use
-
-- Any service that maps between API contracts, domain models, persistence models, or integration events.
 
 ### Defaults
 

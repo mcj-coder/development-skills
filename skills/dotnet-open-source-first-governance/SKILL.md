@@ -9,13 +9,26 @@ Enforce open-source-first dependency selection with mandatory live license reval
 review time. Historical OSS status is insufficient; verify current licensing via web search
 for every dependency selection, upgrade, or review to catch recent licensing changes.
 
+## When to Use
+
+- Selecting a new library or tool dependency
+- Upgrading any dependency (minor or major version)
+- Performing PR, architecture, security, or dependency reviews
+- Evaluating alternatives for an existing proprietary or source-available component
+- Auditing existing dependencies for license compliance
+
+## Core Workflow
+
+1. **Prefer open-source**: Default to OSS libraries over proprietary or source-available alternatives
+2. **Perform live web search**: Search for current licensing status (not cached/historical data)
+3. **Verify authoritative sources**: Check project homepage, LICENSE file, release notes, issue tracker
+4. **Confirm exact version license**: Verify licensing for the specific version being adopted
+5. **Check transitive dependencies**: Spot-check critical transitives for license changes
+6. **Document verification**: Record license name, verification source(s), and verification date (UTC)
+7. **Gate on missing verification**: Reject or defer proposals without complete license documentation
+8. **Flag ambiguity**: Mark dependency unapproved if licensing cannot be verified confidently
+
 ## Core
-
-### When to use
-
-- Selecting a new dependency.
-- Upgrading any dependency (minor or major).
-- Performing PR, architecture, security, or dependency reviews.
 
 ### Policy (non-negotiable)
 

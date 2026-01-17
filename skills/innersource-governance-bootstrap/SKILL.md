@@ -9,6 +9,24 @@ Establish InnerSource governance in repositories to enable internal open-source 
 patterns. Provides standardised contribution workflows, community documentation templates,
 ownership models, and transparent decision-making processes within an organisation.
 
+## When to Use
+
+- Setting up a new repository that will follow InnerSource principles
+- Converting an existing repository to InnerSource governance model
+- Establishing contribution guidelines for internal open-source projects
+- Bootstrapping community documentation (CONTRIBUTING, CODE_OF_CONDUCT, etc.)
+- Defining maintainer responsibilities and ownership models
+
+## Core Workflow
+
+1. Create required documentation files (README.md, CONTRIBUTING.md, CODE_OF_CONDUCT.md, CODEOWNERS, GOVERNANCE.md)
+2. Configure CODEOWNERS with appropriate team assignments and component ownership
+3. Set up branch protection requiring CODEOWNERS approval and status checks
+4. Configure issue and PR templates with required sections
+5. Document review turnaround expectations and decision-making processes
+6. Enable and configure CI/CD to run on all PRs
+7. Announce InnerSource status to potential contributors
+
 ## Core
 
 ### When to use

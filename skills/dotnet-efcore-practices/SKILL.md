@@ -9,12 +9,26 @@ Standardise Entity Framework Core usage with dedicated migrations projects exclu
 coverage, attribute-linked configuration types for entities, and deterministic configuration
 discovery. This ensures clean separation between business logic and infrastructure scaffolding.
 
+## When to Use
+
+- Any solution using EF Core for persistence
+- Adding or modifying DbContext, entity types, or configurations
+- Creating or updating EF Core migrations
+- Setting up code coverage exclusions for infrastructure projects
+- Reviewing PRs that change persistence layer structure
+
+## Core Workflow
+
+1. **Verify project structure**: Ensure migrations are in a dedicated `*.Persistence.Migrations` project
+2. **Configure coverage exclusion**: Add `<ExcludeFromCodeCoverage>true</ExcludeFromCodeCoverage>` to migrations project
+3. **Create configuration types**: Implement dedicated `IEntityTypeConfiguration<T>` for each entity
+4. **Link via attributes**: Use attribute-based discovery to connect entities to their configurations
+5. **Keep DbContext clean**: DbContext applies configurations, not define them inline
+6. **Ensure deterministic ordering**: Configuration scanning uses stable ordering (e.g., by full name)
+7. **Verify coverage gate**: Run tests to confirm migrations project excluded from coverage reports
+8. **Add repository tests**: Use xUnit with `IAsyncLifetime` for async repository testing
+
 ## Core
-
-### When to use
-
-- Any solution using EF Core for persistence.
-- Any PR introducing or changing DbContext, entity types, configurations, or migrations.
 
 ### Defaults (non-negotiable)
 

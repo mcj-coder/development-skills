@@ -12,7 +12,7 @@ understanding WHAT needs to be built and WHY, not HOW to build it.
 
 **Core principle**: Gather requirements, create ticket, stop. No design, no plan, no commits.
 
-## When to Use This Skill
+## When to Use
 
 Use requirements-gathering when:
 

@@ -10,6 +10,23 @@ concerns like mapping, serialization, regex, and logging. Source generation prov
 determinism, compile-time verification, reduced runtime overhead, and better AOT/trimming
 compatibility.
 
+## When to Use
+
+- Introducing or reviewing repetitive cross-cutting mechanisms (mappers, serializers, regex, logging templates)
+- Building performance-sensitive systems or services with startup-time concerns
+- Targeting AOT compilation or assembly trimming scenarios
+- Evaluating mapping or serialization libraries for a new project
+- Reviewing PRs that propose reflection-based or runtime codegen approaches
+
+## Core Workflow
+
+1. Identify the cross-cutting concern (mapping, serialization, regex, logging)
+2. Check if a source-generation library exists for the use case (e.g., Mapperly, System.Text.Json source generators, GeneratedRegex)
+3. Evaluate the source-gen library against requirements (API compatibility, feature set, maintainability)
+4. Implement using the source-generation approach
+5. Verify compile-time generation is working (check generated files, no runtime reflection warnings)
+6. Benchmark if performance is critical (use the minimal benchmark template in Load: advanced)
+
 ## Core
 
 ### When to use

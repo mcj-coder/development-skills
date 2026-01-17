@@ -73,6 +73,16 @@ For a complete .NET testing implementation:
 - Reviewing changes that impact solution structure, public interfaces, or integration contracts.
 - Introducing or tightening E2E/system testing and their operational criteria.
 
+## Core Workflow
+
+1. Select appropriate testing skill using the decision tree (this skill for strategy, others for implementation)
+2. Define test tiers: unit tests (isolated, fast), system tests (real wiring, stubbed externals), E2E tests (minimal, high-value)
+3. Establish architecture testing rules for layering, dependencies, and conventions
+4. Define contract versioning and public API governance policies
+5. Configure observability requirements with payload logging constraints
+6. Create quality gates with appropriate thresholds for each tier
+7. Document acceptance criteria using provided templates
+
 ## Core Principles
 
 - **Layered test pyramid** (Unit → System → E2E).

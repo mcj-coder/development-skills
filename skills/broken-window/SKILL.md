@@ -24,6 +24,16 @@ objective and measurable—there is no "spirit vs letter" escape.
 - Standards violations detected during code review
 - Skills-first repos: Before starting work (validate prerequisites)
 
+## Core Workflow
+
+1. Detect warning, error, or standards violation
+2. Investigate root cause and document finding
+3. Estimate fix time and remaining work time
+4. Apply 2x rule: if fix time < 2x remaining work, fix immediately
+5. If fix time >= 2x remaining work, create tech-debt issue with steps to replicate
+6. Verify warning/error is resolved or issue is created
+7. Continue with original task
+
 ## The 2x Rule
 
 ```dot

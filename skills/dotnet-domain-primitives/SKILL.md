@@ -10,12 +10,25 @@ domain models. Conversions to/from primitives are permitted only at explicit bou
 (persistence, transport, serialization), ensuring type safety and validation throughout
 the domain layer.
 
+## When to Use
+
+- Designing or reviewing domain models (entities, aggregates, commands/events)
+- Introducing new entity identifiers (CustomerId, OrderId, TenantId, etc.)
+- Working with meaningful primitives that carry validation (EmailAddress, Money, Percentage)
+- Reviewing code where primitive types (Guid, string, int) are used for domain concepts
+- Implementing API boundaries, persistence layers, or serialization
+
+## Core Workflow
+
+1. **Identify primitive obsession**: Locate places where Guid, string, int, or long represent domain concepts
+2. **Define strongly typed IDs**: Create typed ID types using source-generation libraries for entity identifiers
+3. **Define value objects**: Create value objects for meaningful primitives with validation (EmailAddress, Money)
+4. **Establish boundary conversions**: Map to/from primitives only at explicit boundaries (API, persistence, transport)
+5. **Configure serialization**: Add JSON converters, EF Core value converters, and type handlers as needed
+6. **Update service signatures**: Change service methods to accept domain primitives, not raw types
+7. **Add boundary tests**: Test that boundary conversion works and invalid primitives are rejected
+
 ## Core
-
-### When to use
-
-- Designing or reviewing domain models (entities, aggregates, commands/events).
-- Any non-trivial service where identifiers and "meaningful primitives" recur across layers.
 
 ### Defaults (non-negotiable)
 

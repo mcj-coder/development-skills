@@ -13,7 +13,7 @@ skill addresses the skill selection loophole where agents may load `brainstormin
 
 **Core principle**: Evaluate context, recommend appropriate skill, provide rationale.
 
-## When to Use This Skill
+## When to Use
 
 Use process-skill-router when:
 

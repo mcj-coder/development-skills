@@ -9,13 +9,26 @@ Bias against bespoke internal implementations by preferring mature open-source t
 composable libraries. When custom code is unavoidable, enforce justification rubrics that
 require explicit rationale, ownership, versioning, testing, and security considerations.
 
+## When to Use
+
+- Proposals to write internal mappers, code generators, custom build scripts, or DI containers
+- Reviews where new internal tooling or bespoke framework layers are introduced
+- Evaluating whether to build vs buy/adopt for any infrastructure component
+- Reviewing PRs that add custom implementations for common concerns (validation, retries, caching)
+- Architectural decisions involving custom scaffolding or automation scripts
+
+## Core Workflow
+
+1. **Identify the concern**: Determine what functionality is being proposed (mapping, validation, CLI, etc.)
+2. **Search for OSS alternatives**: Evaluate mature open-source libraries that solve the same problem
+3. **Compare trade-offs**: Assess maintenance burden, test effort, performance, and community support
+4. **Apply decision framework**: Choose OSS unless clear justification exists for bespoke code
+5. **Require justification rubric**: If bespoke code is proposed, demand explicit rationale,
+   ownership, versioning, tests, and security considerations
+6. **Document decision**: Record OSS evaluation, selection rationale, and maintenance plan
+7. **Verify in PR**: Check that PR includes evidence of OSS evaluation and rubric satisfaction
+
 ## Core
-
-### When to use
-
-- Proposals to write internal mappers, code generators, custom build scripts, custom DI containers,
-  or bespoke framework layers.
-- Reviews where new internal tooling is introduced.
 
 ### Defaults
 

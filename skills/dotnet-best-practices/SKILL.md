@@ -50,6 +50,16 @@ Use this skill when you are:
 
 For cross-language or organization-wide security processes, use the `security-processes` skill alongside this one.
 
+## Core Workflow
+
+1. Identify target .NET version and load corresponding version reference
+2. For upgrades, load upgrade-cumulative.md and lts-upgrade-playbook.md
+3. Apply baseline engineering standards (security, reliability, performance, maintainability)
+4. Review code against version-specific recommended patterns
+5. Validate configuration centralisation and analyzer enforcement
+6. Produce target framework recommendation and adoption checklist
+7. Document risks, breaking changes, and required test gates
+
 ## Progressive loading model
 
 1. Read this file (baseline standards + operating procedure).

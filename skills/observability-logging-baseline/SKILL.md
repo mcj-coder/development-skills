@@ -9,6 +9,24 @@ Establish production-ready observability foundations using OpenTelemetry standar
 structured logging with message templates, RED/USE metrics, distributed tracing with W3C
 Trace Context, and correlation ID propagation across service boundaries.
 
+## When to Use
+
+- Building any service requiring production-ready observability
+- Establishing logging, metrics, and tracing patterns for new services
+- Upgrading existing services from unstructured to structured observability
+- Reviewing PRs that introduce or modify observability instrumentation
+- Making architecture decisions involving monitoring and observability tooling
+
+## Core Workflow
+
+1. Configure structured logging with message templates (not string interpolation)
+2. Add correlation ID middleware to propagate request context
+3. Set up OpenTelemetry SDK for metrics and tracing
+4. Implement RED metrics (Rate, Errors, Duration) for HTTP endpoints
+5. Enable W3C Trace Context propagation for distributed tracing
+6. Configure OTLP exporter for vendor-portable telemetry export
+7. Validate log output contains structured fields and correlation IDs
+
 ## Core
 
 ### When to use

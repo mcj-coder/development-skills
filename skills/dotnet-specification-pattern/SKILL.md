@@ -9,6 +9,23 @@ Prefer the Specification Pattern over generic Repository Pattern for query compo
 domain selection logic. Specifications define what to fetch while infrastructure decides how
 to execute, enabling composable, testable selection logic without exposing ORM details.
 
+## When to Use
+
+- Implementing query logic beyond trivial CRUD (filtering, paging, sorting, includes)
+- Building systems with multiple query shapes or evolving selection logic
+- Reviewing code that introduces generic repository patterns with GetAll/Find methods
+- Refactoring scattered LINQ queries in handlers or controllers
+- Adding tenancy, authorization, or other cross-cutting query constraints
+
+## Core Workflow
+
+1. Identify selection logic that is reused or non-trivial
+2. Create a named specification class implementing ISpecification<T>
+3. Define criteria, includes, ordering, and paging in the specification
+4. Update repository to accept specifications (ListAsync, CountAsync)
+5. Replace inline LINQ chains with the named specification
+6. Compose specifications using And/Or combinators where needed
+
 ## Core
 
 ### When to use

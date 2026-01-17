@@ -36,6 +36,16 @@ switch to appropriate role | suggest persona for this phase]."
 | Workflow      | issue-driven-delivery phase transition              | Suggest appropriate persona for phase     |
 | Role mismatch | Current persona doesn't match task context          | Recommend persona switch                  |
 
+## Core Workflow
+
+1. Check for existing persona configuration in target repo
+2. If missing: run Setup Flow (role discovery, security profile configuration, artifact generation)
+3. Source the persona config script for current session
+4. Use `use_persona <role>` to switch to appropriate persona for current task
+5. Verify switch with `show_persona` and `gh auth status`
+6. Perform work under the switched persona identity
+7. Switch back to appropriate persona when task context changes
+
 ## Detection Logic
 
 1. Check for existing `docs/playbooks/persona-switching.md` in target repo
