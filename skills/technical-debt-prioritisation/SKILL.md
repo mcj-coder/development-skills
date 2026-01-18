@@ -1,6 +1,9 @@
 ---
 name: technical-debt-prioritisation
 description: Use when facing technical debt backlog requiring systematic prioritisation. Applies three-dimensional scoring (impact, risk, effort), categorises by debt type, identifies quick wins, and creates multi-horizon roadmaps for evidence-based remediation planning.
+metadata:
+  type: Process
+  priority: P3
 ---
 
 # Technical Debt Prioritisation

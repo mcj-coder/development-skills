@@ -1,6 +1,9 @@
 ---
 name: ci-cd-conformance
 description: Use when user creates/modifies CI/CD pipelines, mentions deployment automation, quality gates, or release processes. Applies to all repositories by default to ensure platform-specific best practices (dependency scanning, secret detection, protected branches).
+metadata:
+  type: Platform
+  priority: P2
 ---
 
 # CI/CD Conformance

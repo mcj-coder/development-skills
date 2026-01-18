@@ -1,6 +1,9 @@
 ---
 name: deployment-provenance
 description: Use when deploying software to production or staging environments to ensure complete traceability of what was deployed, when, by whom, and from which source. Essential for audit compliance, incident investigation, and rollback decisions.
+metadata:
+  type: Platform
+  priority: P0
 ---
 
 # Deployment Provenance

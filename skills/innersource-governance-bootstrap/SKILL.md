@@ -1,6 +1,9 @@
 ---
 name: innersource-governance-bootstrap
 description: Use when establishing InnerSource governance in a repository to enable internal open-source collaboration patterns, standardised contribution workflows, and community-driven development practices within an organisation.
+metadata:
+  type: Platform
+  priority: P2
 ---
 
 ## Overview

@@ -5,8 +5,8 @@ compatibility: Requires bash/zsh shell, GPG, and gh CLI
 requires:
   - superpowers:verification-before-completion
 metadata:
-  type: Setup + Runtime
-  priority: P2 (Consistency & Governance)
+  type: Platform
+  priority: P3
 ---
 
 # Persona-Switching

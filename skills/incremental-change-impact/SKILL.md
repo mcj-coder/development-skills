@@ -1,6 +1,9 @@
 ---
 name: incremental-change-impact
 description: Use when user proposes changes, refactoring, or feature additions; asks about impact, affected components, or what needs testing; or before making structural changes. Identifies blast radius and cascading effects.
+metadata:
+  type: Process
+  priority: P3
 ---
 
 # Incremental Change Impact

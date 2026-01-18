@@ -1,6 +1,9 @@
 ---
 name: markdown-author
 description: Use when writing or editing markdown to proactively enforce linting rules and spelling standards, preventing violations before commit.
+metadata:
+  type: Implementation
+  priority: P4
 ---
 
 # Markdown Author

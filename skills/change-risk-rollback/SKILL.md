@@ -1,6 +1,9 @@
 ---
 name: change-risk-rollback
 description: Use when planning release, deployment, or infrastructure changes. Produces risk assessment with failure modes, impact rating, rollback procedures, and prerequisite execution criteria before deployment.
+metadata:
+  type: Process
+  priority: P1
 ---
 
 # Change Risk & Rollback

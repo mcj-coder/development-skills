@@ -1,6 +1,9 @@
 ---
 name: process-skill-router
 description: Route agents to the correct process skill based on context and preconditions. Use when uncertain which process skill applies or when starting new work.
+metadata:
+  type: Process
+  priority: P3
 ---
 
 # Process Skill Router

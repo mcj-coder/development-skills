@@ -5,6 +5,9 @@ description: >
   codebases. Covers architecture, runtime/framework choices, SDK/tooling, packaging, deployment
   strategy, and version-aware best practices, including code review and ongoing maintenance
   scenarios.
+metadata:
+  type: Implementation
+  priority: P2
 ---
 
 # .NET best practices (version-aware, progressive-loading)

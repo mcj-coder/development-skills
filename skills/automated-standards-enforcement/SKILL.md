@@ -3,7 +3,7 @@ name: automated-standards-enforcement
 description: Use when creating or modifying any repository to establish automated quality enforcement (linting, spelling, tests, SAST, security). Applies by default unless user explicitly refuses. Ensures clean build policy with minimal developer friction.
 metadata:
   type: Platform
-  priority: P0
+  priority: P2
 ---
 
 # Automated Standards Enforcement

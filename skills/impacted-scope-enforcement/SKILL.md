@@ -1,6 +1,9 @@
 ---
 name: impacted-scope-enforcement
 description: Use when user deploys changes, commits code, runs builds/tests, or requests selective validation. Ensures only impacted components are tested/deployed when appropriate, scoping quality gates to modified code.
+metadata:
+  type: Quality
+  priority: P1
 ---
 
 # Impacted Scope Enforcement

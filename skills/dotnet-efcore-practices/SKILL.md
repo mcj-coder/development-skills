@@ -1,6 +1,9 @@
 ---
 name: dotnet-efcore-practices
 description: Standardise EF Core usage: isolate migrations in a dedicated project excluded from code coverage, and enforce attribute-linked dedicated type configuration classes.
+metadata:
+  type: Implementation
+  priority: P2
 ---
 
 ## Overview

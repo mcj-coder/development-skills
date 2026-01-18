@@ -1,6 +1,9 @@
 ---
 name: observability-logging-baseline
 description: Use when establishing observability foundations including structured logging, metrics, and distributed tracing using OpenTelemetry standards.
+metadata:
+  type: Implementation
+  priority: P2
 ---
 
 ## Overview

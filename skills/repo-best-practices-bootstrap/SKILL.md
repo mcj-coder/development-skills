@@ -6,7 +6,7 @@ description: |
   documentation, and agent enablement.
 metadata:
   type: Platform
-  priority: P0
+  priority: P2
 ---
 
 # Repo Best Practices Bootstrap

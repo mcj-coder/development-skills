@@ -3,8 +3,8 @@ name: agents-onboarding
 description: Use when user integrates agents into repository, asks to set up agent guidance/rules/onboarding, or repo missing agent-specific onboarding docs (AGENTS.md). Ensures fresh agent context can apply all repo standards and external skills.
 compatibility: Requires Superpowers skill system to be installed
 metadata:
-  type: Foundation
-  priority: P0 (Safety & Integrity)
+  type: Platform
+  priority: P3
 ---
 
 # Agents-Onboarding

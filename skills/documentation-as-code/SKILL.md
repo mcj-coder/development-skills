@@ -1,6 +1,9 @@
 ---
 name: documentation-as-code
 description: Use when user creates/modifies/reviews documentation (Markdown, ADRs, plans, READMEs). Applies same rigor as code with lint, spell, format validation, review processes, and CI automation.
+metadata:
+  type: Implementation
+  priority: P2
 ---
 
 # Documentation as Code

@@ -2,7 +2,7 @@
 name: testing-strategy-agnostic
 description: Use when defining, reviewing, or improving a testing strategy in any stack; focuses on layered testing, incremental enforcement, data safety, architecture enforcement, contract versioning, and observability.
 metadata:
-  type: Quality
+  type: Implementation
   priority: P1
 ---
 

@@ -1,6 +1,9 @@
 ---
 name: testing-strategy-dotnet
 description: Use when implementing or reviewing a .NET testing approach with unit, system, and E2E tiers, BDD practices, architecture enforcement, contract versioning, and strict observability rules.
+metadata:
+  type: Implementation
+  priority: P1
 ---
 
 # Testing Strategy (.NET Opinionated)

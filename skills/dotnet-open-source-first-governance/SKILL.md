@@ -1,6 +1,9 @@
 ---
 name: dotnet-open-source-first-governance
 description: Enforce open-source-first dependency selection with mandatory live license revalidation (web search) and review-time gating.
+metadata:
+  type: Implementation
+  priority: P0
 ---
 
 ## Overview

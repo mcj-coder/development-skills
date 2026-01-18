@@ -1,6 +1,9 @@
 ---
 name: contract-consistency-validation
 description: Use when user modifies public interfaces/APIs, changes behavior of exposed methods, or requests compatibility checks. Validates breaking changes, requires user confirmation, enforces SemVer, and mandates ADR for pre-1.0 relaxations or v1+ exceptions.
+metadata:
+  type: Quality
+  priority: P1
 ---
 
 # Contract Consistency Validation

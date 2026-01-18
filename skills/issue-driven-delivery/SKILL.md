@@ -1,6 +1,9 @@
 ---
 name: issue-driven-delivery
 description: Use when work is tied to a ticketing system work item and requires comment approval, sub-task tracking, or CLI-based delivery workflows.
+metadata:
+  type: Process
+  priority: P2
 ---
 
 # Issue-Driven Delivery

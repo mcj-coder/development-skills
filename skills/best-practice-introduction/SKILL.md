@@ -1,6 +1,9 @@
 ---
 name: best-practice-introduction
 description: Use when introducing new standards, tooling, practices, or asking for adoption/rollout guidance. Produces phased rollout plan with adoption criteria, risk assessment, and rollback triggers.
+metadata:
+  type: Process
+  priority: P3
 ---
 
 # Best Practice Introduction

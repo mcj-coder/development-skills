@@ -1,6 +1,9 @@
 ---
 name: safe-brownfield-refactor
 description: Use when refactoring legacy codebases, introducing changes to systems without comprehensive test coverage, or modernising established production systems. Provides risk-managed strategies for incremental improvement.
+metadata:
+  type: Process
+  priority: P3
 ---
 
 # Safe Brownfield Refactor

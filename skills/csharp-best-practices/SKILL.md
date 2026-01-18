@@ -5,6 +5,9 @@ description: >-
   project's effective C# language version and .NET target/runtime. Detect the language/runtime,
   prefer the newest supported features, and consult version-specific references progressively
   from C# 10 upward.
+metadata:
+  type: Implementation
+  priority: P2
 ---
 
 # C# Best Practices (Version-Aware Skill)

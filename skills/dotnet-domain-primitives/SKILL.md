@@ -1,6 +1,9 @@
 ---
 name: dotnet-domain-primitives
 description: Prevent primitive obsession by enforcing StronglyTypedIds and value objects in domain models and at boundaries.
+metadata:
+  type: Implementation
+  priority: P2
 ---
 
 ## Overview

@@ -1,6 +1,9 @@
 ---
 name: dotnet-specification-pattern
 description: Prefer Specification Pattern for query composition and domain selection logic; avoid generic Repository Pattern duplication of ORM semantics.
+metadata:
+  type: Implementation
+  priority: P2
 ---
 
 ## Overview
