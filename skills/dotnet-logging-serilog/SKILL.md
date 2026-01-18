@@ -2,6 +2,8 @@
 name: dotnet-logging-serilog
 description: Standardise logging on ILogger with Serilog as the provider; ensure startup exceptions are logged as Critical.
 metadata:
+  type: Implementation
+  priority: P2
   status: deprecated
   superseded-by: observability-logging-baseline
 ---

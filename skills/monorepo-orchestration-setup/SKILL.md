@@ -1,6 +1,9 @@
 ---
 name: monorepo-orchestration-setup
 description: Use when setting up or orchestrating monorepos with build tools like Nx, Turborepo, or Lerna. Covers workspace configuration, task pipelines, dependency graph management, caching strategies, and CI/CD integration patterns.
+metadata:
+  type: Platform
+  priority: P2
 ---
 
 # Monorepo Orchestration Setup

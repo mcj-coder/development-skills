@@ -1,6 +1,9 @@
 ---
 name: dotnet-bespoke-code-minimisation
 description: Bias against bespoke scripts/frameworks by default; prefer mature open-source tools and composable libraries with clear ownership.
+metadata:
+  type: Implementation
+  priority: P2
 ---
 
 ## Overview

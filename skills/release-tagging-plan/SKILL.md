@@ -1,6 +1,9 @@
 ---
 name: release-tagging-plan
 description: Use when planning release versions, creating tags, or establishing versioning strategies. Applies semantic versioning principles, manages pre-release workflows, handles hotfix lineage, and creates release cadence plans with proper changelog documentation.
+metadata:
+  type: Process
+  priority: P2
 ---
 
 # Release Tagging Plan

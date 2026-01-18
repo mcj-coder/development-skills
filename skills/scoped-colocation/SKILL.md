@@ -1,6 +1,9 @@
 ---
 name: scoped-colocation
 description: Use when organizing code structure, creating new features, or reviewing file placement to keep related code together by scope and reduce cognitive load.
+metadata:
+  type: Implementation
+  priority: P2
 ---
 
 # Scoped Colocation

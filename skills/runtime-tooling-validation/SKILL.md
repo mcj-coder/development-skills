@@ -1,6 +1,9 @@
 ---
 name: runtime-tooling-validation
 description: Use when setting up a development environment, cloning a repository, or before running builds and tests. Validates runtime dependencies, SDK versions, environment variables, and service connectivity before attempting operations that would fail without them.
+metadata:
+  type: Platform
+  priority: P1
 ---
 
 # Runtime Tooling Validation

@@ -3,7 +3,7 @@ name: static-analysis-security
 description: Use when implementing or configuring static analysis for security, including SAST tools, security linting, secrets detection, and vulnerability threshold management. Covers tool selection, CI integration, IDE setup, and suppression policies.
 metadata:
   type: Quality
-  priority: P1
+  priority: P0
 ---
 
 # Static Analysis Security

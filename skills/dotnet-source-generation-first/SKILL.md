@@ -1,6 +1,9 @@
 ---
 name: dotnet-source-generation-first
 description: Prefer compile-time source generation over runtime evaluation for repetitive cross-cutting concerns (mapping, logging, regex, etc.).
+metadata:
+  type: Implementation
+  priority: P2
 ---
 
 ## Overview

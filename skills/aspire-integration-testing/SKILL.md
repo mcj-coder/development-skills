@@ -4,6 +4,9 @@ description: >-
   Use when repository includes .NET Aspire usage, distributed application setup, or
   cross-component behavior validation. Produces BDD-style integration tests with health
   checks and observability verification.
+metadata:
+  type: Implementation
+  priority: P1
 ---
 
 # Aspire Integration Testing

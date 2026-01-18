@@ -1,6 +1,9 @@
 ---
 name: component-boundary-ownership
 description: Use when user decides repository organization, where functionality should live, or reviews component boundaries. Determines cross-component ownership and placement (macro), delegates intra-component file layout to scoped-colocation (micro).
+metadata:
+  type: Implementation
+  priority: P2
 ---
 
 # Component Boundary Ownership

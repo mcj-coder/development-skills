@@ -1,6 +1,9 @@
 ---
 name: local-dev-experience
 description: Use when setting up or optimizing local development environments for fast feedback loops. Applies to any project where iteration speed matters. Covers hot reload, incremental builds, test filtering, IDE optimization, and multi-service local development patterns.
+metadata:
+  type: Platform
+  priority: P4
 ---
 
 # Local Dev Experience

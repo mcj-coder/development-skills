@@ -1,6 +1,9 @@
 ---
 name: broken-window
 description: Use when warnings/errors occur during git operations, package management, builds, or when reviewing completed work for standards violations. Fix immediately unless impact doubles delivery time.
+metadata:
+  type: Quality
+  priority: P1
 ---
 
 # Broken Window

@@ -1,6 +1,9 @@
 ---
 name: branching-strategy-and-conventions
 description: Use when creating any repository, defining Git workflows, or enforcing commit conventions. Establishes branching policy, commit message standards (Conventional Commits), and merge rules aligned to SemVer.
+metadata:
+  type: Process
+  priority: P2
 ---
 
 # Branching Strategy and Conventions

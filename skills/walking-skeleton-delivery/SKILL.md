@@ -1,6 +1,9 @@
 ---
 name: walking-skeleton-delivery
 description: Use when starting new system or migration requiring minimal end-to-end slice for architecture validation. Defines simplest E2E flow in BDD format, establishes deployment pipeline, and validates technical decisions before full build-out.
+metadata:
+  type: Process
+  priority: P3
 ---
 
 # Walking Skeleton Delivery

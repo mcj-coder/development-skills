@@ -1,6 +1,9 @@
 ---
 name: requirements-gathering
 description: Gather requirements through interactive questions and create work items without committing design documents
+metadata:
+  type: Process
+  priority: P3
 ---
 
 # Requirements Gathering

@@ -1,6 +1,9 @@
 ---
 name: library-extraction-stabilisation
 description: Use when shared code is used by 3+ components, user asks about extracting library, or code is copied across services. Ensures stability, ownership, versioning, and governance before extraction.
+metadata:
+  type: Implementation
+  priority: P3
 ---
 
 # Library Extraction Stabilisation

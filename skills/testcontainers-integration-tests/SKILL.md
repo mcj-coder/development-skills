@@ -1,6 +1,9 @@
 ---
 name: testcontainers-integration-tests
 description: Use when integration tests require real infrastructure (database, message queue, cache) or when mocking infrastructure is insufficient. Defines container lifecycle, test isolation, and performance optimization for Testcontainers-based testing.
+metadata:
+  type: Implementation
+  priority: P1
 ---
 
 # Testcontainers Integration Tests
