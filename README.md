@@ -1,3 +1,29 @@
+<!-- PORTFOLIO-BANNER:START -->
+> **🗂️ Portfolio archive — skills specification / documentation repo.** Specs and guidance that interoperate with the Superpowers skills system. Part of a consolidated set of my personal repositories and **not actively maintained**.
+
+<details>
+<summary><b>📋 Self-review — 5 good practices &amp; 5 things I'd improve</b></summary>
+
+**✅ Good practices demonstrated**
+1. Full open-source hygiene: LICENSE, CODE_OF_CONDUCT, CONTRIBUTING, GOVERNANCE and SECURITY policies.
+2. Issue-automation workflows (auto-unblock, duplicate detection, label validation, project-status sync).
+3. Secret scanning, cSpell, markdownlint and commitlint all enforced.
+4. Explicitly scoped to avoid duplicating the upstream library — a deliberate YAGNI decision.
+5. Decision-record (ADR) discipline for capturing rationale.
+
+**⚠️ Weaknesses / what I'd do differently today**
+1. Governance/process files (GOVERNANCE, Code of Conduct) are disproportionate for a solo spec repo.
+2. The scheduled Backlog-Health workflow went stale and was auto-disabled.
+3. Conceptual overlap with `agent-skills` and `claude-skills`.
+4. Cross-account links broke after the repository was consolidated (now fixed).
+5. Heavy on backlog/meta, lighter on delivered, reusable skill content.
+
+</details>
+
+---
+<!-- PORTFOLIO-BANNER:END -->
+
+
 # development-skills
 
 This repository hosts skill specs and guidance that interoperate with the
@@ -6,7 +32,7 @@ duplicating the upstream skill library.
 
 ## Work Items
 
-Taskboard: <https://github.com/mcj-coder/development-skills/issues>
+Taskboard: <https://github.com/martincjarvis/development-skills/issues>
 
 ## Purpose
 
@@ -29,13 +55,13 @@ to this repository.
 **Unix/macOS:**
 
 ```bash
-git clone https://github.com/mcj-coder/development-skills.git ~/repos/development-skills
+git clone https://github.com/martincjarvis/development-skills.git ~/repos/development-skills
 ```
 
 **Windows PowerShell:**
 
 ```powershell
-git clone https://github.com/mcj-coder/development-skills.git $env:USERPROFILE\repos\development-skills
+git clone https://github.com/martincjarvis/development-skills.git $env:USERPROFILE\repos\development-skills
 ```
 
 ### Create Skills Directory
