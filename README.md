@@ -14,7 +14,7 @@
 **⚠️ Weaknesses / what I'd do differently today**
 1. Governance/process files (GOVERNANCE, Code of Conduct) are disproportionate for a solo spec repo.
 2. The scheduled Backlog-Health workflow went stale and was auto-disabled.
-3. Some skill bodies are oversized (e.g. `issue-driven-delivery`) and should push detail into `references/` for progressive disclosure ([tracked in #396](https://github.com/martincjarvis/development-skills/issues/396)).
+3. A few skill bodies remain on the larger side (core workflows are kept inline); the worst offenders have since been split, moving detail into `references/` for progressive disclosure.
 4. Cross-account links broke after the repository was consolidated (now fixed).
 5. Heavy on backlog/meta, lighter on delivered, reusable skill content.
 
