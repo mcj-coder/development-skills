@@ -1,6 +1,6 @@
 ---
 name: requirements-gathering
-description: Gather requirements through interactive questions and create work items without committing design documents
+description: Use when starting a new feature or an unclear task and you need to elicit requirements - gather them through interactive questions and capture work items without committing design documents.
 metadata:
   type: Process
   priority: P3

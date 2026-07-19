@@ -1,6 +1,6 @@
 ---
 name: dotnet-testing-assertions
-description: Standardise unit/integration test assertions on open-source libraries; prefer AwesomeAssertions over non-open-source alternatives.
+description: Use when writing or reviewing .NET unit/integration test assertions - standardise on open-source assertion libraries, preferring AwesomeAssertions.
 metadata:
   type: Implementation
   priority: P1

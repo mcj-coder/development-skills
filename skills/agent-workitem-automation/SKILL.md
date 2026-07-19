@@ -1,9 +1,6 @@
 ---
 name: agent-workitem-automation
-description: >
-  Use when an agent is asked to autonomously manage a work item and must
-  resolve task board source, platform CLI, or step updates across GitHub,
-  Azure DevOps, or Jira.
+description: Use when an agent is asked to autonomously manage a work item and must resolve task board source, platform CLI, or step updates across GitHub, Azure DevOps, or Jira.
 metadata:
   type: Platform
   priority: P3

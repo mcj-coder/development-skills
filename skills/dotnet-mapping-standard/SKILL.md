@@ -1,6 +1,6 @@
 ---
 name: dotnet-mapping-standard
-description: Standardise mapping (DTOs/contracts/persistence models) using source-generated mappers and explicit boundary conversions.
+description: Use when mapping between DTOs, contracts, and persistence models in .NET - prefer source-generated mappers with explicit boundary conversions over reflection-based mapping.
 metadata:
   type: Implementation
   priority: P2

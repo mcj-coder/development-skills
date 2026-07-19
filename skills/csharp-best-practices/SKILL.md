@@ -1,10 +1,6 @@
 ---
 name: csharp-best-practices
-description: >-
-  Use when implementing or refactoring C# code and you must apply best practices aligned to the
-  project's effective C# language version and .NET target/runtime. Detect the language/runtime,
-  prefer the newest supported features, and consult version-specific references progressively
-  from C# 10 upward.
+description: Use when implementing or refactoring C# code and you must apply best practices aligned to the project's effective C# language version and .NET target/runtime. Detect the language/runtime, prefer the newest supported features, and consult version-specific references progressively from C# 10 upward.
 metadata:
   type: Implementation
   priority: P2

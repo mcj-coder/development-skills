@@ -1,10 +1,6 @@
 ---
 name: dotnet-best-practices
-description: >
-  Use when designing, implementing, maintaining, or reviewing .NET features, projects, and
-  codebases. Covers architecture, runtime/framework choices, SDK/tooling, packaging, deployment
-  strategy, and version-aware best practices, including code review and ongoing maintenance
-  scenarios.
+description: Use when designing, implementing, maintaining, or reviewing .NET features, projects, and codebases. Covers architecture, runtime/framework choices, SDK/tooling, packaging, deployment strategy, and version-aware best practices, including code review and ongoing maintenance scenarios.
 metadata:
   type: Implementation
   priority: P2

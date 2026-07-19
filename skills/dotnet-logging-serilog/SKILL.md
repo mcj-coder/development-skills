@@ -1,6 +1,6 @@
 ---
 name: dotnet-logging-serilog
-description: Standardise logging on ILogger with Serilog as the provider; ensure startup exceptions are logged as Critical.
+description: Use when setting up or reviewing logging in a .NET app - standardise on ILogger with Serilog as the provider and ensure startup exceptions are logged as Critical.
 metadata:
   type: Implementation
   priority: P2

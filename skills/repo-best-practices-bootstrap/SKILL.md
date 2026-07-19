@@ -1,9 +1,6 @@
 ---
 name: repo-best-practices-bootstrap
-description: |
-  Use when setting up new repositories or auditing existing ones for security
-  and best practice compliance. Covers branch protection, secret scanning, CI/CD security,
-  documentation, and agent enablement.
+description: Use when setting up new repositories or auditing existing ones for security and best practice compliance. Covers branch protection, secret scanning, CI/CD security, documentation, and agent enablement.
 metadata:
   type: Platform
   priority: P2

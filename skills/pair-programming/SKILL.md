@@ -1,9 +1,6 @@
 ---
 name: pair-programming
-description: |
-  Use for autonomous agent/human pair programming with the agent as primary
-  implementer and human as supervisor. Enables high autonomy between checkpoints
-  with automated review loops before human review.
+description: Use for autonomous agent/human pair programming with the agent as primary implementer and human as supervisor. Enables high autonomy between checkpoints with automated review loops before human review.
 model: balanced # Implementation work → Sonnet 4.5, GPT-5.1
 metadata:
   type: Process

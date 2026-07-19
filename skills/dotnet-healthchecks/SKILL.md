@@ -1,6 +1,6 @@
 ---
 name: dotnet-healthchecks
-description: Standardise health check implementation using the AspNetCore.Diagnostics.HealthChecks open-source ecosystem.
+description: Use when adding health checks or readiness/liveness endpoints to a .NET service - standardise on the AspNetCore.Diagnostics.HealthChecks open-source ecosystem.
 metadata:
   type: Implementation
   priority: P2
