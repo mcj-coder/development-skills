@@ -1,5 +1,5 @@
 <!-- PORTFOLIO-BANNER:START -->
-> **🗂️ Portfolio archive — skills specification / documentation repo.** Specs and guidance that interoperate with the Superpowers skills system. Part of a consolidated set of my personal repositories and **not actively maintained**.
+> **🗂️ Portfolio archive — consolidated engineering skills library (78 skills).** The single canonical home for my agent/engineering *skills* (`SKILL.md`), merged from the former `agent-skills` and `claude-skills` repos. Part of a consolidated set of my personal repositories and **not actively maintained**.
 
 <details>
 <summary><b>📋 Self-review — 5 good practices &amp; 5 things I'd improve</b></summary>
@@ -14,7 +14,7 @@
 **⚠️ Weaknesses / what I'd do differently today**
 1. Governance/process files (GOVERNANCE, Code of Conduct) are disproportionate for a solo spec repo.
 2. The scheduled Backlog-Health workflow went stale and was auto-disabled.
-3. Conceptual overlap with `agent-skills` and `claude-skills`.
+3. Some skill bodies are oversized (e.g. `issue-driven-delivery`) and should push detail into `references/` for progressive disclosure ([tracked in #396](https://github.com/martincjarvis/development-skills/issues/396)).
 4. Cross-account links broke after the repository was consolidated (now fixed).
 5. Heavy on backlog/meta, lighter on delivered, reusable skill content.
 
@@ -26,9 +26,11 @@
 
 # development-skills
 
-This repository hosts skill specs and guidance that interoperate with the
-Superpowers skills system. It is intentionally lightweight and avoids
-duplicating the upstream skill library.
+This repository is the single, canonical home for my reusable agent/engineering
+**skills** ([agentskills.io](https://agentskills.io) `SKILL.md` format). It
+consolidates the skills previously split across the former `agent-skills` and
+`claude-skills` repositories (now retired), and interoperates with the Superpowers
+skills system.
 
 ## Work Items
 
@@ -320,6 +322,36 @@ Requirements for all skills:
 | Skill                       | Description                        |
 | --------------------------- | ---------------------------------- |
 | `testing-strategy-agnostic` | Language-agnostic testing strategy |
+
+### Agent Workflow & Meta
+
+_Consolidated from the former `agent-skills` and `claude-skills` repositories._
+
+| Skill                             | Description                                                     |
+| --------------------------------- | --------------------------------------------------------------- |
+| `brainstorming`                   | Clarify intent and explore options before creative/multi-step work |
+| `writing-plans`                   | Turn a validated design into a reviewable implementation plan   |
+| `executing-plans`                 | Execute an approved implementation plan step by step            |
+| `subagent-driven-development`     | Run independent plan tasks across sub-agents                    |
+| `dispatching-parallel-agents`     | Fan out independent tasks/failures to parallel agents          |
+| `structured-review-workflow`      | Coordinate an end-to-end review workflow                       |
+| `requesting-code-review`          | Prepare and request review for completed work                  |
+| `receiving-code-review`           | Apply review feedback systematically                           |
+| `systematic-debugging`            | Find the root cause before proposing fixes                     |
+| `test-driven-development`         | Define behaviour via tests before implementation               |
+| `verification-and-handover`       | Verify completion claims before handover                       |
+| `using-git-worktrees`             | Isolate feature work using git worktrees                       |
+| `using-skill-library`             | Load the skill inventory at session start                      |
+| `writing-skills`                  | Author/update `SKILL.md` files to standard                     |
+| `documentation-scaffold`          | Bootstrap baseline repository documentation                    |
+| `repository-foundation-bootstrap` | Establish a new repository's baseline foundation               |
+| `environment-traceability`        | Make environments auditable and traceable                      |
+| `incremental-deployment`          | Deploy only modified and impacted components                   |
+| `selective-build-test`            | Build and test only impacted components                        |
+| `semantic-version-impact`         | Derive semantic-version impact from changes                    |
+| `modern-csharp-coding-standards`  | Apply modern C# language features and standards                |
+| `session-aware`                   | Manage Claude Code session types, state, and transitions       |
+| `whiteboard`                      | Lightweight planning space for rough ideas (Claude Code)       |
 
 ## Documentation
 
