@@ -84,7 +84,7 @@ P2 – Consistency & Governance
 
 - requesting-code-review
 - receiving-code-review
-- verification-and-handover
+- superpowers:verification-before-completion
 
 ---
 

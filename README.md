@@ -1,5 +1,5 @@
 <!-- PORTFOLIO-BANNER:START -->
-> **🗂️ Portfolio archive — consolidated engineering skills library (78 skills).** The single canonical home for my agent/engineering *skills* (`SKILL.md`), merged from the former `agent-skills` and `claude-skills` repos. Part of a consolidated set of my personal repositories and **not actively maintained**.
+> **🗂️ Portfolio archive — consolidated engineering skills library (66 skills).** The single canonical home for my agent/engineering *skills* (`SKILL.md`), merged from the former `agent-skills` and `claude-skills` repos. Part of a consolidated set of my personal repositories and **not actively maintained**.
 
 <details>
 <summary><b>📋 Self-review — 5 good practices &amp; 5 things I'd improve</b></summary>
@@ -279,7 +279,7 @@ Requirements for all skills:
 | `branching-strategy-and-conventions` | Git branching strategies and conventions              |
 | `change-risk-rollback`               | Managing change risk with rollback strategies         |
 | `deployment-provenance`              | Tracking deployment provenance and audit trails       |
-| `finishing-a-development-branch`     | Completing and integrating development work           |
+| `finishing-a-development-branch-idd`  | Completing/integrating a branch, wired to `issue-driven-delivery` (SHIFT-LEFT) |
 | `impacted-scope-enforcement`         | Enforcing that changes only affect intended scope     |
 | `local-dev-experience`               | Optimising local development experience               |
 | `monorepo-orchestration-setup`       | Setting up and orchestrating monorepos                |
@@ -325,24 +325,12 @@ Requirements for all skills:
 
 ### Agent Workflow & Meta
 
-_Consolidated from the former `agent-skills` and `claude-skills` repositories._
+> **Note:** Generic agent-workflow skills that duplicated the upstream [Superpowers](https://github.com/obra/superpowers) library (`brainstorming`, `writing-plans`, `executing-plans`, `subagent-driven-development`, `dispatching-parallel-agents`, `requesting-code-review`, `receiving-code-review`, `systematic-debugging`, `test-driven-development`, `using-git-worktrees`, `writing-skills`, `verification-and-handover`) are intentionally **not** re-implemented here — install Superpowers and reference them via the `superpowers:` prefix. Only skills that add value beyond Superpowers are kept.
 
 | Skill                             | Description                                                     |
 | --------------------------------- | --------------------------------------------------------------- |
-| `brainstorming`                   | Clarify intent and explore options before creative/multi-step work |
-| `writing-plans`                   | Turn a validated design into a reviewable implementation plan   |
-| `executing-plans`                 | Execute an approved implementation plan step by step            |
-| `subagent-driven-development`     | Run independent plan tasks across sub-agents                    |
-| `dispatching-parallel-agents`     | Fan out independent tasks/failures to parallel agents          |
 | `structured-review-workflow`      | Coordinate an end-to-end review workflow                       |
-| `requesting-code-review`          | Prepare and request review for completed work                  |
-| `receiving-code-review`           | Apply review feedback systematically                           |
-| `systematic-debugging`            | Find the root cause before proposing fixes                     |
-| `test-driven-development`         | Define behaviour via tests before implementation               |
-| `verification-and-handover`       | Verify completion claims before handover                       |
-| `using-git-worktrees`             | Isolate feature work using git worktrees                       |
-| `using-skill-library`             | Load the skill inventory at session start                      |
-| `writing-skills`                  | Author/update `SKILL.md` files to standard                     |
+| `using-skill-library`             | Load this library's skill inventory at session start           |
 | `documentation-scaffold`          | Bootstrap baseline repository documentation                    |
 | `repository-foundation-bootstrap` | Establish a new repository's baseline foundation               |
 | `environment-traceability`        | Make environments auditable and traceable                      |
